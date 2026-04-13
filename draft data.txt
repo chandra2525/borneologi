@@ -1,0 +1,248 @@
+Yang tampil pada Kaleka
+1. Data Petani
+-Nama Lengkap
+-Nama Panggilan
+-Jenis Kelamin (Pria/Wanita)
+-Tanggal Lahir (Date)
+-Foto petani (opsional)
+
+Relasi ke tabel_desa
+-Nama Desa
+-Kecamatan
+
+Relasi ke tabel_petani_kelompoknya dan relasi ke tabel_kategori
+-Kelompok Tani (dropdown ambil dari dari Kategori di tabel 'Kelompok Tani')
+
+Relasi ke tabel_petani_kelompoknya
+-Jabatan Kelompok (Ketua,Sekretaris,Bendahara,Anggota)
+-Tahun Gabung (2020-2030)
+-Sudah Validasi (Sudah/Belum)
+
+
+
+2. Tabel Tanah
+-Keterangan Wilayah (Wilayah Hutan Adat, Keleka, Benih)
+-Sejarah (Dropdown Diberi, Warisan Orang Tua dll)
+-Luas Tanah (luas hektar)
+-Legalitas Tanah (Belum Ada, SKT/SKTA, SPPT, SHM)
+-Status Kawasan (APL, HL, HP, HPK, HPT, KSA, PIAPS, lainnya)
+-Tipe Geography (Koordinat/polygon)
+
+
+3. Tabel Monitoring Penanaman Benih [Array]
+-Aksesi Nomor (int)
+-Nama Koleksi (varchar)
+-Nama Latin (varchar)
+-Nama Inggris (varchar)
+-Tipe Penyimpanan (plastik, kaca, salipi) (varchar)
+-Tipe Penanaman (varchar)
+-Kode Negara (varchar default IDN)
+-Ketinggian (exmp:1000 mdpl) (int)
+-Periode Benih Disimpan (bulan dan tahun date waktu dia tanam) (date)
+-Tipe Geography (koordinat/polygon) (varchar)
+
+-Periode Waktu Tanam
+-Progress Status Monitoring Penanaman (Baru Ditanam, Proses Panen, Sudah Dipanen)
+-Periode Benih Dipanen
+
+
+
+
+Data Apa saja yang ditampilkan pada Kaleka, Hutan Adat dan Benih?
+
+
+
+
+
+Data informasi pada Kaleka:
+
+Data Petani
+1. nama_lengkap (t_petani)
+2. nama_panggilan (t_petani)
+3. nik (t_petani)
+4. no_kk (t_petani)
+5. jenis_kelamin (t_petani)
+6. tanggal_lahir (t_petani)
+7. nomor_hp (t_petani)
+8. alamat (t_petani)
+9. status_petani ('aktif', 'nonaktif') (t_petani)
+
+Data Petani Kelompok
+1. nama_kelompok_tani (t_kelompok_tani)
+2. kategori_kelompok (m_kategori_kelompok)
+3. is_masyarakat_hukum_adat (m_kategori_kelompok)
+4. deskripsi (m_kategori_kelompok)
+5. alamat (t_kelompok_tani)
+6. akses_perjalanan apakah perlu? (m_akses_perjalanan)
+7. kondisi_jalan (m_kondisi_jalan)
+8. tahun_bentuk (t_kelompok_tani) 
+9. nomor_sk (t_kelompok_tani) 
+10. tanggal_sk (t_kelompok_tani) 
+11. status_kelompok (t_kelompok_tani) 
+12. is_active (t_kelompok_tani) 
+-----------------------------------------
+Array [relasi ke petani]
+13. jabatan_kelompok (m_jabatan_kelompok)
+14. tanggal_gabung (t_petani_kelompok)
+15. tanggal_keluar (t_petani_kelompok)
+16. is_pengurus (t_petani_kelompok)
+17. is_active (t_petani_kelompok)
+18. keterangan (t_petani_kelompok)
+
+Data Desa
+1. nama_desa (m_desa)
+2. tipe_wilayah ('desa', 'kelurahan') (m_desa)
+3. nama_kecamatan (m_kecamatan)
+4. nama_kabupaten (m_kabupaten)
+5. nama_provinsi (m_provinsi)
+6. kode_pos (m_desa)
+
+Data Kelaka
+1. nama_kaleka (t_kaleka)
+3. keterangan (t_kaleka)
+
+Data Tanah
+1. nama_lahan (t_tanah)
+2. legalitas_lahan (m_legalitas_lahan) (nama)
+3. status_kawasan (m_status_kawasan) (nama)
+4. luas_ha (t_tanah)
+5. centroid_lat (t_tanah)
+6. centroid_lng (t_tanah)
+7. geom_area (t_tanah)
+8. alamat_lokasi (t_tanah)
+9. keterangan (t_tanah)
+10. sudah_validasi (t_tanah)
+11. tanggal_validasi (t_tanah)
+
+Data Perairan Observasi
+1. periode_pengecekan (t_perairan_observasi)
+2. warna_air (m_warna_air)
+3. jenis_palung (m_jenis_palung)
+4. kecepatan_aliran (m_kecepatan_aliran)
+5. kedalaman_cm (t_perairan_observasi)
+6. lebar_m (t_perairan_observasi)
+7. debit_lps (t_perairan_observasi)
+8. ph (t_perairan_observasi)
+9. kekeruhan_ntu (t_perairan_observasi)
+10. catatan (t_perairan_observasi)
+
+Data Infrastruktur Observasi
+1. periode_pengecekan (t_infrastruktur_observasi)
+2. akses_perjalanan (m_akses_perjalanan)
+3. kondisi_jalan (m_kondisi_jalan)
+4. jarak_ke_jalan_km (t_infrastruktur_observasi)
+5. ada_jembatan (t_infrastruktur_observasi)
+6. ada_listrik (t_infrastruktur_observasi)
+7. ada_internet (t_infrastruktur_observasi)
+8. sinyal_seluler (t_infrastruktur_observasi)
+9. catatan (t_infrastruktur_observasi)
+
+Data Land Cover Observasi
+1. periode_pengecekan (t_land_cover_observasi)
+2. kategori_area (m_kategori_area)
+3. penggunaan_pertanian (m_penggunaan_pertanian)
+4. penggunaan_lainnya (m_penggunaan_lainnya)
+5. persentase_tutupan (t_land_cover_observasi)
+6. catatan (t_land_cover_observasi)
+
+Data Topografi Observasi
+1. periode_pengecekan (t_topografi_observasi)
+2. lanskap (m_lanskap)
+3. fitur_tambahan (m_fitur_tambahan)
+4. elevasi_mdpl (t_topografi_observasi)
+5. kemiringan_derajat (t_topografi_observasi)
+6. rawan_erosi (t_topografi_observasi)
+7. arah_lereng (t_topografi_observasi)
+8. catatan (t_topografi_observasi)
+
+Data Pohon Observasi
+1. periode_pengecekan (t_pohon_observasi)
+2. nama_pohon (m_jenis_pohon)
+3. nama_latin (m_jenis_pohon)
+3. fungsi_pohon (m_fungsi_pohon)
+4. jumlah_pohon (t_pohon_observasi)
+5. diameter_rata2_cm (t_pohon_observasi)
+6. tinggi_rata2_m (t_pohon_observasi)
+7. kondisi (t_pohon_observasi)
+8. catatan (t_pohon_observasi)
+
+Data Bank Benih
+1. nomor_aksesi (t_bank_benih)
+2. nama_negara (m_negara)
+3. nama_lokal (t_bank_benih)
+4. nama_ilmiah (t_bank_benih)
+5. famili_tanaman (t_bank_benih)
+6. provenance (t_bank_benih)
+7. tipe_penyimpanan_benih (m_tipe_penyimpanan_benih)
+8. tanggal_masuk (t_bank_benih)
+9. jumlah_stok (t_bank_benih)
+10. satuan_stok (t_bank_benih)
+11. kadar_air_persen (t_bank_benih)
+12. viabilitas_persen (t_bank_benih)
+13. ketinggian_mdpl (t_bank_benih)
+14. masa_berlaku_sampai (t_bank_benih)
+15. lokasi_penyimpanan (t_bank_benih)
+16. titik_koleksi_lat (t_bank_benih)
+17. titik_koleksi_lng (t_bank_benih)
+18. catatan (t_bank_benih)
+
+Data Monitoring Penanaman
+1. nama_tipe_penanaman (m_tipe_penanaman)
+2. progress_status_monitoring (m_progress_status_monitoring)
+3. periode_pengecekan (t_monitoring_penanaman)
+4. tanggal_tanam (t_monitoring_penanaman)
+5. tanggal_monitoring (t_monitoring_penanaman)
+6. luas_tanam_ha (t_monitoring_penanaman)
+7. survival_rate_persen (t_monitoring_penanaman)
+8. catatan (t_monitoring_penanaman)
+------------------------
+9. id_bank_benih
+10. jumlah_ditanam
+11. satuan
+12. jumlah_hidup
+13. jumlah_mati
+14. tinggi_rata2_cm
+15. diameter_rata2_cm
+16. catatan
+
+
+
+Tabel yang sudah dimasukkan ke tampilan Kaleka :
+1. t_kaleka
+2. t_petani
+3. m_desa
+4. m_kecamatan
+5. m_kabupaten
+6. m_provinsi
+7. t_tanah
+8. m_legalitas_lahan
+9. m_status_kawasan
+10. t_perairan_observasi
+11. m_warna_air
+12. m_jenis_palung
+13. m_kecepatan_aliran
+14. t_infrastruktur_observasi
+15. m_akses_perjalanan
+16. m_kondisi_jalan
+17. t_land_cover_observasi
+18. m_kategori_area
+19. m_penggunaan_pertanian
+20. m_penggunaan_lainnya
+21. t_topografi_observasi
+22. m_lanskap
+23. m_fitur_tambahan
+24. t_pohon_observasi
+25. m_fungsi_pohon
+26. m_fungsi_pohon
+27. t_kelompok_tani
+28. m_kategori_kelompok
+29. m_akses_perjalanan
+30. m_kondisi_jalan
+31. m_jabatan_kelompok
+32. t_petani_kelompok
+33. t_bank_benih
+34. m_negara
+35. m_tipe_penyimpanan_benih
+
+1. Satu Petani bisa memiliki banyak petani kelompok
+2. Satu Petani kelompok hanya dimiliki oleh 1 kelompok_tani

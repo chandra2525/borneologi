@@ -1,0 +1,293 @@
+Database
+
+Required semua.
+
+tabel_desa
+
+1. id_desa (PK)
+2. nama_desa (varchar)
+3. jumlah_penduduk (int)
+4. jumlah_pria (int)----
+5. jumlah_wanita (int)----
+6. update_terakhir (dari desanya) (date)
+7. kecamatan (dropdown ambil API) (Provinsi - Kabupaten - Kecamatan - Desa/Kelurahan) (varchar)
+8. status_terhapus (varchar)
+
+
+tabel_kelompok_tani
+
+1. id_kelompok_tani (PK)
+2. id_kategori (FK)
+3. id_desa (FK)
+4. tahun_sk (2020-2030) (int)
+5. no_rekening (varchar)
+6. update_terakhir (dari kelompk taninya) (date)
+7. status_kelompok (Aktif atau Non Aktif) (boolean)
+8. status_terhapus (varchar)
+
+
+tabel_kategori
+
+1. id_kategori (PK)
+2. nama_kategori (varchar)
+3. Masyarakat Hukum Adat (ini lupa untuk apa)
+4. status_terhapus (varchar)
+
+
+tabel_petani
+
+1. id_petani (PK)
+2. nama_lengkap (varchar)
+3. nama_panggilan (varchar)----
+4. jenis_kelamin (Pria atau Wanita) (varchar)
+5. tanggal_lahir (date)
+6. id_desa (FK) (dropdown ambil dari data desa dikunci berdasarkan kelompok, apakah maksudnya hanya tampil desa berdasarkan kategori yang dipilih?)
+7. foto_petani (opsional) (varchar))----
+8. status_terhapus (varchar)
+apabila kelompok lebih dari 1 maka jabatan kelompok, tahun gabung, sudah validasi menyesuaikan jumlah kelompok yang dipilih.
+(karena bisa lebih dari 1 maka ditambahkan tabel baru bernama tabel_petani_kelompoknya)
+
+
+tabel_petani_kelompoknya
+
+1. id_petani_kelompoknya (PK)
+2. id_petani (FK)
+3. id_kategori (FK) kelompok (dropdown ambil dari kategori di tabel kelompok tani)
+4. jabatan_kelompok (Ketua, Sekretaris, Bendahara, Anggota) (varchar)
+5. tahun_gabung (2020-2030) (int)
+6. sudah_validasi (Sudah/Belum) (boolean))----
+7. status_terhapus (varchar)
+
+
+tabel_tanah
+
+1. id_tanah (PK)
+2. id_petani (FK)
+3. relasi_lahan (varchar) apakah masih diperlukan karena sengon tidak dipakai?
+4. keterangan_wilayah (Wilayah Hutan Adat, Kaleka, Benih) (varchar)
+5. sejarah (Diberi, Warisan Orang Tua dll)
+6. luas_tanah (luas hektar)
+7. legalitas (Belum Ada, SKT/SKTA, SPPT, SHM)
+8. status_kawasan (APL, HL, HP, HPK, HPT, KSA, PIAPS, lainnya)
+9. tipe_geography (koordinat/polygon) (varchar)
+10. latitude (varchar)
+11. longitude (varchar)
+12. polygon (text)
+13. status_terhapus (varchar)
+
+
+tabel_bank_benih (dropdown dari bank benih pertama)
+
+1. id_bank_benih (PK)
+2. id_tanah (FK) (dropdown pilih dari tanah tampilkan juga nama-desa/kelurahan-no)
+3. aksesi_nomor (int)
+4. nama koleksi (varchar)
+5. nama latin (varchar)
+6. nama inggris (varchar)
+7. tipe penyimpanan (plastik, kaca, salipi) (varchar)
+8. tipe penanaman (varchar)
+9. kode negara (varchar default IDN)
+10. ketinggian (exmp:1000 mdpl) (int)
+11. periode_benih_disimpan (bulan dan tahun date waktu dia tanam) (date)
+12. tipe_geography (koordinat/polygon) (varchar)
+13. latitude (varchar)
+14. longitude (varchar)
+15. polygon (text)
+16. gambar_benih (varchar)
+17. status_terhapus (varchar)
+
+
+tabel_monitoring_penanaman_benih
+
+1. id_monitoring_penanaman_benih (dropdown dari bank benih kedua) (PK)
+
+Tab input pertama 
+2. id_tanah (FK) Pilih tanah menunya sama dengan data tanah
+3. keterangan atau keterangan_wilayah? (Disewa BIT) (varchar)
+
+Tab input kedua
+4. ambil dari data input benih bisa lebih dari 1 (array) (karena bisa lebih dari 1 jadi ditambahkan tabel baru bernama tabel_detail_monitoring_penanaman_benih)
+5. status_terhapus (varchar)
+
+
+tabel_detail_monitoring_penanaman_benih
+
+1. id_detail_monitoring_penanaman_benih (PK)
+2. id_monitoring_penanaman_benih (FK)
+3. id_bank_benih (FK)
+4. periode_waktu_tanam (date)
+5. progress_status_monitoring_penanaman (Baru Ditanam, Proses Panen, Sudah Dipanen) (varchar)
+6. periode_benih_dipanen (date)
+7. status_terhapus (varchar)
+
+
+
+
+tabel_infrastruktur
+(Saat ditampilan 1 kaleka hanya bisa 1 infrastruktur yang terbaru periodenya tetapi tetap bisa ditambah kelola)
+
+1. id_infrastruktur (PK)
+2. id_tanah (FK)
+3. id_akses_perjalanan (FK)
+4. id_kondisi (FK)
+5. aakses (mudah, sulit) (varchar)
+6. obstacle (keterangan) (varchar)
+7. periode pengecekan (bulan-tahun) (date)
+8. deskripsi (text)
+9. status_terhapus (varchar)
+
+
+tabel_akses_perjalanan
+
+1. id_akses_perjalanan (PK)
+2. nama_akses (sepeda motor, jalan setapak, mobil) (varchar)
+3. status_terhapus (varchar)
+
+
+tabel_kondisi
+
+1. id_kondisi (PK)
+2. nama_kondisi (berlumpur, kering, aspal, jalan tanah, rata) (varchar)
+3. status_terhapus (varchar)
+
+
+tabel_land_cover (tutupan lahan)
+(Saat ditampilan 1 kaleka hanya bisa 1 land cover yang terbaru periodenya tetapi tetap bisa ditambah kelola)
+
+1. id_tutupan_lahan (PK)
+2. id_tanah (FK)
+3. nama_tutupan_lahan (varchar)?
+4. latitude (varchar)
+5. longitude (varchar)
+6. kategori_area (hutan, lahan terbuka, rumput ilalang, kebun, tepi sungai, hutan belantara dan lainnya) (varchar)
+7. tinggi_vegetasi (Tinggi: >2m, Menengah 1-2m, Rendah 0-1m) 
+8. kepadatan_tanaman ( 3 : 75-100%, 2 : 50-75%, 1 : 25-50%, 0 : 0-25%)
+9. penggunaan_pertanian (Lombok, Kopi, Jagung, Kacang Panjang, Terong,Jahe, Kangkung, Serai, Jamur, Padi, Tabantal dll)
+10. penggunaan_lainnya (Buah-Buahan, Tanaman Obat, Karet, Sawit, Situs budaya, dll)
+11. periode pengecekan (bulan-tahun) (date)
+12. deskripsi (text)
+13. status_terhapus (varchar)
+
+
+tabel_topografi
+(Saat ditampilan 1 kaleka hanya bisa 1 topografi yang terbaru periodenya tetapi tetap bisa ditambah kelola)
+
+1. id_topografi (PK)
+2. id_tanah (FK)
+3. nama_topografi?
+4. latitude (varchar)
+5. longitude (varchar)
+6. lanskap (lereng, bukit, lembah, dataran, sungai dll) (varchar)
+7. fitur_tambahan (rumah, jembatan dll) (varchar)
+8. periode_pengecekan (bulan-tahun) (date)
+9. deskripsi (text)
+10. status_terhapus (varchar)
+
+
+tabel_pohon
+(Saat ditampilan 1 kaleka hanya bisa 1 pohon yang terbaru periodenya tetapi tetap bisa ditambah kelola)
+
+1. id_pohon (PK)
+2. id_tanah (FK)
+3. nama_pohon (varchar)?
+4. latitude (varchar)
+5. longitude (varchar)
+6. tanaman _ohon (Ulin, Bambu, Durian, Karet, Rotan, Bajakah, Mangga, Pinang, Manggis, Pisang, Cempedak, Nangka, Langsat) (varchar)
+7. fungsi_pohon (untuk obat, dijual, dimakan, dll) (varchar)
+8. jumlah_pohon (int)
+9. persentase jumlah di Kaleka (apakah perlu disimpan atau cukup tampilkan saja?)
+10. periode_pengecekan (bulan-tahun) (date)
+11. deskripsi (text)
+12. status_terhapus (varchar)
+
+
+tabel_perairan
+(Saat ditampilan 1 kaleka hanya bisa 1 perairan yang terbaru periodenya tetapi tetap bisa ditambah kelola)
+
+1. id_perairan (PK)
+2. id_tanah (FK)
+3. nama_sungai (varchar)
+4. latitude (varchar)
+5. longitude (varchar)
+6. lebar(m2) (double)
+7. warna (jernih, coklat, merah, hitam dll) (varchar)
+8. palung (berpasir, kerikil, bebatuan, batu besar dll) (varchar)
+9. kecepatan aliran air (tinggi, sedang, rendah) (varchar)
+10. periode_pengecekan (bulan-tahun) (date)
+11. deskripsi (text)
+12. status_terhapus (varchar)
+
+
+tabel_hutan_adat
+Samakan dengan tanah tapi ambilnya bukan dari petani tapi kelompok yang kategorinya Masyarakat Hukum Adat), langsung polygon tanpa latlong, isinya sama dengan kaleka.
+
+1. id_hutan_adat (PK)
+2. id_kelompok_tani (where : Masyarakat Hukum Adat)(FK)
+3. relasi_lahan (varchar) apakah masih diperlukan karena sengon tidak dipakai?
+4. keterangan_wilayah (Wilayah Hutan Adat, Kaleka, Benih) (varchar)
+5. sejarah (Diberi, Warisan Orang Tua dll)
+6. luas_tanah (luas hektar)
+7. legalitas (Belum Ada, SKT/SKTA, SPPT, SHM)
+8. status_kawasan (APL, HL, HP, HPK, HPT, KSA, PIAPS, lainnya)
+9. polygon (text)
+10. status_terhapus (varchar)
+
+
+tabel_user
+
+1. user_id (PK)
+2. role_id (FK)
+3. fullname (varchar)
+4. phone_number (varchar)
+5. email (varchar)
+6. division (varchar)
+7. username (varchar)
+8. password (varchar)
+
+
+tabel_role
+
+1. role_id (PK)
+2. role_name (varchar)
+
+
+tabel_menus
+
+1. menu_id (PK)
+2. menu_name (varchar)
+
+
+tabel_role_menu_access
+
+1. role_menu_id (PK)
+2. role_id (FK)
+3. menu_id (FK)
+4. can_view (boolean)
+5. can_create (boolean)
+6. can_edit (boolean)
+7. can_delete (boolean)
+
+
+Tanyakan dropdown yang bisa ditambah yang mana saja?
+
+
+
+
+
+Tanyakan
+1. Di t_kelompok_tani ada id_akses_perjalanan dan id_kondisi_jalan untuk apa?
+
+2. Di t_tanah sudah ada id_petani, luas_ha, centroid_lat, centroid_lng, geom_area, keterangan kenapa di t_kaleka ditambahkan lagi?
+   Untuk supaya join tidak susah tetapi hapus saja pada t_kaleka
+
+3. Di t_tanah ada field id_petani yang relasi dari t_petani seharusnya menjadi field id_petani_kelompok dari t_petani_kelompok.
+   Relasi nya emang dari t_petani tapi diambil dari t_petani_kelompok
+
+4. Di t_land_cover_observasi pada gambarnya tidak ada relasi ke tabel m_penggunaan_lainnya dan m_penggunaan_pertanian
+
+5. Di t_land_cover_observasi pada gambarnya ada relasi ke t_hutan_adat tetapi di tabel tidak ada
+
+6. Di m_menus ada id_parent apakah fungsinya untuk submenu didalam menu?
+
+7. Di tabel t_users ada field id_desa dan id_kelompok_tani, karena ini adalah user yang login ke sistem seharusnya tidak memerlukan relasi ke desa dan kelompok tani?
+   Dihapus saja

@@ -1,0 +1,682 @@
+[
+    {
+        "kode_kabupaten": "01",
+        "kode_kecamatan": "620101",
+        "nama_kecamatan": "Kumai"
+    },
+    {
+        "kode_kabupaten": "01",
+        "kode_kecamatan": "620102",
+        "nama_kecamatan": "Arut Selatan"
+    },
+    {
+        "kode_kabupaten": "01",
+        "kode_kecamatan": "620103",
+        "nama_kecamatan": "Kotawaringin Lama"
+    },
+    {
+        "kode_kabupaten": "01",
+        "kode_kecamatan": "620104",
+        "nama_kecamatan": "Arut Utara"
+    },
+    {
+        "kode_kabupaten": "01",
+        "kode_kecamatan": "620105",
+        "nama_kecamatan": "Pangkalan Lada"
+    },
+    {
+        "kode_kabupaten": "01",
+        "kode_kecamatan": "620106",
+        "nama_kecamatan": "Pangkalan Banteng"
+    },
+    {
+        "kode_kabupaten": "02",
+        "kode_kecamatan": "620201",
+        "nama_kecamatan": "Kota Besi"
+    },
+    {
+        "kode_kabupaten": "02",
+        "kode_kecamatan": "620202",
+        "nama_kecamatan": "Cempaga"
+    },
+    {
+        "kode_kabupaten": "02",
+        "kode_kecamatan": "620203",
+        "nama_kecamatan": "Mentaya Hulu"
+    },
+    {
+        "kode_kabupaten": "02",
+        "kode_kecamatan": "620204",
+        "nama_kecamatan": "Parenggean"
+    },
+    {
+        "kode_kabupaten": "02",
+        "kode_kecamatan": "620205",
+        "nama_kecamatan": "Baamang"
+    },
+    {
+        "kode_kabupaten": "02",
+        "kode_kecamatan": "620206",
+        "nama_kecamatan": "Mentawa Baru Ketapang"
+    },
+    {
+        "kode_kabupaten": "02",
+        "kode_kecamatan": "620207",
+        "nama_kecamatan": "Mentaya Hilir Utara"
+    },
+    {
+        "kode_kabupaten": "02",
+        "kode_kecamatan": "620208",
+        "nama_kecamatan": "Mentaya Hilir Selatan"
+    },
+    {
+        "kode_kabupaten": "02",
+        "kode_kecamatan": "620209",
+        "nama_kecamatan": "Pulau Hanaut"
+    },
+    {
+        "kode_kabupaten": "02",
+        "kode_kecamatan": "620210",
+        "nama_kecamatan": "Antang Kalang"
+    },
+    {
+        "kode_kabupaten": "02",
+        "kode_kecamatan": "620211",
+        "nama_kecamatan": "Teluk Sampit"
+    },
+    {
+        "kode_kabupaten": "02",
+        "kode_kecamatan": "620212",
+        "nama_kecamatan": "Seranau"
+    },
+    {
+        "kode_kabupaten": "02",
+        "kode_kecamatan": "620213",
+        "nama_kecamatan": "Cempaga Hulu"
+    },
+    {
+        "kode_kabupaten": "02",
+        "kode_kecamatan": "620214",
+        "nama_kecamatan": "Telawang"
+    },
+    {
+        "kode_kabupaten": "02",
+        "kode_kecamatan": "620215",
+        "nama_kecamatan": "Bukit Santuai"
+    },
+    {
+        "kode_kabupaten": "02",
+        "kode_kecamatan": "620216",
+        "nama_kecamatan": "Tualan Hulu"
+    },
+    {
+        "kode_kabupaten": "02",
+        "kode_kecamatan": "620217",
+        "nama_kecamatan": "Telaga Antang"
+    },
+    {
+        "kode_kabupaten": "03",
+        "kode_kecamatan": "620301",
+        "nama_kecamatan": "Selat"
+    },
+    {
+        "kode_kabupaten": "03",
+        "kode_kecamatan": "620302",
+        "nama_kecamatan": "Kapuas Hilir"
+    },
+    {
+        "kode_kabupaten": "03",
+        "kode_kecamatan": "620303",
+        "nama_kecamatan": "Kapuas Timur"
+    },
+    {
+        "kode_kabupaten": "03",
+        "kode_kecamatan": "620304",
+        "nama_kecamatan": "Kapuas Kuala"
+    },
+    {
+        "kode_kabupaten": "03",
+        "kode_kecamatan": "620305",
+        "nama_kecamatan": "Kapuas Barat"
+    },
+    {
+        "kode_kabupaten": "03",
+        "kode_kecamatan": "620306",
+        "nama_kecamatan": "Pulau Petak"
+    },
+    {
+        "kode_kabupaten": "03",
+        "kode_kecamatan": "620307",
+        "nama_kecamatan": "Kapuas Murung"
+    },
+    {
+        "kode_kabupaten": "03",
+        "kode_kecamatan": "620308",
+        "nama_kecamatan": "Basarang"
+    },
+    {
+        "kode_kabupaten": "03",
+        "kode_kecamatan": "620309",
+        "nama_kecamatan": "Mantangai"
+    },
+    {
+        "kode_kabupaten": "03",
+        "kode_kecamatan": "620310",
+        "nama_kecamatan": "Timpah"
+    },
+    {
+        "kode_kabupaten": "03",
+        "kode_kecamatan": "620311",
+        "nama_kecamatan": "Kapuas Tengah"
+    },
+    {
+        "kode_kabupaten": "03",
+        "kode_kecamatan": "620312",
+        "nama_kecamatan": "Kapuas Hulu"
+    },
+    {
+        "kode_kabupaten": "03",
+        "kode_kecamatan": "620313",
+        "nama_kecamatan": "Tamban Catur"
+    },
+    {
+        "kode_kabupaten": "03",
+        "kode_kecamatan": "620314",
+        "nama_kecamatan": "Pasak Talawang"
+    },
+    {
+        "kode_kabupaten": "03",
+        "kode_kecamatan": "620315",
+        "nama_kecamatan": "Mandau Talawang"
+    },
+    {
+        "kode_kabupaten": "03",
+        "kode_kecamatan": "620316",
+        "nama_kecamatan": "Dadahup"
+    },
+    {
+        "kode_kabupaten": "03",
+        "kode_kecamatan": "620317",
+        "nama_kecamatan": "Bataguh"
+    },
+    {
+        "kode_kabupaten": "04",
+        "kode_kecamatan": "620401",
+        "nama_kecamatan": "Jenamas"
+    },
+    {
+        "kode_kabupaten": "04",
+        "kode_kecamatan": "620402",
+        "nama_kecamatan": "Dusun Hilir"
+    },
+    {
+        "kode_kabupaten": "04",
+        "kode_kecamatan": "620403",
+        "nama_kecamatan": "Karau Kuala"
+    },
+    {
+        "kode_kabupaten": "04",
+        "kode_kecamatan": "620404",
+        "nama_kecamatan": "Dusun Utara"
+    },
+    {
+        "kode_kabupaten": "04",
+        "kode_kecamatan": "620405",
+        "nama_kecamatan": "Gn. Bintang Awai"
+    },
+    {
+        "kode_kabupaten": "04",
+        "kode_kecamatan": "620406",
+        "nama_kecamatan": "Dusun Selatan"
+    },
+    {
+        "kode_kabupaten": "05",
+        "kode_kecamatan": "620501",
+        "nama_kecamatan": "Montallat"
+    },
+    {
+        "kode_kabupaten": "05",
+        "kode_kecamatan": "620502",
+        "nama_kecamatan": "Gunung Timang"
+    },
+    {
+        "kode_kabupaten": "05",
+        "kode_kecamatan": "620503",
+        "nama_kecamatan": "Gunung Purei"
+    },
+    {
+        "kode_kabupaten": "05",
+        "kode_kecamatan": "620504",
+        "nama_kecamatan": "Teweh Timur"
+    },
+    {
+        "kode_kabupaten": "05",
+        "kode_kecamatan": "620505",
+        "nama_kecamatan": "Teweh Tengah"
+    },
+    {
+        "kode_kabupaten": "05",
+        "kode_kecamatan": "620506",
+        "nama_kecamatan": "Lahei"
+    },
+    {
+        "kode_kabupaten": "05",
+        "kode_kecamatan": "620507",
+        "nama_kecamatan": "Teweh Baru"
+    },
+    {
+        "kode_kabupaten": "05",
+        "kode_kecamatan": "620508",
+        "nama_kecamatan": "Teweh Selatan"
+    },
+    {
+        "kode_kabupaten": "05",
+        "kode_kecamatan": "620509",
+        "nama_kecamatan": "Lahei Barat"
+    },
+    {
+        "kode_kabupaten": "06",
+        "kode_kecamatan": "620601",
+        "nama_kecamatan": "Kamipang"
+    },
+    {
+        "kode_kabupaten": "06",
+        "kode_kecamatan": "620602",
+        "nama_kecamatan": "Katingan Hilir"
+    },
+    {
+        "kode_kabupaten": "06",
+        "kode_kecamatan": "620603",
+        "nama_kecamatan": "Tewang Sangalang Garing"
+    },
+    {
+        "kode_kabupaten": "06",
+        "kode_kecamatan": "620604",
+        "nama_kecamatan": "Pulau Malan"
+    },
+    {
+        "kode_kabupaten": "06",
+        "kode_kecamatan": "620605",
+        "nama_kecamatan": "Katingan Tengah"
+    },
+    {
+        "kode_kabupaten": "06",
+        "kode_kecamatan": "620606",
+        "nama_kecamatan": "Sanaman Mantikei"
+    },
+    {
+        "kode_kabupaten": "06",
+        "kode_kecamatan": "620607",
+        "nama_kecamatan": "Marikit"
+    },
+    {
+        "kode_kabupaten": "06",
+        "kode_kecamatan": "620608",
+        "nama_kecamatan": "Katingan Hulu"
+    },
+    {
+        "kode_kabupaten": "06",
+        "kode_kecamatan": "620609",
+        "nama_kecamatan": "Mendawai"
+    },
+    {
+        "kode_kabupaten": "06",
+        "kode_kecamatan": "620610",
+        "nama_kecamatan": "Katingan Kuala"
+    },
+    {
+        "kode_kabupaten": "06",
+        "kode_kecamatan": "620611",
+        "nama_kecamatan": "Tasik Payawan"
+    },
+    {
+        "kode_kabupaten": "06",
+        "kode_kecamatan": "620612",
+        "nama_kecamatan": "Petak Malai"
+    },
+    {
+        "kode_kabupaten": "06",
+        "kode_kecamatan": "620613",
+        "nama_kecamatan": "Bukit Raya"
+    },
+    {
+        "kode_kabupaten": "07",
+        "kode_kecamatan": "620701",
+        "nama_kecamatan": "Seruyan Hilir"
+    },
+    {
+        "kode_kabupaten": "07",
+        "kode_kecamatan": "620702",
+        "nama_kecamatan": "Seruyan Tengah"
+    },
+    {
+        "kode_kabupaten": "07",
+        "kode_kecamatan": "620703",
+        "nama_kecamatan": "Danau Sembuluh"
+    },
+    {
+        "kode_kabupaten": "07",
+        "kode_kecamatan": "620704",
+        "nama_kecamatan": "Hanau"
+    },
+    {
+        "kode_kabupaten": "07",
+        "kode_kecamatan": "620705",
+        "nama_kecamatan": "Seruyan Hulu"
+    },
+    {
+        "kode_kabupaten": "07",
+        "kode_kecamatan": "620706",
+        "nama_kecamatan": "Seruyan Hilir Timur"
+    },
+    {
+        "kode_kabupaten": "07",
+        "kode_kecamatan": "620707",
+        "nama_kecamatan": "Seruyan Raya"
+    },
+    {
+        "kode_kabupaten": "07",
+        "kode_kecamatan": "620708",
+        "nama_kecamatan": "Danau Seluluk"
+    },
+    {
+        "kode_kabupaten": "07",
+        "kode_kecamatan": "620709",
+        "nama_kecamatan": "Batu Ampar"
+    },
+    {
+        "kode_kabupaten": "07",
+        "kode_kecamatan": "620710",
+        "nama_kecamatan": "Suling Tambun"
+    },
+    {
+        "kode_kabupaten": "08",
+        "kode_kecamatan": "620801",
+        "nama_kecamatan": "Sukamara"
+    },
+    {
+        "kode_kabupaten": "08",
+        "kode_kecamatan": "620802",
+        "nama_kecamatan": "Jelai"
+    },
+    {
+        "kode_kabupaten": "08",
+        "kode_kecamatan": "620803",
+        "nama_kecamatan": "Balai Riam"
+    },
+    {
+        "kode_kabupaten": "08",
+        "kode_kecamatan": "620804",
+        "nama_kecamatan": "Pantai Lunci"
+    },
+    {
+        "kode_kabupaten": "08",
+        "kode_kecamatan": "620805",
+        "nama_kecamatan": "Permata Kecubung"
+    },
+    {
+        "kode_kabupaten": "09",
+        "kode_kecamatan": "620901",
+        "nama_kecamatan": "Lamandau"
+    },
+    {
+        "kode_kabupaten": "09",
+        "kode_kecamatan": "620902",
+        "nama_kecamatan": "Delang"
+    },
+    {
+        "kode_kabupaten": "09",
+        "kode_kecamatan": "620903",
+        "nama_kecamatan": "Bulik"
+    },
+    {
+        "kode_kabupaten": "09",
+        "kode_kecamatan": "620904",
+        "nama_kecamatan": "Bulik Timur"
+    },
+    {
+        "kode_kabupaten": "09",
+        "kode_kecamatan": "620905",
+        "nama_kecamatan": "Menthobi Raya"
+    },
+    {
+        "kode_kabupaten": "09",
+        "kode_kecamatan": "620906",
+        "nama_kecamatan": "Sematu Jaya"
+    },
+    {
+        "kode_kabupaten": "09",
+        "kode_kecamatan": "620907",
+        "nama_kecamatan": "Belantikan Raya"
+    },
+    {
+        "kode_kabupaten": "09",
+        "kode_kecamatan": "620908",
+        "nama_kecamatan": "Batang Kawa"
+    },
+    {
+        "kode_kabupaten": "10",
+        "kode_kecamatan": "621001",
+        "nama_kecamatan": "Sepang Simin"
+    },
+    {
+        "kode_kabupaten": "10",
+        "kode_kecamatan": "621002",
+        "nama_kecamatan": "Kurun"
+    },
+    {
+        "kode_kabupaten": "10",
+        "kode_kecamatan": "621003",
+        "nama_kecamatan": "Tewah"
+    },
+    {
+        "kode_kabupaten": "10",
+        "kode_kecamatan": "621004",
+        "nama_kecamatan": "Kahayan Hulu Utara"
+    },
+    {
+        "kode_kabupaten": "10",
+        "kode_kecamatan": "621005",
+        "nama_kecamatan": "Rungan"
+    },
+    {
+        "kode_kabupaten": "10",
+        "kode_kecamatan": "621006",
+        "nama_kecamatan": "Manuhing"
+    },
+    {
+        "kode_kabupaten": "10",
+        "kode_kecamatan": "621007",
+        "nama_kecamatan": "Mihing Raya"
+    },
+    {
+        "kode_kabupaten": "10",
+        "kode_kecamatan": "621008",
+        "nama_kecamatan": "Damang Batu"
+    },
+    {
+        "kode_kabupaten": "10",
+        "kode_kecamatan": "621009",
+        "nama_kecamatan": "Miri Manasa"
+    },
+    {
+        "kode_kabupaten": "10",
+        "kode_kecamatan": "621010",
+        "nama_kecamatan": "Rungan Hulu"
+    },
+    {
+        "kode_kabupaten": "10",
+        "kode_kecamatan": "621011",
+        "nama_kecamatan": "Mahuning Raya"
+    },
+    {
+        "kode_kabupaten": "10",
+        "kode_kecamatan": "621012",
+        "nama_kecamatan": "Rungan Barat"
+    },
+    {
+        "kode_kabupaten": "11",
+        "kode_kecamatan": "621101",
+        "nama_kecamatan": "Pandih Batu"
+    },
+    {
+        "kode_kabupaten": "11",
+        "kode_kecamatan": "621102",
+        "nama_kecamatan": "Kahayan Kuala"
+    },
+    {
+        "kode_kabupaten": "11",
+        "kode_kecamatan": "621103",
+        "nama_kecamatan": "Kahayan Tengah"
+    },
+    {
+        "kode_kabupaten": "11",
+        "kode_kecamatan": "621104",
+        "nama_kecamatan": "Banama Tingang"
+    },
+    {
+        "kode_kabupaten": "11",
+        "kode_kecamatan": "621105",
+        "nama_kecamatan": "Kahayan Hilir"
+    },
+    {
+        "kode_kabupaten": "11",
+        "kode_kecamatan": "621106",
+        "nama_kecamatan": "Maliku"
+    },
+    {
+        "kode_kabupaten": "11",
+        "kode_kecamatan": "621107",
+        "nama_kecamatan": "Jabiren"
+    },
+    {
+        "kode_kabupaten": "11",
+        "kode_kecamatan": "621108",
+        "nama_kecamatan": "Sebangau Kuala"
+    },
+    {
+        "kode_kabupaten": "12",
+        "kode_kecamatan": "621201",
+        "nama_kecamatan": "Murung"
+    },
+    {
+        "kode_kabupaten": "12",
+        "kode_kecamatan": "621202",
+        "nama_kecamatan": "Tanah Siang"
+    },
+    {
+        "kode_kabupaten": "12",
+        "kode_kecamatan": "621203",
+        "nama_kecamatan": "Laung Tuhup"
+    },
+    {
+        "kode_kabupaten": "12",
+        "kode_kecamatan": "621204",
+        "nama_kecamatan": "Permata Intan"
+    },
+    {
+        "kode_kabupaten": "12",
+        "kode_kecamatan": "621205",
+        "nama_kecamatan": "Sumber Barito"
+    },
+    {
+        "kode_kabupaten": "12",
+        "kode_kecamatan": "621206",
+        "nama_kecamatan": "Barito Tuhup Raya"
+    },
+    {
+        "kode_kabupaten": "12",
+        "kode_kecamatan": "621207",
+        "nama_kecamatan": "Tanah Siang Selatan"
+    },
+    {
+        "kode_kabupaten": "12",
+        "kode_kecamatan": "621208",
+        "nama_kecamatan": "Sungai Babuat"
+    },
+    {
+        "kode_kabupaten": "12",
+        "kode_kecamatan": "621209",
+        "nama_kecamatan": "Seribu Riam"
+    },
+    {
+        "kode_kabupaten": "12",
+        "kode_kecamatan": "621210",
+        "nama_kecamatan": "Uut Murung"
+    },
+    {
+        "kode_kabupaten": "13",
+        "kode_kecamatan": "621301",
+        "nama_kecamatan": "Dusun Timur"
+    },
+    {
+        "kode_kabupaten": "13",
+        "kode_kecamatan": "621302",
+        "nama_kecamatan": "Banua Lima"
+    },
+    {
+        "kode_kabupaten": "13",
+        "kode_kecamatan": "621303",
+        "nama_kecamatan": "Patangkep Tutui"
+    },
+    {
+        "kode_kabupaten": "13",
+        "kode_kecamatan": "621304",
+        "nama_kecamatan": "Awang"
+    },
+    {
+        "kode_kabupaten": "13",
+        "kode_kecamatan": "621305",
+        "nama_kecamatan": "Dusun Tengah"
+    },
+    {
+        "kode_kabupaten": "13",
+        "kode_kecamatan": "621306",
+        "nama_kecamatan": "Pematang Karau"
+    },
+    {
+        "kode_kabupaten": "13",
+        "kode_kecamatan": "621307",
+        "nama_kecamatan": "Paju Epat"
+    },
+    {
+        "kode_kabupaten": "13",
+        "kode_kecamatan": "621308",
+        "nama_kecamatan": "Raren Batuah"
+    },
+    {
+        "kode_kabupaten": "13",
+        "kode_kecamatan": "621309",
+        "nama_kecamatan": "Paku"
+    },
+    {
+        "kode_kabupaten": "13",
+        "kode_kecamatan": "621310",
+        "nama_kecamatan": "Karusen Janang"
+    },
+    {
+        "kode_kabupaten": "71",
+        "kode_kecamatan": "627101",
+        "nama_kecamatan": "Pahandut"
+    },
+    {
+        "kode_kabupaten": "71",
+        "kode_kecamatan": "627102",
+        "nama_kecamatan": "Bukit Batu"
+    },
+    {
+        "kode_kabupaten": "71",
+        "kode_kecamatan": "627103",
+        "nama_kecamatan": "Jekan Raya"
+    },
+    {
+        "kode_kabupaten": "71",
+        "kode_kecamatan": "627104",
+        "nama_kecamatan": "Sabangau"
+    },
+    {
+        "kode_kabupaten": "71",
+        "kode_kecamatan": "627105",
+        "nama_kecamatan": "Rakumpit"
+    }
+]
