@@ -11,10 +11,10 @@ class Kabupaten
 
     public function getAll()
     {
-        $sql = "SELECT *
-            FROM m_kabupaten
-            WHERE deleted_at IS NULL
-            ORDER BY id ASC";
+        // $sql = "SELECT *
+        //     FROM m_kabupaten
+        //     WHERE deleted_at IS NULL
+        //     ORDER BY id ASC";
         
         $sql = "SELECT k.*, p.nama_provinsi as nama_provinsi
             FROM m_kabupaten k
@@ -93,7 +93,7 @@ class Kabupaten
 
     public function getProvinsi()
     {
-        $sql = "SELECT id,nama_provinsi  FROM m_provinsi
+        $sql = "SELECT id,nama_provinsi,kode_provinsi FROM m_provinsi
                 WHERE deleted_at IS NULL
                 ORDER BY nama_provinsi ";
 

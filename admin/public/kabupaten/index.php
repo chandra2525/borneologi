@@ -165,7 +165,7 @@ $provinsi = $controller->getProvinsi();
                                     <select name="id_provinsi" class="form-control">
                                         <option value="">-- Pilih Provinsi --</option>
                                         <?php foreach ($provinsi as $p): ?>
-                                            <option value="<?= $p['id'] ?>">
+                                            <option value="<?= $p['id'] ?>" data-kode="<?= $p['kode_provinsi'] ?>">
                                                 <?= htmlspecialchars($p['nama_provinsi']) ?>
                                             </option>
                                         <?php endforeach; ?>
@@ -235,7 +235,7 @@ $provinsi = $controller->getProvinsi();
                                     <select name="id_provinsi" class="form-control" id="edit_id_provinsi">
                                         <option value="">-- Pilih Provinsi --</option>
                                         <?php foreach ($provinsi as $p): ?>
-                                            <option value="<?= $p['id'] ?>">
+                                            <option value="<?= $p['id'] ?>" data-kode="<?= $p['kode_provinsi'] ?>">
                                                 <?= htmlspecialchars($p['nama_provinsi']) ?>
                                             </option>
                                         <?php endforeach; ?>
@@ -395,10 +395,21 @@ $provinsi = $controller->getProvinsi();
             let tipe = $(this).data("tipe");
             let status = $(this).data("status");
 
+            // let kode_provinsi = $(this).closest("tr").find("button").data("kode_provinsi");
+
             $("#edit_id").val(id);
             $("#edit_id_provinsi").val(id_provinsi);
-            $("#edit_kode").val(kode_kabupaten);
-            $("#edit_nama").val(nama_kabupaten).trigger("change");
+
+            // 🔥 Ambil kode provinsi dari option
+            let selectedOption = $("#edit_id_provinsi option[value='" + id_provinsi + "']");
+            let kodeProv = selectedOption.data("kode");
+
+            if (!kodeProv) return;
+
+            loadKabupaten(kodeProv, "#edit_nama", function () {
+                $("#edit_nama").val(nama_kabupaten);
+                $("#edit_kode").val(kode_kabupaten);
+            });
             $("#edit_tipe").val(tipe);
             $("input[name='is_active'][value='" + status + "']").prop("checked", true);
         });
@@ -456,41 +467,57 @@ $provinsi = $controller->getProvinsi();
     </script>
 
     <script>
-        const kabupatenData = [
-            { "kode_kabupaten": "6201", "nama_kabupaten": "Kabupaten Kotawaringin Barat", "tipe": "kabupaten" },
-            { "kode_kabupaten": "6202", "nama_kabupaten": "Kabupaten Kotawaringin Timur", "tipe": "kabupaten" },
-            { "kode_kabupaten": "6203", "nama_kabupaten": "Kabupaten Kapuas", "tipe": "kabupaten" },
-            { "kode_kabupaten": "6204", "nama_kabupaten": "Kabupaten Barito Selatan", "tipe": "kabupaten" },
-            { "kode_kabupaten": "6205", "nama_kabupaten": "Kabupaten Barito Utara", "tipe": "kabupaten" },
-            { "kode_kabupaten": "6206", "nama_kabupaten": "Kabupaten Sukamara", "tipe": "kabupaten" },
-            { "kode_kabupaten": "6207", "nama_kabupaten": "Kabupaten Lamandau", "tipe": "kabupaten" },
-            { "kode_kabupaten": "6208", "nama_kabupaten": "Kabupaten Seruyan", "tipe": "kabupaten" },
-            { "kode_kabupaten": "6209", "nama_kabupaten": "Kabupaten Katingan", "tipe": "kabupaten" },
-            { "kode_kabupaten": "6210", "nama_kabupaten": "Kabupaten Pulang Pisau", "tipe": "kabupaten" },
-            { "kode_kabupaten": "6211", "nama_kabupaten": "Kabupaten Gunung Mas", "tipe": "kabupaten" },
-            { "kode_kabupaten": "6212", "nama_kabupaten": "Kabupaten Barito Timur", "tipe": "kabupaten" },
-            { "kode_kabupaten": "6213", "nama_kabupaten": "Kabupaten Murung Raya", "tipe": "kabupaten" },
-            { "kode_kabupaten": "6271", "nama_kabupaten": "Kota Palangka Raya", "tipe": "kota" }
-        ];
+        let kabupatenData = [];
 
-        $(function () {
-            kabupatenData.forEach(p => {
-                $("#nama_kabupaten").append(
-                    `<option value="${p.nama_kabupaten}" 
-                        data-kode="${p.kode_kabupaten}" 
-                        data-tipe="${p.tipe}">
-                        ${p.nama_kabupaten}
-                    </option>`
-                );
+        function loadKabupaten(kode_provinsi, targetSelect, callback = null) {
+            let url = `https://ibnux.github.io/data-indonesia/kabupaten/${kode_provinsi}.json`;
 
-                $("#edit_nama").append(
-                    `<option value="${p.nama_kabupaten}" 
-                        data-kode="${p.kode_kabupaten}" 
-                        data-tipe="${p.tipe}">
-                        ${p.nama_kabupaten}
-                    </option>`
-                );
+            $.getJSON(url, function (data) {
+                $(targetSelect).html('<option>Loading...</option>');
+
+                // kosongkan select
+                $(targetSelect).empty().append('<option value="">-- Pilih Kabupaten --</option>');
+
+                // isi select
+                data.forEach(item => {
+                    let tipe = getTipe(item.nama);
+
+                    $(targetSelect).append(`
+                        <option value="${item.nama}" 
+                                data-kode="${item.id}"
+                                data-tipe="${tipe}">
+                            ${item.nama}
+                        </option>
+                    `);
+                });
+
+                // simpan ke global
+                kabupatenData = data.map(item => ({
+                    kode_kabupaten: item.id,
+                    nama_kabupaten: item.nama,
+                    tipe: getTipe(item.nama)
+                }));
+
+                if (callback) callback();
+            }).fail(function () {
+                alert("Gagal mengambil data kabupaten dari API");
             });
+        }
+
+        $("select[name='id_provinsi']").on("change", function () {
+            // let kode_provinsi = $(this).val().padStart(2, '0'); // 1 → 
+            // loadkabupaten(kode_provinsi, "#nama_kabupaten");
+            let kode_provinsi = $(this).find(':selected').data('kode');
+            if (!kode_provinsi) return;
+            loadKabupaten(kode_provinsi, "#nama_kabupaten");
+        });
+
+        $("#edit_id_provinsi").on("change", function () {
+            // let kode_provinsi = $(this).val().padStart(2, '0');
+            // loadkabupaten(kode_provinsi, "#edit_nama");
+            let kode_provinsi = $(this).find(':selected').data('kode');
+            if (!kode_provinsi) return;
+            loadKabupaten(kode_provinsi, "#edit_nama");
         });
 
         $(function () {
@@ -535,6 +562,15 @@ $provinsi = $controller->getProvinsi();
             });
 
         });
+
+        function getTipe(nama) {
+            if (nama.toLowerCase().includes("kabupaten")) {
+                return "kabupaten";
+            } else if (nama.toLowerCase().includes("kota")) {
+                return "kota";
+            }
+            return "";
+        }
     </script>
 </body>
 

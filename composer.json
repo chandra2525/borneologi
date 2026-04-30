@@ -1,0 +1,11 @@
+{
+    "name": "borneoinsitutegis/borneologi",
+    "autoload": {
+        "psr-4": {
+            "Borneoinsitutegis\\Borneologi\\": "src/"
+        }
+    },
+    "require": {
+        "gasparesganga/php-shapefile": "^3.4"
+    }
+}

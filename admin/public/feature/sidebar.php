@@ -324,7 +324,7 @@
                     class="nav-item <?= ($menu == 'petani' || $menu == 'kelompok_tani' || $menu == 'petani_kelompok') ? 'menu-open' : '' ?>">
                     <a href="#"
                         class="nav-link <?= ($menu == 'petani' || $menu == 'kelompok_tani' || $menu == 'petani_kelompok') ? 'active' : '' ?>">
-                        <i class="nav-icon fas fa-table"></i>
+                        <i class="nav-icon fas fa-users"></i>
                         <p>
                             Data Petani
                             <i class="fas fa-angle-left right"></i>
@@ -355,10 +355,11 @@
                     </ul>
                 </li>
                 <li
-                    class="nav-item <?= ($menu == 'kaleka' || $menu == 'hutan_adat' || $menu == 'tanah') ? 'menu-open' : '' ?>">
+                    class="nav-item <?= ($menu == 'kaleka' || $menu == 'hutan_adat' || $menu == 'tanah' || $menu == 'polygon') ? 'menu-open' : '' ?>">
                     <a href="#"
-                        class="nav-link <?= ($menu == 'kaleka' || $menu == 'hutan_adat' || $menu == 'tanah') ? 'active' : '' ?>">
-                        <i class="nav-icon fas fa-table"></i>
+                        class="nav-link <?= ($menu == 'kaleka' || $menu == 'hutan_adat' || $menu == 'tanah' || $menu == 'polygon') ? 'active' : '' ?>">
+                        <i class="nav-icon fas fa-map-marked-alt"></i>
+                        <!-- <i class="nav-icon fas fa-draw-polygon"></i> -->
                         <p>
                             Data Tanah
                             <i class="fas fa-angle-left right"></i>
@@ -384,6 +385,13 @@
                                 class="nav-link <?= ($menu == 'tanah') ? 'active' : '' ?>">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Tanah</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= ($menu == 'dashboard') ? 'polygon/' : '../polygon/' ?>index.php"
+                                class="nav-link <?= ($menu == 'polygon') ? 'active' : '' ?>">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Polygon</p>
                             </a>
                         </li>
                     </ul>
