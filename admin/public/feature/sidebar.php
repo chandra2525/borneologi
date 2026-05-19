@@ -396,6 +396,88 @@
                         </li>
                     </ul>
                 </li>
+                <li
+                    class="nav-item <?= ($menu == 'bank_benih' || $menu == 'monitoring_penanaman' || $menu == 'detail_monitoring_penanaman') ? 'menu-open' : '' ?>">
+                    <a href="#"
+                        class="nav-link <?= ($menu == 'bank_benih' || $menu == 'monitoring_penanaman' || $menu == 'detail_monitoring_penanaman') ? 'active' : '' ?>">
+                        <i class="nav-icon fas fa-seedling"></i>
+                        <p>
+                            Data Benih
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?= ($menu == 'dashboard') ? 'bank_benih/' : '../bank_benih/' ?>index.php"
+                                class="nav-link <?= ($menu == 'bank_benih') ? 'active' : '' ?>">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Bank Benih</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= ($menu == 'dashboard') ? 'monitoring_penanaman/' : '../monitoring_penanaman/' ?>index.php"
+                                class="nav-link <?= ($menu == 'monitoring_penanaman') ? 'active' : '' ?>">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Monitoring Penanaman</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= ($menu == 'dashboard') ? 'detail_monitoring_penanaman/' : '../detail_monitoring_penanaman/' ?>index.php"
+                                class="nav-link <?= ($menu == 'detail_monitoring_penanaman') ? 'active' : '' ?>">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Detail Monitoring</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li
+                    class="nav-item <?= ($menu == 'infrastruktur_observasi' || $menu == 'land_cover_observasi' || $menu == 'perairan_observasi' || $menu == 'pohon_observasi' || $menu == 'topografi_observasi') ? 'menu-open' : '' ?>">
+                    <a href="#"
+                        class="nav-link <?= ($menu == 'infrastruktur_observasi' || $menu == 'land_cover_observasi' || $menu == 'perairan_observasi' || $menu == 'pohon_observasi' || $menu == 'topografi_observasi') ? 'active' : '' ?>">
+                        <i class="nav-icon fas fa-tree"></i>
+                        <p>
+                            Data Observasi
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?= ($menu == 'dashboard') ? 'infrastruktur_observasi/' : '../infrastruktur_observasi/' ?>index.php"
+                                class="nav-link <?= ($menu == 'infrastruktur_observasi') ? 'active' : '' ?>">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Infrastruktur Observasi</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= ($menu == 'dashboard') ? 'land_cover_observasi/' : '../land_cover_observasi/' ?>index.php"
+                                class="nav-link <?= ($menu == 'land_cover_observasi') ? 'active' : '' ?>">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Land Cover Observasi</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= ($menu == 'dashboard') ? 'perairan_observasi/' : '../perairan_observasi/' ?>index.php"
+                                class="nav-link <?= ($menu == 'perairan_observasi') ? 'active' : '' ?>">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Perairan Observasi</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= ($menu == 'dashboard') ? 'pohon_observasi/' : '../pohon_observasi/' ?>index.php"
+                                class="nav-link <?= ($menu == 'pohon_observasi') ? 'active' : '' ?>">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Pohon Observasi</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= ($menu == 'dashboard') ? 'topografi_observasi/' : '../topografi_observasi/' ?>index.php"
+                                class="nav-link <?= ($menu == 'topografi_observasi') ? 'active' : '' ?>">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Topografi Observasi</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

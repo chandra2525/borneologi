@@ -60,23 +60,23 @@ include 'partials/header.php';
                                 <div class="stat-box">
                                     <span>Total</span>
                                     <span>Petani</span>
-                                    <h5 id="totalPetani">20</h5>
+                                    <h5 id="totalPetani"></h5>
                                 </div>
                                 <div class="stat-box">
                                     <span>Petani</span>
                                     <span>Laki-laki</span>
-                                    <h5 id="totalLaki">12</h5>
+                                    <h5 id="totalLaki"></h5>
                                 </div>
                                 <div class="stat-box">
                                     <span>Petani</span>
                                     <span>Perempuan</span>
-                                    <h5 id="totalPerempuan">8</h5>
+                                    <h5 id="totalPerempuan"></h5>
                                 </div>
                             </div>
 
                             <div id="mapLoading" style="
                                 position:absolute;
-                                top:10px;
+                                top:50%;
                                 left:50%;
                                 transform:translateX(-50%);
                                 background:white;
@@ -88,6 +88,24 @@ include 'partials/header.php';
                                 display:none;
                                 ">
                                 ⏳ Memuat data...
+                            </div>
+
+                            <div id="loadingDetail" style="
+                                position:absolute;
+                                top:50%;
+                                left:50%;
+                                transform:translateX(-50%);
+                                background:white;
+                                padding:8px 14px;
+                                border-radius:8px;
+                                box-shadow:0 2px 6px rgba(0,0,0,0.2);
+                                font-size:13px;
+                                z-index:9999;
+                                display:none;
+                                text-align:center;
+                                ">
+                                <div class="spinner-border text-primary" role="status"></div>
+                                <p class="mt-2">Memuat data...</p>
                             </div>
                             <div id="map" class="about-image img-fluid" alt=""></div>
                         </div>
@@ -493,9 +511,632 @@ include 'partials/header.php';
                             </div>
                         </div>
 
-                        <div id="loadingDetail" style="display:none; text-align:center; padding:20px;">
-                            <div class="spinner-border text-primary" role="status"></div>
-                            <p class="mt-2">Memuat data...</p>
+                        <!-- Modal Informasi Hutan Adat -->
+                        <div class="modal fade" id="kalekaModal" tabindex="0">
+                            <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+                                        <h5 class="modal-title2"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <!-- Nav tabs -->
+                                        <ul class="nav nav-tabs custom-tabs" id="myTabKaleka" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab"
+                                                    data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1"
+                                                    aria-selected="true">Petani</button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="tab2-tab" data-bs-toggle="tab"
+                                                    data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2"
+                                                    aria-selected="false">Tanah</button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="tab3-tab" data-bs-toggle="tab"
+                                                    data-bs-target="#tab3" type="button" role="tab" aria-controls="tab3"
+                                                    aria-selected="false">Obervasi</button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="tab4-tab" data-bs-toggle="tab"
+                                                    data-bs-target="#tab4" type="button" role="tab" aria-controls="tab4"
+                                                    aria-selected="false">Hasil</button>
+                                            </li>
+                                        </ul>
+
+                                        <!-- Tab content -->
+                                        <div class="tab-content pt-3" id="myTabContent">
+                                            <div class="tab-pane fade show active" id="tab1" role="tabpanel"
+                                                aria-labelledby="tab1-tab">
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-6 col-12">
+                                                        <div class="projects-thumb">
+                                                            <div class="projects-info">
+                                                                <small class="projects-tag" id="namaPanggilan"></small>
+
+                                                                <h4 class="projects-title" id="namaLengkap"></h4>
+                                                            </div>
+
+                                                            <a href="" id="petaniFotoLink" class="popup-image">
+                                                                <img id="petaniFoto" class="projects-image img-fluid"
+                                                                    alt="">
+                                                            </a>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-md-6 col-12">
+                                                        <strong class="site-footer-title d-block mb-3">Data
+                                                            Pribadi</strong>
+                                                        <ul class="footer-menu">
+                                                            <li class="footer-menu-item"><a class="footer-menu-link"
+                                                                    id="jenisKelamin"></a>
+                                                            </li>
+                                                            <li class="footer-menu-item"><a class="footer-menu-link"
+                                                                    id="umur"></a>
+                                                            </li>
+                                                            <li class="footer-menu-item"><a class="footer-menu-link"
+                                                                    id="statusPetani"></a>
+                                                            </li>
+                                                        </ul>
+
+                                                        <strong class="site-footer-title d-block mt-4 mb-3">Alamat
+                                                        </strong>
+                                                        <p class="mb-0" id="alamatPetani"></p>
+                                                        <ul class="footer-menu mt-2 mb-3">
+                                                            <li class="footer-menu-item"><a class="footer-menu-link"
+                                                                    id="desaPetani"></a>
+                                                            </li>
+                                                            <li class="footer-menu-item"><a class="footer-menu-link"
+                                                                    id="kecamatanPetani"></a>
+                                                            </li>
+                                                            <li class="footer-menu-item"><a class="footer-menu-link"
+                                                                    id="kabupatenPetani"></a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+
+                                                    <div class="col-lg-5 col-md-6 col-12">
+                                                        <strong class="site-footer-title d-block mb-3">Kelompok Petani
+                                                        </strong>
+                                                        <table class="profile-thumb">
+                                                            <tr>
+                                                                <th>Kelompok Tani</th>
+                                                                <th>Kategori Kelompok</th>
+                                                                <th>Tahun Gabung</th>
+                                                            </tr>
+                                                            <tbody id="kelompokPetaniTableBody">
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="tab2" role="tabpanel"
+                                                aria-labelledby="tab2-tab">
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3">Nama
+                                                            Kaleka</strong>
+                                                        <p class="mb-0" id="namaKaleka"></p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3">Nama
+                                                            Lahan</strong>
+                                                        <p class="mb-0" id="namaLahan"></p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3">Legalitas
+                                                        </strong>
+                                                        <p class="mb-0" id="legalitasLahan"></p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3">Luas
+                                                        </strong>
+                                                        <p class="mb-0" id="luasHaTanah"></p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3">Sejarah
+                                                        </strong>
+                                                        <p class="mb-0" id="sejarahTanah"></p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3">Alamat Lokasi
+                                                        </strong>
+                                                        <p class="mb-0" id="alamatLokasiTanah"></p>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3">Keterangan
+                                                        </strong>
+                                                        <p class="mb-0" id="keteranganTanah"></p>
+                                                    </div>
+
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3">Sudah
+                                                            Validasi</strong>
+                                                        <p class="mb-0" id="sudahValidasiTanah"></p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3">Tanggal
+                                                            Validasi</strong>
+                                                        <p class="mb-0" id="tanggalValidasiTanah"></p>
+                                                    </div>
+                                                    <!-- <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3">Latitude</strong>
+                                                        <p class="mb-0" id="centroidLat"></p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3">Longitude
+                                                        </strong>
+                                                        <p class="mb-0" id="centroidLng"></p>
+                                                    </div>
+
+                                                    <div class="col-lg-12 col-md-12 col-12">
+                                                        <strong class="site-footer-title d-block mb-3">Polygon
+                                                        </strong>
+                                                        <table class="profile-thumb">
+                                                            <tbody id="polygonTableBody"></tbody>
+                                                        </table>
+                                                    </div> -->
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="tab3" role="tabpanel"
+                                                aria-labelledby="tab3-tab">
+                                                <div class="row">
+                                                    <div class="modal-body">
+                                                        <ul class="nav nav-tabs" id="myTabKaleka" role="tablist">
+                                                            <li class="nav-item" role="presentation">
+                                                                <button class="nav-link active" id="tab31-tab"
+                                                                    data-bs-toggle="tab" data-bs-target="#tab31"
+                                                                    type="button" role="tab">
+                                                                    Perairan Observasi
+                                                                </button>
+                                                            </li>
+
+                                                            <li class="nav-item" role="presentation">
+                                                                <button class="nav-link" id="tab32-tab"
+                                                                    data-bs-toggle="tab" data-bs-target="#tab32"
+                                                                    type="button" role="tab">
+                                                                    Infrastruktur Observasi
+                                                                </button>
+                                                            </li>
+
+                                                            <li class="nav-item" role="presentation">
+                                                                <button class="nav-link" id="tab33-tab"
+                                                                    data-bs-toggle="tab" data-bs-target="#tab33"
+                                                                    type="button" role="tab">
+                                                                    Land Cover Observasi
+                                                                </button>
+                                                            </li>
+
+                                                            <li class="nav-item" role="presentation">
+                                                                <button class="nav-link" id="tab34-tab"
+                                                                    data-bs-toggle="tab" data-bs-target="#tab34"
+                                                                    type="button" role="tab">
+                                                                    Topografi Observasi
+                                                                </button>
+                                                            </li>
+
+                                                            <li class="nav-item" role="presentation">
+                                                                <button class="nav-link" id="tab35-tab"
+                                                                    data-bs-toggle="tab" data-bs-target="#tab35"
+                                                                    type="button" role="tab">
+                                                                    Pohon Observasi
+                                                                </button>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+
+                                                    <!-- Tab content -->
+                                                    <div class="col-md-12">
+                                                        <div class="tab-content" id="myTabContent2">
+                                                            <div class="tab-pane fade show active" id="tab31"
+                                                                role="tabpanel">
+                                                                <div class="row">
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Periode
+                                                                            Pengecekan
+                                                                        </strong>
+                                                                        <p class="mb-0" id="periodePengecekanPerairan">
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Warna
+                                                                            Air
+                                                                        </strong>
+                                                                        <p class="mb-0" id="warnaAirPerairan"></p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Jenis
+                                                                            Palung
+                                                                        </strong>
+                                                                        <p class="mb-0" id="jenisPalungPerairan"></p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Kecepatan
+                                                                            Aliran
+                                                                        </strong>
+                                                                        <p class="mb-0" id="kecepatanAliranPerairan">
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Kedalaman
+                                                                            Air
+                                                                        </strong>
+                                                                        <p class="mb-0" id="kedalamanPerairan"></p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Lebar
+                                                                        </strong>
+                                                                        <p class="mb-0" id="lebarPerairan"></p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Debit
+                                                                            Air
+                                                                        </strong>
+                                                                        <p class="mb-0" id="debitPerairan"></p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">pH
+                                                                        </strong>
+                                                                        <p class="mb-0" id="phPerairan"></p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Kekeruhan
+                                                                        </strong>
+                                                                        <p class="mb-0" id="kekeruhanPerairan"></p>
+                                                                    </div>
+                                                                    <div class="col-lg-12 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Catatan
+                                                                        </strong>
+                                                                        <p class="mb-0" id="catatanPerairan"></p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="tab-pane fade" id="tab32" role="tabpanel">
+                                                                <div class="row">
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Periode
+                                                                            Pengecekan
+                                                                        </strong>
+                                                                        <p class="mb-0"
+                                                                            id="periodePengecekanInfrastruktur"></p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Akses
+                                                                            Perjalanan
+                                                                        </strong>
+                                                                        <p class="mb-0"
+                                                                            id="aksesPerjalananInfrastruktur"></p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Kondisi
+                                                                            Jalan
+                                                                        </strong>
+                                                                        <p class="mb-0" id="kondisiJalanInfrastruktur">
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Jarak
+                                                                            ke Jalan
+                                                                        </strong>
+                                                                        <p class="mb-0" id="jarakKeJalanInfrastruktur">
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Ada
+                                                                            Jembatan
+                                                                        </strong>
+                                                                        <p class="mb-0" id="adaJembatanInfrastruktur">
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Ada
+                                                                            Listrik
+                                                                        </strong>
+                                                                        <p class="mb-0" id="adaListrikInfrastruktur">
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Ada
+                                                                            Internet
+                                                                        </strong>
+                                                                        <p class="mb-0" id="adaInternetInfrastruktur">
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Sinyal
+                                                                            Seluler
+                                                                        </strong>
+                                                                        <p class="mb-0" id="sinyalSelulerInfrastruktur">
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="col-lg-12 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Catatan
+                                                                        </strong>
+                                                                        <p class="mb-0" id="catatanInfrastruktur"></p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="tab-pane fade" id="tab33" role="tabpanel">
+                                                                <div class="row">
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Periode
+                                                                            Pengecekan
+                                                                        </strong>
+                                                                        <p class="mb-0" id="periodePengecekanLandCover">
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Kategori
+                                                                            Area
+                                                                        </strong>
+                                                                        <p class="mb-0" id="kategoriAreaLandCover"></p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Penggunaan
+                                                                            Pertanian
+                                                                        </strong>
+                                                                        <p class="mb-0"
+                                                                            id="penggunaanPertanianLandCover"></p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Penggunaan
+                                                                            Lainnya
+                                                                        </strong>
+                                                                        <p class="mb-0" id="penggunaanLainnyaLandCover">
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Persentase
+                                                                            Tutupan
+                                                                        </strong>
+                                                                        <p class="mb-0" id="persentaseTutupanLandCover">
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="col-lg-12 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Catatan
+                                                                        </strong>
+                                                                        <p class="mb-0" id="catatanLandCover"></p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="tab-pane fade" id="tab34" role="tabpanel">
+                                                                <div class="row">
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Periode
+                                                                            Pengecekan
+                                                                        </strong>
+                                                                        <p class="mb-0" id="periodePengecekanTopografi">
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Lanskap
+                                                                        </strong>
+                                                                        <p class="mb-0" id="lanskapTopografi"></p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Fitur
+                                                                            Tambahan
+                                                                        </strong>
+                                                                        <p class="mb-0" id="fiturTambahanTopografi"></p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Elevasi
+                                                                            mdpl
+                                                                        </strong>
+                                                                        <p class="mb-0" id="elevasiTopografi"></p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Kemiringan
+                                                                            Derajat
+                                                                        </strong>
+                                                                        <p class="mb-0" id="kemiringanTopografi">
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Rawan
+                                                                            Erosi
+                                                                        </strong>
+                                                                        <p class="mb-0" id="rawanErosiTopografi"></p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Arah
+                                                                            Lereng
+                                                                        </strong>
+                                                                        <p class="mb-0" id="arahLerengTopografi"></p>
+                                                                    </div>
+                                                                    <div class="col-lg-12 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Catatan
+                                                                        </strong>
+                                                                        <p class="mb-0" id="catatanTopografi"></p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="tab-pane fade" id="tab35" role="tabpanel">
+                                                                <div class="row">
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Periode
+                                                                            Pengecekan
+                                                                        </strong>
+                                                                        <p class="mb-0" id="periodePengecekanPohon"></p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Jenis
+                                                                            Pohon
+                                                                        </strong>
+                                                                        <p class="mb-0" id="jenisPohon"></p>
+                                                                    </div>
+                                                                    <!-- <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Nama
+                                                                            Pohon
+                                                                        </strong>
+                                                                        <p class="mb-0" id="pohonNamaPohon"></p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Nama
+                                                                            Latin
+                                                                        </strong>
+                                                                        <p class="mb-0" id="pohonNamaLatin"></p>
+                                                                    </div> -->
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Fungsi
+                                                                            Pohon
+                                                                        </strong>
+                                                                        <p class="mb-0" id="fungsiPohon"></p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Jumlah
+                                                                            Pohon
+                                                                        </strong>
+                                                                        <p class="mb-0" id="jumlahPohon"></p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Diameter
+                                                                            Rata-rata (cm)
+                                                                        </strong>
+                                                                        <p class="mb-0" id="diameterRata2CmPohon"></p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Tinggi
+                                                                            Rata-rata (m)
+                                                                        </strong>
+                                                                        <p class="mb-0" id="tinggiRata2MPohon"></p>
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Kondisi
+                                                                        </strong>
+                                                                        <p class="mb-0" id="kondisiPohon"></p>
+                                                                    </div>
+                                                                    <div class="col-lg-12 col-md-6 col-12 mb-4">
+                                                                        <strong
+                                                                            class="site-footer-title d-block mb-3">Catatan
+                                                                        </strong>
+                                                                        <p class="mb-0" id="catatanPohon"></p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- <div class="tab-pane fade" id="tab4" role="tabpanel"
+                                                aria-labelledby="tab4-tab">
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-md-12 col-12 mb-4">
+                                                        <div class="col">
+                                                            <strong class="site-footer-title d-block mb-3">Grafik
+                                                                Tingkat Kematian dan Kelangsungan Hidup Benih
+                                                            </strong>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div style="height:210px;">
+                                                                <canvas id="survivalChart"></canvas>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-12 mb-4">
+                                                        <div class="col">
+                                                            <strong class="site-footer-title d-block mb-3">Grafik Stok
+                                                                Benih & Jumlah Ditanam Benih
+                                                            </strong>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div style="height:185px;">
+                                                                <canvas id="stokChart"></canvas>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-12 mb-4">
+                                                        <div class="col">
+                                                            <strong class="site-footer-title d-block mb-3">Tingkat
+                                                                kelayakan atau daya hidup benih (viabilitas)
+                                                            </strong>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div style="height:185px;">
+                                                                <canvas id="viabilitasChart"></canvas>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-12 mb-4">
+                                                        <div class="col">
+                                                            <strong class="site-footer-title d-block mb-3">Grafik Kadar
+                                                                Air
+                                                                Benih
+                                                            </strong>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div style="height:185px;">
+                                                                <canvas id="kadarAirChart"></canvas>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-12 mb-4">
+                                                        <div class="col">
+                                                            <strong class="site-footer-title d-block mb-3">Grafik
+                                                                Tingkat Kematian dan Kelangsungan Hidup Benih
+                                                            </strong>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div style="height:210px;">
+                                                                <canvas id="penyimpananChart2"></canvas>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                     </div>

@@ -15,45 +15,6 @@ $kalekas = $controller->index();
 $petanis = $controller->getPetani();
 $desas = $controller->getDesa();
 
-// function cleanGeom($wkt)
-// {
-//     return preg_replace('/MULTIPOLYGON\s*\(\(\((.*)\)\)\)/', '$1', $wkt);
-// }
-
-function formatGeomTable($wkt)
-{
-    $wkt = preg_replace('/MULTIPOLYGON\s*\(\(\((.*)\)\)\)/', '$1', $wkt);
-    $points = explode(',', $wkt);
-
-    if (count($points) > 1) {
-        array_pop($points);
-    }
-
-    $html = '<table class="table table-sm table-bordered">';
-    $html .= '<tr><th>No</th><th>Latitude</th><th>Longitude</th></tr>';
-
-    $no = 1;
-    foreach ($points as $point) {
-        $coord = explode(' ', trim($point));
-
-        if (count($coord) == 2) {
-            $lng = $coord[0];
-            $lat = $coord[1];
-
-            $html .= "<tr>
-                        <td>$no</td>
-                        <td><span class='badge badge-success'>$lat</span></td>
-                        <td><span class='badge badge-primary'>$lng</span></td>
-                      </tr>";
-            $no++;
-        }
-    }
-
-    $html .= '</table>';
-
-    return $html;
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -131,7 +92,6 @@ function formatGeomTable($wkt)
                                                 <th>Petani</th>
                                                 <th>Desa</th>
                                                 <th>Luas (ha)</th>
-                                                <th>Tipe Lokasi</th>
                                                 <th>Keterangan</th>
                                                 <th>Status Aktif</th>
                                                 <th>Aksi</th>
@@ -145,31 +105,6 @@ function formatGeomTable($wkt)
                                                     <td><?= htmlspecialchars($kaleka['nama_petani']) ?></td>
                                                     <td><?= htmlspecialchars($kaleka['nama_desa']) ?></td>
                                                     <td><?= htmlspecialchars($kaleka['luas_ha']) ?></td>
-                                                    <!-- <td><?= htmlspecialchars($kaleka['geom_area']) ?></td> -->
-                                                    <!-- <td><?= formatGeomTable($kaleka['geom_area']) ?></td> -->
-                                                    <td>
-                                                        <?php if (!empty($kaleka['geom_area'])): ?>
-                                                            <span class="">Geometri Area</span><br>
-                                                            <button class="btn btn-block btn-primary btn-geom btn-sm"
-                                                                data-geom="<?= htmlspecialchars($kaleka['geom_area']) ?>"
-                                                                data-toggle="modal" data-target="#modalGeom">
-                                                                <i class="fas fa-list"></i>
-                                                                Lihat
-                                                            </button>
-                                                        <?php else: ?>
-                                                            <div>
-                                                                <span class="">LatLong (Point)</span><br>
-                                                                <span class="badge badge-success">
-                                                                    Lat: <?= htmlspecialchars($kaleka['centroid_lat']) ?>
-                                                                </span>
-                                                                <br>
-                                                                <span class="badge badge-primary">
-                                                                    Long: <?= htmlspecialchars($kaleka['centroid_lng']) ?>
-                                                                </span>
-                                                            </div>
-                                                        <?php endif; ?>
-                                                    </td>
-
                                                     <td><?= htmlspecialchars($kaleka['keterangan']) ?></td>
                                                     <td><?= $kaleka['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
                                                     <td class="row">
@@ -181,10 +116,6 @@ function formatGeomTable($wkt)
                                                                 data-id_petani="<?= htmlspecialchars($kaleka['id_petani']) ?>"
                                                                 data-id_desa="<?= htmlspecialchars($kaleka['id_desa']) ?>"
                                                                 data-luas_ha="<?= htmlspecialchars($kaleka['luas_ha']) ?>"
-                                                                data-centroid_lat="<?= htmlspecialchars($kaleka['centroid_lat']) ?>"
-                                                                data-centroid_lng="<?= htmlspecialchars($kaleka['centroid_lng']) ?>"
-                                                                data-geom_area="<?= htmlspecialchars($kaleka['geom_area']) ?>"
-                                                                data-tipe_lokasi="<?= $kaleka['geom_area'] ? 'area' : 'point' ?>"
                                                                 data-keterangan="<?= htmlspecialchars($kaleka['keterangan']) ?>"
                                                                 data-status="<?= $kaleka['is_active'] ?>"
                                                                 data-toggle="modal" data-target="#modalEdit">
@@ -210,7 +141,6 @@ function formatGeomTable($wkt)
                                                 <th>Petani</th>
                                                 <th>Desa</th>
                                                 <th>Luas (ha)</th>
-                                                <th>Tipe Lokasi</th>
                                                 <th>Keterangan</th>
                                                 <th>Status Aktif</th>
                                                 <th>Aksi</th>
@@ -276,33 +206,6 @@ function formatGeomTable($wkt)
                                     <label for="luas_ha">Luas (ha)<code>*</code></label>
                                     <input type="number" name="luas_ha" class="form-control" id="luas_ha"
                                         placeholder="Masukkan Luas dalam hektar">
-                                </div>
-                                <div class="form-group">
-                                    <label for="tipe_lokasi">Tipe Lokasi<code>*</code></label>
-                                    <select name="tipe_lokasi" id="tipe_lokasi" class="form-control">
-                                        <option value="">-- Pilih Tipe --</option>
-                                        <option value="point">LatLong (Point)</option>
-                                        <option value="area">Geometri Area</option>
-                                    </select>
-                                </div>
-                                <div id="point_input" style="display: none;">
-                                    <div class="form-group">
-                                        <label for="centroid_lat">Latitude<code>*</code></label>
-                                        <input type="number" step="any" name="centroid_lat" class="form-control"
-                                            id="centroid_lat" placeholder="Masukkan Latitude">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="centroid_lng">Longitude<code>*</code></label>
-                                        <input type="number" step="any" name="centroid_lng" class="form-control"
-                                            id="centroid_lng" placeholder="Masukkan Longitude">
-                                    </div>
-                                </div>
-                                <div id="area_input" style="display: none;">
-                                    <div id="geom_area"></div>
-                                    <input type="hidden" name="geom_area" id="geom_area_hidden">
-                                    <button type="button" class="btn btn-info mb-2" onclick="addCoordinate()">
-                                        + Tambah Titik
-                                    </button>
                                 </div>
                                 <div class="form-group">
                                     <label for="keterangan">Keterangan<code>*</code></label>
@@ -390,33 +293,6 @@ function formatGeomTable($wkt)
                                         placeholder="Masukkan Luas dalam hektar">
                                 </div>
                                 <div class="form-group">
-                                    <label for="tipe_lokasi">Tipe Lokasi<code>*</code></label>
-                                    <select name="tipe_lokasi" id="edit_tipe_lokasi" class="form-control">
-                                        <option value="">-- Pilih Tipe --</option>
-                                        <option value="point">LatLong (Point)</option>
-                                        <option value="area">Geometri Area</option>
-                                    </select>
-                                </div>
-                                <div id="edit_point_input" style="display: none;">
-                                    <div class="form-group">
-                                        <label for="edit_centroid_lat">Latitude</label>
-                                        <input type="number" step="any" name="centroid_lat" class="form-control"
-                                            id="edit_centroid_lat" placeholder="Masukkan Latitude">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="edit_centroid_lng">Longitude</label>
-                                        <input type="number" step="any" name="centroid_lng" class="form-control"
-                                            id="edit_centroid_lng" placeholder="Masukkan Longitude">
-                                    </div>
-                                </div>
-                                <div id="edit_area_input" style="display: none;">
-                                    <div id="edit_geom_area"></div>
-                                    <input type="hidden" name="geom_area" id="edit_geom_area_hidden">
-                                    <button type="button" class="btn btn-info mb-2" onclick="addCoordinateEdit()">
-                                        + Tambah Titik
-                                    </button>
-                                </div>
-                                <div class="form-group">
                                     <label for="keterangan">Keterangan<code>*</code></label>
                                     <textarea name="keterangan" class="form-control" id="edit_keterangan"
                                         placeholder="Masukkan Keterangan"></textarea>
@@ -446,26 +322,6 @@ function formatGeomTable($wkt)
                     </div>
                 </div>
             </div>
-
-            <div class="modal fade" id="modalGeom">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Data Geometri Area</h4>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-
-                        <div class="modal-body" id="geom_content">
-                            <!-- isi dari JS -->
-                        </div>
-
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- /.content -->
         </div>
         <!-- /.content-wrapper -->
@@ -540,23 +396,6 @@ function formatGeomTable($wkt)
                         luas_ha: {
                             required: true
                         },
-                        tipe_lokasi: {
-                            required: true
-                        },
-                        centroid_lat: {
-                            required: true
-                        },
-                        centroid_lng: {
-                            required: true
-                        },
-                        // geom_area: {
-                        //     required: true
-                        // },
-                        geom_area: {
-                            required: function () {
-                                return $('#tipe_lokasi').val() === 'area';
-                            }
-                        },
                         keterangan: {
                             required: true
                         },
@@ -579,18 +418,6 @@ function formatGeomTable($wkt)
                         },
                         luas_ha: {
                             required: "Silahkan masukkan Luas dalam hektar"
-                        },
-                        tipe_lokasi: {
-                            required: "Silahkan pilih Tipe Lokasi"
-                        },
-                        centroid_lat: {
-                            required: "Silahkan masukkan Latitude"
-                        },
-                        centroid_lng: {
-                            required: "Silahkan masukkan Longitude"
-                        },
-                        geom_area: {
-                            required: "Silahkan masukkan LatLong Area"
                         },
                         keterangan: {
                             required: "Silahkan masukkan Keterangan"
@@ -619,68 +446,12 @@ function formatGeomTable($wkt)
 
     <script>
         $(document).on("click", ".btn-edit", function () {
-            let tipe = $(this).data("tipe_lokasi");
-            let geom = $(this).data("geom_area");
-
-            // set dropdown
-            $("#edit_tipe_lokasi").val(tipe).trigger("change");
-
-            if (tipe === 'point') {
-                $("#edit_point_input").show();
-                $("#edit_area_input").hide();
-            } else if (tipe === 'area') {
-                $("#edit_point_input").hide();
-                $("#edit_area_input").show();
-
-                let container = $("#edit_geom_area");
-                container.html('');
-
-                if (geom) {
-                    // bersihkan WKT
-                    geom = geom.replace(/MULTIPOLYGON\s*\(\(\(/, '').replace(/\)\)\)/, '');
-                    let points = geom.split(',');
-
-                    // hapus duplikat terakhir
-                    if (points.length > 1) {
-                        points.pop();
-                    }
-
-                    points.forEach((p, i) => {
-                        let coord = p.trim().split(' ');
-
-                        if (coord.length === 2) {
-                            let lng = coord[0];
-                            let lat = coord[1];
-
-                            let html = `
-                    <div class="coordinate-item mb-2 row">
-                        <div class="col-md-5">
-                            <input type="number" step="any" name="coordinates[${i}][lat]" value="${lat}" class="form-control mb-1">
-                        </div>
-                        <div class="col-md-5">
-                            <input type="number" step="any" name="coordinates[${i}][lng]" value="${lng}" class="form-control mb-1">
-                        </div>
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-danger" onclick="removeCoordinate(this)">Hapus</button>
-                        </div>
-                    </div>
-                    `;
-
-                            container.append(html);
-                        }
-                    });
-                }
-            }
-
             let id = $(this).data("id");
             let kode_kaleka = $(this).data("kode_kaleka");
             let nama_kaleka = $(this).data("nama_kaleka");
             let id_petani = $(this).data("id_petani");
             let id_desa = $(this).data("id_desa");
             let luas_ha = $(this).data("luas_ha");
-            let centroid_lat = $(this).data("centroid_lat");
-            let centroid_lng = $(this).data("centroid_lng");
-            let geom_area = $(this).data("geom_area");
             let keterangan = $(this).data("keterangan");
             let status = $(this).data("status");
 
@@ -690,90 +461,9 @@ function formatGeomTable($wkt)
             $("#edit_id_petani").val(id_petani);
             $("#edit_id_desa").val(id_desa);
             $("#edit_luas_ha").val(luas_ha);
-            $("#edit_centroid_lat").val(centroid_lat);
-            $("#edit_centroid_lng").val(centroid_lng);
-            $("#edit_geom_area").val(geom_area);
             $("#edit_keterangan").val(keterangan);
             $("input[name='is_active'][value='" + status + "']").prop("checked", true);
         });
-
-        $('#edit_tipe_lokasi').on('change', function () {
-            if (this.value === 'point') {
-                $('#edit_point_input').show();
-                $('#edit_area_input').hide();
-            } else if (this.value === 'area') {
-                $('#edit_point_input').hide();
-                $('#edit_area_input').show();
-
-                if ($('#edit_geom_area .coordinate-item').length === 0) {
-                    addCoordinateEdit();
-                }
-            } else {
-                $('#edit_point_input').hide();
-                $('#edit_area_input').hide();
-            }
-        });
-
-        function addCoordinateEdit() {
-            let index = $('#edit_geom_area .coordinate-item').length;
-
-            let html = `
-            <div class="coordinate-item mb-2 row">
-                <div class="col-md-5">
-                    <input type="number" step="any" name="coordinates[${index}][lat]" class="form-control mb-1">
-                </div>
-                <div class="col-md-5">
-                    <input type="number" step="any" name="coordinates[${index}][lng]" class="form-control mb-1">
-                </div>
-                <div class="col-md-2">
-                    <button type="button" class="btn btn-danger" onclick="removeCoordinate(this)">Hapus</button>
-                </div>
-            </div>
-            `;
-
-            $('#edit_geom_area').append(html);
-        }
-
-        function generateWKTEdit() {
-            let coords = [];
-
-            $('#edit_geom_area .coordinate-item').each(function () {
-                let lat = $(this).find('[name*="[lat]"]').val();
-                let lng = $(this).find('[name*="[lng]"]').val();
-
-                if (lat !== '' && lng !== '' && !isNaN(lat) && !isNaN(lng)) {
-                    coords.push(`${lng} ${lat}`);
-                }
-            });
-
-            // MINIMAL 3 TITIK
-            if (coords.length < 3) {
-                alert("Minimal 3 titik untuk membuat area!");
-                return null;
-            }
-
-            // tutup polygon
-            coords.push(coords[0]);
-
-            return `MULTIPOLYGON(((${coords.join(', ')})))`;
-        }
-
-        $("#formEdit").on("submit", function (e) {
-            let tipe = $('#edit_tipe_lokasi').val();
-
-            if (tipe === 'area') {
-                let wkt = generateWKTEdit();
-
-                if (!wkt) {
-                    e.preventDefault(); // STOP SUBMIT
-                    return false;
-                }
-
-                $("#edit_geom_area_hidden").val(wkt);
-            }
-        });
-
-        console.log("WKT:", wkt);
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -825,177 +515,6 @@ function formatGeomTable($wkt)
         if (success === "deleted") {
             showToast("Data Kaleka berhasil dihapus", "deleted");
         }
-    </script>
-
-    <script>
-        const tipeLokasi = document.getElementById('tipe_lokasi');
-        const pointInput = document.getElementById('point_input');
-        const areaInput = document.getElementById('area_input');
-        const areaContainer = document.getElementById('geom_area');
-
-        tipeLokasi.addEventListener('change', function () {
-            if (this.value === 'point') {
-                pointInput.style.display = 'block';
-                areaInput.style.display = 'none';
-            } else if (this.value === 'area') {
-                pointInput.style.display = 'none';
-                areaInput.style.display = 'block';
-
-                // reset dulu
-                areaContainer.innerHTML = '';
-                addCoordinate();
-            } else {
-                pointInput.style.display = 'none';
-                areaInput.style.display = 'none';
-            }
-        });
-
-        function addCoordinate() {
-            const index = document.querySelectorAll('.coordinate-item').length;
-
-            const html = `
-            <div class="coordinate-item mb-2 row">
-                <div class="col-md-5">
-                    <input type="number" step="any" name="coordinates[${index}][lat]" placeholder="Latitude" class="form-control mb-1">
-                </div>
-                <div class="col-md-5">
-                    <input type="number" step="any" name="coordinates[${index}][lng]" placeholder="Longitude" class="form-control mb-1">
-                </div>
-                <div class="col-md-2">
-                    <button type="button" class="btn btn-danger btn" onclick="removeCoordinate(this)">Hapus</button>
-                </div>
-            </div>
-            `;
-
-            areaContainer.insertAdjacentHTML('beforeend', html);
-        }
-
-        function removeCoordinate(button) {
-            button.closest('.coordinate-item').remove();
-        }
-    </script>
-
-    <script>
-        function generateWKT() {
-            let coords = [];
-
-            document.querySelectorAll('.coordinate-item').forEach(item => {
-                let lat = item.querySelector('input[name*="[lat]"]').value;
-                let lng = item.querySelector('input[name*="[lng]"]').value;
-
-                if (lat && lng) {
-                    coords.push(`${lng} ${lat}`); // INGAT: format = lng lat
-                }
-            });
-
-            // minimal polygon 3 titik
-            if (coords.length < 3) {
-                return '';
-            }
-
-            // tutup polygon (titik pertama = terakhir)
-            coords.push(coords[0]);
-
-            // MULTIPOLYGON format
-            let wkt = `MULTIPOLYGON(((${coords.join(', ')})))`;
-
-            return wkt;
-        }
-
-        // sebelum submit
-        document.getElementById("formTambah").addEventListener("submit", function (e) {
-            let tipe = $('#tipe_lokasi').val();
-
-            if (tipe === 'area') {
-                let total = document.querySelectorAll('.coordinate-item').length;
-                if (total < 3) {
-                    e.preventDefault();
-                    alert("Minimal 3 titik untuk Geometri Area!");
-                    return false;
-                }
-            }
-
-            if (tipe === 'area') {
-                let valid = true;
-
-                document.querySelectorAll('.coordinate-item').forEach(item => {
-                    let lat = item.querySelector('[name*="[lat]"]').value;
-                    let lng = item.querySelector('[name*="[lng]"]').value;
-
-                    if (!lat || !lng) {
-                        valid = false;
-                    }
-                });
-
-                if (!valid) {
-                    e.preventDefault();
-                    alert("Semua Latitude & Longitude harus diisi!");
-                    return false;
-                }
-            }
-
-            let wkt = generateWKT();
-            document.getElementById("geom_area_hidden").value = wkt;
-        });
-
-        $('#tipe_lokasi').on('change', function () {
-            if (this.value === 'area') {
-                $('#geom_area_hidden').rules('add', { required: true });
-            } else {
-                $('#geom_area_hidden').rules('remove');
-            }
-        });
-    </script>
-
-    <script>
-        $(document).on("click", ".btn-geom", function () {
-            let wkt = $(this).data("geom");
-
-            if (!wkt) {
-                $("#geom_content").html("<p>Tidak ada data</p>");
-                return;
-            }
-
-            // bersihkan MULTIPOLYGON
-            wkt = wkt.replace(/MULTIPOLYGON\s*\(\(\(/, '').replace(/\)\)\)/, '');
-
-            let points = wkt.split(',');
-
-            // hapus titik terakhir (duplikat)
-            if (points.length > 1) {
-                points.pop();
-            }
-
-            let html = `
-                <table class="table table-bordered table-striped">
-                    <tr>
-                        <th>No</th>
-                        <th>Latitude</th>
-                        <th>Longitude</th>
-                    </tr>
-            `;
-
-            points.forEach((p, i) => {
-                let coord = p.trim().split(' ');
-
-                if (coord.length === 2) {
-                    let lng = coord[0];
-                    let lat = coord[1];
-
-                    html += `
-                <tr>
-                    <td>${i + 1}</td>
-                    <td><span class="badge badge-success">${lat}</span></td>
-                    <td><span class="badge badge-primary">${lng}</span></td>
-                </tr>
-            `;
-                }
-            });
-
-            html += '</table>';
-
-            $("#geom_content").html(html);
-        });
     </script>
 
 </body>

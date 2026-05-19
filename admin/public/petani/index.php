@@ -95,6 +95,7 @@ $desas = $controller->getDesa();
                                                 <th>Nomor HP</th>
                                                 <th>Desa</th>
                                                 <th>Alamat</th>
+                                                <th>Foto Petani</th>
                                                 <th>Status Petani</th>
                                                 <th>Status Aktif</th>
                                                 <th>Aksi</th>
@@ -113,6 +114,12 @@ $desas = $controller->getDesa();
                                                     <td><?= htmlspecialchars($petani['nomor_hp']) ?></td>
                                                     <td><?= htmlspecialchars($petani['nama_desa']) ?></td>
                                                     <td><?= htmlspecialchars($petani['alamat']) ?></td>
+                                                    <td>
+                                                        <img class="img-circle elevation-2" src="<?= !empty($petani['foto_profil_petani'])
+                                                            ? '../../uploads/petani/' . htmlspecialchars($petani['foto_profil_petani'])
+                                                            : '../../../assets/image/petani_placeholder.jpg' ?>"
+                                                            width="80">
+                                                    </td>
                                                     <td><?= $petani['status_petani'] == 'aktif' ? 'Aktif' : 'Nonaktif' ?>
                                                     </td>
                                                     <td><?= $petani['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
@@ -129,6 +136,7 @@ $desas = $controller->getDesa();
                                                                 data-nomor_hp="<?= htmlspecialchars($petani['nomor_hp']) ?>"
                                                                 data-id_desa="<?= htmlspecialchars($petani['id_desa']) ?>"
                                                                 data-alamat="<?= htmlspecialchars($petani['alamat']) ?>"
+                                                                data-foto="<?= $petani['foto_profil_petani'] ?>"
                                                                 data-status_petani="<?= htmlspecialchars($petani['status_petani']) ?>"
                                                                 data-status="<?= $petani['is_active'] ?>"
                                                                 data-toggle="modal" data-target="#modalEdit">
@@ -158,6 +166,7 @@ $desas = $controller->getDesa();
                                                 <th>Nomor HP</th>
                                                 <th>Desa</th>
                                                 <th>Alamat</th>
+                                                <th>Foto Petani</th>
                                                 <th>Status Petani</th>
                                                 <th>Status Aktif</th>
                                                 <th>Aksi</th>
@@ -183,7 +192,7 @@ $desas = $controller->getDesa();
                             <h4 class="modal-title">Tambah Petani</h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
-                        <form id="formTambah" method="POST" action="store.php">
+                        <form id="formTambah" method="POST" action="store.php" enctype="multipart/form-data">
                             <?= csrfField() ?>
                             <div class="modal-body">
                                 <div class="form-group">
@@ -237,6 +246,11 @@ $desas = $controller->getDesa();
                                     <label for="alamat">Alamat<code>*</code></label>
                                     <textarea name="alamat" class="form-control" id="alamat"
                                         placeholder="Masukkan Alamat"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="foto_profil_petani">Foto Profil</label>
+                                    <input type="file" name="foto_profil_petani" class="form-control"
+                                        id="foto_profil_petani" accept="image/*">
                                 </div>
                                 <div class="form-group">
                                     <label>Status Petani<code>*</code></label>
@@ -299,7 +313,7 @@ $desas = $controller->getDesa();
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
 
-                        <form id="formEdit" method="POST" action="update.php">
+                        <form id="formEdit" method="POST" action="update.php" enctype="multipart/form-data">
                             <?= csrfField() ?>
                             <input type="hidden" name="id" id="edit_id">
                             <div class="modal-body">
@@ -355,6 +369,16 @@ $desas = $controller->getDesa();
                                     <label for="alamat">Alamat<code>*</code></label>
                                     <textarea name="alamat" class="form-control" id="edit_alamat"
                                         placeholder="Masukkan Alamat"></textarea>
+                                </div>
+                                <input type="hidden" name="foto_lama" id="edit_foto_lama">
+                                <div class="form-group">
+                                    <label for="edit_foto_profil_petani">Foto Profil</label>
+                                    <input type="file" name="foto_profil_petani" class="form-control"
+                                        id="edit_foto_profil_petani" accept="image/*">
+
+                                    <small class="text-muted">
+                                        Kosongkan jika tidak ingin mengganti foto
+                                    </small>
                                 </div>
                                 <div class="form-group">
                                     <label>Status Petani<code>*</code></label>
@@ -562,6 +586,7 @@ $desas = $controller->getDesa();
             let nomor_hp = $(this).data("nomor_hp");
             let id_desa = $(this).data("id_desa");
             let alamat = $(this).data("alamat");
+            let foto = $(this).data("foto");
             let status_petani = $(this).data("status_petani");
             let status = $(this).data("status");
 
@@ -575,6 +600,7 @@ $desas = $controller->getDesa();
             $("#edit_nomor_hp").val(nomor_hp);
             $("#edit_id_desa").val(id_desa);
             $("#edit_alamat").val(alamat);
+            $("#edit_foto_lama").val(foto);
             $("input[name='status_petani'][value='" + status_petani + "']").prop("checked", true);
             $("input[name='is_active'][value='" + status + "']").prop("checked", true);
         });

@@ -116,6 +116,11 @@ class PolygonController
         return $this->model->getKecamatan();
     }
 
+    public function getKaleka()
+    {
+        return $this->model->getKaleka();
+    }
+
     public function getPolygonHAData()
     {
         return $this->model->getPolygonHAData();
@@ -134,6 +139,11 @@ class PolygonController
     public function getPolygonKecData()
     {
         return $this->model->getPolygonKecData();
+    }
+
+    public function getPolygonKalekaData()
+    {
+        return $this->model->getPolygonKalekaData();
     }
 
     public function getDetailPolygonProv($id)
@@ -156,9 +166,24 @@ class PolygonController
         return $this->model->getDetailPolygonHa($id);
     }
 
+    public function getDetailPolygonKaleka($id)
+    {
+        return $this->model->getDetailPolygonKaleka($id);
+    }
+
+    public function getDetailPolygonKalekaKelompokPetani($id)
+    {
+        return $this->model->getDetailPolygonKalekaKelompokPetani($id);
+    }
+
     public function getPengurusMHA($id)
     {
         return $this->model->getPengurusMHA($id);
+    }
+
+    public function getTotalFarmer()
+    {
+        return $this->model->getTotalFarmer();
     }
 
 }

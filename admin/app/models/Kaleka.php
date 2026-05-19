@@ -18,9 +18,9 @@ class Kaleka
                 ka.id_petani,
                 ka.id_desa,
                 ka.luas_ha,
-                ka.centroid_lat,
-                ka.centroid_lng,
-                ST_AsText(ka.geom_area) AS geom_area,
+                -- ka.centroid_lat,
+                -- ka.centroid_lng,
+                -- ST_AsText(ka.geom_area) AS geom_area,
                 ka.keterangan,
                 ka.is_active,
                 d.nama_desa as nama_desa,
@@ -58,9 +58,9 @@ class Kaleka
     {
 
         $sql = "INSERT INTO t_kaleka
-            (kode_kaleka,nama_kaleka,id_petani,id_desa,luas_ha,centroid_lat,centroid_lng,geom_area,keterangan,is_active,created_by)
+            (kode_kaleka,nama_kaleka,id_petani,id_desa,luas_ha,keterangan,is_active,created_by)
             VALUES
-            (:kode_kaleka,:nama_kaleka,:id_petani,:id_desa,:luas_ha,:centroid_lat,:centroid_lng,ST_GeomFromText(:geom_area, 4326),:keterangan,:is_active,:created_by)";
+            (:kode_kaleka,:nama_kaleka,:id_petani,:id_desa,:luas_ha,:keterangan,:is_active,:created_by)";
 
         $stmt = $this->pdo->prepare($sql);
 
@@ -77,9 +77,6 @@ class Kaleka
             id_petani=:id_petani,
             id_desa=:id_desa,
             luas_ha=:luas_ha,
-            centroid_lat=:centroid_lat,
-            centroid_lng=:centroid_lng,
-            geom_area=ST_GeomFromText(:geom_area, 4326),
             keterangan=:keterangan,
             is_active=:is_active,
             updated_by=:updated_by

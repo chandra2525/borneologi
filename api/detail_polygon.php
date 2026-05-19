@@ -26,6 +26,8 @@ if ($tipe === 'provinsi') {
     $data = $controller->getDetailPolygonKec($id);
 } else if ($tipe === 'hutan_adat') {
     $data = $controller->getDetailPolygonHa($id);
+} else if ($tipe === 'kaleka') {
+    $data = $controller->getDetailPolygonKaleka($id);
 } else {
     echo json_encode([
         "status" => false,

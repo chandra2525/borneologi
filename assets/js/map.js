@@ -23,6 +23,9 @@ map.getPane("paneKecamatan").style.zIndex = 400;
 map.createPane("paneHutanAdat");
 map.getPane("paneHutanAdat").style.zIndex = 400;
 
+map.createPane("paneKaleka");
+map.getPane("paneKaleka").style.zIndex = 400;
+
 const satellite = L.tileLayer(
   "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
   {
@@ -97,18 +100,21 @@ let totalHutanAdat = 0;
 let totalProvinsi = 0;
 let totalKabupaten = 0;
 let totalKecamatan = 0;
+let totalKaleka = 0;
 let legend;
 
 const layerProvinsi = L.layerGroup().addTo(map);
 const layerKabupaten = L.layerGroup().addTo(map);
 const layerKecamatan = L.layerGroup(); // default OFF
 const layerHutanAdat = L.layerGroup(); // default OFF
+const layerKaleka = L.layerGroup(); // default OFF
 
 let isLoaded = {
   provinsi: false,
   kabupaten: false,
   kecamatan: false,
   hutan_adat: false,
+  kaleka: false,
 };
 
 let layerState = {
@@ -116,6 +122,7 @@ let layerState = {
   kabupaten: true,
   kecamatan: false,
   hutan_adat: false,
+  kaleka: false,
 };
 
 function loadHutanAdat() {
@@ -294,6 +301,78 @@ function loadKecamatan() {
     });
 }
 
+function loadKaleka() {
+  if (isLoaded.kaleka) return;
+
+  showLoading();
+
+  fetch("api/kaleka.php")
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+
+      // totalKaleka = data.kaleka.length;
+      totalKaleka = new Set(data.kaleka.map((item) => item.id)).size;
+
+      data.kaleka.forEach((item) => {
+        const kaleka = L.polygon(item.tanah.geom_area, {
+          pane: "paneKaleka",
+          color: "#9500ff",
+          weight: 2,
+          fillOpacity: 0.35,
+        }).addTo(layerKaleka);
+
+        allPolygons.push(kaleka);
+
+        kaleka.on("click", (e) => {
+          showKalekaModal(item.id, e.latlng);
+        });
+        // const center = getCentroid(item.tanah.geom_area);
+        // buka untuk dapat pin icon marker
+        // L.marker(center).addTo(map);
+      });
+
+      updateLegend();
+      isLoaded.kaleka = true;
+      createTotalMarker(totalKaleka, "kaleka");
+    })
+    .catch((err) => {
+      console.error(err);
+      alert("Gagal memuat data kaleka");
+    })
+    .finally(() => {
+      hideLoading();
+    });
+}
+
+function loadTotalFarmer() {
+  fetch("api/total_farmer.php")
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      document.getElementById("totalLaki").innerText =
+        data.total_farmer?.find((item) => item.jenis_kelamin === "L")?.total ??
+        0;
+      document.getElementById("totalPerempuan").innerText =
+        data.total_farmer?.find((item) => item.jenis_kelamin === "P")?.total ??
+        0;
+      // document.getElementById("totalPetani").innerText =
+      //   (data.total_farmer?.find((item) => item.jenis_kelamin === "L")?.total ??
+      //     0) +
+      //   (data.total_farmer?.find((item) => item.jenis_kelamin === "P")?.total ??
+      //     0);
+      document.getElementById("totalPetani").innerText =
+        (data.total_farmer?.find((item) => item.jenis_kelamin === "L")?.total ??
+          0) +
+        (data.total_farmer?.find((item) => item.jenis_kelamin === "P")?.total ??
+          0);
+    })
+    .catch((err) => {
+      console.error(err);
+      alert("Gagal memuat data total farmer");
+    });
+}
+
 function updateLegend() {
   // kalau sudah ada, hapus dulu
   if (legend) {
@@ -337,6 +416,12 @@ function updateLegend() {
             <input type="checkbox" id="chkHutanAdat" ${layerState.hutan_adat ? "checked" : ""}>
             <span style="background:#00ff00; width:18px; height:18px; display:inline-block;"></span>
             Hutan Adat (${totalHutanAdat})
+        </div>
+
+        <div>
+            <input type="checkbox" id="chkKaleka" ${layerState.kaleka ? "checked" : ""}>
+            <span style="background:#9500ff; width:18px; height:18px; display:inline-block;"></span>
+            Kaleka (${totalKaleka})
         </div>
 
         </div>
@@ -402,6 +487,19 @@ function updateLegend() {
         }
       }),
     );
+
+    document.getElementById("chkKaleka").addEventListener(
+      "change",
+      debounce(function () {
+        layerState.kaleka = this.checked;
+        if (this.checked) {
+          loadKaleka();
+          map.addLayer(layerKaleka);
+        } else {
+          map.removeLayer(layerKaleka);
+        }
+      }),
+    );
   }, 100);
 }
 
@@ -417,7 +515,7 @@ function createTotalMarker(total, type) {
       // buka untuk dapat total marker
       // html: `
       //     <div style="
-      //         background: ${type === 'hutan_adat' ? '#00ff00' : type === 'kabupaten' ? '#00AAFF' : '#FF4400'};
+      //         background: ${type === 'hutan_adat' ? '#00ff00' : type === 'kabupaten' ? '#00AAFF' : type === 'kaleka' ? '#9500ff' : '#FF4400'};
       //         color:white;
       //         width:24px;
       //         height:24px;
@@ -843,6 +941,393 @@ function showKecamatanModal(id, latlng) {
     });
 }
 
+function showKalekaModal(id, latlng) {
+  document.querySelector(".modal-title1").innerText = "Informasi Kaleka";
+
+  new bootstrap.Modal(document.getElementById("kalekaModal")).show();
+
+  // tampilkan loading
+  document.getElementById("loadingDetail").style.display = "block";
+  document.getElementById("kalekaModal").style.display = "none";
+
+  fetch(`api/detail_polygon.php?id=${id}&&tipe=kaleka`)
+    .then((res) => res.json())
+    .then((res) => {
+      // sembunyikan loading
+      document.getElementById("loadingDetail").style.display = "none";
+      document.getElementById("kalekaModal").style.display = "block";
+
+      if (!res.status) {
+        alert("Data tidak ditemukan");
+        document.getElementById("kalekaModal").innerHTML = `
+          <p style="text-align:center;">Data tidak ditemukan</p>
+        `;
+        return;
+      }
+
+      const data = res.data;
+      console.log(id);
+      console.log(data);
+
+      // contoh isi data ke modal
+      document.getElementById("namaPanggilan").innerText =
+        data.nama_panggilan ?? "";
+      document.getElementById("namaLengkap").innerText =
+        data.nama_lengkap ?? "";
+      document.getElementById("petaniFoto").src =
+        "admin/uploads/petani/" +
+        (data.foto_profil_petani || "assets/image/petani_placeholder.jpg");
+      document.getElementById("jenisKelamin").innerText =
+        data.jenis_kelamin == "L"
+          ? "Laki-laki"
+          : data.jenis_kelamin == "P"
+            ? "Perempuan"
+            : "";
+      document.getElementById("umur").innerText = data.tanggal_lahir
+        ? new Date().getFullYear() -
+          new Date(data.tanggal_lahir).getFullYear() +
+          " tahun"
+        : "";
+      document.getElementById("statusPetani").innerText =
+        data.status_petani == "aktif"
+          ? "Aktif"
+          : data.status_petani == "nonaktif"
+            ? "Non-Aktif"
+            : "";
+      document.getElementById("alamatPetani").innerText =
+        data.alamat_petani ?? "";
+      document.getElementById("desaPetani").innerText = data.desa_petani ?? "";
+      document.getElementById("kecamatanPetani").innerText =
+        data.kecamatan_petani ?? "";
+      document.getElementById("kabupatenPetani").innerText =
+        data.kabupaten_petani ?? "";
+
+      document.getElementById("kelompokPetaniTableBody").innerHTML = `
+        <tr>
+          <td colspan="7" style="text-align:center;">Loading...</td>
+        </tr>
+      `;
+
+      // ambil data petani
+      fetch(`api/list_kelompok_petani.php?id=${data.id}`)
+        .then((res) => res.json())
+        .then((resPetani) => {
+          console.log(resPetani);
+          const tbody = document.getElementById("kelompokPetaniTableBody");
+          tbody.innerHTML = "";
+
+          // ambil data dengan aman
+          let kelompokPetaniList = [];
+
+          if (Array.isArray(resPetani.data)) {
+            kelompokPetaniList = resPetani.data;
+          } else if (Array.isArray(resPetani)) {
+            kelompokPetaniList = resPetani;
+          } else if (resPetani.data && typeof resPetani.data === "object") {
+            kelompokPetaniList = [resPetani.data]; // bungkus jadi array
+          }
+
+          if (kelompokPetaniList.length === 0) {
+            tbody.innerHTML = `
+              <tr>
+                <td colspan="7" style="text-align:center;">Tidak ada data petani</td>
+              </tr>
+            `;
+            return;
+          }
+
+          kelompokPetaniList.forEach((item) => {
+            const row = `
+              <tr>
+                <td>${item.nama_kelompok ?? "-"}</td>
+                <td>${item.kategori_kelompok ?? "-"}</td>
+                <td>${
+                  item.tanggal_gabung
+                    ? new Date(item.tanggal_gabung).toLocaleDateString(
+                        "id-ID",
+                        {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                          timeZone: "UTC",
+                        },
+                      )
+                    : ""
+                }</td>
+              </tr>
+            `;
+
+            tbody.insertAdjacentHTML("beforeend", row);
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+
+          const tbody = document.getElementById("kelompokPetaniTableBody");
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="7" style="text-align:center; color:red;">
+                Gagal memuat data petani
+              </td>
+            </tr>
+          `;
+        });
+
+      document.getElementById("namaKaleka").innerText = data.nama_kaleka ?? "";
+      document.getElementById("namaLahan").innerText = data.nama_lahan ?? "";
+      document.getElementById("legalitasLahan").innerText =
+        data.legalitas_lahan ?? "";
+      document.getElementById("luasHaTanah").innerText =
+        data.luas_ha_tanah + " Ha" ?? "";
+      document.getElementById("sejarahTanah").innerText =
+        data.sejarah_tanah ?? "";
+      document.getElementById("alamatLokasiTanah").innerText =
+        data.alamat_lokasi_tanah ?? "";
+      document.getElementById("keteranganTanah").innerText =
+        data.keterangan_tanah ?? "";
+      document.getElementById("sudahValidasiTanah").innerText =
+        data.sudah_validasi_tanah == 1 ? "Ya" : "Tidak";
+      document.getElementById("tanggalValidasiTanah").innerText =
+        data.tanggal_validasi_tanah
+          ? new Date(data.tanggal_validasi_tanah).toLocaleDateString("id-ID", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+              timeZone: "UTC",
+            })
+          : "";
+
+      document.getElementById("periodePengecekanPerairan").innerText =
+        data.periode_pengecekan_perairan
+          ? new Date(data.periode_pengecekan_perairan).toLocaleDateString(
+              "id-ID",
+              {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+                timeZone: "UTC",
+              },
+            )
+          : "";
+      document.getElementById("warnaAirPerairan").innerText =
+        data.warna_air_perairan ?? "";
+      document.getElementById("jenisPalungPerairan").innerText =
+        data.jenis_palung_perairan ?? "";
+      document.getElementById("kecepatanAliranPerairan").innerText =
+        data.kecepatan_aliran_perairan ?? "";
+      document.getElementById("kedalamanPerairan").innerText =
+        data.kedalaman_perairan + "cm" ?? "";
+      document.getElementById("lebarPerairan").innerText =
+        data.lebar_perairan + "m" ?? "";
+      document.getElementById("debitPerairan").innerText =
+        data.debit_perairan + "lps" ?? "";
+      document.getElementById("phPerairan").innerText =
+        data.ph_perairan + "pH" ?? "";
+      document.getElementById("kekeruhanPerairan").innerText =
+        data.kekeruhan_perairan + "NTU" ?? "";
+      document.getElementById("catatanPerairan").innerText =
+        data.catatan_perairan ?? "";
+
+      document.getElementById("periodePengecekanInfrastruktur").innerText =
+        data.periode_pengecekan_infrastruktur
+          ? new Date(data.periode_pengecekan_infrastruktur).toLocaleDateString(
+              "id-ID",
+              {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+                timeZone: "UTC",
+              },
+            )
+          : "";
+      document.getElementById("aksesPerjalananInfrastruktur").innerText =
+        data.akses_perjalanan_infrastruktur ?? "";
+      document.getElementById("kondisiJalanInfrastruktur").innerText =
+        data.kondisi_jalan_infrastruktur ?? "";
+      document.getElementById("jarakKeJalanInfrastruktur").innerText =
+        data.jarak_ke_jalan_infrastruktur + " km" ?? "";
+      document.getElementById("adaJembatanInfrastruktur").innerText =
+        data.ada_jembatan_infrastruktur == 1 ? "Ya" : ("Tidak" ?? "");
+      document.getElementById("adaListrikInfrastruktur").innerText =
+        data.ada_listrik_infrastruktur == 1 ? "Ya" : ("Tidak" ?? "");
+      document.getElementById("adaInternetInfrastruktur").innerText =
+        data.ada_internet_infrastruktur == 1 ? "Ya" : ("Tidak" ?? "");
+      document.getElementById("sinyalSelulerInfrastruktur").innerText =
+        data.sinyal_seluler_infrastruktur == "tidak_ada"
+          ? "Tidak Ada"
+          : data.sinyal_seluler_infrastruktur == "lemah"
+            ? "Lemah"
+            : data.sinyal_seluler_infrastruktur == "sedang"
+              ? "Sedang"
+              : data.sinyal_seluler_infrastruktur == "kuat"
+                ? "Kuat"
+                : "";
+      document.getElementById("catatanInfrastruktur").innerText =
+        data.catatan_infrastruktur ?? "";
+
+      document.getElementById("periodePengecekanLandCover").innerText =
+        data.periode_pengecekan_land_cover
+          ? new Date(data.periode_pengecekan_land_cover).toLocaleDateString(
+              "id-ID",
+              {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+                timeZone: "UTC",
+              },
+            )
+          : "";
+      document.getElementById("kategoriAreaLandCover").innerText =
+        data.kategori_area_land_cover ?? "";
+      document.getElementById("penggunaanPertanianLandCover").innerText =
+        data.penggunaan_pertanian_land_cover ?? "";
+      document.getElementById("penggunaanLainnyaLandCover").innerText =
+        data.penggunaan_lainnya_land_cover ?? "";
+      document.getElementById("persentaseTutupanLandCover").innerText =
+        data.persentase_tutupan_land_cover + "%" ?? "";
+      document.getElementById("catatanLandCover").innerText =
+        data.catatan_land_cover ?? "";
+
+      document.getElementById("periodePengecekanTopografi").innerText =
+        data.periode_pengecekan_topografi
+          ? new Date(data.periode_pengecekan_topografi).toLocaleDateString(
+              "id-ID",
+              {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+                timeZone: "UTC",
+              },
+            )
+          : "";
+      document.getElementById("lanskapTopografi").innerText =
+        data.lanskap_topografi ?? "";
+      document.getElementById("fiturTambahanTopografi").innerText =
+        data.fitur_tambahan_topografi ?? "";
+      document.getElementById("elevasiTopografi").innerText =
+        data.elevasi_topografi + " mdpl" ?? "";
+      document.getElementById("kemiringanTopografi").innerText =
+        data.kemiringan_topografi + "°" ?? "";
+      document.getElementById("rawanErosiTopografi").innerText =
+        data.rawan_erosi_topografi == 1 ? "Ya" : ("Tidak" ?? "");
+      document.getElementById("arahLerengTopografi").innerText =
+        data.arah_lereng_topografi ?? "";
+      document.getElementById("catatanTopografi").innerText =
+        data.catatan_topografi ?? "";
+
+      document.getElementById("periodePengecekanPohon").innerText =
+        data.periode_pengecekan_pohon
+          ? new Date(data.periode_pengecekan_pohon).toLocaleDateString(
+              "id-ID",
+              {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+                timeZone: "UTC",
+              },
+            )
+          : "";
+      document.getElementById("jenisPohon").innerText = data.jenis_pohon ?? "";
+      document.getElementById("fungsiPohon").innerText =
+        data.fungsi_pohon ?? "";
+      document.getElementById("jumlahPohon").innerText =
+        data.jumlah_pohon ?? "";
+      document.getElementById("diameterRata2CmPohon").innerText =
+        data.diameter_rata2_cm_pohon + "cm" ?? "";
+      document.getElementById("tinggiRata2MPohon").innerText =
+        data.tinggi_rata2_m_pohon + "m" ?? "";
+      document.getElementById("kondisiPohon").innerText =
+        data.kondisi_pohon == "baik"
+          ? "Baik"
+          : data.kondisi_pohon == "sedang"
+            ? "Sedang"
+            : data.kondisi_pohon == "buruk"
+              ? "Buruk"
+              : "";
+      document.getElementById("catatanPohon").innerText =
+        data.catatan_pohon ?? "";
+
+      // document.getElementById("petaniKelompokTableBody").innerHTML = `
+      //   <tr>
+      //     <td colspan="7" style="text-align:center;">Loading...</td>
+      //   </tr>
+      // `;
+
+      // ambil data petani
+      // fetch(`api/list_petani.php?id=${data.id_kelompok_tani}`)
+      //   .then((res) => res.json())
+      //   .then((resPetani) => {
+      //     console.log(resPetani);
+      //     const tbody = document.getElementById("petaniKelompokTableBody");
+      //     tbody.innerHTML = "";
+
+      //     // ambil data dengan aman
+      //     let petaniList = [];
+
+      //     if (Array.isArray(resPetani.data)) {
+      //       petaniList = resPetani.data;
+      //     } else if (Array.isArray(resPetani)) {
+      //       petaniList = resPetani;
+      //     } else if (resPetani.data && typeof resPetani.data === "object") {
+      //       petaniList = [resPetani.data]; // bungkus jadi array
+      //     }
+
+      //     if (petaniList.length === 0) {
+      //       tbody.innerHTML = `
+      //         <tr>
+      //           <td colspan="7" style="text-align:center;">Tidak ada data petani</td>
+      //         </tr>
+      //       `;
+      //       return;
+      //     }
+
+      //     petaniList.forEach((item) => {
+      //       const row = `
+      //         <tr>
+      //           <td>${item.nama_lengkap ?? "-"}</td>
+      //           <td>${item.nama_panggilan ?? "-"}</td>
+      //           <td>${item.jenis_kelamin === "L" ? "Laki-laki" : "Perempuan"}</td>
+      //           <td>${hitungUmur(item.tanggal_lahir)}</td>
+      //           <td>${item.status_petani === "aktif" ? "Aktif" : "Nonaktif"}</td>
+      //           <td>${item.alamat ?? "-"}</td>
+      //           <td>
+      //             ${
+      //               item.foto
+      //                 ? `<img src="uploads/petani/${item.foto}" width="50" height="50" class="img-fluid rounded-circle">`
+      //                 : `<img src="assets/image/petani_placeholder.jpg" width="50" height="50" class="img-fluid rounded-circle">`
+      //             }
+      //           </td>
+      //         </tr>
+      //       `;
+
+      //       tbody.insertAdjacentHTML("beforeend", row);
+      //     });
+      //   })
+      //   .catch((err) => {
+      //     console.error(err);
+
+      //     const tbody = document.getElementById("petaniKelompokTableBody");
+      //     tbody.innerHTML = `
+      //       <tr>
+      //         <td colspan="7" style="text-align:center; color:red;">
+      //           Gagal memuat data petani
+      //         </td>
+      //       </tr>
+      //     `;
+      //   });
+    })
+    .catch((err) => {
+      console.error(err);
+
+      document.getElementById("loadingDetail").style.display = "none";
+      document.getElementById("kalekaModal").style.display = "block";
+
+      document.getElementById("kalekaModal").innerHTML = `
+        <p style="text-align:center; color:red;">Gagal memuat data</p>
+      `;
+    });
+}
+
 function getCentroid(coords) {
   let lat = 0,
     lng = 0;
@@ -876,6 +1361,7 @@ function hitungUmur(tanggalLahir) {
 
 loadProvinsi();
 loadKabupaten();
+loadTotalFarmer();
 
 function showLoading() {
   document.getElementById("mapLoading").style.display = "block";

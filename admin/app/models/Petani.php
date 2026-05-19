@@ -44,9 +44,9 @@ class Petani
     {
 
         $sql = "INSERT INTO t_petani
-            (nik,no_kk,nama_lengkap,nama_panggilan,jenis_kelamin,tanggal_lahir,nomor_hp,id_desa,alamat,status_petani,is_active,created_by)
+            (nik,no_kk,nama_lengkap,nama_panggilan,jenis_kelamin,tanggal_lahir,nomor_hp,id_desa,alamat,status_petani,foto_profil_petani,is_active,created_by)
             VALUES
-            (:nik,:no_kk,:nama_lengkap,:nama_panggilan,:jenis_kelamin,:tanggal_lahir,:nomor_hp,:id_desa,:alamat,:status_petani,:is_active,:created_by)";
+            (:nik,:no_kk,:nama_lengkap,:nama_panggilan,:jenis_kelamin,:tanggal_lahir,:nomor_hp,:id_desa,:alamat,:status_petani,:foto_profil_petani,:is_active,:created_by)";
 
         $stmt = $this->pdo->prepare($sql);
 
@@ -68,6 +68,7 @@ class Petani
             id_desa=:id_desa,
             alamat=:alamat,
             status_petani=:status_petani,
+            foto_profil_petani=:foto_profil_petani,
             is_active=:is_active,
             updated_by=:updated_by
             WHERE id=:id";
