@@ -162,6 +162,83 @@
             height: 18px;
             cursor: pointer;
         }
+
+        .language-dropdown {
+            position: relative;
+        }
+
+        /* .language-btn {
+            width: 95px;
+            height: 55px;
+            border-radius: 40px;
+            background: transparent;
+            border: 3px solid rgba(255, 255, 255, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 18px;
+            color: white;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+        }
+
+        .language-btn:hover,
+        .language-btn:focus,
+        .language-btn:active {
+            background: transparent !important;
+            border-color: white !important;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2) !important;
+        } */
+
+        .selected-flag {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .language-menu {
+            min-width: 95px !important;
+            width: 95px;
+            border-radius: 25px;
+            padding: 12px 0;
+            border: none;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .language-option {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px 0;
+            background: transparent !important;
+        }
+
+        .dropdown-flag {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            object-fit: cover;
+            transition: 0.2s;
+        }
+
+        .dropdown-flag:hover {
+            transform: scale(1.1);
+        }
+
+        /* .language-dropdown .dropdown-toggle {
+            border-radius: 10px;
+            padding: 8px 14px;
+        } */
+
+        /* .language-dropdown .dropdown-menu {
+            border-radius: 20px;
+            overflow: hidden;
+        } */
+
+        /* .language-dropdown .dropdown-item {
+            padding: 10px 14px;
+        } */
     </style>
 
     <!--

@@ -22,13 +22,14 @@ include 'partials/header.php';
                     <div class="col-lg-7 col-12">
                         <div class="hero-text">
                             <div class="hero-title-wrap d-flex align-items-center mb-4">
-                                <img src="images/dayak1.png" class="avatar-image avatar-image-large img-fluid" alt="">
+                                <img src="images/dayak1.jpeg" class="avatar-image avatar-image-large img-fluid" alt="">
 
-                                <h1 class="hero-title ms-3 mb-0">Hello teman Borneologi!</h1>
+                                <h1 class="hero-title ms-3 mb-0" data-lang="hero_title">Hello teman Borneologi!</h1>
                             </div>
 
-                            <h2 class="mb-4">Borneologi menyajikan peta lahan interaktif.</h2>
-                            <p class="mb-4"><a class="custom-btn btn custom-link" href="#section_2">Lihat Peta</a></p>
+                            <h2 class="mb-4" data-lang="hero_subtitle">Borneologi menyajikan peta lahan interaktif.</h2>
+                            <p class="mb-4"><a class="custom-btn btn custom-link" href="#section_2"
+                                    data-lang="lihat_peta">Lihat Peta</a></p>
                         </div>
                     </div>
 
@@ -53,23 +54,23 @@ include 'partials/header.php';
                 <div class="row">
 
                     <div class="col-lg-12 col-12">
-                        <h3 class="pt-2 mb-3">Peta Sebaran</h3>
+                        <h3 class="pt-2 mb-3" data-lang="text_peta_sebaran">Peta Sebaran</h3>
                         <div class="map-wrapper position-relative">
                             <!-- INFO BOX -->
                             <div class="map-stats">
                                 <div class="stat-box">
-                                    <span>Total</span>
-                                    <span>Petani</span>
+                                    <span data-lang="text_total">Total</span>
+                                    <span data-lang="text_petani">Farmers</span>
                                     <h5 id="totalPetani"></h5>
                                 </div>
                                 <div class="stat-box">
-                                    <span>Petani</span>
-                                    <span>Laki-laki</span>
+                                    <span data-lang="text_petani">Farmers</span>
+                                    <span data-lang="text_laki_laki">Male</span>
                                     <h5 id="totalLaki"></h5>
                                 </div>
                                 <div class="stat-box">
-                                    <span>Petani</span>
-                                    <span>Perempuan</span>
+                                    <span data-lang="text_petani">Farmers</span>
+                                    <span data-lang="text_perempuan">Female</span>
                                     <h5 id="totalPerempuan"></h5>
                                 </div>
                             </div>
@@ -87,7 +88,7 @@ include 'partials/header.php';
                                 z-index:9999;
                                 display:none;
                                 ">
-                                ⏳ Memuat data...
+                                ⏳ Loading...
                             </div>
 
                             <div id="loadingDetail" style="
@@ -105,7 +106,7 @@ include 'partials/header.php';
                                 text-align:center;
                                 ">
                                 <div class="spinner-border text-primary" role="status"></div>
-                                <p class="mt-2">Memuat data...</p>
+                                <p class="mt-2">Loading...</p>
                             </div>
                             <div id="map" class="about-image img-fluid" alt=""></div>
                         </div>
@@ -116,7 +117,7 @@ include 'partials/header.php';
                                 <div class="modal-content">
 
                                     <div class="modal-header">
-                                        <h5 class="modal-title1"></h5>
+                                        <h5 id="modal-title-hutan-adat"></h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                     </div>
 
@@ -125,19 +126,19 @@ include 'partials/header.php';
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link active" id="tab1hutanAdat-tab"
                                                     data-bs-toggle="tab" data-bs-target="#tab1hutanAdat" type="button"
-                                                    role="tab" aria-controls="tab1hutanAdat" aria-selected="false">Hutan
+                                                    role="tab" aria-controls="tab1hutanAdat" aria-selected="false" data-lang="text_hutan_adat">Hutan
                                                     Adat</button>
                                             </li>
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link" id="tab2kelompok-tab" data-bs-toggle="tab"
                                                     data-bs-target="#tab2kelompok" type="button" role="tab"
-                                                    aria-controls="tab2kelompok" aria-selected="true">Masyarakat Hukum
+                                                    aria-controls="tab2kelompok" aria-selected="true" data-lang="text_masyarakat_hukum_adat">Masyarakat Hukum
                                                     Adat</button>
                                             </li>
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link" id="tab3tanah-tab" data-bs-toggle="tab"
                                                     data-bs-target="#tab3tanah" type="button" role="tab"
-                                                    aria-controls="tab3tanah" aria-selected="false">Tanah</button>
+                                                    aria-controls="tab3tanah" aria-selected="false" data-lang="text_tanah">Tanah</button>
                                             </li>
                                         </ul>
 
@@ -146,36 +147,36 @@ include 'partials/header.php';
                                                 aria-labelledby="tab1hutanAdat-tab">
                                                 <div class="row">
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Nama
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_nama_hutan_adat">Nama
                                                             Hutan Adat</strong>
                                                         <p class="mb-0" id="namaHutanAdat"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Nomor SK</strong>
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_nomor_sk">Nomor SK</strong>
                                                         <p class="mb-0" id="nomorSk"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Tanggal
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_tanggal_sk">Tanggal
                                                             SK</strong>
                                                         <p class="mb-0" id="tanggalSk"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Status
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_status_kawasan">Status
                                                             Kawasan</strong>
                                                         <p class="mb-0" id="statusKawasan"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Nama
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_nama_desa">Nama
                                                             Desa</strong>
                                                         <p class="mb-0" id="namaDesaHutanAdat"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Nama
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_nama_kecamatan">Nama
                                                             Kecamatan</strong>
                                                         <p class="mb-0" id="namaKecamatanHutanAdat"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Nama
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_nama_kabupaten">Nama
                                                             Kabupaten</strong>
                                                         <p class="mb-0" id="namaKabupatenHutanAdat"></p>
                                                     </div>
@@ -185,58 +186,58 @@ include 'partials/header.php';
                                                 aria-labelledby="tab2kelompok-tab">
                                                 <div class="row">
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Nama Masyarakat
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_nama_masyarakat_hukum_adat">Nama Masyarakat
                                                             Hukum Adat
                                                         </strong>
                                                         <p class="mb-0" id="namaMasyarakatHukumAdat"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Kategori
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_kategori_masyarakat_hukum_adat">Kategori
                                                             Masyarakat Hukum Adat
                                                         </strong>
                                                         <p class="mb-0" id="namaKategoriKelompok"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Tahun Bentuk
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_tahun_bentuk">Tahun Bentuk
                                                         </strong>
                                                         <p class="mb-0" id="tahunBentuk"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Status Masyarakat
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_status_masyarakat_hukum_adat">Status Masyarakat
                                                             Hukum Adat
                                                         </strong>
                                                         <p class="mb-0" id="statusMasyarakatHukumAdat"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Total Anggota
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_total_anggota">Total Anggota
                                                         </strong>
                                                         <p class="mb-0" id="totalAnggotaMasyarakatHukumAdat"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Alamat Masyarakat
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_alamat_masyarakat_hukum_adat">Alamat Masyarakat
                                                             Hukum Adat
                                                         </strong>
                                                         <p class="mb-0" id="alamatMasyarakatHukumAdat"></p>
                                                     </div>
                                                     <div class="col-lg-6 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Deskripsi
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_deskripsi">Deskripsi
                                                         </strong>
                                                         <p class="mb-0" id="deskripsiMasyarakatHukumAdat"></p>
                                                     </div>
 
                                                     <div class="col-lg-12 col-md-12 col-12">
-                                                        <strong class="site-footer-title d-block mb-3">Pengurus
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_pengurus_masyarakat_hukum_adat">Pengurus
                                                             Masyarakat Hukum Adat
                                                         </strong>
                                                         <table class="profile-thumb">
                                                             <tr>
-                                                                <th>Nama Lengkap</th>
-                                                                <th>Nama Panggilan</th>
-                                                                <th>Jenis Kelamin</th>
-                                                                <th>Umur</th>
-                                                                <th>Status Petani</th>
-                                                                <th>Alamat</th>
-                                                                <th>Foto</th>
+                                                                <th data-lang="text_nama_lengkap">Nama Lengkap</th>
+                                                                <th data-lang="text_nama_panggilan">Nama Panggilan</th>
+                                                                <th data-lang="text_jenis_kelamin">Jenis Kelamin</th>
+                                                                <th data-lang="text_umur">Umur</th>
+                                                                <th data-lang="text_status_petani">Status Petani</th>
+                                                                <th data-lang="text_alamat">Alamat</th>
+                                                                <th data-lang="text_foto">Foto</th>
                                                             </tr>
                                                             <tbody id="petaniKelompokTableBody">
                                                             </tbody>
@@ -248,43 +249,43 @@ include 'partials/header.php';
                                                 aria-labelledby="tab3tanah-tab">
                                                 <div class="row">
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Nama
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_nama_lahan">Nama
                                                             Lahan</strong>
                                                         <p class="mb-0" id="namaLahanHA"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Legalitas
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_legalitas">Legalitas
                                                         </strong>
                                                         <p class="mb-0" id="legalitasLahanHA"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Luas
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_luas_lahan">Luas
                                                         </strong>
                                                         <p class="mb-0" id="luasHaHA"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Sejarah
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_sejarah_lahan">Sejarah
                                                         </strong>
                                                         <p class="mb-0" id="sejarahHA"></p>
                                                     </div>
                                                     <div class="col-lg-6 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Alamat Lokasi
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_alamat_lokasi_lahan">Alamat Lokasi
                                                         </strong>
                                                         <p class="mb-0" id="alamatLokasiHA"></p>
                                                     </div>
                                                     <div class="col-lg-6 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Keterangan
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_keterangan_lahan">Keterangan
                                                         </strong>
                                                         <p class="mb-0" id="keteranganHA"></p>
                                                     </div>
 
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Sudah
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_sudah_validasi">Sudah
                                                             Validasi</strong>
                                                         <p class="mb-0" id="sudahValidasiHA"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Tanggal
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_tanggal_validasi">Tanggal
                                                             Validasi</strong>
                                                         <p class="mb-0" id="tanggalValidasiHA"></p>
                                                     </div>
@@ -293,13 +294,13 @@ include 'partials/header.php';
                                                         <p class="mb-0" id="centroidLatHutanAdat"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Longitude
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_longitude">Longitude
                                                         </strong>
                                                         <p class="mb-0" id="centroidLngHutanAdat"></p>
                                                     </div>
 
                                                     <div class="col-lg-12 col-md-12 col-12">
-                                                        <strong class="site-footer-title d-block mb-3">Polygon
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_polygon">Polygon
                                                         </strong>
                                                         <table class="profile-thumb">
                                                             <tbody id="polygonHutanAdatTableBody"></tbody>
@@ -319,7 +320,7 @@ include 'partials/header.php';
                                 <div class="modal-content">
 
                                     <div class="modal-header">
-                                        <h5 class="modal-title1"></h5>
+                                        <h5 id="modal-title-provinsi"></h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                     </div>
 
@@ -328,20 +329,23 @@ include 'partials/header.php';
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link active" id="tab1Provinsi-tab"
                                                     data-bs-toggle="tab" data-bs-target="#tab1Provinsi" type="button"
-                                                    role="tab" aria-controls="tab1Provinsi" aria-selected="false">Data
+                                                    role="tab" aria-controls="tab1Provinsi" aria-selected="false"
+                                                    data-lang="text_data_provinsi">Data
                                                     Provinsi</button>
                                             </li>
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link" id="tab2ProvinsiKabupaten-tab"
                                                     data-bs-toggle="tab" data-bs-target="#tab2ProvinsiKabupaten"
                                                     type="button" role="tab" aria-controls="tab2ProvinsiKabupaten"
-                                                    aria-selected="true">Data Kabupaten</button>
+                                                    aria-selected="true" data-lang="text_data_kabupaten">Data
+                                                    Kabupaten</button>
                                             </li>
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link" id="tab3ProvinsiKecamatan-tab"
                                                     data-bs-toggle="tab" data-bs-target="#tab3ProvinsiKecamatan"
                                                     type="button" role="tab" aria-controls="tab3ProvinsiKecamatan"
-                                                    aria-selected="false">Data Kecamatan</button>
+                                                    aria-selected="false" data-lang="text_data_kecamatan">Data
+                                                    Kecamatan</button>
                                             </li>
                                         </ul>
 
@@ -350,12 +354,14 @@ include 'partials/header.php';
                                                 aria-labelledby="tab1Provinsi-tab">
                                                 <div class="row">
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Nama
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_nama_provinsi">Nama
                                                             Provinsi</strong>
                                                         <p class="mb-0" id="namaProvinsi"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Luas
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_luas_provinsi">Luas
                                                             Provinsi</strong>
                                                         <p class="mb-0" id="luasProvinsi"></p>
                                                     </div>
@@ -365,13 +371,14 @@ include 'partials/header.php';
                                                 aria-labelledby="tab2ProvinsiKabupaten-tab">
                                                 <div class="row">
                                                     <div class="col-lg-12 col-md-12 col-12">
-                                                        <strong class="site-footer-title d-block mb-3">List Kabupaten
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_list_kabupaten">List Kabupaten
                                                         </strong>
                                                         <table class="profile-thumb">
                                                             <tr>
-                                                                <th>Nama Kabupaten</th>
-                                                                <th>Kode Kabupaten</th>
-                                                                <th>Luas Kabupaten</th>
+                                                                <th data-lang="text_nama_kabupaten">Nama Kabupaten</th>
+                                                                <th data-lang="text_kode_kabupaten">Kode Kabupaten</th>
+                                                                <th data-lang="text_luas_kabupaten">Luas Kabupaten</th>
                                                             </tr>
                                                             <tbody id="petaniKelompokTableBody">
                                                             </tbody>
@@ -383,13 +390,14 @@ include 'partials/header.php';
                                                 aria-labelledby="tab3ProvinsiKecamatan-tab">
                                                 <div class="row">
                                                     <div class="col-lg-12 col-md-12 col-12">
-                                                        <strong class="site-footer-title d-block mb-3">List Kecamatan
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_list_kecamatan">List Kecamatan
                                                         </strong>
                                                         <table class="profile-thumb">
                                                             <tr>
-                                                                <th>Nama Kecamatan</th>
-                                                                <th>Kode Kecamatan</th>
-                                                                <th>Luas Kecamatan</th>
+                                                                <th data-lang="text_nama_kecamatan">Nama Kecamatan</th>
+                                                                <th data-lang="text_kode_kecamatan">Kode Kecamatan</th>
+                                                                <th data-lang="text_luas_kecamatan">Luas Kecamatan</th>
                                                             </tr>
                                                             <tbody id="petaniKelompokTableBody">
                                                             </tbody>
@@ -409,7 +417,7 @@ include 'partials/header.php';
                                 <div class="modal-content">
 
                                     <div class="modal-header">
-                                        <h5 class="modal-title1"></h5>
+                                        <h5 id="modal-title-kabupaten"></h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                     </div>
 
@@ -418,14 +426,16 @@ include 'partials/header.php';
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link active" id="tab1Kabupaten-tab"
                                                     data-bs-toggle="tab" data-bs-target="#tab1Kabupaten" type="button"
-                                                    role="tab" aria-controls="tab1Kabupaten" aria-selected="false">Data
+                                                    role="tab" aria-controls="tab1Kabupaten" aria-selected="false"
+                                                    data-lang="text_data_kabupaten">Data
                                                     Kabupaten</button>
                                             </li>
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link" id="tab2KabupatenKecamatan-tab"
                                                     data-bs-toggle="tab" data-bs-target="#tab2KabupatenKecamatan"
                                                     type="button" role="tab" aria-controls="tab2KabupatenKecamatan"
-                                                    aria-selected="true">Data Kecamatan</button>
+                                                    aria-selected="true" data-lang="text_data_kecamatan">Data
+                                                    Kecamatan</button>
                                             </li>
                                         </ul>
 
@@ -434,12 +444,14 @@ include 'partials/header.php';
                                                 aria-labelledby="tab1Kabupaten-tab">
                                                 <div class="row">
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Nama
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_nama_kabupaten">Nama
                                                             Kabupaten</strong>
                                                         <p class="mb-0" id="namaKabupaten"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Luas
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_luas_kabupaten">Luas
                                                             Kabupaten</strong>
                                                         <p class="mb-0" id="luasKabupaten"></p>
                                                     </div>
@@ -449,13 +461,14 @@ include 'partials/header.php';
                                                 aria-labelledby="tab2KabupatenKecamatan-tab">
                                                 <div class="row">
                                                     <div class="col-lg-12 col-md-12 col-12">
-                                                        <strong class="site-footer-title d-block mb-3">List Kecamatan
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_list_kecamatan">List Kecamatan
                                                         </strong>
                                                         <table class="profile-thumb">
                                                             <tr>
-                                                                <th>Nama Kecamatan</th>
-                                                                <th>Kode Kecamatan</th>
-                                                                <th>Luas Kecamatan</th>
+                                                                <th data-lang="text_nama_kecamatan">Nama Kecamatan</th>
+                                                                <th data-lang="text_kode_kecamatan">Kode Kecamatan</th>
+                                                                <th data-lang="text_luas_kecamatan">Luas Kecamatan</th>
                                                             </tr>
                                                             <tbody id="petaniKelompokTableBody">
                                                             </tbody>
@@ -475,7 +488,7 @@ include 'partials/header.php';
                                 <div class="modal-content">
 
                                     <div class="modal-header">
-                                        <h5 class="modal-title1"></h5>
+                                        <h5 id="modal-title-kecamatan"></h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                     </div>
 
@@ -484,7 +497,8 @@ include 'partials/header.php';
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link active" id="tab1Kecamatan-tab"
                                                     data-bs-toggle="tab" data-bs-target="#tab1Kecamatan" type="button"
-                                                    role="tab" aria-controls="tab1Kecamatan" aria-selected="false">Data
+                                                    role="tab" aria-controls="tab1Kecamatan" aria-selected="false"
+                                                    data-lang="text_data_kecamatan">Data
                                                     Kecamatan</button>
                                             </li>
                                         </ul>
@@ -494,12 +508,14 @@ include 'partials/header.php';
                                                 aria-labelledby="tab1Kecamatan-tab">
                                                 <div class="row">
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Nama
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_nama_kecamatan">Nama
                                                             Kecamatan</strong>
                                                         <p class="mb-0" id="namaKecamatan"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Luas
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_luas_kecamatan">Luas
                                                             Kecamatan</strong>
                                                         <p class="mb-0" id="luasKecamatan"></p>
                                                     </div>
@@ -511,13 +527,13 @@ include 'partials/header.php';
                             </div>
                         </div>
 
-                        <!-- Modal Informasi Hutan Adat -->
+                        <!-- Modal Informasi Kaleka -->
                         <div class="modal fade" id="kalekaModal" tabindex="0">
                             <div class="modal-dialog modal-xl modal-dialog-scrollable">
                                 <div class="modal-content">
 
                                     <div class="modal-header">
-                                        <h5 class="modal-title2"></h5>
+                                        <h5 id="modal-title-kaleka"></h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                     </div>
 
@@ -527,22 +543,22 @@ include 'partials/header.php';
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab"
                                                     data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1"
-                                                    aria-selected="true">Petani</button>
+                                                    aria-selected="true" data-lang="text_petani">Petani</button>
                                             </li>
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link" id="tab2-tab" data-bs-toggle="tab"
                                                     data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2"
-                                                    aria-selected="false">Tanah</button>
+                                                    aria-selected="false" data-lang="text_tanah">Tanah</button>
                                             </li>
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link" id="tab3-tab" data-bs-toggle="tab"
                                                     data-bs-target="#tab3" type="button" role="tab" aria-controls="tab3"
-                                                    aria-selected="false">Obervasi</button>
+                                                    aria-selected="false" data-lang="text_observasi">Obervasi</button>
                                             </li>
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link" id="tab4-tab" data-bs-toggle="tab"
                                                     data-bs-target="#tab4" type="button" role="tab" aria-controls="tab4"
-                                                    aria-selected="false">Hasil</button>
+                                                    aria-selected="false" data-lang="text_hasil">Hasil</button>
                                             </li>
                                         </ul>
 
@@ -567,7 +583,8 @@ include 'partials/header.php';
                                                     </div>
 
                                                     <div class="col-lg-4 col-md-6 col-12">
-                                                        <strong class="site-footer-title d-block mb-3">Data
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_data_pribadi">Data
                                                             Pribadi</strong>
                                                         <ul class="footer-menu">
                                                             <li class="footer-menu-item"><a class="footer-menu-link"
@@ -581,7 +598,8 @@ include 'partials/header.php';
                                                             </li>
                                                         </ul>
 
-                                                        <strong class="site-footer-title d-block mt-4 mb-3">Alamat
+                                                        <strong class="site-footer-title d-block mt-4 mb-3"
+                                                            data-lang="text_alamat">Alamat
                                                         </strong>
                                                         <p class="mb-0" id="alamatPetani"></p>
                                                         <ul class="footer-menu mt-2 mb-3">
@@ -598,13 +616,15 @@ include 'partials/header.php';
                                                     </div>
 
                                                     <div class="col-lg-5 col-md-6 col-12">
-                                                        <strong class="site-footer-title d-block mb-3">Kelompok Petani
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_kelompok_petani">Kelompok Petani
                                                         </strong>
                                                         <table class="profile-thumb">
                                                             <tr>
-                                                                <th>Kelompok Tani</th>
-                                                                <th>Kategori Kelompok</th>
-                                                                <th>Tahun Gabung</th>
+                                                                <th data-lang="text_kelompok_tani">Kelompok Tani</th>
+                                                                <th data-lang="text_kategori_kelompok">Kategori Kelompok
+                                                                </th>
+                                                                <th data-lang="text_tahun_gabung">Tahun Gabung</th>
                                                             </tr>
                                                             <tbody id="kelompokPetaniTableBody">
                                                             </tbody>
@@ -616,63 +636,72 @@ include 'partials/header.php';
                                                 aria-labelledby="tab2-tab">
                                                 <div class="row">
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Nama
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_nama_kaleka">Nama
                                                             Kaleka</strong>
                                                         <p class="mb-0" id="namaKaleka"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Nama
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_nama_lahan">Nama
                                                             Lahan</strong>
                                                         <p class="mb-0" id="namaLahan"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Legalitas
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_legalitas">Legalitas
                                                         </strong>
                                                         <p class="mb-0" id="legalitasLahan"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Luas
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_luas_lahan">Luas
                                                         </strong>
                                                         <p class="mb-0" id="luasHaTanah"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Sejarah
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_sejarah_lahan">Sejarah
                                                         </strong>
                                                         <p class="mb-0" id="sejarahTanah"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Alamat Lokasi
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_alamat_lokasi_lahan">Alamat Lokasi
                                                         </strong>
                                                         <p class="mb-0" id="alamatLokasiTanah"></p>
                                                     </div>
                                                     <div class="col-lg-6 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Keterangan
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_keterangan">Keterangan
                                                         </strong>
                                                         <p class="mb-0" id="keteranganTanah"></p>
                                                     </div>
 
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Sudah
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_sudah_validasi">Sudah
                                                             Validasi</strong>
                                                         <p class="mb-0" id="sudahValidasiTanah"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Tanggal
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_tanggal_validasi">Tanggal
                                                             Validasi</strong>
                                                         <p class="mb-0" id="tanggalValidasiTanah"></p>
                                                     </div>
                                                     <!-- <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Latitude</strong>
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_latitude">Latitude</strong>
                                                         <p class="mb-0" id="centroidLat"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3">Longitude
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_longitude">Longitude
                                                         </strong>
                                                         <p class="mb-0" id="centroidLng"></p>
                                                     </div>
 
                                                     <div class="col-lg-12 col-md-12 col-12">
-                                                        <strong class="site-footer-title d-block mb-3">Polygon
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_polygon">Polygon
                                                         </strong>
                                                         <table class="profile-thumb">
                                                             <tbody id="polygonTableBody"></tbody>
@@ -688,7 +717,8 @@ include 'partials/header.php';
                                                             <li class="nav-item" role="presentation">
                                                                 <button class="nav-link active" id="tab31-tab"
                                                                     data-bs-toggle="tab" data-bs-target="#tab31"
-                                                                    type="button" role="tab">
+                                                                    type="button" role="tab"
+                                                                    data-lang="text_perairan_observasi">
                                                                     Perairan Observasi
                                                                 </button>
                                                             </li>
@@ -696,7 +726,8 @@ include 'partials/header.php';
                                                             <li class="nav-item" role="presentation">
                                                                 <button class="nav-link" id="tab32-tab"
                                                                     data-bs-toggle="tab" data-bs-target="#tab32"
-                                                                    type="button" role="tab">
+                                                                    type="button" role="tab"
+                                                                    data-lang="text_infrastruktur_observasi">
                                                                     Infrastruktur Observasi
                                                                 </button>
                                                             </li>
@@ -704,7 +735,8 @@ include 'partials/header.php';
                                                             <li class="nav-item" role="presentation">
                                                                 <button class="nav-link" id="tab33-tab"
                                                                     data-bs-toggle="tab" data-bs-target="#tab33"
-                                                                    type="button" role="tab">
+                                                                    type="button" role="tab"
+                                                                    data-lang="text_land_cover_observasi">
                                                                     Land Cover Observasi
                                                                 </button>
                                                             </li>
@@ -712,7 +744,8 @@ include 'partials/header.php';
                                                             <li class="nav-item" role="presentation">
                                                                 <button class="nav-link" id="tab34-tab"
                                                                     data-bs-toggle="tab" data-bs-target="#tab34"
-                                                                    type="button" role="tab">
+                                                                    type="button" role="tab"
+                                                                    data-lang="text_topografi_observasi">
                                                                     Topografi Observasi
                                                                 </button>
                                                             </li>
@@ -720,7 +753,8 @@ include 'partials/header.php';
                                                             <li class="nav-item" role="presentation">
                                                                 <button class="nav-link" id="tab35-tab"
                                                                     data-bs-toggle="tab" data-bs-target="#tab35"
-                                                                    type="button" role="tab">
+                                                                    type="button" role="tab"
+                                                                    data-lang="text_pohon_observasi">
                                                                     Pohon Observasi
                                                                 </button>
                                                             </li>
@@ -734,70 +768,74 @@ include 'partials/header.php';
                                                                 role="tabpanel">
                                                                 <div class="row">
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Periode
-                                                                            Pengecekan
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_periode_pengecekan">
+                                                                            Periode Pengecekan
                                                                         </strong>
                                                                         <p class="mb-0" id="periodePengecekanPerairan">
                                                                         </p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Warna
-                                                                            Air
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_warna_air">
+                                                                            Warna Air
                                                                         </strong>
                                                                         <p class="mb-0" id="warnaAirPerairan"></p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Jenis
-                                                                            Palung
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_jenis_palung">
+                                                                            Jenis Palung
                                                                         </strong>
                                                                         <p class="mb-0" id="jenisPalungPerairan"></p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Kecepatan
-                                                                            Aliran
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_kecepatan_aliran">
+                                                                            Kecepatan Aliran
                                                                         </strong>
                                                                         <p class="mb-0" id="kecepatanAliranPerairan">
                                                                         </p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Kedalaman
-                                                                            Air
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_kedalaman_air">
+                                                                            Kedalaman Air
                                                                         </strong>
                                                                         <p class="mb-0" id="kedalamanPerairan"></p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Lebar
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_lebar">
+                                                                            Lebar
                                                                         </strong>
                                                                         <p class="mb-0" id="lebarPerairan"></p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Debit
-                                                                            Air
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_debit_air">
+                                                                            Debit Air
                                                                         </strong>
                                                                         <p class="mb-0" id="debitPerairan"></p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">pH
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_ph">
+                                                                            pH
                                                                         </strong>
                                                                         <p class="mb-0" id="phPerairan"></p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Kekeruhan
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_kekeruhan">
+                                                                            Kekeruhan
                                                                         </strong>
                                                                         <p class="mb-0" id="kekeruhanPerairan"></p>
                                                                     </div>
                                                                     <div class="col-lg-12 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Catatan
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_catatan">
+                                                                            Catatan
                                                                         </strong>
                                                                         <p class="mb-0" id="catatanPerairan"></p>
                                                                     </div>
@@ -807,72 +845,73 @@ include 'partials/header.php';
                                                             <div class="tab-pane fade" id="tab32" role="tabpanel">
                                                                 <div class="row">
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Periode
-                                                                            Pengecekan
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_periode_pengecekan">
+                                                                            Periode Pengecekan
                                                                         </strong>
                                                                         <p class="mb-0"
                                                                             id="periodePengecekanInfrastruktur"></p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Akses
-                                                                            Perjalanan
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_akses_perjalanan">
+                                                                            Akses Perjalanan
                                                                         </strong>
                                                                         <p class="mb-0"
                                                                             id="aksesPerjalananInfrastruktur"></p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Kondisi
-                                                                            Jalan
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_kondisi_jalan">
+                                                                            Kondisi Jalan
                                                                         </strong>
                                                                         <p class="mb-0" id="kondisiJalanInfrastruktur">
                                                                         </p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Jarak
-                                                                            ke Jalan
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_jarak_ke_jalan">
+                                                                            Jarak ke Jalan
                                                                         </strong>
                                                                         <p class="mb-0" id="jarakKeJalanInfrastruktur">
                                                                         </p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Ada
-                                                                            Jembatan
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_ada_jembatan">
+                                                                            Ada Jembatan
                                                                         </strong>
                                                                         <p class="mb-0" id="adaJembatanInfrastruktur">
                                                                         </p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Ada
-                                                                            Listrik
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_ada_listrik">
+                                                                            Ada Listrik
                                                                         </strong>
                                                                         <p class="mb-0" id="adaListrikInfrastruktur">
                                                                         </p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Ada
-                                                                            Internet
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_ada_internet">
+                                                                            Ada Internet
                                                                         </strong>
                                                                         <p class="mb-0" id="adaInternetInfrastruktur">
                                                                         </p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Sinyal
-                                                                            Seluler
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_sinyal_seluler">
+                                                                            Sinyal Seluler
                                                                         </strong>
                                                                         <p class="mb-0" id="sinyalSelulerInfrastruktur">
                                                                         </p>
                                                                     </div>
                                                                     <div class="col-lg-12 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Catatan
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_catatan">
+                                                                            Catatan
                                                                         </strong>
                                                                         <p class="mb-0" id="catatanInfrastruktur"></p>
                                                                     </div>
@@ -882,47 +921,48 @@ include 'partials/header.php';
                                                             <div class="tab-pane fade" id="tab33" role="tabpanel">
                                                                 <div class="row">
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Periode
-                                                                            Pengecekan
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_periode_pengecekan">
+                                                                            Periode Pengecekan
                                                                         </strong>
                                                                         <p class="mb-0" id="periodePengecekanLandCover">
                                                                         </p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Kategori
-                                                                            Area
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_kategori_area">
+                                                                            Kategori Area
                                                                         </strong>
                                                                         <p class="mb-0" id="kategoriAreaLandCover"></p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Penggunaan
-                                                                            Pertanian
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_penggunaan_pertanian">
+                                                                            Penggunaan Pertanian
                                                                         </strong>
                                                                         <p class="mb-0"
                                                                             id="penggunaanPertanianLandCover"></p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Penggunaan
-                                                                            Lainnya
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_penggunaan_lainnya">
+                                                                            Penggunaan Lainnya
                                                                         </strong>
                                                                         <p class="mb-0" id="penggunaanLainnyaLandCover">
                                                                         </p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Persentase
-                                                                            Tutupan
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_persentase_tutupan">
+                                                                            Persentase Tutupan
                                                                         </strong>
                                                                         <p class="mb-0" id="persentaseTutupanLandCover">
                                                                         </p>
                                                                     </div>
                                                                     <div class="col-lg-12 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Catatan
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_catatan">
+                                                                            Catatan
                                                                         </strong>
                                                                         <p class="mb-0" id="catatanLandCover"></p>
                                                                     </div>
@@ -932,58 +972,56 @@ include 'partials/header.php';
                                                             <div class="tab-pane fade" id="tab34" role="tabpanel">
                                                                 <div class="row">
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Periode
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_periode_pengecekan">Periode
                                                                             Pengecekan
                                                                         </strong>
                                                                         <p class="mb-0" id="periodePengecekanTopografi">
                                                                         </p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Lanskap
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_lanskap">Lanskap
                                                                         </strong>
                                                                         <p class="mb-0" id="lanskapTopografi"></p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Fitur
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_fitur_tambahan">Fitur
                                                                             Tambahan
                                                                         </strong>
                                                                         <p class="mb-0" id="fiturTambahanTopografi"></p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Elevasi
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_elevasi">Elevasi
                                                                             mdpl
                                                                         </strong>
                                                                         <p class="mb-0" id="elevasiTopografi"></p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Kemiringan
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_kemiringan_derajat">Kemiringan
                                                                             Derajat
                                                                         </strong>
                                                                         <p class="mb-0" id="kemiringanTopografi">
                                                                         </p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Rawan
-                                                                            Erosi
-                                                                        </strong>
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_rawan_erosi">Rawan
+                                                                            Erosi</strong>
                                                                         <p class="mb-0" id="rawanErosiTopografi"></p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Arah
-                                                                            Lereng
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_arah_lereng">Arah Lereng
                                                                         </strong>
                                                                         <p class="mb-0" id="arahLerengTopografi"></p>
                                                                     </div>
                                                                     <div class="col-lg-12 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Catatan
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_catatan">Catatan
                                                                         </strong>
                                                                         <p class="mb-0" id="catatanTopografi"></p>
                                                                     </div>
@@ -993,70 +1031,69 @@ include 'partials/header.php';
                                                             <div class="tab-pane fade" id="tab35" role="tabpanel">
                                                                 <div class="row">
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Periode
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_periode_pengecekan">Periode
                                                                             Pengecekan
                                                                         </strong>
                                                                         <p class="mb-0" id="periodePengecekanPohon"></p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Jenis
-                                                                            Pohon
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_jenis_pohon">Jenis Pohon
                                                                         </strong>
                                                                         <p class="mb-0" id="jenisPohon"></p>
                                                                     </div>
                                                                     <!-- <div class="col-lg-4 col-md-6 col-12 mb-4">
                                                                         <strong
-                                                                            class="site-footer-title d-block mb-3">Nama
+                                                                            class="site-footer-title d-block mb-3" data-lang="text_nama_pohon">Nama
                                                                             Pohon
                                                                         </strong>
                                                                         <p class="mb-0" id="pohonNamaPohon"></p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
                                                                         <strong
-                                                                            class="site-footer-title d-block mb-3">Nama
+                                                                            class="site-footer-title d-block mb-3" data-lang="text_nama_latin">Nama
                                                                             Latin
                                                                         </strong>
                                                                         <p class="mb-0" id="pohonNamaLatin"></p>
                                                                     </div> -->
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Fungsi
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_fungsi_pohon">Fungsi
                                                                             Pohon
                                                                         </strong>
                                                                         <p class="mb-0" id="fungsiPohon"></p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Jumlah
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_jumlah_pohon">Jumlah
                                                                             Pohon
                                                                         </strong>
                                                                         <p class="mb-0" id="jumlahPohon"></p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Diameter
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_diameter_rata_rata">Diameter
                                                                             Rata-rata (cm)
                                                                         </strong>
                                                                         <p class="mb-0" id="diameterRata2CmPohon"></p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Tinggi
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_tinggi_rata_rata">Tinggi
                                                                             Rata-rata (m)
                                                                         </strong>
                                                                         <p class="mb-0" id="tinggiRata2MPohon"></p>
                                                                     </div>
                                                                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Kondisi
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_kondisi">Kondisi
                                                                         </strong>
                                                                         <p class="mb-0" id="kondisiPohon"></p>
                                                                     </div>
                                                                     <div class="col-lg-12 col-md-6 col-12 mb-4">
-                                                                        <strong
-                                                                            class="site-footer-title d-block mb-3">Catatan
+                                                                        <strong class="site-footer-title d-block mb-3"
+                                                                            data-lang="text_catatan">Catatan
                                                                         </strong>
                                                                         <p class="mb-0" id="catatanPohon"></p>
                                                                     </div>

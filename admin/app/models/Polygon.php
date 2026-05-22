@@ -530,53 +530,72 @@ class Polygon
     public function getDetailPolygonHa($id)
     {
         $sql = "SELECT
-            ha.id,
-            ha.nama_hutan_adat,
-            ha.nomor_sk,
-            ha.tanggal_sk,
-            sk.nama as status_kawasan,
-            d.nama_desa,
-            ke.nama_kecamatan,
-            ka.nama_kabupaten,
-            ha.keterangan,
-            
-            kt.id as id_kelompok_tani,
-            kt.nama_kelompok as nama_masyarakat_hukum_adat,
-            kk.nama as nama_kategori_kelompok,
-            kt.tahun_bentuk,
-            kt.status_kelompok as status_masyarakat_hukum_adat,
-            kt.alamat as alamat_masyarakat_hukum_adat,
-            kk.deskripsi,
-            
-            ha.luas_ha,
-            ha.is_active,
+                ha.id,
+                ha.nama_hutan_adat,
+                ha.nomor_sk,
+                ha.tanggal_sk,
+                sk.nama as status_kawasan,
+                d.nama_desa,
+                ke.nama_kecamatan,
+                ka.nama_kabupaten,
+                ha.keterangan,
+                
+                kt.id as id_kelompok_tani,
+                kt.nama_kelompok as nama_masyarakat_hukum_adat,
+                kk.nama as nama_kategori_kelompok,
+                kt.tahun_bentuk,
+                kt.status_kelompok as status_masyarakat_hukum_adat,
+                kt.alamat as alamat_masyarakat_hukum_adat,
+                kk.deskripsi,
+                
+                ha.luas_ha,
+                ha.is_active,
 
-            ta.nama_lahan,
-            ll.nama as legalitas_lahan,
-            ta.luas_ha,
-            ta.sejarah,
-            ta.alamat_lokasi,
-            ta.keterangan,
-            ta.sudah_validasi,
-            ta.tanggal_validasi,
+                ta.nama_lahan,
+                ll.nama as legalitas_lahan,
+                ta.luas_ha,
+                ta.sejarah,
+                ta.alamat_lokasi,
+                ta.keterangan,
+                ta.sudah_validasi,
+                ta.tanggal_validasi,
 
-            (
-                SELECT COUNT(pk.id_petani)
-                FROM t_petani_kelompok pk
-                WHERE pk.id_kelompok_tani = kt.id
-            ) AS total_anggota_masyarakat_hukum_adat
+                (
+                    SELECT COUNT(pk.id_petani)
+                    FROM t_petani_kelompok pk
+                    WHERE pk.id_kelompok_tani = kt.id
+                ) AS total_anggota_masyarakat_hukum_adat
 
-        FROM t_hutan_adat ha
-        LEFT JOIN m_desa d ON d.id=ha.id_desa
-        LEFT JOIN t_kelompok_tani kt ON kt.id=ha.id_masyarakat_hukum_adat
-        LEFT JOIN m_status_kawasan sk ON sk.id=ha.id_status_kawasan
-        LEFT JOIN m_kecamatan ke ON ke.id=d.id_kecamatan
-        LEFT JOIN m_kabupaten ka ON ka.id=ke.id_kabupaten
-        LEFT JOIN m_kategori_kelompok kk ON kk.id=kt.id_kategori_kelompok
-        LEFT JOIN t_tanah ta ON ta.id_relasi=ha.id
-        LEFT JOIN m_legalitas_lahan ll ON ll.id=ta.id_legalitas_lahan
-        WHERE ha.deleted_at IS NULL AND ha.id = :id AND ta.tipe_relasi = 'hutan_adat'
-        LIMIT 1";
+            FROM t_hutan_adat ha
+            LEFT JOIN m_desa d 
+                ON d.id = ha.id_desa
+
+            LEFT JOIN t_kelompok_tani kt 
+                ON kt.id = ha.id_masyarakat_hukum_adat
+
+            LEFT JOIN m_status_kawasan sk 
+                ON sk.id = ha.id_status_kawasan
+
+            LEFT JOIN m_kecamatan ke 
+                ON ke.id = d.id_kecamatan
+
+            LEFT JOIN m_kabupaten ka 
+                ON ka.id = ke.id_kabupaten
+
+            LEFT JOIN m_kategori_kelompok kk 
+                ON kk.id = kt.id_kategori_kelompok
+
+            LEFT JOIN t_tanah ta 
+                ON ta.id_relasi = ha.id
+                AND ta.tipe_relasi = 'hutan_adat'
+
+            LEFT JOIN m_legalitas_lahan ll 
+                ON ll.id = ta.id_legalitas_lahan
+
+            WHERE ha.deleted_at IS NULL
+            AND ha.id =  :id
+
+            LIMIT 1";
 
         $stmt = $this->pdo->prepare($sql);
 
@@ -747,7 +766,8 @@ class Polygon
                 pe.jenis_kelamin,
                 pe.tanggal_lahir,
                 pe.alamat,
-                pe.status_petani
+                pe.status_petani,
+                pe.foto_profil_petani
             FROM t_petani_kelompok pk
             LEFT JOIN t_petani pe ON pe.id = pk.id_petani
             WHERE pk.id_kelompok_tani = :id
@@ -768,6 +788,23 @@ class Polygon
             FROM t_petani
             WHERE deleted_at IS NULL AND is_active = 1
             GROUP BY jenis_kelamin";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+
+        $data = $stmt->fetchAll();
+
+        return $data;
+    }
+
+    public function getLatLongBenihData()
+    {
+        $sql = "SELECT
+                titik_koleksi_lat,
+                titik_koleksi_lng
+                FROM t_bank_benih
+                WHERE deleted_at IS NULL AND is_active = 1
+                ORDER BY id ASC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();

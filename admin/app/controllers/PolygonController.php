@@ -186,4 +186,8 @@ class PolygonController
         return $this->model->getTotalFarmer();
     }
 
+    public function getLatLongBenihData()
+    {
+        return $this->model->getLatLongBenihData();
+    }
 }

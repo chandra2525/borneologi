@@ -9,20 +9,40 @@
         <a href="index.html" class="navbar-brand mx-auto mx-lg-0">Borneologi</a>
 
         <div class="d-flex align-items-center d-lg-none">
-            <i class="navbar-icon bi-telephone-plus me-3"></i>
-            <a class="custom-btn btn" href="#section_5">
-                120-240-9600
+            <a class="custom-btn btn me-3 d-flex align-items-center" href="#section_5">
+                <i class="bi-envelope me-2"></i>
+                info@borneoinstitute.org
             </a>
+            <div class="dropdown language-dropdown">
+                <button class="custom-btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <img src="images/flags/id.png" class="selected-flag current-flag" alt="">
+                </button>
+
+                <ul class="dropdown-menu language-menu">
+                    <li>
+                        <a class="dropdown-item language-option" href="#" data-lang="id">
+                            <img src="images/flags/id.png" class="dropdown-flag" alt="">
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item language-option" href="#" data-lang="en">
+                            <img src="images/flags/en.png" class="dropdown-flag" alt="">
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-lg-5">
                 <li class="nav-item">
-                    <a class="nav-link click-scroll" href="#section_1">Home</a>
+                    <a class="nav-link click-scroll" href="#section_1" data-lang="menu_home">Home</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link click-scroll" href="#section_2">Map</a>
+                    <a class="nav-link click-scroll" href="#section_2" data-lang="menu_map">Map</a>
                 </li>
 
                 <!-- <li class="nav-item">
@@ -39,10 +59,30 @@
             </ul>
 
             <div class="d-lg-flex align-items-center d-none ms-auto">
-                <i class="navbar-icon bi-envelope me-3"></i>
-                <a class="custom-btn btn" href="#section_5">
+                <a class="custom-btn btn me-3 d-flex align-items-center" href="#section_5">
+                    <i class="bi-envelope me-2"></i>
                     info@borneoinstitute.org
                 </a>
+                <div class="dropdown language-dropdown">
+                    <button class="custom-btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <img src="images/flags/id.png" class="selected-flag current-flag" alt="">
+                    </button>
+
+                    <ul class="dropdown-menu language-menu">
+                        <li>
+                            <a class="dropdown-item language-option" href="#" data-lang="id">
+                                <img src="images/flags/id.png" class="dropdown-flag" alt="">
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item language-option" href="#" data-lang="en">
+                                <img src="images/flags/en.png" class="dropdown-flag" alt="">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
 
