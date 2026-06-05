@@ -10,6 +10,54 @@ verifyCsrfToken();
 
 $bankBenihModel = new BankBenih($pdo);
 
+$foto_benih = $_POST['foto_lama'] ?? null;
+
+if (
+    isset($_FILES['foto_benih']) &&
+    $_FILES['foto_benih']['error'] == 0
+) {
+
+    $uploadDir = "../../uploads/bank_benih/";
+
+    // Buat folder jika belum ada
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+    }
+
+    $fileTmp  = $_FILES['foto_benih']['tmp_name'];
+    $fileName = $_FILES['foto_benih']['name'];
+    $fileSize = $_FILES['foto_benih']['size'];
+
+    $ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+    /* Validasi ekstensi */
+    $allowed = ['jpg', 'jpeg', 'png', 'webp'];
+
+    if (!in_array($ext, $allowed)) {
+        die("Format file tidak didukung");
+    }
+
+    /* Validasi ukuran max 2MB */
+    if ($fileSize > 2 * 1024 * 1024) {
+        die("Ukuran file maksimal 2MB");
+    }
+    /* Generate nama file baru */
+    $newFileName = time() . '_' . uniqid() . '.' . $ext;
+
+    /* Upload file */
+    move_uploaded_file($fileTmp, $uploadDir . $newFileName);
+
+    /* Hapus foto lama jika ada */
+    if (
+        !empty($_POST['foto_lama']) &&
+        file_exists($uploadDir . $_POST['foto_lama'])
+    ) {
+        unlink($uploadDir . $_POST['foto_lama']);
+    }
+
+    $foto_benih = $newFileName;
+}
+
 $data = [
     "nomor_aksesi" => $_POST["nomor_aksesi"],
     "id_tanah" => $_POST["id_tanah"],
@@ -29,6 +77,7 @@ $data = [
     "lokasi_penyimpanan" => $_POST["lokasi_penyimpanan"],
     "titik_koleksi_lat" => $_POST["titik_koleksi_lat"],
     "titik_koleksi_lng" => $_POST["titik_koleksi_lng"],
+    "foto_benih" => $foto_benih,
     "catatan" => $_POST["catatan"],
     "is_active" => $_POST["is_active"],
     "updated_by" => $_SESSION["user_id"]

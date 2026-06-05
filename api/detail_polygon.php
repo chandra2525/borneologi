@@ -28,6 +28,8 @@ if ($tipe === 'provinsi') {
     $data = $controller->getDetailPolygonHa($id);
 } else if ($tipe === 'kaleka') {
     $data = $controller->getDetailPolygonKaleka($id);
+} else if ($tipe === 'bank_benih') {
+    $data = $controller->getDetailPolygonBankBenih($id);
 } else {
     echo json_encode([
         "status" => false,

@@ -171,6 +171,11 @@ class PolygonController
         return $this->model->getDetailPolygonKaleka($id);
     }
 
+    public function getDetailPolygonBankBenih($id)
+    {
+        return $this->model->getDetailPolygonBankBenih($id);
+    }
+
     public function getDetailPolygonKalekaKelompokPetani($id)
     {
         return $this->model->getDetailPolygonKalekaKelompokPetani($id);
@@ -189,5 +194,15 @@ class PolygonController
     public function getLatLongBenihData()
     {
         return $this->model->getLatLongBenihData();
+    }
+
+    public function getMonitoringBenih($id)
+    {
+        return $this->model->getMonitoringBenih($id);
+    }
+
+    public function getLahanBenih($id)
+    {
+        return $this->model->getLahanBenih($id);
     }
 }

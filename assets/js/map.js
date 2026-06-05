@@ -413,6 +413,7 @@ function loadBankBenih() {
         allPolygons.push(bank_benih);
 
         bank_benih.on("click", (e) => {
+          console.log(item.id);
           showBankBenihModal(item.id, e.latlng);
         });
         // const center = getCentroid(item.tanah.geom_area);
@@ -1789,6 +1790,229 @@ function showKalekaModal(id, latlng) {
     });
 }
 
+function showBankBenihModal(id, latlng) {
+  setTranslatedText("modal-title-bank-benih", "Informasi Bank Benih");
+
+  fetch(`api/detail_polygon.php?id=${id}&&tipe=bank_benih`)
+    .then((res) => res.json())
+    .then((res) => {
+      // tampilkan loading
+      document.getElementById("loadingDetail").style.display = "none";
+      document.getElementById("bankBenihModal").style.display = "block";
+
+      if (!res.status) {
+        alert("Data tidak ditemukan");
+        document.getElementById("bankBenihModal").innerHTML = `
+          <p style="text-align:center;">Data tidak ditemukan</p>
+        `;
+        return;
+      }
+
+      const data = res.data;
+      console.log(data);
+
+      document.getElementById("fotoBenih").src =
+        "admin/uploads/bank_benih/" + data.foto_benih ||
+        "assets/image/benih_placeholder.jpg";
+      setTranslatedText("nomorAksesi", data.nomor_aksesi ?? "");
+      setTranslatedText("namaNegara", data.nama_negara ?? "");
+      setTranslatedText("namaLokal", data.nama_lokal ?? "");
+      setTranslatedText("namaIlmiah", data.nama_ilmiah ?? "");
+      setTranslatedText("familiTanaman", data.famili_tanaman ?? "");
+      setTranslatedText("provenance", data.provenance ?? "");
+      setTranslatedText(
+        "tipePenyimpananBenih",
+        data.tipe_penyimpanan_benih ?? "",
+      );
+      setTranslatedText("tanggalMasuk", data.tanggal_masuk ?? "");
+      setTranslatedText("jumlahStok", data.jumlah_stok ?? "");
+      setTranslatedText("satuanStok", data.satuan_stok ?? "");
+      setTranslatedText("kadarAirPersen", data.kadar_air_persen ?? "");
+      setTranslatedText("viabilitasPersen", data.viabilitas_persen ?? "");
+      setTranslatedText("ketinggianMdpl", data.ketinggian_mdpl ?? "");
+      setTranslatedText("masaBerlakuSampai", data.masa_berlaku_sampai ?? "");
+      setTranslatedText("lokasiPenyimpanan", data.lokasi_penyimpanan ?? "");
+      setTranslatedText("titikKoleksiLat", data.titik_koleksi_lat ?? "");
+      setTranslatedText("titikKoleksiLng", data.titik_koleksi_lng ?? "");
+      setTranslatedText("catatanBenih", data.catatan ?? "");
+
+      document.getElementById("benihMonitoringTableBody").innerHTML = `
+        <tr>
+          <td colspan="7" style="text-align:center;">Loading...</td>
+        </tr>
+      `;
+
+      // ambil data monitoring
+      fetch(`api/list_monitoring.php?id=${id}`)
+        .then((res) => res.json())
+        .then((resMonitoring) => {
+          console.log(resMonitoring);
+          const tbody = document.getElementById("benihMonitoringTableBody");
+          tbody.innerHTML = "";
+
+          // ambil data dengan aman
+          let monitoringList = [];
+
+          if (Array.isArray(resMonitoring.data)) {
+            monitoringList = resMonitoring.data;
+          } else if (Array.isArray(resMonitoring)) {
+            monitoringList = resMonitoring;
+          } else if (
+            resMonitoring.data &&
+            typeof resMonitoring.data === "object"
+          ) {
+            monitoringList = [resMonitoring.data]; // bungkus jadi array
+          }
+
+          if (monitoringList.length === 0) {
+            tbody.innerHTML = `
+              <tr>
+                <td colspan="7" style="text-align:center;">Tidak ada data monitoring</td>
+              </tr>
+            `;
+            return;
+          }
+
+          monitoringList.forEach((item) => {
+            const row = `
+              <tr>
+                <td>${item.tipe_penanaman ?? "-"}</td>
+                <td>${item.progress_status_monitoring ?? "-"}</td>
+                <td>${
+                  item.periode_pengecekan
+                    ? new Date(item.periode_pengecekan).toLocaleDateString(
+                        "id-ID",
+                        {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                          timeZone: "UTC",
+                        },
+                      )
+                    : ""
+                }</td>
+                <td>${
+                  item.tanggal_tanam
+                    ? new Date(item.tanggal_tanam).toLocaleDateString("id-ID", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                        timeZone: "UTC",
+                      })
+                    : ""
+                }</td>
+                <td>${
+                  item.tanggal_monitoring
+                    ? new Date(item.tanggal_monitoring).toLocaleDateString(
+                        "id-ID",
+                        {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                          timeZone: "UTC",
+                        },
+                      )
+                    : ""
+                }</td>
+                <td>${item.luas_tanam_ha} ha</td>
+                <td>${item.survival_rate_persen}%</td>
+                <td>${item.jumlah_ditanam}</td>
+                <td>${item.satuan}</td>
+                <td>${item.jumlah_hidup}</td>
+                <td>${item.jumlah_mati}</td>
+                <td>${item.tinggi_rata2_cm}</td>
+                <td>${item.diameter_rata2_cm}</td>
+                <td>${item.catatan}</td>
+              </tr>
+            `;
+
+            tbody.insertAdjacentHTML("beforeend", row);
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+
+          const tbody = document.getElementById("benihMonitoringTableBody");
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="7" style="text-align:center; color:red;">
+                Gagal memuat data monitoring
+              </td>
+            </tr>
+          `;
+        });
+
+      // ambil data monitoring
+      fetch(`api/get_lahan_benih.php?id=${id}`)
+        .then((res) => res.json())
+        .then((res) => {
+          console.log("Data res:", res);
+          // tampilkan loading
+          document.getElementById("loadingDetail").style.display = "none";
+          document.getElementById("bankBenihModal").style.display = "block";
+
+          if (!res.status) {
+            alert("Data tidak ditemukan");
+            document.getElementById("bankBenihModal").innerHTML = `
+              <p style="text-align:center;">Data tidak ditemukan</p>
+            `;
+            return;
+          }
+
+          const data = res.data[0];
+          console.log("Data tanah benih:", data);
+          setTranslatedText("namaLahanBenih", data.nama_lahan ?? "");
+          setTranslatedText("legalitasLahanBenih", data.legalitas_lahan ?? "");
+          setTranslatedText("statusKawasanBenih", data.status_kawasan ?? "");
+          setTranslatedText("luasHaBenih", data.luas_ha_tanah ?? "");
+          setTranslatedText("sejarahBenih", data.sejarah_tanah ?? "");
+          setTranslatedText(
+            "alamatLokasiBenih",
+            data.alamat_lokasi_tanah ?? "",
+          );
+          setTranslatedText("keteranganBenih", data.keterangan_tanah ?? "");
+          setTranslatedText(
+            "sudahValidasiTanahBenih",
+            data.sudah_validasi_tanah == 1 ? "Ya" : "Tidak",
+          );
+          setTranslatedText(
+            "tanggalValidasiTanahBenih",
+            data.tanggal_validasi_tanah
+              ? new Date(data.tanggal_validasi_tanah).toLocaleDateString(
+                  "id-ID",
+                  {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                    timeZone: "UTC",
+                  },
+                )
+              : "",
+          );
+        })
+        .catch((err) => {
+          console.error(err);
+          document.getElementById("loadingDetail").style.display = "none";
+          document.getElementById("bankBenihModal").style.display = "block";
+          document.getElementById("bankBenihModal").innerHTML = `
+            <p style="text-align:center; color:red;">Gagal memuat data</p>
+          `;
+        });
+
+      new bootstrap.Modal(document.getElementById("bankBenihModal")).show();
+    })
+    .catch((err) => {
+      console.error(err);
+
+      document.getElementById("loadingDetail").style.display = "none";
+      document.getElementById("bankBenihModal").style.display = "block";
+
+      document.getElementById("bankBenihModal").innerHTML = `
+        <p style="text-align:center; color:red;">Gagal memuat data</p>
+      `;
+    });
+}
+
 function getCentroid(coords) {
   let lat = 0,
     lng = 0;
@@ -1861,6 +2085,35 @@ const translations = {
     text_hutan_adat: "Hutan Adat",
     text_kaleka: "Kaleka",
     text_bank_benih: "Bank Benih",
+    text_benih: "Benih",
+    text_monitoring: "Monitoring",
+    text_nomor_aksesi: "Nomor Aksesi",
+    text_provenance: "Provenance",
+    text_jumlah_stok: "Jumlah Stok",
+    text_viabilitas_persen: "Viabilitas Persen",
+    text_nama_negara: "Nama Negara",
+    text_famili_tanaman: "Famili Tanaman",
+    text_tipe_penyimpanan_benih: "Tipe Penyimpanan Benih",
+    text_tanggal_masuk: "Tanggal Masuk",
+    text_satuan_stok: "Satuan Stok",
+    text_kadar_air_persen: "Kadar Air Persen",
+    text_ketinggian_mdpl: "Ketinggian MDPL",
+    text_masa_berlaku_sampai: "Masa Berlaku Sampai",
+    text_lokasi_penyimpanan: "Lokasi Penyimpanan",
+    text_titik_koleksi_lat: "Titik Koleksi Lat",
+    text_titik_koleksi_lng: "Titik Koleksi Lng",
+    text_jumlah_ditanam: "Jumlah Ditanam",
+    text_satuan: "Satuan",
+    text_jumlah_hidup: "Jumlah Hidup",
+    text_jumlah_mati: "Jumlah Mati",
+    text_tipe_penanaman: "Tipe Penanaman",
+    text_progress_status_monitoring: "Progress Status Monitoring",
+    text_tanggal_tanam: "Tanggal Tanam",
+    text_tanggal_monitoring: "Tanggal Monitoring",
+    text_luas_tanam: "Luas Tanam (ha)",
+    text_survival_rate_persen: "Survival Rate (%)",
+    text_tinggi_rata2_cm: "Tinggi Rata-Rata (cm)",
+    text_diameter_rata2_cm: "Diameter Rata-Rata (cm)",
 
     text_data_provinsi: "Data Provinsi",
     text_nama_provinsi: "Nama Provinsi",
@@ -1975,6 +2228,35 @@ const translations = {
     text_hutan_adat: "Customary Forest",
     text_kaleka: "Kaleka",
     text_bank_benih: "Seed Bank",
+    text_benih: "Seed",
+    text_monitoring: "Monitoring",
+    text_nomor_aksesi: "Accession Number",
+    text_provenance: "Provenance",
+    text_jumlah_stok: "Stock Quantity",
+    text_viabilitas_persen: "Viability Percentage",
+    text_nama_negara: "Country Name",
+    text_famili_tanaman: "Plant Family",
+    text_tipe_penyimpanan_benih: "Seed Storage Type",
+    text_tanggal_masuk: "Entry Date",
+    text_satuan_stok: "Stock Unit",
+    text_kadar_air_persen: "Moisture Content (%)",
+    text_ketinggian_mdpl: "Elevation (m asl)",
+    text_masa_berlaku_sampai: "Valid Until",
+    text_lokasi_penyimpanan: "Storage Location",
+    text_titik_koleksi_lat: "Collection Point Lat",
+    text_titik_koleksi_lng: "Collection Point Lng",
+    text_jumlah_ditanam: "Number Planted",
+    text_satuan: "Unit",
+    text_jumlah_hidup: "Number Alive",
+    text_jumlah_mati: "Number Dead",
+    text_tipe_penanaman: "Planting Type",
+    text_progress_status_monitoring: "Monitoring Progress Status",
+    text_tanggal_tanam: "Planting Date",
+    text_tanggal_monitoring: "Monitoring Date",
+    text_luas_tanam: "Planting Area (ha)",
+    text_survival_rate_persen: "Survival Rate (%)",
+    text_tinggi_rata2_cm: "Average Height (cm)",
+    text_diameter_rata2_cm: "Average Diameter (cm)",
 
     text_data_provinsi: "Province Data",
     text_nama_provinsi: "Province Name",
@@ -2129,4 +2411,9 @@ async function setTranslatedText(elementId, text) {
   const lang = localStorage.getItem("language");
   const translated = await autoTranslate(text, lang);
   document.getElementById(elementId).innerText = translated;
+}
+
+async function translateText(text) {
+  const lang = localStorage.getItem("language");
+  return await autoTranslate(text, lang);
 }

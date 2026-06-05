@@ -239,6 +239,15 @@
         /* .language-dropdown .dropdown-item {
             padding: 10px 14px;
         } */
+        .modal-xxl-custom {
+            max-width: 90%;
+        }
+
+        @media (min-width: 1400px) {
+            .modal-xxl-custom {
+                max-width: 1600px;
+            }
+        }
     </style>
 
     <!--

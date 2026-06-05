@@ -31,6 +31,7 @@ class BankBenih
                 bb.lokasi_penyimpanan,
                 bb.titik_koleksi_lat,
                 bb.titik_koleksi_lng,
+                bb.foto_benih,
                 bb.catatan,
                 bb.is_active,
                 ta.nama_lahan,
@@ -70,9 +71,9 @@ class BankBenih
     {
 
         $sql = "INSERT INTO t_bank_benih
-            (nomor_aksesi,id_tanah,id_negara,nama_lokal,nama_ilmiah,famili_tanaman,provenance,id_tipe_penyimpanan_benih,tanggal_masuk,jumlah_stok,satuan_stok,kadar_air_persen,viabilitas_persen,ketinggian_mdpl,masa_berlaku_sampai,lokasi_penyimpanan,titik_koleksi_lat,titik_koleksi_lng,catatan,is_active,created_by)
+            (nomor_aksesi,id_tanah,id_negara,nama_lokal,nama_ilmiah,famili_tanaman,provenance,id_tipe_penyimpanan_benih,tanggal_masuk,jumlah_stok,satuan_stok,kadar_air_persen,viabilitas_persen,ketinggian_mdpl,masa_berlaku_sampai,lokasi_penyimpanan,titik_koleksi_lat,titik_koleksi_lng,foto_benih,catatan,is_active,created_by)
             VALUES
-            (:nomor_aksesi,:id_tanah,:id_negara,:nama_lokal,:nama_ilmiah,:famili_tanaman,:provenance,:id_tipe_penyimpanan_benih,:tanggal_masuk,:jumlah_stok,:satuan_stok,:kadar_air_persen,:viabilitas_persen,:ketinggian_mdpl,:masa_berlaku_sampai,:lokasi_penyimpanan,:titik_koleksi_lat,:titik_koleksi_lng,:catatan,:is_active,:created_by)";
+            (:nomor_aksesi,:id_tanah,:id_negara,:nama_lokal,:nama_ilmiah,:famili_tanaman,:provenance,:id_tipe_penyimpanan_benih,:tanggal_masuk,:jumlah_stok,:satuan_stok,:kadar_air_persen,:viabilitas_persen,:ketinggian_mdpl,:masa_berlaku_sampai,:lokasi_penyimpanan,:titik_koleksi_lat,:titik_koleksi_lng,:foto_benih,:catatan,:is_active,:created_by)";
 
         $stmt = $this->pdo->prepare($sql);
 
@@ -102,6 +103,7 @@ class BankBenih
             lokasi_penyimpanan=:lokasi_penyimpanan,
             titik_koleksi_lat=:titik_koleksi_lat,
             titik_koleksi_lng=:titik_koleksi_lng,
+            foto_benih=:foto_benih,
             catatan=:catatan,
             is_active=:is_active,
             updated_by=:updated_by

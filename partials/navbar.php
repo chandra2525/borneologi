@@ -6,10 +6,11 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <a href="index.html" class="navbar-brand mx-auto mx-lg-0">Borneologi</a>
+        <a href="#" class="navbar-brand mx-auto mx-lg-0">Borneologi</a>
 
         <div class="d-flex align-items-center d-lg-none">
-            <a class="custom-btn btn me-3 d-flex align-items-center" href="#section_5">
+            <a class="custom-btn btn me-3 d-flex align-items-center"
+                href="mailto:info@borneoinstitute.org?subject=Halo%20Borneo%20Institute&body=Saya%20ingin%20bertanya...">
                 <i class="bi-envelope me-2"></i>
                 info@borneoinstitute.org
             </a>
@@ -59,7 +60,8 @@
             </ul>
 
             <div class="d-lg-flex align-items-center d-none ms-auto">
-                <a class="custom-btn btn me-3 d-flex align-items-center" href="#section_5">
+                <a class="custom-btn btn me-3 d-flex align-items-center"
+                    href="mailto:info@borneoinstitute.org?subject=Halo%20Borneo%20Institute&body=Saya%20ingin%20bertanya...">
                     <i class="bi-envelope me-2"></i>
                     info@borneoinstitute.org
                 </a>

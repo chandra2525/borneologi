@@ -8,6 +8,38 @@ require "../../app/models/BankBenih.php";
 secureSessionStart();
 verifyCsrfToken();
 
+$foto_benih = null;
+
+if (isset($_FILES['foto_benih']) && $_FILES['foto_benih']['error'] == 0) {
+
+    $uploadDir = "../../uploads/bank_benih/";
+
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+    }
+
+    $ext = pathinfo($_FILES['foto_benih']['name'], PATHINFO_EXTENSION);
+
+    $fileName = time() . '_' . uniqid() . '.' . $ext;
+
+    $allowed = ['jpg', 'jpeg', 'png', 'webp'];
+
+    if (!in_array(strtolower($ext), $allowed)) {
+        die("Format file tidak didukung");
+    }
+
+    if ($_FILES['foto_benih']['size'] > 2 * 1024 * 1024) {
+        die("Ukuran file maksimal 2MB");
+    }
+
+    move_uploaded_file(
+        $_FILES['foto_benih']['tmp_name'],
+        $uploadDir . $fileName
+    );
+
+    $foto_benih = $fileName;
+}
+
 $bankBenih = new BankBenih($pdo);
 
 $data = [
@@ -29,6 +61,7 @@ $data = [
     "lokasi_penyimpanan" => $_POST["lokasi_penyimpanan"],
     "titik_koleksi_lat" => $_POST["titik_koleksi_lat"],
     "titik_koleksi_lng" => $_POST["titik_koleksi_lng"],
+    "foto_benih" => $foto_benih,
     "catatan" => $_POST["catatan"],
     "is_active" => $_POST["is_active"],
     "created_by" => $_SESSION["user_id"]

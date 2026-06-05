@@ -113,7 +113,8 @@ include 'partials/header.php';
 
                         <!-- Modal Informasi Hutan Adat -->
                         <div class="modal fade" id="hutanAdatModal" tabindex="0">
-                            <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                            <!-- <div class="modal-dialog modal-xl modal-dialog-scrollable"> -->
+                            <div class="modal-dialog modal-xxl-custom modal-dialog-scrollable">
                                 <div class="modal-content">
 
                                     <div class="modal-header">
@@ -126,19 +127,22 @@ include 'partials/header.php';
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link active" id="tab1hutanAdat-tab"
                                                     data-bs-toggle="tab" data-bs-target="#tab1hutanAdat" type="button"
-                                                    role="tab" aria-controls="tab1hutanAdat" aria-selected="false" data-lang="text_hutan_adat">Hutan
+                                                    role="tab" aria-controls="tab1hutanAdat" aria-selected="false"
+                                                    data-lang="text_hutan_adat">Hutan
                                                     Adat</button>
                                             </li>
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link" id="tab2kelompok-tab" data-bs-toggle="tab"
                                                     data-bs-target="#tab2kelompok" type="button" role="tab"
-                                                    aria-controls="tab2kelompok" aria-selected="true" data-lang="text_masyarakat_hukum_adat">Masyarakat Hukum
+                                                    aria-controls="tab2kelompok" aria-selected="true"
+                                                    data-lang="text_masyarakat_hukum_adat">Masyarakat Hukum
                                                     Adat</button>
                                             </li>
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link" id="tab3tanah-tab" data-bs-toggle="tab"
                                                     data-bs-target="#tab3tanah" type="button" role="tab"
-                                                    aria-controls="tab3tanah" aria-selected="false" data-lang="text_tanah">Tanah</button>
+                                                    aria-controls="tab3tanah" aria-selected="false"
+                                                    data-lang="text_tanah">Tanah</button>
                                             </li>
                                         </ul>
 
@@ -147,36 +151,43 @@ include 'partials/header.php';
                                                 aria-labelledby="tab1hutanAdat-tab">
                                                 <div class="row">
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_nama_hutan_adat">Nama
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_nama_hutan_adat">Nama
                                                             Hutan Adat</strong>
                                                         <p class="mb-0" id="namaHutanAdat"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_nomor_sk">Nomor SK</strong>
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_nomor_sk">Nomor SK</strong>
                                                         <p class="mb-0" id="nomorSk"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_tanggal_sk">Tanggal
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_tanggal_sk">Tanggal
                                                             SK</strong>
                                                         <p class="mb-0" id="tanggalSk"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_status_kawasan">Status
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_status_kawasan">Status
                                                             Kawasan</strong>
                                                         <p class="mb-0" id="statusKawasan"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_nama_desa">Nama
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_nama_desa">Nama
                                                             Desa</strong>
                                                         <p class="mb-0" id="namaDesaHutanAdat"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_nama_kecamatan">Nama
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_nama_kecamatan">Nama
                                                             Kecamatan</strong>
                                                         <p class="mb-0" id="namaKecamatanHutanAdat"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_nama_kabupaten">Nama
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_nama_kabupaten">Nama
                                                             Kabupaten</strong>
                                                         <p class="mb-0" id="namaKabupatenHutanAdat"></p>
                                                     </div>
@@ -186,47 +197,57 @@ include 'partials/header.php';
                                                 aria-labelledby="tab2kelompok-tab">
                                                 <div class="row">
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_nama_masyarakat_hukum_adat">Nama Masyarakat
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_nama_masyarakat_hukum_adat">Nama Masyarakat
                                                             Hukum Adat
                                                         </strong>
                                                         <p class="mb-0" id="namaMasyarakatHukumAdat"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_kategori_masyarakat_hukum_adat">Kategori
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_kategori_masyarakat_hukum_adat">Kategori
                                                             Masyarakat Hukum Adat
                                                         </strong>
                                                         <p class="mb-0" id="namaKategoriKelompok"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_tahun_bentuk">Tahun Bentuk
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_tahun_bentuk">Tahun Bentuk
                                                         </strong>
                                                         <p class="mb-0" id="tahunBentuk"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_status_masyarakat_hukum_adat">Status Masyarakat
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_status_masyarakat_hukum_adat">Status
+                                                            Masyarakat
                                                             Hukum Adat
                                                         </strong>
                                                         <p class="mb-0" id="statusMasyarakatHukumAdat"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_total_anggota">Total Anggota
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_total_anggota">Total Anggota
                                                         </strong>
                                                         <p class="mb-0" id="totalAnggotaMasyarakatHukumAdat"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_alamat_masyarakat_hukum_adat">Alamat Masyarakat
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_alamat_masyarakat_hukum_adat">Alamat
+                                                            Masyarakat
                                                             Hukum Adat
                                                         </strong>
                                                         <p class="mb-0" id="alamatMasyarakatHukumAdat"></p>
                                                     </div>
                                                     <div class="col-lg-6 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_deskripsi">Deskripsi
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_deskripsi">Deskripsi
                                                         </strong>
                                                         <p class="mb-0" id="deskripsiMasyarakatHukumAdat"></p>
                                                     </div>
 
                                                     <div class="col-lg-12 col-md-12 col-12">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_pengurus_masyarakat_hukum_adat">Pengurus
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_pengurus_masyarakat_hukum_adat">Pengurus
                                                             Masyarakat Hukum Adat
                                                         </strong>
                                                         <table class="profile-thumb">
@@ -249,43 +270,51 @@ include 'partials/header.php';
                                                 aria-labelledby="tab3tanah-tab">
                                                 <div class="row">
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_nama_lahan">Nama
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_nama_lahan">Nama
                                                             Lahan</strong>
                                                         <p class="mb-0" id="namaLahanHA"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_legalitas">Legalitas
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_legalitas">Legalitas
                                                         </strong>
                                                         <p class="mb-0" id="legalitasLahanHA"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_luas_lahan">Luas
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_luas_lahan">Luas
                                                         </strong>
                                                         <p class="mb-0" id="luasHaHA"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_sejarah_lahan">Sejarah
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_sejarah_lahan">Sejarah
                                                         </strong>
                                                         <p class="mb-0" id="sejarahHA"></p>
                                                     </div>
                                                     <div class="col-lg-6 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_alamat_lokasi_lahan">Alamat Lokasi
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_alamat_lokasi_lahan">Alamat Lokasi
                                                         </strong>
                                                         <p class="mb-0" id="alamatLokasiHA"></p>
                                                     </div>
                                                     <div class="col-lg-6 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_keterangan_lahan">Keterangan
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_keterangan_lahan">Keterangan
                                                         </strong>
                                                         <p class="mb-0" id="keteranganHA"></p>
                                                     </div>
 
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_sudah_validasi">Sudah
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_sudah_validasi">Sudah
                                                             Validasi</strong>
                                                         <p class="mb-0" id="sudahValidasiHA"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_tanggal_validasi">Tanggal
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_tanggal_validasi">Tanggal
                                                             Validasi</strong>
                                                         <p class="mb-0" id="tanggalValidasiHA"></p>
                                                     </div>
@@ -316,7 +345,8 @@ include 'partials/header.php';
 
                         <!-- Modal Informasi Provinsi -->
                         <div class="modal fade" id="provinsiModal" tabindex="0">
-                            <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                            <!-- <div class="modal-dialog modal-xl modal-dialog-scrollable"> -->
+                            <div class="modal-dialog modal-xxl-custom modal-dialog-scrollable">
                                 <div class="modal-content">
 
                                     <div class="modal-header">
@@ -413,7 +443,8 @@ include 'partials/header.php';
 
                         <!-- Modal Informasi Kabupaten -->
                         <div class="modal fade" id="kabupatenModal" tabindex="0">
-                            <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                            <!-- <div class="modal-dialog modal-xl modal-dialog-scrollable"> -->
+                            <div class="modal-dialog modal-xxl-custom modal-dialog-scrollable">
                                 <div class="modal-content">
 
                                     <div class="modal-header">
@@ -484,7 +515,8 @@ include 'partials/header.php';
 
                         <!-- Modal Informasi Kecamatan -->
                         <div class="modal fade" id="kecamatanModal" tabindex="0">
-                            <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                            <!-- <div class="modal-dialog modal-xl modal-dialog-scrollable"> -->
+                            <div class="modal-dialog modal-xxl-custom modal-dialog-scrollable">
                                 <div class="modal-content">
 
                                     <div class="modal-header">
@@ -529,7 +561,8 @@ include 'partials/header.php';
 
                         <!-- Modal Informasi Kaleka -->
                         <div class="modal fade" id="kalekaModal" tabindex="0">
-                            <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                            <!-- <div class="modal-dialog modal-xl modal-dialog-scrollable"> -->
+                            <div class="modal-dialog modal-xxl-custom modal-dialog-scrollable">
                                 <div class="modal-content">
 
                                     <div class="modal-header">
@@ -615,7 +648,7 @@ include 'partials/header.php';
                                                         </ul>
                                                     </div>
 
-                                                    <div class="col-lg-5 col-md-6 col-12">
+                                                    <div class="col-lg-5 col-md-12 col-12">
                                                         <strong class="site-footer-title d-block mb-3"
                                                             data-lang="text_kelompok_petani">Kelompok Petani
                                                         </strong>
@@ -1165,6 +1198,348 @@ include 'partials/header.php';
                                                         <div class="col">
                                                             <div style="height:210px;">
                                                                 <canvas id="penyimpananChart2"></canvas>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal Informasi Benih -->
+                        <div class="modal fade" id="bankBenihModal" tabindex="0">
+                            <!-- <div class="modal-dialog modal-xl modal-dialog-scrollable"> -->
+                            <div class="modal-dialog modal-xxl-custom modal-dialog-scrollable">
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+                                        <h5 id="modal-title-bank-benih"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <ul class="nav nav-tabs custom-tabs" id="myTabHutanAdat" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link active" id="tab1benih-tab" data-bs-toggle="tab"
+                                                    data-bs-target="#tab1benih" type="button" role="tab"
+                                                    aria-controls="tab1benih" aria-selected="false" data-lang="text_benih">Benih</button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="tab2monitoring-tab" data-bs-toggle="tab"
+                                                    data-bs-target="#tab2monitoring" type="button" role="tab"
+                                                    aria-controls="tab2monitoring"
+                                                    aria-selected="false" data-lang="text_monitoring">Monitoring</button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="tab3tanahBenih-tab" data-bs-toggle="tab"
+                                                    data-bs-target="#tab3tanahBenih" type="button" role="tab"
+                                                    aria-controls="tab3tanahBenih" aria-selected="false" data-lang="text_tanah">Tanah</button>
+                                            </li>
+                                        </ul>
+
+                                        <div class="tab-content pt-3" id="myTabContent">
+                                            <div class="tab-pane fade show active" id="tab1benih" role="tabpanel"
+                                                aria-labelledby="tab1benih-tab">
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-6 col-12">
+                                                        <div class="projects-thumb">
+                                                            <div class="projects-info">
+                                                                <small class="projects-tag" id="namaLokal"></small>
+
+                                                                <h3 class="projects-title" id="namaIlmiah"></h3>
+                                                            </div>
+
+                                                            <a href="" id="fotoBenihLink" class="popup-image">
+                                                                <img id="fotoBenih" class="projects-image img-fluid"
+                                                                    alt="">
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4 mt-4">
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_nomor_aksesi">Nomor
+                                                            Aksesi</strong>
+                                                        <p class="mb-0" id="nomorAksesi"></p>
+                                                        <strong class="site-footer-title d-block mb-3 mt-4" data-lang="text_nama_negara">Nama
+                                                            Negara</strong>
+                                                        <p class="mb-0" id="namaNegara"></p>
+                                                        <strong class="site-footer-title d-block mb-3 mt-4" data-lang="text_famili_tanaman">Famili
+                                                            Tanaman</strong>
+                                                        <p class="mb-0" id="familiTanaman"></p>
+                                                        <strong
+                                                            class="site-footer-title d-block mb-3 mt-4" data-lang="text_provenance">Provenance</strong>
+                                                        <p class="mb-0" id="provenance"></p>
+                                                        <strong class="site-footer-title d-block mb-3 mt-4" data-lang="text_tipe_penyimpanan_benih">Tipe
+                                                            Penyimpanan Benih</strong>
+                                                        <p class="mb-0" id="tipePenyimpananBenih"></p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4 mt-4">
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_tanggal_masuk">Tanggal
+                                                            Masuk</strong>
+                                                        <p class="mb-0" id="tanggalMasuk"></p>
+                                                        <strong class="site-footer-title d-block mb-3 mt-4" data-lang="text_jumlah_stok">Jumlah
+                                                            Stok</strong>
+                                                        <p class="mb-0" id="jumlahStok"></p>
+                                                        <strong class="site-footer-title d-block mb-3 mt-4" data-lang="text_satuan_stok">Satuan
+                                                            Stok</strong>
+                                                        <p class="mb-0" id="satuanStok"></p>
+                                                        <strong class="site-footer-title d-block mb-3 mt-4" data-lang="text_kadar_air_persen">Kadar Air
+                                                            Persen</strong>
+                                                        <p class="mb-0" id="kadarAirPersen"></p>
+                                                        <strong class="site-footer-title d-block mb-3 mt-4" data-lang="text_viabilitas_persen">Viabilitas
+                                                            Persen</strong>
+                                                        <p class="mb-0" id="viabilitasPersen"></p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4 mt-4">
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_ketinggian_mdpl">Ketinggian
+                                                            mdpl</strong>
+                                                        <p class="mb-0" id="ketinggianMdpl"></p>
+                                                        <strong class="site-footer-title d-block mb-3 mt-4" data-lang="text_masa_berlaku_sampai">Masa Berlaku
+                                                            Sampai</strong>
+                                                        <p class="mb-0" id="masaBerlakuSampai"></p>
+                                                        <strong class="site-footer-title d-block mb-3 mt-4" data-lang="text_lokasi_penyimpanan">Lokasi
+                                                            Penyimpanan</strong>
+                                                        <p class="mb-0" id="lokasiPenyimpanan"></p>
+                                                        <strong class="site-footer-title d-block mb-3 mt-4" data-lang="text_titik_koleksi_lat">Titik
+                                                            Koleksi
+                                                            Lat</strong>
+                                                        <p class="mb-0" id="titikKoleksiLat"></p>
+                                                        <strong class="site-footer-title d-block mb-3 mt-4" data-lang="text_titik_koleksi_lng">Titik
+                                                            Koleksi
+                                                            Lng</strong>
+                                                        <p class="mb-0" id="titikKoleksiLng"></p>
+                                                    </div>
+                                                    <!-- <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3">Jumlah
+                                                            Ditanam</strong>
+                                                        <p class="mb-0" id="jumlahDitanam"></p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3">Satuan</strong>
+                                                        <p class="mb-0" id="satuanBenih"></p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3">Jumlah
+                                                            Hidup</strong>
+                                                        <p class="mb-0" id="jumlahHidup"></p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3">Jumlah
+                                                            Mati</strong>
+                                                        <p class="mb-0" id="jumlahMati"></p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3">Tinggi Rata-rata
+                                                            (cm)</strong>
+                                                        <p class="mb-0" id="tinggiRata2Cm"></p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3">Diameter
+                                                            Rata-rata (cm)</strong>
+                                                        <p class="mb-0" id="diameterRata2Cm"></p>
+                                                    </div> -->
+                                                    <div class="col-lg-9 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_catatan">Catatan</strong>
+                                                        <p class="mb-0" id="catatanBenih"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="tab2monitoring" role="tabpanel"
+                                                aria-labelledby="tab2monitoring-tab">
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-md-12 col-12">
+                                                        <strong class="site-footer-title d-block mb-3">Monitoring
+                                                            Penanaman Benih
+                                                        </strong>
+                                                        <table class="profile-thumb">
+                                                            <tr>
+                                                                <th data-lang="text_tipe_penanaman">Tipe Penanaman</th>
+                                                                <th data-lang="text_progress_status_monitoring">Progress Status Monitoring</th>
+                                                                <th data-lang="text_periode_pengecekan">Periode Pengecekan</th>
+                                                                <th data-lang="text_tanggal_tanam">Tanggal Tanam</th>
+                                                                <th data-lang="text_tanggal_monitoring">Tanggal Monitoring</th>
+                                                                <th data-lang="text_luas_tanam">Luas Tanam (ha)</th>
+                                                                <th data-lang="text_survival_rate_persen">Survival Rate (%)</th>
+                                                                <th data-lang="text_jumlah_ditanam">Jumlah Ditanam</th>
+                                                                <th data-lang="text_satuan">Satuan</th>
+                                                                <th data-lang="text_jumlah_hidup">Jumlah Hidup</th>
+                                                                <th data-lang="text_jumlah_mati">Jumlah Mati</th>
+                                                                <th data-lang="text_tinggi_rata2_cm">Tinggi Rata-Rata (cm)</th>
+                                                                <th data-lang="text_diameter_rata2_cm">Diameter Rata-Rata (cm)</th>
+                                                                <th data-lang="text_catatan">Catatan</th>
+                                                            </tr>
+                                                            <tbody id="benihMonitoringTableBody">
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="tab3tanahBenih" role="tabpanel"
+                                                aria-labelledby="tab3tanahBenih-tab">
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_nama_lahan">Nama
+                                                            Lahan</strong>
+                                                        <p class="mb-0" id="namaLahanBenih"></p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_legalitas">Legalitas
+                                                        </strong>
+                                                        <p class="mb-0" id="legalitasLahanBenih"></p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_status_kawasan">Status Kawasan
+                                                        </strong>
+                                                        <p class="mb-0" id="statusKawasanBenih"></p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_luas_lahan">Luas
+                                                        </strong>
+                                                        <p class="mb-0" id="luasHaBenih"></p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_sejarah_lahan">Sejarah
+                                                        </strong>
+                                                        <p class="mb-0" id="sejarahBenih"></p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_sudah_validasi">Sudah
+                                                            Validasi</strong>
+                                                        <p class="mb-0" id="sudahValidasiTanahBenih"></p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_tanggal_validasi">Tanggal
+                                                            Validasi</strong>
+                                                        <p class="mb-0" id="tanggalValidasiTanahBenih"></p>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_alamat_lokasi_lahan">Alamat Lokasi
+                                                        </strong>
+                                                        <p class="mb-0" id="alamatLokasiBenih"></p>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_keterangan_lahan">Keterangan
+                                                        </strong>
+                                                        <p class="mb-0" id="keteranganBenih"></p>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <!-- <div class="tab-pane fade" id="tab3obervasi" role="tabpanel"
+                                                aria-labelledby="tab3obervasi-tab">
+                                                <div class="row">
+                                                    <div class="modal-body">
+                                                        <ul class="nav nav-tabs" id="myTabHutanAdat" role="tablist">
+                                                            <li class="nav-item" role="presentation">
+                                                                <button class="nav-link active" id="tab31-tab"
+                                                                    data-bs-toggle="tab" data-bs-target="#tab31"
+                                                                    type="button" role="tab">
+                                                                    Perairan Observasi
+                                                                </button>
+                                                            </li>
+
+                                                            <li class="nav-item" role="presentation">
+                                                                <button class="nav-link" id="tab32-tab"
+                                                                    data-bs-toggle="tab" data-bs-target="#tab32"
+                                                                    type="button" role="tab">
+                                                                    Infrastruktur Observasi
+                                                                </button>
+                                                            </li>
+
+                                                            <li class="nav-item" role="presentation">
+                                                                <button class="nav-link" id="tab33-tab"
+                                                                    data-bs-toggle="tab" data-bs-target="#tab33"
+                                                                    type="button" role="tab">
+                                                                    Land Cover Observasi
+                                                                </button>
+                                                            </li>
+
+                                                            <li class="nav-item" role="presentation">
+                                                                <button class="nav-link" id="tab34-tab"
+                                                                    data-bs-toggle="tab" data-bs-target="#tab34"
+                                                                    type="button" role="tab">
+                                                                    Topografi Observasi
+                                                                </button>
+                                                            </li>
+
+                                                            <li class="nav-item" role="presentation">
+                                                                <button class="nav-link" id="tab35-tab"
+                                                                    data-bs-toggle="tab" data-bs-target="#tab35"
+                                                                    type="button" role="tab">
+                                                                    Pohon Observasi
+                                                                </button>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="tab-pane fade" id="tab4hasil" role="tabpanel"
+                                                aria-labelledby="tab4hasil-tab">
+                                                <div class="row">
+                                                    <div class="col-lg-6 col-md-6 col-12 mb-4">
+                                                        <div class="col">
+                                                            <strong class="site-footer-title d-block mb-3">Grafik Stok
+                                                                Benih & Jumlah Ditanam Benih
+                                                            </strong>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div style="height:185px;">
+                                                                <canvas id="stokChart"></canvas>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-6 col-md-6 col-12 mb-4">
+                                                        <div class="col">
+                                                            <strong class="site-footer-title d-block mb-3">Tingkat
+                                                                kelayakan atau daya hidup benih (viabilitas)
+                                                            </strong>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div style="height:185px;">
+                                                                <canvas id="viabilitasChart"></canvas>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-6 col-md-6 col-12 mb-4">
+                                                        <div class="col">
+                                                            <strong class="site-footer-title d-block mb-3">Grafik Kadar
+                                                                Air
+                                                                Benih
+                                                            </strong>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div style="height:185px;">
+                                                                <canvas id="kadarAirChart"></canvas>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-6 col-md-6 col-12 mb-4">
+                                                        <div class="col">
+                                                            <strong class="site-footer-title d-block mb-3">Grafik
+                                                                Tingkat Kematian dan Kelangsungan Hidup Benih
+                                                            </strong>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div style="height:185px;">
+                                                                <canvas id="survivalChart"></canvas>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-12 mb-4">
+                                                        <div class="col">
+                                                            <strong class="site-footer-title d-block mb-3">Grafik
+                                                                Penyimpanan Benih Berdasarkan Tipe Penyimpanan
+                                                            </strong>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div style="height:185px;">
+                                                                <canvas id="penyimpananChart"></canvas>
                                                             </div>
                                                         </div>
                                                     </div>

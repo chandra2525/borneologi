@@ -733,6 +733,57 @@ class Polygon
         return $stmt->fetch();
     }
 
+    public function getDetailPolygonBankBenih($id)
+    {
+        $sql = "SELECT
+            bb.nama_lokal,
+            bb.nama_ilmiah,
+            bb.nomor_aksesi,
+            ne.nama as nama_negara,
+            bb.famili_tanaman,
+            bb.provenance,
+            tpb.nama as tipe_penyimpanan_benih,
+            bb.tanggal_masuk,
+            bb.jumlah_stok,
+            bb.satuan_stok,
+            bb.kadar_air_persen,
+            bb.viabilitas_persen,
+            bb.ketinggian_mdpl,
+            bb.masa_berlaku_sampai,
+            bb.lokasi_penyimpanan,
+            bb.titik_koleksi_lat,
+            bb.titik_koleksi_lng,
+            bb.foto_benih,
+            bb.catatan,
+            
+            ta.nama_lahan,
+            ll.nama as legalitas_lahan,
+            sk.nama as status_kawasan,
+            ta.luas_ha as luas_ha_tanah,
+            ta.sejarah as sejarah_tanah,
+            ta.alamat_lokasi as alamat_lokasi_tanah,
+            ta.keterangan as keterangan_tanah,
+            ta.sudah_validasi as sudah_validasi_tanah,
+            ta.tanggal_validasi as tanggal_validasi_tanah
+
+        FROM t_bank_benih bb
+        LEFT JOIN m_negara ne ON ne.id=bb.id_negara
+        LEFT JOIN m_tipe_penyimpanan_benih tpb ON tpb.id=bb.id_tipe_penyimpanan_benih
+        LEFT JOIN t_tanah ta ON ta.id=bb.id_tanah
+        LEFT JOIN m_legalitas_lahan ll ON ll.id=ta.id_legalitas_lahan
+        LEFT JOIN m_status_kawasan sk ON sk.id=ta.id_status_kawasan
+        WHERE bb.deleted_at IS NULL AND bb.is_active = 1 AND bb.id = :id
+        LIMIT 1";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->execute([
+            "id" => $id
+        ]);
+
+        return $stmt->fetch();
+    }
+
     public function getDetailPolygonKalekaKelompokPetani($id)
     {
         $sql = "SELECT
@@ -800,6 +851,7 @@ class Polygon
     public function getLatLongBenihData()
     {
         $sql = "SELECT
+                id,
                 titik_koleksi_lat,
                 titik_koleksi_lng
                 FROM t_bank_benih
@@ -812,5 +864,68 @@ class Polygon
         $data = $stmt->fetchAll();
 
         return $data;
+    }
+
+    public function getMonitoringBenih($id)
+    {
+        $sql = "SELECT
+                tp.nama as tipe_penanaman,
+                psm.nama as progress_status_monitoring ,
+                mp.periode_pengecekan,
+                mp.tanggal_tanam,
+                mp.tanggal_monitoring,
+                mp.luas_tanam_ha,
+                mp.survival_rate_persen,
+                mp.catatan,
+                dmp.jumlah_ditanam,
+                dmp.satuan,
+                dmp.jumlah_hidup,
+                dmp.jumlah_mati,
+                dmp.tinggi_rata2_cm,
+                dmp.diameter_rata2_cm
+            FROM t_monitoring_penanaman mp
+            LEFT JOIN t_detail_monitoring_penanaman dmp ON dmp.id_monitoring = mp.id
+            LEFT JOIN t_bank_benih bb ON bb.id = dmp.id_bank_benih
+            LEFT JOIN m_tipe_penanaman tp ON tp.id = mp.id_tipe_penanaman
+            LEFT JOIN m_progress_status_monitoring psm ON psm.id = mp.id_progress_status_monitoring
+            WHERE mp.is_active = 1 AND mp.deleted_at IS NULL AND bb.id = :id
+            ORDER BY mp.id ASC";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->execute([
+            "id" => $id
+        ]);
+
+        return $stmt->fetchAll();
+    }
+
+    public function getLahanBenih($id)
+    {
+        $sql = "SELECT
+                ta.nama_lahan,
+                ll.nama as legalitas_lahan,
+                sk.nama as status_kawasan,
+                ta.luas_ha as luas_ha_tanah,
+                ta.sejarah as sejarah_tanah,
+                ta.alamat_lokasi as alamat_lokasi_tanah,
+                ta.keterangan as keterangan_tanah,
+                ta.sudah_validasi as sudah_validasi_tanah,
+                ta.tanggal_validasi as tanggal_validasi_tanah
+            FROM t_bank_benih bb
+            LEFT JOIN t_tanah ta ON ta.id=bb.id_tanah
+            LEFT JOIN m_legalitas_lahan ll ON ll.id=ta.id_legalitas_lahan
+            LEFT JOIN m_status_kawasan sk ON sk.id=ta.id_status_kawasan
+            WHERE bb.is_active = 1 AND bb.deleted_at IS NULL AND bb.id = :id
+            ORDER BY bb.id ASC
+            LIMIT 1";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->execute([
+            "id" => $id
+        ]);
+
+        return $stmt->fetchAll();
     }
 }

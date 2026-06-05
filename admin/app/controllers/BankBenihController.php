@@ -60,7 +60,8 @@ class BankBenihController
         $masa_berlaku_sampai = trim($data['masa_berlaku_sampai']);
         $lokasi_penyimpanan = trim($data['lokasi_penyimpanan']);
         $titik_koleksi_lat = trim($data['titik_koleksi_lat']);
-        $centroid_lng = trim($data['centroid_lng']);
+        $titik_koleksi_lng = trim($data['titik_koleksi_lng']);
+        $foto_benih = trim($data['foto_benih']);
         $catatan = trim($data['catatan']);
         $is_active = isset($data['is_active']) ? 1 : 0;
 
@@ -82,7 +83,8 @@ class BankBenihController
             'masa_berlaku_sampai' => $masa_berlaku_sampai,
             'lokasi_penyimpanan' => $lokasi_penyimpanan,
             'titik_koleksi_lat' => $titik_koleksi_lat,
-            'titik_koleksi_lng' => $centroid_lng,
+            'titik_koleksi_lng' => $titik_koleksi_lng,
+            'foto_benih' => $foto_benih,
             'catatan' => $catatan,
             'is_active' => $is_active,
             'created_by' => $user_id
@@ -118,6 +120,7 @@ class BankBenihController
         $lokasi_penyimpanan = trim($data['lokasi_penyimpanan']);
         $titik_koleksi_lat = trim($data['titik_koleksi_lat']);
         $titik_koleksi_lng = trim($data['titik_koleksi_lng']);
+        $foto_benih = trim($data['foto_benih']);
         $catatan = trim($data['catatan']);
         $is_active = isset($data['is_active']) ? 1 : 0;
 
@@ -140,6 +143,7 @@ class BankBenihController
             'lokasi_penyimpanan' => $lokasi_penyimpanan,
             'titik_koleksi_lat' => $titik_koleksi_lat,
             'titik_koleksi_lng' => $titik_koleksi_lng,
+            'foto_benih' => $foto_benih,
             'catatan' => $catatan,
             'is_active' => $is_active,
             'updated_by' => $user_id

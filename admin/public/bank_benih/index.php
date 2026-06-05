@@ -106,6 +106,7 @@ $tipePenyimpananBenihs = $controller->getTipePenyimpananBenih();
                                                 <th>Lokasi Penyimpanan</th>
                                                 <th>Titik Koleksi Lat</th>
                                                 <th>Titik Koleksi Lng</th>
+                                                <th>Foto Benih</th>
                                                 <th>Catatan</th>
                                                 <th>Status Aktif</th>
                                                 <th>Aksi</th>
@@ -132,6 +133,12 @@ $tipePenyimpananBenihs = $controller->getTipePenyimpananBenih();
                                                     <td><?= htmlspecialchars($bankBenih['lokasi_penyimpanan']) ?></td>
                                                     <td><?= htmlspecialchars($bankBenih['titik_koleksi_lat']) ?></td>
                                                     <td><?= htmlspecialchars($bankBenih['titik_koleksi_lng']) ?></td>
+                                                    <td>
+                                                        <img class="img-circle elevation-2" src="<?= !empty($bankBenih['foto_benih'])
+                                                            ? '../../uploads/bank_benih/' . htmlspecialchars($bankBenih['foto_benih'])
+                                                            : '../../../assets/image/benih_placeholder.jpg' ?>"
+                                                            width="80">
+                                                    </td>
                                                     <td><?= htmlspecialchars($bankBenih['catatan']) ?></td>
                                                     <td><?= $bankBenih['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
                                                     <td class="row">
@@ -156,6 +163,7 @@ $tipePenyimpananBenihs = $controller->getTipePenyimpananBenih();
                                                                 data-lokasi_penyimpanan="<?= htmlspecialchars($bankBenih['lokasi_penyimpanan']) ?>"
                                                                 data-titik_koleksi_lat="<?= htmlspecialchars($bankBenih['titik_koleksi_lat']) ?>"
                                                                 data-titik_koleksi_lng="<?= htmlspecialchars($bankBenih['titik_koleksi_lng']) ?>"
+                                                                data-foto="<?= $bankBenih['foto_benih'] ?>"
                                                                 data-catatan="<?= htmlspecialchars($bankBenih['catatan']) ?>"
                                                                 data-status="<?= $bankBenih['is_active'] ?>"
                                                                 data-toggle="modal" data-target="#modalEdit">
@@ -194,6 +202,7 @@ $tipePenyimpananBenihs = $controller->getTipePenyimpananBenih();
                                                 <th>Lokasi Penyimpanan</th>
                                                 <th>Titik Koleksi Lat</th>
                                                 <th>Titik Koleksi Lng</th>
+                                                <th>Foto Petani</th>
                                                 <th>Catatan</th>
                                                 <th>Status Aktif</th>
                                                 <th>Aksi</th>
@@ -219,7 +228,7 @@ $tipePenyimpananBenihs = $controller->getTipePenyimpananBenih();
                             <h4 class="modal-title">Tambah Bank Benih</h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
-                        <form id="formTambah" method="POST" action="store.php">
+                        <form id="formTambah" method="POST" action="store.php" enctype="multipart/form-data">
                             <?= csrfField() ?>
                             <div class="modal-body">
                                 <div class="form-group">
@@ -335,6 +344,11 @@ $tipePenyimpananBenihs = $controller->getTipePenyimpananBenih();
                                         placeholder="Masukkan Longitude" min="-180" max="180">
                                 </div>
                                 <div class="form-group">
+                                    <label for="foto_benih">Foto Benih</label>
+                                    <input type="file" name="foto_benih" class="form-control"
+                                        id="foto_benih" accept="image/*">
+                                </div>
+                                <div class="form-group">
                                     <label for="catatan">Catatan<code>*</code></label>
                                     <textarea name="catatan" class="form-control" id="catatan"
                                         placeholder="Masukkan Catatan"></textarea>
@@ -377,7 +391,7 @@ $tipePenyimpananBenihs = $controller->getTipePenyimpananBenih();
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
 
-                        <form id="formEdit" method="POST" action="update.php">
+                        <form id="formEdit" method="POST" action="update.php" enctype="multipart/form-data">
                             <?= csrfField() ?>
                             <input type="hidden" name="id" id="edit_id">
                             <div class="modal-body">
@@ -492,6 +506,16 @@ $tipePenyimpananBenihs = $controller->getTipePenyimpananBenih();
                                     <label for="titik_koleksi_lng">Titik Koleksi Longitude<code>*</code></label>
                                     <input type="number" name="titik_koleksi_lng" class="form-control" id="edit_titik_koleksi_lng"
                                         placeholder="Masukkan Longitude" min="-180" max="180">
+                                </div>
+                                <input type="hidden" name="foto_lama" id="edit_foto_lama">
+                                <div class="form-group">
+                                    <label for="edit_foto_benih">Foto Benih</label>
+                                    <input type="file" name="foto_benih" class="form-control"
+                                        id="edit_foto_benih" accept="image/*">
+
+                                    <small class="text-muted">
+                                        Kosongkan jika tidak ingin mengganti foto
+                                    </small>
                                 </div>
                                 <div class="form-group">
                                     <label for="catatan">Catatan<code>*</code></label>
@@ -747,6 +771,7 @@ $tipePenyimpananBenihs = $controller->getTipePenyimpananBenih();
             let lokasi_penyimpanan = $(this).data("lokasi_penyimpanan");
             let titik_koleksi_lat = $(this).data("titik_koleksi_lat");
             let titik_koleksi_lng = $(this).data("titik_koleksi_lng");
+            let foto = $(this).data("foto");
             let catatan = $(this).data("catatan");
             let status = $(this).data("status");
 
@@ -769,6 +794,7 @@ $tipePenyimpananBenihs = $controller->getTipePenyimpananBenih();
             $("#edit_lokasi_penyimpanan").val(lokasi_penyimpanan);
             $("#edit_titik_koleksi_lat").val(titik_koleksi_lat);
             $("#edit_titik_koleksi_lng").val(titik_koleksi_lng);
+            $("#edit_foto_lama").val(foto);
             $("#edit_catatan").val(catatan);
             $("input[name='is_active'][value='" + status + "']").prop("checked", true);
         });
