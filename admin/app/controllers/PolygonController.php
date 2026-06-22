@@ -121,6 +121,36 @@ class PolygonController
         return $this->model->getKaleka();
     }
 
+    public function getHutanLindung()
+    {
+        return $this->model->getHutanLindung();
+    }
+
+    public function getHutanProduksiTetap()
+    {
+        return $this->model->getHutanProduksiTetap();
+    }
+
+    public function getHutanProduksiTerbatas()
+    {
+        return $this->model->getHutanProduksiTerbatas();
+    }
+
+    public function getHutanProduksiKonversi()
+    {
+        return $this->model->getHutanProduksiKonversi();
+    }
+
+    public function getKawasanKonservasi()
+    {
+        return $this->model->getKawasanKonservasi();
+    }
+
+    public function getAreaPenggunaanLain()
+    {
+        return $this->model->getAreaPenggunaanLain();
+    }
+
     public function getPolygonHAData()
     {
         return $this->model->getPolygonHAData();
@@ -144,6 +174,36 @@ class PolygonController
     public function getPolygonKalekaData()
     {
         return $this->model->getPolygonKalekaData();
+    }
+
+    public function getPolygonHutanLindungData()
+    {
+        return $this->model->getPolygonHutanLindungData();
+    }
+
+    public function getPolygonHutanProduksiTetapData()
+    {
+        return $this->model->getPolygonHutanProduksiTetapData();
+    }
+
+    public function getPolygonHutanProduksiTerbatasData()
+    {
+        return $this->model->getPolygonHutanProduksiTerbatasData();
+    }
+
+    public function getPolygonHutanProduksiKonversiData()
+    {
+        return $this->model->getPolygonHutanProduksiKonversiData();
+    }
+
+    public function getPolygonKawasanKonservasiData()
+    {
+        return $this->model->getPolygonKawasanKonservasiData();
+    }
+
+    public function getPolygonAreaPenggunaanLainData()
+    {
+        return $this->model->getPolygonAreaPenggunaanLainData();
     }
 
     public function getDetailPolygonProv($id)

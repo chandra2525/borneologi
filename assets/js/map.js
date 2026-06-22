@@ -26,6 +26,24 @@ map.getPane("paneHutanAdat").style.zIndex = 400;
 map.createPane("paneKaleka");
 map.getPane("paneKaleka").style.zIndex = 400;
 
+map.createPane("paneHutanLindung");
+map.getPane("paneHutanLindung").style.zIndex = 400;
+
+map.createPane("paneHutanProduksiTetap");
+map.getPane("paneHutanProduksiTetap").style.zIndex = 400;
+
+map.createPane("paneHutanProduksiTerbatas");
+map.getPane("paneHutanProduksiTerbatas").style.zIndex = 400;
+
+map.createPane("paneHutanProduksiKonversi");
+map.getPane("paneHutanProduksiKonversi").style.zIndex = 400;
+
+map.createPane("paneKawasanKonservasi");
+map.getPane("paneKawasanKonservasi").style.zIndex = 400;
+
+map.createPane("paneAreaPenggunaanLain");
+map.getPane("paneAreaPenggunaanLain").style.zIndex = 400;
+
 map.createPane("paneBankBenih");
 map.getPane("paneBankBenih").style.zIndex = 400;
 
@@ -84,6 +102,117 @@ const hybrid = L.layerGroup([satellite, osmLabels]);
 
 hybrid.addTo(map);
 
+// Tombol Generate Sentinel
+const GenerateSentinelControl = L.Control.extend({
+  options: {
+    position: "topleft",
+  },
+
+  onAdd: function () {
+    const container = L.DomUtil.create(
+      "div",
+      "leaflet-bar leaflet-control leaflet-control-custom",
+    );
+
+    container.innerHTML = "🛰️";
+    container.title = "Generate Sentinel";
+
+    container.style.backgroundColor = "white";
+    container.style.width = "34px";
+    container.style.height = "34px";
+    container.style.lineHeight = "34px";
+    container.style.textAlign = "center";
+    container.style.cursor = "pointer";
+    container.style.fontSize = "18px";
+
+    L.DomEvent.disableClickPropagation(container);
+
+    container.onclick = function () {
+      document.getElementById("sentinelModal").style.display = "block";
+    };
+
+    return container;
+  },
+});
+
+map.addControl(new GenerateSentinelControl());
+
+// ==========================
+// EVENT MODAL DISINI
+// ==========================
+
+document
+  .getElementById("btnCloseSentinel")
+  .addEventListener("click", function () {
+    document.getElementById("sentinelModal").style.display = "none";
+  });
+
+document
+  .getElementById("btnGenerateSentinel")
+  .addEventListener("click", async function () {
+    const from = document.getElementById("sentinelFrom").value;
+    const to = document.getElementById("sentinelTo").value;
+
+    if (!from || !to) {
+      alert("Tanggal harus diisi");
+      return;
+    }
+
+    // Tutup modal
+    document.getElementById("sentinelModal").style.display = "none";
+
+    // try {
+
+    // Tampilkan loading
+    showLoading();
+
+    const response = await fetch("api/generate_sentinel.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: from,
+        to: to,
+      }),
+    });
+
+    if (layerSentinel) {
+      map.removeLayer(layerSentinel);
+    }
+
+    layerSentinel = L.imageOverlay("api/cache/gunung_mas.png", ndviBounds, {
+      opacity: 1.0,
+    });
+
+    layerSentinel.addTo(map);
+
+    if (!response.ok) {
+      throw new Error("Generate gagal");
+    }
+
+    // const result = await response.json();
+
+    // setTimeout(() => {
+    // location.reload();
+    // }, 500);
+
+    // console.log(result);
+
+    // Reload setelah generate selesai
+    location.reload();
+    hideLoading();
+
+    // } catch (err) {
+
+    //     console.error(err);
+    //     hideLoading();
+
+    //     alert("Generate Sentinel gagal");
+
+    // }
+  });
+
 L.control
   .layers({
     Hybrid: hybrid,
@@ -105,6 +234,13 @@ let totalKabupaten = 0;
 let totalKecamatan = 0;
 let totalKaleka = 0;
 let totalBankBenih = 0;
+let totalSentinel = 0;
+let totalHutanLindung = 0;
+let totalHutanProduksiTetap = 0;
+let totalHutanProduksiTerbatas = 0;
+let totalHutanProduksiKonversi = 0;
+let totalKawasanKonservasi = 0;
+let totalAreaPenggunaanLain = 0;
 let legend;
 
 const layerProvinsi = L.layerGroup().addTo(map);
@@ -113,6 +249,32 @@ const layerKecamatan = L.layerGroup(); // default OFF
 const layerHutanAdat = L.layerGroup(); // default OFF
 const layerKaleka = L.layerGroup(); // default OFF
 const layerBankBenih = L.layerGroup(); // default OFF
+const layerHutanLindung = L.layerGroup(); // default OFF
+const layerHutanProduksiTetap = L.layerGroup(); // default OFF
+const layerHutanProduksiTerbatas = L.layerGroup(); // default OFF
+const layerHutanProduksiKonversi = L.layerGroup(); // default OFF
+const layerKawasanKonservasi = L.layerGroup(); // default OFF
+const layerAreaPenggunaanLain = L.layerGroup(); // default OFF
+
+var ndviBounds = [
+  [-0.290817096078737, 113.157554268836980],
+  [-1.654993907696092, 114.008013010025040],
+  // [
+  // [
+  //     -0.61570805757998,
+  //     113.72387745128
+  // ],
+  // [
+  //     -0.61570805757998,
+  //     113.72387745128
+
+  // ]
+  // ],
+];
+
+var layerSentinel = L.imageOverlay("api/cache/gunung_mas.png", ndviBounds, {
+  opacity: 0.9,
+});
 
 let isLoaded = {
   provinsi: false,
@@ -121,6 +283,13 @@ let isLoaded = {
   hutan_adat: false,
   kaleka: false,
   bank_benih: false,
+  sentinel: false,
+  hutan_lindung: false,
+  hutan_produksi_tetap: false,
+  hutan_produksi_terbatas: false,
+  hutan_produksi_konversi: false,
+  kawasan_konservasi: false,
+  area_penggunaan_lain: false,
 };
 
 let layerState = {
@@ -130,6 +299,13 @@ let layerState = {
   hutan_adat: false,
   kaleka: false,
   bank_benih: false,
+  sentinel: false,
+  hutan_lindung: false,
+  hutan_produksi_tetap: false,
+  hutan_produksi_terbatas: false,
+  hutan_produksi_konversi: false,
+  kawasan_konservasi: false,
+  area_penggunaan_lain: false,
 };
 
 function loadHutanAdat() {
@@ -137,7 +313,11 @@ function loadHutanAdat() {
 
   showLoading();
 
-  fetch("api/hutan_adat.php")
+  fetch("api/hutan_adat.php", {
+    headers: {
+      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+    },
+  })
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
@@ -150,7 +330,7 @@ function loadHutanAdat() {
           pane: "paneHutanAdat",
           color: "#00ff00",
           weight: 2,
-          fillOpacity: 0.35,
+          fillOpacity: 0.1,
         }).addTo(layerHutanAdat);
 
         allPolygons.push(hutanAdat);
@@ -181,7 +361,11 @@ function loadProvinsi() {
 
   showLoading();
 
-  fetch("api/provinsi.php")
+  fetch("api/provinsi.php", {
+    headers: {
+      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+    },
+  })
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
@@ -226,7 +410,11 @@ function loadKabupaten() {
 
   showLoading();
 
-  fetch("api/kabupaten.php")
+  fetch("api/kabupaten.php", {
+    headers: {
+      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+    },
+  })
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
@@ -270,7 +458,11 @@ function loadKecamatan() {
 
   showLoading();
 
-  fetch("api/kecamatan.php")
+  fetch("api/kecamatan.php", {
+    headers: {
+      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+    },
+  })
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
@@ -314,7 +506,11 @@ function loadKaleka() {
 
   showLoading();
 
-  fetch("api/kaleka.php")
+  fetch("api/kaleka.php", {
+    headers: {
+      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+    },
+  })
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
@@ -327,7 +523,7 @@ function loadKaleka() {
           pane: "paneKaleka",
           color: "#9500ff",
           weight: 2,
-          fillOpacity: 0.35,
+          fillOpacity: 0.1,
         }).addTo(layerKaleka);
 
         allPolygons.push(kaleka);
@@ -354,7 +550,7 @@ function loadKaleka() {
         // Marker dengan icon ungu
         L.marker(center, {
           icon: purpleIcon,
-        }).addTo(map);
+        }).addTo(layerKaleka);
       });
 
       updateLegend();
@@ -375,7 +571,11 @@ function loadBankBenih() {
 
   showLoading();
 
-  fetch("api/bank_benih.php")
+  fetch("api/bank_benih.php", {
+    headers: {
+      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+    },
+  })
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
@@ -434,8 +634,402 @@ function loadBankBenih() {
     });
 }
 
+function loadHutanLindung() {
+  if (isLoaded.hutan_lindung) return;
+
+  showLoading();
+
+  fetch("api/hutan_lindung.php", {
+    headers: {
+      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+
+      totalHutanLindung = data.hutan_lindung.length;
+      // totalHutanLindung = new Set(data.hutan_lindung.map((item) => item.id)).size;
+
+      data.hutan_lindung.forEach((item) => {
+        const hutan_lindung = L.geoJSON(item.geom_area, {
+          pane: "paneHutanLindung",
+          color: "#56a832",
+          weight: 2,
+          fillOpacity: 1,
+        }).addTo(layerHutanLindung);
+
+        allPolygons.push(hutan_lindung);
+
+        hutan_lindung.on("click", (e) => {
+          showHutanLindungModal(item.id, e.latlng);
+        });
+
+        // buka untuk dapat pin icon marker
+        // const center = getCentroid(item.geom_area);
+        // const purpleIcon = new L.Icon({
+        //   iconUrl: "assets/image/marker-oldgreen.png",
+        //   // iconUrl:
+        //   //   "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png",
+        //   // shadowUrl:
+        //   //   "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+
+        //   iconSize: [25, 41],
+        //   iconAnchor: [12, 41],
+        //   popupAnchor: [1, -34],
+        //   // shadowSize: [41, 41],
+        // });
+
+        // // Marker dengan icon ungu
+        // L.marker(center, {
+        //   icon: purpleIcon,
+        // }).addTo(layerHutanLindung);
+      });
+
+      updateLegend();
+      isLoaded.hutan_lindung = true;
+      createTotalMarker(totalHutanLindung, "hutan_lindung");
+    })
+    .catch((err) => {
+      console.error(err);
+      alert("Gagal memuat data hutan lindung");
+    })
+    .finally(() => {
+      hideLoading();
+    });
+}
+
+function loadHutanProduksiTetap() {
+  if (isLoaded.hutan_produksi_tetap) return;
+
+  showLoading();
+
+  fetch("api/hutan_produksi_tetap.php", {
+    headers: {
+      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+
+      totalHutanProduksiTetap = data.hutan_produksi_tetap.length;
+      // totalHutanProduksiTetap = new Set(data.hutan_produksi_tetap.map((item) => item.id)).size;
+
+      data.hutan_produksi_tetap.forEach((item) => {
+        const hutan_produksi_tetap = L.geoJSON(item.geom_area, {
+          pane: "paneHutanProduksiTetap",
+          color: "#fdfc56",
+          weight: 2,
+          fillOpacity: 1,
+        }).addTo(layerHutanProduksiTetap);
+
+        allPolygons.push(hutan_produksi_tetap);
+
+        hutan_produksi_tetap.on("click", (e) => {
+          showHutanProduksiTetapModal(item.id, e.latlng);
+        });
+
+        // buka untuk dapat pin icon marker
+        // const center = getCentroid(item.geom_area);
+        // const purpleIcon = new L.Icon({
+        //   iconUrl: "assets/image/marker-oldgreen.png",
+        //   // iconUrl:
+        //   //   "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png",
+        //   // shadowUrl:
+        //   //   "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+
+        //   iconSize: [25, 41],
+        //   iconAnchor: [12, 41],
+        //   popupAnchor: [1, -34],
+        //   // shadowSize: [41, 41],
+        // });
+
+        // // Marker dengan icon ungu
+        // L.marker(center, {
+        //   icon: purpleIcon,
+        // }).addTo(layerHutanProduksiTetap);
+      });
+
+      updateLegend();
+      isLoaded.hutan_produksi_tetap = true;
+      createTotalMarker(totalHutanProduksiTetap, "hutan_produksi_tetap");
+    })
+    .catch((err) => {
+      console.error(err);
+      alert("Gagal memuat data hutan produksi tetap");
+    })
+    .finally(() => {
+      hideLoading();
+    });
+}
+
+function loadHutanProduksiTerbatas() {
+  if (isLoaded.hutan_produksi_terbatas) return;
+
+  showLoading();
+
+  fetch("api/hutan_produksi_terbatas.php", {
+    headers: {
+      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+
+      totalHutanProduksiTerbatas = data.hutan_produksi_terbatas.length;
+      // totalHutanProduksiTerbatas = new Set(data.hutan_produksi_terbatas.map((item) => item.id)).size;
+
+      data.hutan_produksi_terbatas.forEach((item) => {
+        const hutan_produksi_terbatas = L.geoJSON(item.geom_area, {
+          pane: "paneHutanProduksiTerbatas",
+          color: "#a7ed4c",
+          weight: 2,
+          fillOpacity: 1,
+        }).addTo(layerHutanProduksiTerbatas);
+
+        allPolygons.push(hutan_produksi_terbatas);
+
+        hutan_produksi_terbatas.on("click", (e) => {
+          showHutanProduksiTerbatasModal(item.id, e.latlng);
+        });
+
+        // buka untuk dapat pin icon marker
+        // const center = getCentroid(item.geom_area);
+        // const purpleIcon = new L.Icon({
+        //   iconUrl: "assets/image/marker-oldgreen.png",
+        //   // iconUrl:
+        //   //   "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png",
+        //   // shadowUrl:
+        //   //   "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+
+        //   iconSize: [25, 41],
+        //   iconAnchor: [12, 41],
+        //   popupAnchor: [1, -34],
+        //   // shadowSize: [41, 41],
+        // });
+
+        // // Marker dengan icon ungu
+        // L.marker(center, {
+        //   icon: purpleIcon,
+        // }).addTo(layerHutanProduksiTerbatas);
+      });
+
+      updateLegend();
+      isLoaded.hutan_produksi_terbatas = true;
+      createTotalMarker(totalHutanProduksiTerbatas, "hutan_produksi_terbatas");
+    })
+    .catch((err) => {
+      console.error(err);
+      alert("Gagal memuat data hutan produksi terbatas");
+    })
+    .finally(() => {
+      hideLoading();
+    });
+}
+
+function loadHutanProduksiKonversi() {
+  if (isLoaded.hutan_produksi_konversi) return;
+
+  showLoading();
+
+  fetch("api/hutan_produksi_konversi.php", {
+    headers: {
+      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+
+      totalHutanProduksiKonversi = data.hutan_produksi_konversi.length;
+      // totalHutanProduksiKonversi = new Set(data.hutan_produksi_konversi.map((item) => item.id)).size;
+
+      data.hutan_produksi_konversi.forEach((item) => {
+        const hutan_produksi_konversi = L.geoJSON(item.geom_area, {
+          pane: "paneHutanProduksiKonversi",
+          color: "#e871f7",
+          weight: 2,
+          fillOpacity: 1,
+        }).addTo(layerHutanProduksiKonversi);
+
+        allPolygons.push(hutan_produksi_konversi);
+
+        hutan_produksi_konversi.on("click", (e) => {
+          showHutanProduksiKonversiModal(item.id, e.latlng);
+        });
+
+        // buka untuk dapat pin icon marker
+        // const center = getCentroid(item.geom_area);
+        // const purpleIcon = new L.Icon({
+        //   iconUrl: "assets/image/marker-oldgreen.png",
+        //   // iconUrl:
+        //   //   "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png",
+        //   // shadowUrl:
+        //   //   "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+
+        //   iconSize: [25, 41],
+        //   iconAnchor: [12, 41],
+        //   popupAnchor: [1, -34],
+        //   // shadowSize: [41, 41],
+        // });
+
+        // // Marker dengan icon ungu
+        // L.marker(center, {
+        //   icon: purpleIcon,
+        // }).addTo(layerHutanProduksiKonversi);
+      });
+
+      updateLegend();
+      isLoaded.hutan_produksi_konversi = true;
+      createTotalMarker(totalHutanProduksiKonversi, "hutan_produksi_konversi");
+    })
+    .catch((err) => {
+      console.error(err);
+      alert("Gagal memuat data hutan produksi konversi");
+    })
+    .finally(() => {
+      hideLoading();
+    });
+}
+
+function loadKawasanKonservasi() {
+  if (isLoaded.kawasan_konservasi) return;
+
+  showLoading();
+
+  fetch("api/kawasan_konservasi.php", {
+    headers: {
+      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+
+      totalKawasanKonservasi = data.kawasan_konservasi.length;
+      // totalKawasanKonservasi = new Set(data.kawasan_konservasi.map((item) => item.id)).size;
+
+      data.kawasan_konservasi.forEach((item) => {
+        const kawasan_konservasi = L.geoJSON(item.geom_area, {
+          pane: "paneKawasanKonservasi",
+          color: "#9f53f5",
+          weight: 2,
+          fillOpacity: 1,
+        }).addTo(layerKawasanKonservasi);
+
+        allPolygons.push(kawasan_konservasi);
+
+        kawasan_konservasi.on("click", (e) => {
+          showKawasanKonservasiModal(item.id, e.latlng);
+        });
+
+        // buka untuk dapat pin icon marker
+        // const center = getCentroid(item.geom_area);
+        // const purpleIcon = new L.Icon({
+        //   iconUrl: "assets/image/marker-oldgreen.png",
+        //   // iconUrl:
+        //   //   "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png",
+        //   // shadowUrl:
+        //   //   "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+
+        //   iconSize: [25, 41],
+        //   iconAnchor: [12, 41],
+        //   popupAnchor: [1, -34],
+        //   // shadowSize: [41, 41],
+        // });
+
+        // // Marker dengan icon ungu
+        // L.marker(center, {
+        //   icon: purpleIcon,
+        // }).addTo(layerKawasanKonservasi);
+      });
+
+      updateLegend();
+      isLoaded.kawasan_konservasi = true;
+      createTotalMarker(totalKawasanKonservasi, "kawasan_konservasi");
+    })
+    .catch((err) => {
+      console.error(err);
+      alert("Gagal memuat data kawasan konservasi");
+    })
+    .finally(() => {
+      hideLoading();
+    });
+}
+
+function loadAreaPenggunaanLain() {
+  if (isLoaded.area_penggunaan_lain) return;
+
+  showLoading();
+
+  fetch("api/area_penggunaan_lain.php", {
+    headers: {
+      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+
+      totalAreaPenggunaanLain = data.area_penggunaan_lain.length;
+      // totalAreaPenggunaanLain = new Set(data.area_penggunaan_lain.map((item) => item.id)).size;
+
+      data.area_penggunaan_lain.forEach((item) => {
+        const area_penggunaan_lain = L.geoJSON(item.geom_area, {
+          pane: "paneAreaPenggunaanLain",
+          color: "#F5F5F5",
+          weight: 2,
+          fillOpacity: 1,
+        }).addTo(layerAreaPenggunaanLain);
+
+        allPolygons.push(area_penggunaan_lain);
+
+        area_penggunaan_lain.on("click", (e) => {
+          showAreaPenggunaanLainModal(item.id, e.latlng);
+        });
+
+        // buka untuk dapat pin icon marker
+        // const center = getCentroid(item.geom_area);
+        // const purpleIcon = new L.Icon({
+        //   iconUrl: "assets/image/marker-oldgreen.png",
+        //   // iconUrl:
+        //   //   "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png",
+        //   // shadowUrl:
+        //   //   "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+
+        //   iconSize: [25, 41],
+        //   iconAnchor: [12, 41],
+        //   popupAnchor: [1, -34],
+        //   // shadowSize: [41, 41],
+        // });
+
+        // // Marker dengan icon ungu
+        // L.marker(center, {
+        //   icon: purpleIcon,
+        // }).addTo(layerAreaPenggunaanLain);
+      });
+
+      updateLegend();
+      isLoaded.area_penggunaan_lain = true;
+      createTotalMarker(totalAreaPenggunaanLain, "area_penggunaan_lain");
+    })
+    .catch((err) => {
+      console.error(err);
+      alert("Gagal memuat data area penggunaan lain");
+    })
+    .finally(() => {
+      hideLoading();
+    });
+}
+
 function loadTotalFarmer() {
-  fetch("api/total_farmer.php")
+  fetch("api/total_farmer.php", {
+    headers: {
+      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+    },
+  })
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
@@ -482,35 +1076,65 @@ function updateLegend() {
             box-shadow:0 3px 8px rgba(0,0,0,0.2);
             font-size:14px;
         ">
-            <strong data-lang="text_keterangan">Keterangan</strong>
+            <strong data-lang="text_keterangan" style="font-size:20px;">Keterangan</strong>
 
         <div>
             <input type="checkbox" id="chkProvinsi" ${layerState.provinsi ? "checked" : ""}>
-            <span style="background:#FF4400; width:18px; height:18px; display:inline-block;"></span>
+            <span style="
+                width:18px;
+                height:18px;
+                display:inline-block;
+                border:2px solid #FF4400;
+                background:rgba(255, 68, 0, 0.1);
+            "></span>
             <span data-lang="text_provinsi">Provinsi</span> (${totalProvinsi})
         </div>
 
         <div>
             <input type="checkbox" id="chkKabupaten" ${layerState.kabupaten ? "checked" : ""}>
-            <span style="background:#00AAFF; width:18px; height:18px; display:inline-block;"></span>
+            <span style="
+                width:18px;
+                height:18px;
+                display:inline-block;
+                border:2px solid #00AAFF;
+                background:rgba(0, 170, 255, 0.1);
+            "></span>
             <span data-lang="text_kabupaten">Kabupaten</span> (${totalKabupaten})
         </div>
 
         <div>
             <input type="checkbox" id="chkKecamatan" ${layerState.kecamatan ? "checked" : ""}>
-            <span style="background:#ffea00; width:18px; height:18px; display:inline-block;"></span>
+            <span style="
+                width:18px;
+                height:18px;
+                display:inline-block;
+                border:2px solid #ffea00;
+                background:rgba(255, 234, 0, 0.1);
+            "></span>
             <span data-lang="text_kecamatan">Kecamatan</span> (${totalKecamatan})
         </div>
 
         <div>
             <input type="checkbox" id="chkHutanAdat" ${layerState.hutan_adat ? "checked" : ""}>
-            <span style="background:#00ff00; width:18px; height:18px; display:inline-block;"></span>
+            <span style="
+                width:18px;
+                height:18px;
+                display:inline-block;
+                border:2px solid #00ff00;
+                background:rgba(0, 255, 0, 0.1);
+            "></span>
             <span data-lang="text_hutan_adat">Hutan Adat</span> (${totalHutanAdat})
         </div>
 
         <div>
             <input type="checkbox" id="chkKaleka" ${layerState.kaleka ? "checked" : ""}>
-            <span style="background:#9500ff; width:18px; height:18px; display:inline-block;"></span>
+            <span style="
+                width:18px;
+                height:18px;
+                display:inline-block;
+                border:2px solid #9500ff;
+                background:rgba(149, 0, 255, 0.1);
+            "></span>
             <span data-lang="text_kaleka">Kaleka</span> (${totalKaleka})
         </div>
 
@@ -518,6 +1142,50 @@ function updateLegend() {
             <input type="checkbox" id="chkBankBenih" ${layerState.bank_benih ? "checked" : ""}>
             <span style="background:#f7ebd1; width:18px; height:18px; display:inline-block;"></span>
             <span data-lang="text_bank_benih">Bank Benih</span> (${totalBankBenih})
+        </div>
+
+        <div>
+            <input type="checkbox" id="chkSentinel" ${layerState.sentinel ? "checked" : ""}>
+            <span style="background:#32342c; width:18px; height:18px; display:inline-block;"></span>
+            <span data-lang="text_sentinel">Citra Satelit (Sentinel)</span> (${totalSentinel})
+        </div>
+
+        <strong data-lang="text_kawasan_hutan"><br>Kawasan Hutan (Desember 2025)</strong>
+
+        <div>
+            <input type="checkbox" id="chkHutanLindung" ${layerState.hutan_lindung ? "checked" : ""}>
+            <span style="background:#56a832; width:18px; height:18px; display:inline-block;"></span>
+            <span data-lang="text_hutan_lindung">Hutan Lindung</span> (${totalHutanLindung})
+        </div>
+
+        <div>
+            <input type="checkbox" id="chkHutanProduksiTetap" ${layerState.hutan_produksi_tetap ? "checked" : ""}>
+            <span style="background:#fdfc56; width:18px; height:18px; display:inline-block;"></span>
+            <span data-lang="text_hutan_produksi_tetap">Hutan Produksi Tetap</span> (${totalHutanProduksiTetap})
+        </div>
+
+        <div>
+            <input type="checkbox" id="chkHutanProduksiTerbatas" ${layerState.hutan_produksi_terbatas ? "checked" : ""}>
+            <span style="background:#a7ed4c; width:18px; height:18px; display:inline-block;"></span>
+            <span data-lang="text_hutan_produksi_terbatas">Hutan Produksi Terbatas</span> (${totalHutanProduksiTerbatas})
+        </div>
+
+        <div>
+            <input type="checkbox" id="chkHutanProduksiKonversi" ${layerState.hutan_produksi_konversi ? "checked" : ""}>
+            <span style="background:#e871f7; width:18px; height:18px; display:inline-block;"></span>
+            <span data-lang="text_hutan_produksi_konversi">Hutan Produksi Konversi</span> (${totalHutanProduksiKonversi})
+        </div>
+
+        <div>
+            <input type="checkbox" id="chkKawasanKonservasi" ${layerState.kawasan_konservasi ? "checked" : ""}>
+            <span style="background:#9f53f5; width:18px; height:18px; display:inline-block;"></span>
+            <span data-lang="text_kawasan_konservasi">Kawasan Konservasi</span> (${totalKawasanKonservasi})
+        </div>
+
+        <div>
+            <input type="checkbox" id="chkAreaPenggunaanLain" ${layerState.area_penggunaan_lain ? "checked" : ""}>
+            <span style="background:#F5F5F5; width:18px; height:18px; display:inline-block;"></span>
+            <span data-lang="text_area_penggunaan_lain">Area Penggunaan Lain</span> (${totalAreaPenggunaanLain})
         </div>
 
         </div>
@@ -606,6 +1274,96 @@ function updateLegend() {
           map.addLayer(layerBankBenih);
         } else {
           map.removeLayer(layerBankBenih);
+        }
+      }),
+    );
+
+    document.getElementById("chkSentinel").addEventListener(
+      "change",
+      debounce(function () {
+        layerState.sentinel = this.checked;
+        if (this.checked) {
+          map.addLayer(layerSentinel);
+        } else {
+          map.removeLayer(layerSentinel);
+        }
+      }),
+    );
+
+    document.getElementById("chkHutanLindung").addEventListener(
+      "change",
+      debounce(function () {
+        layerState.hutan_lindung = this.checked;
+        if (this.checked) {
+          loadHutanLindung();
+          map.addLayer(layerHutanLindung);
+        } else {
+          map.removeLayer(layerHutanLindung);
+        }
+      }),
+    );
+
+    document.getElementById("chkHutanProduksiTetap").addEventListener(
+      "change",
+      debounce(function () {
+        layerState.hutan_produksi_tetap = this.checked;
+        if (this.checked) {
+          loadHutanProduksiTetap();
+          map.addLayer(layerHutanProduksiTetap);
+        } else {
+          map.removeLayer(layerHutanProduksiTetap);
+        }
+      }),
+    );
+
+    document.getElementById("chkHutanProduksiTerbatas").addEventListener(
+      "change",
+      debounce(function () {
+        layerState.hutan_produksi_terbatas = this.checked;
+        if (this.checked) {
+          loadHutanProduksiTerbatas();
+          map.addLayer(layerHutanProduksiTerbatas);
+        } else {
+          map.removeLayer(layerHutanProduksiTerbatas);
+        }
+      }),
+    );
+
+    document.getElementById("chkHutanProduksiKonversi").addEventListener(
+      "change",
+      debounce(function () {
+        layerState.hutan_produksi_konversi = this.checked;
+        if (this.checked) {
+          loadHutanProduksiKonversi();
+          map.addLayer(layerHutanProduksiKonversi);
+        } else {
+          map.removeLayer(layerHutanProduksiKonversi);
+        }
+      }),
+    );
+
+    document.getElementById("chkKawasanKonservasi").addEventListener(
+      "change",
+      debounce(function () {
+        layerState.kawasan_konservasi = this.checked;
+        if (this.checked) {
+          loadKawasanKonservasi();
+          map.addLayer(layerKawasanKonservasi);
+        } else {
+          map.removeLayer(layerKawasanKonservasi);
+        }
+      }),
+    );
+
+    document.getElementById("chkAreaPenggunaanLain").addEventListener(
+      "change",
+      debounce(function () {
+        layerState.area_penggunaan_lain = this.checked;
+        if (this.checked) {
+          loadAreaPenggunaanLain();
+          map.addLayer(layerAreaPenggunaanLain);
+        } else {
+          map.removeLayer(layerAreaPenggunaanLain);
         }
       }),
     );
@@ -784,7 +1542,11 @@ function showHutanAdatModal(id, latlng) {
   document.getElementById("loadingDetail").style.display = "block";
   document.getElementById("hutanAdatModal").style.display = "none";
 
-  fetch(`api/detail_polygon.php?id=${id}&&tipe=hutan_adat`)
+  fetch(`api/detail_polygon.php?id=${id}&&tipe=hutan_adat`, {
+    headers: {
+      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+    },
+  })
     .then((res) => res.json())
     .then((res) => {
       // sembunyikan loading
@@ -921,7 +1683,11 @@ function showHutanAdatModal(id, latlng) {
       `;
 
       // ambil data petani
-      fetch(`api/list_petani.php?id=${data.id_kelompok_tani}`)
+      fetch(`api/list_petani.php?id=${data.id_kelompok_tani}`, {
+        headers: {
+          "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+        },
+      })
         .then((res) => res.json())
         .then((resPetani) => {
           console.log(resPetani);
@@ -1006,7 +1772,11 @@ function showProvinsiModal(id, latlng) {
   document.getElementById("loadingDetail").style.display = "block";
   document.getElementById("provinsiModal").style.display = "none";
 
-  fetch(`api/detail_polygon.php?id=${id}&&tipe=provinsi`)
+  fetch(`api/detail_polygon.php?id=${id}&&tipe=provinsi`, {
+    headers: {
+      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+    },
+  })
     .then((res) => res.json())
     .then((res) => {
       // sembunyikan loading
@@ -1051,7 +1821,11 @@ function showKabupatenModal(id, latlng) {
   document.getElementById("loadingDetail").style.display = "block";
   document.getElementById("kabupatenModal").style.display = "none";
 
-  fetch(`api/detail_polygon.php?id=${id}&&tipe=kabupaten`)
+  fetch(`api/detail_polygon.php?id=${id}&&tipe=kabupaten`, {
+    headers: {
+      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+    },
+  })
     .then((res) => res.json())
     .then((res) => {
       // sembunyikan loading
@@ -1096,7 +1870,11 @@ function showKecamatanModal(id, latlng) {
   document.getElementById("loadingDetail").style.display = "block";
   document.getElementById("kecamatanModal").style.display = "none";
 
-  fetch(`api/detail_polygon.php?id=${id}&&tipe=kecamatan`)
+  fetch(`api/detail_polygon.php?id=${id}&&tipe=kecamatan`, {
+    headers: {
+      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+    },
+  })
     .then((res) => res.json())
     .then((res) => {
       // sembunyikan loading
@@ -1140,7 +1918,11 @@ function showKalekaModal(id, latlng) {
   document.getElementById("loadingDetail").style.display = "block";
   document.getElementById("kalekaModal").style.display = "none";
 
-  fetch(`api/detail_polygon.php?id=${id}&&tipe=kaleka`)
+  fetch(`api/detail_polygon.php?id=${id}&&tipe=kaleka`, {
+    headers: {
+      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+    },
+  })
     .then((res) => res.json())
     .then((res) => {
       // sembunyikan loading
@@ -1233,7 +2015,11 @@ function showKalekaModal(id, latlng) {
       `;
 
       // ambil data petani
-      fetch(`api/list_kelompok_petani.php?id=${data.id}`)
+      fetch(`api/list_kelompok_petani.php?id=${data.id}`, {
+        headers: {
+          "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+        },
+      })
         .then((res) => res.json())
         .then((resPetani) => {
           console.log(resPetani);
@@ -1793,7 +2579,11 @@ function showKalekaModal(id, latlng) {
 function showBankBenihModal(id, latlng) {
   setTranslatedText("modal-title-bank-benih", "Informasi Bank Benih");
 
-  fetch(`api/detail_polygon.php?id=${id}&&tipe=bank_benih`)
+  fetch(`api/detail_polygon.php?id=${id}&&tipe=bank_benih`, {
+    headers: {
+      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+    },
+  })
     .then((res) => res.json())
     .then((res) => {
       // tampilkan loading
@@ -1843,7 +2633,11 @@ function showBankBenihModal(id, latlng) {
       `;
 
       // ambil data monitoring
-      fetch(`api/list_monitoring.php?id=${id}`)
+      fetch(`api/list_monitoring.php?id=${id}`, {
+        headers: {
+          "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+        },
+      })
         .then((res) => res.json())
         .then((resMonitoring) => {
           console.log(resMonitoring);
@@ -1943,7 +2737,11 @@ function showBankBenihModal(id, latlng) {
         });
 
       // ambil data monitoring
-      fetch(`api/get_lahan_benih.php?id=${id}`)
+      fetch(`api/get_lahan_benih.php?id=${id}`, {
+        headers: {
+          "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+        },
+      })
         .then((res) => res.json())
         .then((res) => {
           console.log("Data res:", res);
@@ -2008,6 +2806,319 @@ function showBankBenihModal(id, latlng) {
       document.getElementById("bankBenihModal").style.display = "block";
 
       document.getElementById("bankBenihModal").innerHTML = `
+        <p style="text-align:center; color:red;">Gagal memuat data</p>
+      `;
+    });
+}
+
+function showHutanLindungModal(id, latlng) {
+  setTranslatedText("modal-title-hutan-lindung", "Informasi Hutan Lindung");
+
+  new bootstrap.Modal(document.getElementById("hutanLindungModal")).show();
+
+  // tampilkan loading
+  document.getElementById("loadingDetail").style.display = "block";
+  document.getElementById("hutanLindungModal").style.display = "none";
+
+  fetch(`api/detail_polygon.php?id=${id}&&tipe=hutan_lindung`, {
+    headers: {
+      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+    },
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      // sembunyikan loading
+      document.getElementById("loadingDetail").style.display = "none";
+      document.getElementById("hutanLindungModal").style.display = "block";
+
+      if (!res.status) {
+        alert("Data tidak ditemukan");
+        document.getElementById("hutanLindungModal").innerHTML = `
+          <p style="text-align:center;">Data tidak ditemukan</p>
+        `;
+        return;
+      }
+
+      const data = res.data;
+      console.log(id);
+      console.log(data);
+
+      // setTranslatedText("namaKaleka", data.nama_kaleka ?? "");
+      // setTranslatedText("namaLahan", data.nama_lahan ?? "");
+    })
+    .catch((err) => {
+      console.error(err);
+
+      document.getElementById("loadingDetail").style.display = "none";
+      document.getElementById("hutanLindungModal").style.display = "block";
+
+      document.getElementById("hutanLindungModal").innerHTML = `
+        <p style="text-align:center; color:red;">Gagal memuat data</p>
+      `;
+    });
+}
+
+function showHutanProduksiTetapModal(id, latlng) {
+  setTranslatedText(
+    "modal-title-hutan-produksi-tetap",
+    "Informasi Hutan Produksi Tetap",
+  );
+
+  new bootstrap.Modal(
+    document.getElementById("hutanProduksiTetapModal"),
+  ).show();
+
+  // tampilkan loading
+  document.getElementById("loadingDetail").style.display = "block";
+  document.getElementById("hutanProduksiTetapModal").style.display = "none";
+
+  fetch(`api/detail_polygon.php?id=${id}&&tipe=hutan_produksi_tetap`, {
+    headers: {
+      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+    },
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      // sembunyikan loading
+      document.getElementById("loadingDetail").style.display = "none";
+      document.getElementById("hutanProduksiTetapModal").style.display =
+        "block";
+
+      if (!res.status) {
+        alert("Data tidak ditemukan");
+        document.getElementById("hutanProduksiTetapModal").innerHTML = `
+          <p style="text-align:center;">Data tidak ditemukan</p>
+        `;
+        return;
+      }
+
+      const data = res.data;
+      console.log(id);
+      console.log(data);
+
+      // setTranslatedText("namaKaleka", data.nama_kaleka ?? "");
+      // setTranslatedText("namaLahan", data.nama_lahan ?? "");
+    })
+    .catch((err) => {
+      console.error(err);
+
+      document.getElementById("loadingDetail").style.display = "none";
+      document.getElementById("hutanProduksiTetapModal").style.display =
+        "block";
+
+      document.getElementById("hutanProduksiTetapModal").innerHTML = `
+        <p style="text-align:center; color:red;">Gagal memuat data</p>
+      `;
+    });
+}
+
+function showHutanProduksiTerbatasModal(id, latlng) {
+  setTranslatedText(
+    "modal-title-hutan-produksi-terbatas",
+    "Informasi Hutan Produksi Terbatas",
+  );
+
+  new bootstrap.Modal(
+    document.getElementById("hutanProduksiTerbatasModal"),
+  ).show();
+
+  // tampilkan loading
+  document.getElementById("loadingDetail").style.display = "block";
+  document.getElementById("hutanProduksiTerbatasModal").style.display = "none";
+
+  fetch(`api/detail_polygon.php?id=${id}&&tipe=hutan_produksi_terbatas`, {
+    headers: {
+      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+    },
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      // sembunyikan loading
+      document.getElementById("loadingDetail").style.display = "none";
+      document.getElementById("hutanProduksiTerbatasModal").style.display =
+        "block";
+
+      if (!res.status) {
+        alert("Data tidak ditemukan");
+        document.getElementById("hutanProduksiTerbatasModal").innerHTML = `
+          <p style="text-align:center;">Data tidak ditemukan</p>
+        `;
+        return;
+      }
+
+      const data = res.data;
+      console.log(id);
+      console.log(data);
+
+      // setTranslatedText("namaKaleka", data.nama_kaleka ?? "");
+      // setTranslatedText("namaLahan", data.nama_lahan ?? "");
+    })
+    .catch((err) => {
+      console.error(err);
+
+      document.getElementById("loadingDetail").style.display = "none";
+      document.getElementById("hutanProduksiTerbatasModal").style.display =
+        "block";
+
+      document.getElementById("hutanProduksiTerbatasModal").innerHTML = `
+        <p style="text-align:center; color:red;">Gagal memuat data</p>
+      `;
+    });
+}
+
+function showHutanProduksiKonversiModal(id, latlng) {
+  setTranslatedText(
+    "modal-title-hutan-produksi-konversi",
+    "Informasi Hutan Produksi Konversi",
+  );
+
+  new bootstrap.Modal(
+    document.getElementById("hutanProduksiKonversiModal"),
+  ).show();
+
+  // tampilkan loading
+  document.getElementById("loadingDetail").style.display = "block";
+  document.getElementById("hutanProduksiKonversiModal").style.display = "none";
+
+  fetch(`api/detail_polygon.php?id=${id}&&tipe=hutan_produksi_konversi`, {
+    headers: {
+      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+    },
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      // sembunyikan loading
+      document.getElementById("loadingDetail").style.display = "none";
+      document.getElementById("hutanProduksiKonversiModal").style.display =
+        "block";
+
+      if (!res.status) {
+        alert("Data tidak ditemukan");
+        document.getElementById("hutanProduksiKonversiModal").innerHTML = `
+          <p style="text-align:center;">Data tidak ditemukan</p>
+        `;
+        return;
+      }
+
+      const data = res.data;
+      console.log(id);
+      console.log(data);
+
+      // setTranslatedText("namaKaleka", data.nama_kaleka ?? "");
+      // setTranslatedText("namaLahan", data.nama_lahan ?? "");
+    })
+    .catch((err) => {
+      console.error(err);
+
+      document.getElementById("loadingDetail").style.display = "none";
+      document.getElementById("hutanProduksiKonversiModal").style.display =
+        "block";
+
+      document.getElementById("hutanProduksiKonversiModal").innerHTML = `
+        <p style="text-align:center; color:red;">Gagal memuat data</p>
+      `;
+    });
+}
+
+function showKawasanKonservasiModal(id, latlng) {
+  setTranslatedText(
+    "modal-title-kawasan-konservasi",
+    "Informasi Kawasan Konservasi (Taman Hutan Raya)",
+  );
+
+  new bootstrap.Modal(document.getElementById("kawasanKonservasiModal")).show();
+
+  // tampilkan loading
+  document.getElementById("loadingDetail").style.display = "block";
+  document.getElementById("kawasanKonservasiModal").style.display = "none";
+
+  fetch(`api/detail_polygon.php?id=${id}&&tipe=kawasan_konservasi`, {
+    headers: {
+      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+    },
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      // sembunyikan loading
+      document.getElementById("loadingDetail").style.display = "none";
+      document.getElementById("kawasanKonservasiModal").style.display = "block";
+
+      if (!res.status) {
+        alert("Data tidak ditemukan");
+        document.getElementById("kawasanKonservasiModal").innerHTML = `
+          <p style="text-align:center;">Data tidak ditemukan</p>
+        `;
+        return;
+      }
+
+      const data = res.data;
+      console.log(id);
+      console.log(data);
+
+      // setTranslatedText("namaKaleka", data.nama_kaleka ?? "");
+      // setTranslatedText("namaLahan", data.nama_lahan ?? "");
+    })
+    .catch((err) => {
+      console.error(err);
+
+      document.getElementById("loadingDetail").style.display = "none";
+      document.getElementById("kawasanKonservasiModal").style.display = "block";
+
+      document.getElementById("kawasanKonservasiModal").innerHTML = `
+        <p style="text-align:center; color:red;">Gagal memuat data</p>
+      `;
+    });
+}
+
+function showAreaPenggunaanLainModal(id, latlng) {
+  setTranslatedText(
+    "modal-title-area-penggunaan-lain",
+    "Informasi Area Penggunaan Lain",
+  );
+
+  new bootstrap.Modal(
+    document.getElementById("areaPenggunaanLainModal"),
+  ).show();
+
+  // tampilkan loading
+  document.getElementById("loadingDetail").style.display = "block";
+  document.getElementById("areaPenggunaanLainModal").style.display = "none";
+
+  fetch(`api/detail_polygon.php?id=${id}&&tipe=area_penggunaan_lain`, {
+    headers: {
+      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+    },
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      // sembunyikan loading
+      document.getElementById("loadingDetail").style.display = "none";
+      document.getElementById("areaPenggunaanLainModal").style.display =
+        "block";
+
+      if (!res.status) {
+        alert("Data tidak ditemukan");
+        document.getElementById("areaPenggunaanLainModal").innerHTML = `
+          <p style="text-align:center;">Data tidak ditemukan</p>
+        `;
+        return;
+      }
+
+      const data = res.data;
+      console.log(id);
+      console.log(data);
+
+      // setTranslatedText("namaKaleka", data.nama_kaleka ?? "");
+      // setTranslatedText("namaLahan", data.nama_lahan ?? "");
+    })
+    .catch((err) => {
+      console.error(err);
+
+      document.getElementById("loadingDetail").style.display = "none";
+      document.getElementById("areaPenggunaanLainModal").style.display =
+        "block";
+
+      document.getElementById("areaPenggunaanLainModal").innerHTML = `
         <p style="text-align:center; color:red;">Gagal memuat data</p>
       `;
     });
@@ -2085,6 +3196,15 @@ const translations = {
     text_hutan_adat: "Hutan Adat",
     text_kaleka: "Kaleka",
     text_bank_benih: "Bank Benih",
+    text_sentinel: "Citra Satelit (Sentinel)",
+    text_kawasan_hutan: "Kawasan Hutan (Desember 2025)",
+    text_hutan_lindung: "Hutan Lindung",
+    text_hutan_produksi_tetap: "Hutan Produksi Tetap",
+    text_hutan_produksi_terbatas: "Hutan Produksi Terbatas",
+    text_hutan_produksi_konversi: "Hutan Produksi Konversi",
+    text_kawasan_konservasi: "Kawasan Konservasi",
+    text_area_penggunaan_lain: "Area Penggunaan Lain",
+
     text_benih: "Benih",
     text_monitoring: "Monitoring",
     text_nomor_aksesi: "Nomor Aksesi",
@@ -2228,6 +3348,15 @@ const translations = {
     text_hutan_adat: "Customary Forest",
     text_kaleka: "Kaleka",
     text_bank_benih: "Seed Bank",
+    text_sentinel: "Satellite Imagery (Sentinel)",
+    text_kawasan_hutan: "Forest Area (December 2025)",
+    text_hutan_lindung: "Protected forest",
+    text_hutan_produksi_tetap: "Permanent Production Forest",
+    text_hutan_produksi_terbatas: "Limited Production Forest",
+    text_hutan_produksi_konversi: "Conversion Production Forest",
+    text_kawasan_konservasi: "Conservation Area",
+    text_area_penggunaan_lain: "Other Use Areas",
+
     text_benih: "Seed",
     text_monitoring: "Monitoring",
     text_nomor_aksesi: "Accession Number",

@@ -248,6 +248,32 @@
                 max-width: 1600px;
             }
         }
+
+        .modal-sentinel {
+            display: none;
+            position: fixed;
+            z-index: 99999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .5);
+        }
+
+        .modal-content-sentinel {
+            background: #fff;
+            width: 350px;
+            padding: 20px;
+            margin: 100px auto;
+            border-radius: 8px;
+        }
+
+        .modal-content-sentinel input {
+            width: 100%;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            padding: 8px;
+        }
     </style>
 
     <!--

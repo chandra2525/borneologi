@@ -17,6 +17,12 @@ $provinsis = $controller->getProvinsi();
 $kabupatens = $controller->getKabupaten();
 $kecamatans = $controller->getKecamatan();
 $kalekas = $controller->getKaleka();
+$hutanLindung = $controller->getHutanLindung();
+$hutanProduksiTetap = $controller->getHutanProduksiTetap();
+$hutanProduksiTerbatas = $controller->getHutanProduksiTerbatas();
+$hutanProduksiKonversi = $controller->getHutanProduksiKonversi();
+$kawasanKonservasi = $controller->getKawasanKonservasi();
+$areaPenggunaanLain = $controller->getAreaPenggunaanLain();
 
 function getRelasiTipeLabel($tipe)
 {
@@ -31,6 +37,18 @@ function getRelasiTipeLabel($tipe)
             return 'Kecamatan';
         case 'kaleka':
             return 'Kaleka';
+        case 'hutan_lindung':
+            return 'Hutan Lindung';
+        case 'hutan_produksi_tetap':
+            return 'Hutan Produksi Tetap';
+        case 'hutan_produksi_terbatas':
+            return 'Hutan Produksi Terbatas';
+        case 'hutan_produksi_konversi':
+            return 'Hutan Produksi yang dapat di Konversi';
+        case 'kawasan_konservasi':
+            return 'Kawasan Konservasi (Taman Hutan Raya)';
+        case 'area_penggunaan_lain':
+            return 'Area Penggunaan Lain';
         case 'tanpa_relasi':
             return 'Tanpa Relasi';
         default:
@@ -283,6 +301,14 @@ function getRelasiTipeLabel($tipe)
                                         <option value="kabupaten">Kabupaten</option>
                                         <option value="kecamatan">Kecamatan</option>
                                         <option value="kaleka">Kaleka</option>
+                                        <option value="hutan_lindung">Hutan Lindung</option>
+                                        <option value="hutan_produksi_tetap">Hutan Produksi Tetap</option>
+                                        <option value="hutan_produksi_terbatas">Hutan Produksi Terbatas</option>
+                                        <option value="hutan_produksi_konversi">Hutan Produksi yang dapat di Konversi
+                                        </option>
+                                        <option value="kawasan_konservasi">Kawasan Konservasi (Taman Hutan Raya)
+                                        </option>
+                                        <option value="area_penggunaan_lain">Area Penggunaan Lain</option>
                                     </select>
                                 </div>
 
@@ -341,6 +367,84 @@ function getRelasiTipeLabel($tipe)
                                         <?php foreach ($kalekas as $k): ?>
                                             <option value="<?= $k['id'] ?>">
                                                 <?= htmlspecialchars($k['nama_kaleka']) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" id="group_hutan_lindung" style="display:none;">
+                                    <label>Hutan Lindung<code>*</code></label>
+                                    <select class="form-control relasi-dropdown" id="edit_hutan_lindung"
+                                        name="hutan_lindung">
+                                        <option value="">-- Pilih Hutan Lindung --</option>
+                                        <?php foreach ($hutanLindung as $hl): ?>
+                                            <option value="<?= $hl['id'] ?>">
+                                                <?= htmlspecialchars($hl['tipe_area']) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" id="group_hutan_produksi_tetap" style="display:none;">
+                                    <label>Hutan Produksi Tetap<code>*</code></label>
+                                    <select class="form-control relasi-dropdown" id="edit_hutan_produksi_tetap"
+                                        name="hutan_produksi_tetap">
+                                        <option value="">-- Pilih Hutan Produksi Tetap --</option>
+                                        <?php foreach ($hutanProduksiTetap as $hp): ?>
+                                            <option value="<?= $hp['id'] ?>">
+                                                <?= htmlspecialchars($hp['tipe_area']) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" id="group_hutan_produksi_terbatas" style="display:none;">
+                                    <label>Hutan Produksi Terbatas<code>*</code></label>
+                                    <select class="form-control relasi-dropdown" id="edit_hutan_produksi_terbatas"
+                                        name="hutan_produksi_terbatas">
+                                        <option value="">-- Pilih Hutan Produksi Terbatas --</option>
+                                        <?php foreach ($hutanProduksiTerbatas as $hpt): ?>
+                                            <option value="<?= $hpt['id'] ?>">
+                                                <?= htmlspecialchars($hpt['tipe_area']) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" id="group_hutan_produksi_konversi" style="display:none;">
+                                    <label>Hutan Produksi yang dapat di Konversi<code>*</code></label>
+                                    <select class="form-control relasi-dropdown" id="edit_hutan_produksi_konversi"
+                                        name="hutan_produksi_konversi">
+                                        <option value="">-- Pilih Hutan Produksi yang dapat di Konversi --</option>
+                                        <?php foreach ($hutanProduksiKonversi as $hpk): ?>
+                                            <option value="<?= $hpk['id'] ?>">
+                                                <?= htmlspecialchars($hpk['tipe_area']) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" id="group_kawasan_konservasi" style="display:none;">
+                                    <label>Kawasan Konservasi (Taman Hutan Raya)<code>*</code></label>
+                                    <select class="form-control relasi-dropdown" id="edit_kawasan_konservasi"
+                                        name="kawasan_konservasi">
+                                        <option value="">-- Pilih Kawasan Konservasi (Taman Hutan Raya) --</option>
+                                        <?php foreach ($kawasanKonservasi as $kk): ?>
+                                            <option value="<?= $kk['id'] ?>">
+                                                <?= htmlspecialchars($kk['tipe_area']) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" id="group_area_penggunaan_lain" style="display:none;">
+                                    <label>Area Penggunaan Lain<code>*</code></label>
+                                    <select class="form-control relasi-dropdown" id="edit_area_penggunaan_lain"
+                                        name="area_penggunaan_lain">
+                                        <option value="">-- Pilih Area Penggunaan Lain --</option>
+                                        <?php foreach ($areaPenggunaanLain as $apl): ?>
+                                            <option value="<?= $apl['id'] ?>">
+                                                <?= htmlspecialchars($apl['tipe_area']) ?>
                                             </option>
                                         <?php endforeach; ?>
                                     </select>
@@ -549,6 +653,61 @@ function getRelasiTipeLabel($tipe)
                     required: "Silahkan pilih Kaleka"
                 }
             });
+
+            $("#edit_hutan_lindung").rules("add", {
+                required: function () {
+                    return $("#edit_relasi_tipe").val() === "hutan_lindung";
+                },
+                messages: {
+                    required: "Silahkan pilih Hutan Lindung"
+                }
+            });
+
+            $("#edit_hutan_produksi_tetap").rules("add", {
+                required: function () {
+                    return $("#edit_relasi_tipe").val() === "hutan_produksi_tetap";
+                },
+                messages: {
+                    required: "Silahkan pilih Hutan Produksi Tetap"
+                }
+            });
+
+            $("#edit_hutan_produksi_terbatas").rules("add", {
+                required: function () {
+                    return $("#edit_relasi_tipe").val() === "hutan_produksi_terbatas";
+                },
+                messages: {
+                    required: "Silahkan pilih Hutan Produksi Terbatas"
+                }
+            });
+
+            $("#edit_hutan_produksi_konversi").rules("add", {
+                required: function () {
+                    return $("#edit_relasi_tipe").val() === "hutan_produksi_konversi";
+                },
+                messages: {
+                    required: "Silahkan pilih Hutan Produksi yang dapat di Konversi"
+                }
+            });
+
+            $("#edit_kawasan_konservasi").rules("add", {
+                required: function () {
+                    return $("#edit_relasi_tipe").val() === "kawasan_konservasi";
+                },
+                messages: {
+                    required: "Silahkan pilih Kawasan Konservasi (Taman Hutan Raya)"
+                }
+            });
+
+            $("#edit_area_penggunaan_lain").rules("add", {
+                required: function () {
+                    return $("#edit_relasi_tipe").val() === "area_penggunaan_lain";
+                },
+                messages: {
+                    required: "Silahkan pilih Area Penggunaan Lain"
+                }
+            });
+
         });
     </script>
 
@@ -582,6 +741,18 @@ function getRelasiTipeLabel($tipe)
                     $("#edit_kecamatan").val(relasi_id);
                 } else if (relasi_tipe === "kaleka") {
                     $("#edit_kaleka").val(relasi_id);
+                } else if (relasi_tipe === "hutan_lindung") {
+                    $("#edit_hutan_lindung").val(relasi_id);
+                } else if (relasi_tipe === "hutan_produksi_tetap") {
+                    $("#edit_hutan_produksi_tetap").val(relasi_id);
+                } else if (relasi_tipe === "hutan_produksi_terbatas") {
+                    $("#edit_hutan_produksi_terbatas").val(relasi_id);
+                } else if (relasi_tipe === "hutan_produksi_konversi") {
+                    $("#edit_hutan_produksi_konversi").val(relasi_id);
+                } else if (relasi_tipe === "kawasan_konservasi") {
+                    $("#edit_kawasan_konservasi").val(relasi_id);
+                } else if (relasi_tipe === "area_penggunaan_lain") {
+                    $("#edit_area_penggunaan_lain").val(relasi_id);
                 }
 
                 $("#edit_relasi_id").val(relasi_id);
@@ -597,6 +768,13 @@ function getRelasiTipeLabel($tipe)
             $("#group_kabupaten").hide();
             $("#group_kecamatan").hide();
             $("#group_kaleka").hide();
+            $("#group_hutan_lindung").hide();
+            $("#group_hutan_produksi_tetap").hide();
+            $("#group_hutan_produksi_terbatas").hide();
+            $("#group_hutan_produksi_konversi").hide();
+            $("#group_kawasan_konservasi").hide();
+            $("#group_area_penggunaan_lain").hide();
+
             // reset value
             $("#edit_relasi_id").val("");
             $("#edit_hutan_adat").val("");
@@ -604,6 +782,12 @@ function getRelasiTipeLabel($tipe)
             $("#edit_kabupaten").val("");
             $("#edit_kecamatan").val("");
             $("#edit_kaleka").val("");
+            $("#edit_hutan_lindung").val("");
+            $("#edit_hutan_produksi_tetap").val("");
+            $("#edit_hutan_produksi_terbatas").val("");
+            $("#edit_hutan_produksi_konversi").val("");
+            $("#edit_kawasan_konservasi").val("");
+            $("#edit_area_penggunaan_lain").val("");
 
             // reset required
             $("#edit_hutan_adat").prop("required", false);
@@ -611,6 +795,12 @@ function getRelasiTipeLabel($tipe)
             $("#edit_kabupaten").prop("required", false);
             $("#edit_kecamatan").prop("required", false);
             $("#edit_kaleka").prop("required", false);
+            $("#edit_hutan_lindung").prop("required", false);
+            $("#edit_hutan_produksi_tetap").prop("required", false);
+            $("#edit_hutan_produksi_terbatas").prop("required", false);
+            $("#edit_hutan_produksi_konversi").prop("required", false);
+            $("#edit_kawasan_konservasi").prop("required", false);
+            $("#edit_area_penggunaan_lain").prop("required", false);
 
             if (tipe === "hutan_adat") {
                 $("#group_hutan_adat").show();
@@ -627,6 +817,24 @@ function getRelasiTipeLabel($tipe)
             } else if (tipe === "kaleka") {
                 $("#group_kaleka").show();
                 $("#edit_kaleka").prop("required", true);
+            } else if (tipe === "hutan_lindung") {
+                $("#group_hutan_lindung").show();
+                $("#edit_hutan_lindung").prop("required", true);
+            } else if (tipe === "hutan_produksi_tetap") {
+                $("#group_hutan_produksi_tetap").show();
+                $("#edit_hutan_produksi_tetap").prop("required", true);
+            } else if (tipe === "hutan_produksi_terbatas") {
+                $("#group_hutan_produksi_terbatas").show();
+                $("#edit_hutan_produksi_terbatas").prop("required", true);
+            } else if (tipe === "hutan_produksi_konversi") {
+                $("#group_hutan_produksi_konversi").show();
+                $("#edit_hutan_produksi_konversi").prop("required", true);
+            } else if (tipe === "kawasan_konservasi") {
+                $("#group_kawasan_konservasi").show();
+                $("#edit_kawasan_konservasi").prop("required", true);
+            } else if (tipe === "area_penggunaan_lain") {
+                $("#group_area_penggunaan_lain").show();
+                $("#edit_area_penggunaan_lain").prop("required", true);
             }
         });
 

@@ -4,25 +4,87 @@ header('Content-Type: application/json');
 
 require_once '../admin/app/config/database.php';
 require_once '../admin/app/controllers/PolygonController.php';
+require_once '../admin/app/core/api_security.php';
 
-$controller = new PolygonController($pdo);
+verifyApiKey();
 
-$data = $controller->getPolygonHAData();
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+    http_response_code(405);
 
-// format ulang biar sama seperti data.php lama
-$result = [
-    "hutan_adat" => []
-];
+    echo json_encode([
+        'error' => 'Method Not Allowed'
+    ]);
 
-foreach ($data as $row) {
-    $result["hutan_adat"][] = [
-        "id" => $row["id"],
-        "id_polygon" => $row["id_polygon"],
-        "nama_hutan_adat" => $row["nama_hutan_adat"],
-        "tanah" => [
-            "geom_area" => $row["geom_area"]
-        ]
-    ];
+    exit;
 }
 
-echo json_encode($result, JSON_PRETTY_PRINT);
+$ip = $_SERVER['REMOTE_ADDR'];
+
+$file = sys_get_temp_dir() . '/api_' . md5($ip);
+
+$requests = [];
+
+if (file_exists($file)) {
+    $requests = json_decode(
+        file_get_contents($file),
+        true
+    ) ?: [];
+}
+
+$now = time();
+
+$requests = array_filter(
+    $requests,
+    fn($timestamp) => ($now - $timestamp) < 30
+);
+
+if (count($requests) >= 30) {
+    http_response_code(429);
+
+    echo json_encode([
+        'error' => 'Too Many Requests'
+    ]);
+
+    exit;
+}
+
+$requests[] = $now;
+
+file_put_contents(
+    $file,
+    json_encode($requests)
+);
+
+
+try {
+    $controller = new PolygonController($pdo);
+
+    $data = $controller->getPolygonHAData();
+
+    // format ulang biar sama seperti data.php lama
+    $result = [
+        "hutan_adat" => []
+    ];
+
+    foreach ($data as $row) {
+        $result["hutan_adat"][] = [
+            "id" => $row["id"],
+            "id_polygon" => $row["id_polygon"],
+            "nama_hutan_adat" => $row["nama_hutan_adat"],
+            "tanah" => [
+                "geom_area" => $row["geom_area"]
+            ]
+        ];
+    }
+
+    echo json_encode($result, JSON_PRETTY_PRINT);
+
+} catch (Exception $e) {
+
+    http_response_code(500);
+
+    echo json_encode([
+        'success' => false,
+        'message' => 'Internal Server Error'
+    ]);
+}

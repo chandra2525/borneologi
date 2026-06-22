@@ -123,6 +123,114 @@ class Polygon
 
         UNION ALL
 
+        SELECT 
+            po.id,
+            po.kode_polygon,
+            po.nama_polygon,
+            ST_AsText(po.geom_area),
+            fa.id,
+            fa.tipe_area COLLATE utf8mb4_unicode_ci,
+            'hutan_lindung' COLLATE utf8mb4_unicode_ci,
+            po.is_active
+        FROM t_polygon po
+        LEFT JOIN t_forest_area fa 
+            ON fa.id = po.relasi_id 
+            AND po.relasi_tipe = 'hutan_lindung'
+        WHERE 
+            po.deleted_at IS NULL AND fa.tipe_area = 'Hutan Lindung'
+
+        UNION ALL
+
+        SELECT 
+            po.id,
+            po.kode_polygon,
+            po.nama_polygon,
+            ST_AsText(po.geom_area),
+            fa.id,
+            fa.tipe_area COLLATE utf8mb4_unicode_ci,
+            'hutan_produksi_tetap' COLLATE utf8mb4_unicode_ci,
+            po.is_active
+        FROM t_polygon po
+        LEFT JOIN t_forest_area fa 
+            ON fa.id = po.relasi_id 
+            AND po.relasi_tipe = 'hutan_produksi_tetap'
+        WHERE 
+            po.deleted_at IS NULL AND fa.tipe_area = 'Hutan Produksi Tetap'
+
+        UNION ALL
+
+        SELECT 
+            po.id,
+            po.kode_polygon,
+            po.nama_polygon,
+            ST_AsText(po.geom_area),
+            fa.id,
+            fa.tipe_area COLLATE utf8mb4_unicode_ci,
+            'hutan_produksi_terbatas' COLLATE utf8mb4_unicode_ci,
+            po.is_active
+        FROM t_polygon po
+        LEFT JOIN t_forest_area fa 
+            ON fa.id = po.relasi_id 
+            AND po.relasi_tipe = 'hutan_produksi_terbatas'
+        WHERE 
+            po.deleted_at IS NULL AND fa.tipe_area = 'Hutan Produksi Terbatas'
+
+        UNION ALL
+
+        SELECT 
+            po.id,
+            po.kode_polygon,
+            po.nama_polygon,
+            ST_AsText(po.geom_area),
+            fa.id,
+            fa.tipe_area COLLATE utf8mb4_unicode_ci,
+            'hutan_produksi_konversi' COLLATE utf8mb4_unicode_ci,
+            po.is_active
+        FROM t_polygon po
+        LEFT JOIN t_forest_area fa 
+            ON fa.id = po.relasi_id 
+            AND po.relasi_tipe = 'hutan_produksi_konversi'
+        WHERE
+            po.deleted_at IS NULL AND fa.tipe_area = 'Hutan Produksi yang dapat di Konversi'
+
+        UNION ALL
+
+        SELECT 
+            po.id,
+            po.kode_polygon,
+            po.nama_polygon,
+            ST_AsText(po.geom_area),
+            fa.id,
+            fa.tipe_area COLLATE utf8mb4_unicode_ci,
+            'kawasan_konservasi' COLLATE utf8mb4_unicode_ci,
+            po.is_active
+        FROM t_polygon po
+        LEFT JOIN t_forest_area fa 
+            ON fa.id = po.relasi_id 
+            AND po.relasi_tipe = 'kawasan_konservasi'
+        WHERE 
+            po.deleted_at IS NULL AND fa.tipe_area = 'Kawasan Konservasi (Taman Hutan Raya)'
+
+        UNION ALL
+
+        SELECT 
+            po.id,
+            po.kode_polygon,
+            po.nama_polygon,
+            ST_AsText(po.geom_area),
+            fa.id,
+            fa.tipe_area COLLATE utf8mb4_unicode_ci,
+            'area_penggunaan_lain' COLLATE utf8mb4_unicode_ci,
+            po.is_active
+        FROM t_polygon po
+        LEFT JOIN t_forest_area fa 
+            ON fa.id = po.relasi_id 
+            AND po.relasi_tipe = 'area_penggunaan_lain'
+        WHERE 
+            po.deleted_at IS NULL AND fa.tipe_area = 'Area Penggunaan Lain'
+
+        UNION ALL
+
         -- Tambahan untuk relasi NULL
         SELECT 
             po.id,
@@ -222,14 +330,14 @@ class Polygon
         $row = $stmt->fetch();
 
         if (!$row) {
-            return "PLY001";
+            return "PLY0001";
         }
 
         $lastKode = $row['kode_polygon'];
         $number = (int) substr($lastKode, 3);
         $number++;
 
-        return "PLY" . str_pad($number, 3, "0", STR_PAD_LEFT);
+        return "PLY" . str_pad($number, 4, "0", STR_PAD_LEFT);
     }
 
     public function getHutanAdat()
@@ -284,6 +392,78 @@ class Polygon
     {
         $sql = "SELECT id,nama_kaleka FROM t_kaleka
                 WHERE deleted_at IS NULL
+                ORDER BY nama_kaleka";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    public function getHutanLindung()
+    {
+        $sql = "SELECT id,tipe_area FROM t_forest_area
+                WHERE tipe_area = 'Hutan Lindung'
+                ORDER BY id";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    public function getHutanProduksiTetap()
+    {
+        $sql = "SELECT id,tipe_area FROM t_forest_area
+                WHERE tipe_area = 'Hutan Produksi Tetap'
+                ORDER BY id";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    public function getHutanProduksiTerbatas()
+    {
+        $sql = "SELECT id,tipe_area FROM t_forest_area
+                WHERE tipe_area = 'Hutan Produksi Terbatas'
+                ORDER BY id";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    public function getHutanProduksiKonversi()
+    {
+        $sql = "SELECT id,tipe_area FROM t_forest_area
+                WHERE tipe_area = 'Hutan Produksi yang dapat di Konversi'
+                ORDER BY id";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    public function getKawasanKonservasi()
+    {
+        $sql = "SELECT id,tipe_area FROM t_forest_area
+                WHERE tipe_area = 'Kawasan Konservasi (Taman Hutan Raya)'
+                ORDER BY id";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    public function getAreaPenggunaanLain()
+    {
+        $sql = "SELECT id,tipe_area FROM t_forest_area
+                WHERE tipe_area = 'Area Penggunaan Lain'
                 ORDER BY id";
 
         $stmt = $this->pdo->prepare($sql);
@@ -331,7 +511,7 @@ class Polygon
                 -- ST_AsGeoJSON(po.geom_area) AS geom_area
             FROM t_polygon po
             LEFT JOIN t_hutan_adat ha ON ha.id=po.relasi_id
-            WHERE ha.deleted_at IS NULL AND ha.is_active = 1 AND po.is_active = 1 AND po.deleted_at IS NULL AND po.relasi_tipe = 'hutan_adat'
+            WHERE ha.deleted_at IS NULL AND ha.is_active = 1 AND po.deleted_at IS NULL AND po.relasi_tipe = 'hutan_adat' AND po.is_active = 1
             ORDER BY ha.id ASC;";
 
         $stmt = $this->pdo->prepare($sql);
@@ -360,7 +540,7 @@ class Polygon
                 ST_AsText(po.geom_area) AS geom_area
             FROM t_polygon po
             LEFT JOIN m_provinsi pr ON pr.id=po.relasi_id
-            WHERE pr.deleted_at IS NULL AND pr.is_active = 1 AND po.deleted_at IS NULL AND po.relasi_tipe = 'provinsi'
+            WHERE pr.deleted_at IS NULL AND pr.is_active = 1 AND po.deleted_at IS NULL AND po.relasi_tipe = 'provinsi' AND po.is_active = 1
             ORDER BY pr.id ASC;";
 
         $stmt = $this->pdo->prepare($sql);
@@ -388,7 +568,7 @@ class Polygon
                 ST_AsGeoJSON(po.geom_area) AS geom_area
             FROM t_polygon po
             LEFT JOIN m_kabupaten kab ON kab.id=po.relasi_id
-            WHERE kab.deleted_at IS NULL AND kab.is_active = 1 AND po.deleted_at IS NULL AND po.relasi_tipe = 'kabupaten'
+            WHERE kab.deleted_at IS NULL AND kab.is_active = 1 AND po.deleted_at IS NULL AND po.relasi_tipe = 'kabupaten' AND po.is_active = 1
             ORDER BY kab.id ASC;";
 
         $stmt = $this->pdo->prepare($sql);
@@ -416,7 +596,7 @@ class Polygon
                 ST_AsText(po.geom_area) AS geom_area
             FROM t_polygon po
             LEFT JOIN m_kecamatan kec ON kec.id=po.relasi_id
-            WHERE kec.deleted_at IS NULL AND kec.is_active = 1 AND po.deleted_at IS NULL AND po.relasi_tipe = 'kecamatan'
+            WHERE kec.deleted_at IS NULL AND kec.is_active = 1 AND po.deleted_at IS NULL AND po.relasi_tipe = 'kecamatan' AND po.is_active = 1
             ORDER BY kec.id ASC;";
 
         $stmt = $this->pdo->prepare($sql);
@@ -445,7 +625,7 @@ class Polygon
                 -- ST_AsGeoJSON(po.geom_area) AS geom_area
             FROM t_polygon po
             LEFT JOIN t_kaleka kale ON kale.id=po.relasi_id
-            WHERE kale.deleted_at IS NULL AND kale.is_active = 1 AND po.is_active = 1 AND po.deleted_at IS NULL AND po.relasi_tipe = 'kaleka'
+            WHERE kale.deleted_at IS NULL AND kale.is_active = 1 AND po.deleted_at IS NULL AND po.relasi_tipe = 'kaleka' AND po.is_active = 1
             ORDER BY kale.id ASC;";
 
         $stmt = $this->pdo->prepare($sql);
@@ -458,6 +638,180 @@ class Polygon
             if ($row['geom_area']) {
                 $row['geom_area'] = $this->parsePolygon($row['geom_area']);
                 // $row['geom_area'] = json_decode($row['geom_area'], true);
+            }
+        }
+
+        return $data;
+    }
+
+    public function getPolygonHutanLindungData()
+    {
+        $sql = "SELECT
+                fa.id,
+                fa.tipe_area,
+                po.id AS id_polygon,
+                -- ST_AsText(po.geom_area) AS geom_area
+                ST_AsGeoJSON(po.geom_area) AS geom_area
+            FROM t_polygon po
+            LEFT JOIN t_forest_area fa ON fa.id=po.relasi_id
+            WHERE fa.tipe_area = 'Hutan Lindung' AND po.is_active = 1 AND po.deleted_at IS NULL AND po.relasi_tipe = 'hutan_lindung'
+            ORDER BY fa.id ASC;";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+
+        $data = $stmt->fetchAll();
+
+        // convert geom_area
+        foreach ($data as &$row) {
+            if ($row['geom_area']) {
+                // $row['geom_area'] = $this->parsePolygon($row['geom_area']);
+                $row['geom_area'] = json_decode($row['geom_area'], true);
+            }
+        }
+
+        return $data;
+    }
+
+    public function getPolygonHutanProduksiTetapData()
+    {
+        $sql = "SELECT
+                fa.id,
+                fa.tipe_area,
+                po.id AS id_polygon,
+                -- ST_AsText(po.geom_area) AS geom_area
+                ST_AsGeoJSON(po.geom_area) AS geom_area
+            FROM t_polygon po
+            LEFT JOIN t_forest_area fa ON fa.id=po.relasi_id
+            WHERE fa.tipe_area = 'Hutan Produksi Tetap' AND po.is_active = 1 AND po.deleted_at IS NULL AND po.relasi_tipe = 'hutan_produksi_tetap'
+            ORDER BY fa.id ASC;";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+
+        $data = $stmt->fetchAll();
+
+        // convert geom_area
+        foreach ($data as &$row) {
+            if ($row['geom_area']) {
+                // $row['geom_area'] = $this->parsePolygon($row['geom_area']);
+                $row['geom_area'] = json_decode($row['geom_area'], true);
+            }
+        }
+
+        return $data;
+    }
+
+    public function getPolygonHutanProduksiTerbatasData()
+    {
+        $sql = "SELECT
+                fa.id,
+                fa.tipe_area,
+                po.id AS id_polygon,
+                -- ST_AsText(po.geom_area) AS geom_area
+                ST_AsGeoJSON(po.geom_area) AS geom_area
+            FROM t_polygon po
+            LEFT JOIN t_forest_area fa ON fa.id=po.relasi_id
+            WHERE fa.tipe_area = 'Hutan Produksi Terbatas' AND po.is_active = 1 AND po.deleted_at IS NULL AND po.relasi_tipe = 'hutan_produksi_terbatas'
+            ORDER BY fa.id ASC;";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+
+        $data = $stmt->fetchAll();
+
+        // convert geom_area
+        foreach ($data as &$row) {
+            if ($row['geom_area']) {
+                // $row['geom_area'] = $this->parsePolygon($row['geom_area']);
+                $row['geom_area'] = json_decode($row['geom_area'], true);
+            }
+        }
+
+        return $data;
+    }
+
+    public function getPolygonHutanProduksiKonversiData()
+    {
+        $sql = "SELECT
+                fa.id,
+                fa.tipe_area,
+                po.id AS id_polygon,
+                -- ST_AsText(po.geom_area) AS geom_area
+                ST_AsGeoJSON(po.geom_area) AS geom_area
+            FROM t_polygon po
+            LEFT JOIN t_forest_area fa ON fa.id=po.relasi_id
+            WHERE fa.tipe_area = 'Hutan Produksi yang dapat di Konversi' AND po.is_active = 1 AND po.deleted_at IS NULL AND po.relasi_tipe = 'hutan_produksi_konversi'
+            ORDER BY fa.id ASC;";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+
+        $data = $stmt->fetchAll();
+
+        // convert geom_area
+        foreach ($data as &$row) {
+            if ($row['geom_area']) {
+                // $row['geom_area'] = $this->parsePolygon($row['geom_area']);
+                $row['geom_area'] = json_decode($row['geom_area'], true);
+            }
+        }
+
+        return $data;
+    }
+
+    public function getPolygonKawasanKonservasiData()
+    {
+        $sql = "SELECT
+                fa.id,
+                fa.tipe_area,
+                po.id AS id_polygon,
+                -- ST_AsText(po.geom_area) AS geom_area
+                ST_AsGeoJSON(po.geom_area) AS geom_area
+            FROM t_polygon po
+            LEFT JOIN t_forest_area fa ON fa.id=po.relasi_id
+            WHERE fa.tipe_area = 'Kawasan Konservasi (Taman Hutan Raya)' AND po.is_active = 1 AND po.deleted_at IS NULL AND po.relasi_tipe = 'kawasan_konservasi'
+            ORDER BY fa.id ASC;";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+
+        $data = $stmt->fetchAll();
+
+        // convert geom_area
+        foreach ($data as &$row) {
+            if ($row['geom_area']) {
+                // $row['geom_area'] = $this->parsePolygon($row['geom_area']);
+                $row['geom_area'] = json_decode($row['geom_area'], true);
+            }
+        }
+
+        return $data;
+    }
+
+    public function getPolygonAreaPenggunaanLainData()
+    {
+        $sql = "SELECT
+                fa.id,
+                fa.tipe_area,
+                po.id AS id_polygon,
+                -- ST_AsText(po.geom_area) AS geom_area
+                ST_AsGeoJSON(po.geom_area) AS geom_area
+            FROM t_polygon po
+            LEFT JOIN t_forest_area fa ON fa.id=po.relasi_id
+            WHERE fa.tipe_area = 'Area Penggunaan Lain' AND po.is_active = 1 AND po.deleted_at IS NULL AND po.relasi_tipe = 'area_penggunaan_lain'
+            ORDER BY fa.id ASC;";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+
+        $data = $stmt->fetchAll();
+
+        // convert geom_area
+        foreach ($data as &$row) {
+            if ($row['geom_area']) {
+                // $row['geom_area'] = $this->parsePolygon($row['geom_area']);
+                $row['geom_area'] = json_decode($row['geom_area'], true);
             }
         }
 
@@ -807,6 +1161,24 @@ class Polygon
         ]);
 
         return $stmt->fetchAll();
+    }
+
+    public function getDetailPolygonForestArea($id)
+    {
+        $sql = "SELECT
+            id,
+            tipe_area,
+            FROM t_forest_area
+            WHERE id = :id
+            LIMIT 1";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->execute([
+            "id" => $id
+        ]);
+
+        return $stmt->fetch();
     }
 
     public function getPengurusMHA($id)

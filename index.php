@@ -1557,6 +1557,23 @@ include 'partials/header.php';
         </section>
     </main>
 
+    <div id="sentinelModal" class="modal-sentinel">
+        <div class="modal-content-sentinel">
+            <h3>Generate Sentinel</h3>
+
+            <label>From</label>
+            <input type="date" id="sentinelFrom" value="2024-09-15">
+
+            <label>To</label>
+            <input type="date" id="sentinelTo" value="2024-12-31">
+
+            <div style="margin-top:15px">
+                <button id="btnGenerateSentinel">Generate</button>
+                <button id="btnCloseSentinel">Batal</button>
+            </div>
+        </div>
+    </div>
+
     <?php
     include 'partials/footer.php';
     ?>
