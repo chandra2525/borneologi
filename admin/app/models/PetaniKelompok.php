@@ -46,9 +46,9 @@ class PetaniKelompok
     {
 
         $sql = "INSERT INTO t_petani_kelompok
-            (id_petani,id_kelompok_tani,id_jabatan_kelompok,tanggal_gabung,tanggal_keluar,is_pengurus,keterangan,is_active,created_by)
+            (id_petani,id_kelompok_tani,id_jabatan_kelompok,tanggal_gabung,tanggal_keluar,keterangan,is_active,created_by)
             VALUES
-            (:id_petani,:id_kelompok_tani,:id_jabatan_kelompok,:tanggal_gabung,:tanggal_keluar,:is_pengurus,:keterangan,:is_active,:created_by)";
+            (:id_petani,:id_kelompok_tani,:id_jabatan_kelompok,:tanggal_gabung,:tanggal_keluar,:keterangan,:is_active,:created_by)";
 
         $stmt = $this->pdo->prepare($sql);
 
@@ -65,7 +65,6 @@ class PetaniKelompok
             id_jabatan_kelompok=:id_jabatan_kelompok,
             tanggal_gabung=:tanggal_gabung,
             tanggal_keluar=:tanggal_keluar,
-            is_pengurus=:is_pengurus,
             keterangan=:keterangan,
             is_active=:is_active,
             updated_by=:updated_by

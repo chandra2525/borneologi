@@ -43,9 +43,9 @@ class JabatanKelompok
     {
 
         $sql = "INSERT INTO m_jabatan_kelompok
-            (kode,nama,deskripsi,urutan,is_active,created_by)
+            (kode,nama,is_pengurus,deskripsi,urutan,is_active,created_by)
             VALUES
-            (:kode,:nama,:deskripsi,:urutan,:is_active,:created_by)";
+            (:kode,:nama,:is_pengurus,:deskripsi,:urutan,:is_active,:created_by)";
 
         $stmt = $this->pdo->prepare($sql);
 
@@ -59,6 +59,7 @@ class JabatanKelompok
             SET
             kode=:kode,
             nama=:nama,
+            is_pengurus=:is_pengurus,
             deskripsi=:deskripsi,
             urutan=:urutan,
             is_active=:is_active,

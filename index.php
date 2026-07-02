@@ -138,12 +138,12 @@ include 'partials/header.php';
                                                     data-lang="text_masyarakat_hukum_adat">Masyarakat Hukum
                                                     Adat</button>
                                             </li>
-                                            <li class="nav-item" role="presentation">
+                                            <!-- <li class="nav-item" role="presentation">
                                                 <button class="nav-link" id="tab3tanah-tab" data-bs-toggle="tab"
                                                     data-bs-target="#tab3tanah" type="button" role="tab"
                                                     aria-controls="tab3tanah" aria-selected="false"
                                                     data-lang="text_tanah">Tanah</button>
-                                            </li>
+                                            </li> -->
                                         </ul>
 
                                         <div class="tab-content pt-3" id="myTabContent">
@@ -250,7 +250,7 @@ include 'partials/header.php';
                                                             data-lang="text_pengurus_masyarakat_hukum_adat">Pengurus
                                                             Masyarakat Hukum Adat
                                                         </strong>
-                                                        <table class="profile-thumb">
+                                                        <table class="profile-thumb col-lg-12 col-md-12 col-12">
                                                             <tr>
                                                                 <th data-lang="text_nama_lengkap">Nama Lengkap</th>
                                                                 <th data-lang="text_nama_panggilan">Nama Panggilan</th>
@@ -486,6 +486,12 @@ include 'partials/header.php';
                                                             Kabupaten</strong>
                                                         <p class="mb-0" id="luasKabupaten"></p>
                                                     </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_nama_provinsi">Nama
+                                                            Provinsi</strong>
+                                                        <p class="mb-0" id="namaProvinsiKab"></p>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="tab-pane fade" id="tab2KabupatenKecamatan" role="tabpanel"
@@ -550,6 +556,82 @@ include 'partials/header.php';
                                                             data-lang="text_luas_kecamatan">Luas
                                                             Kecamatan</strong>
                                                         <p class="mb-0" id="luasKecamatan"></p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_nama_kabupaten">Nama
+                                                            Kabupaten</strong>
+                                                        <p class="mb-0" id="namaKabupatenKec"></p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_nama_provinsi">Nama
+                                                            Provinsi</strong>
+                                                        <p class="mb-0" id="namaProvinsiKec"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal Informasi Desa -->
+                        <div class="modal fade" id="desaModal" tabindex="0">
+                            <!-- <div class="modal-dialog modal-xl modal-dialog-scrollable"> -->
+                            <div class="modal-dialog modal-xxl-custom modal-dialog-scrollable">
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+                                        <h5 id="modal-title-desa"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <ul class="nav nav-tabs custom-tabs" id="myTabDesa" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link active" id="tab1Desa-tab"
+                                                    data-bs-toggle="tab" data-bs-target="#tab1Desa" type="button"
+                                                    role="tab" aria-controls="tab1Desa" aria-selected="false"
+                                                    data-lang="text_data_desa">Data
+                                                    Desa</button>
+                                            </li>
+                                        </ul>
+
+                                        <div class="tab-content pt-3" id="myTabContent">
+                                            <div class="tab-pane fade show active" id="tab1Desa" role="tabpanel"
+                                                aria-labelledby="tab1Desa-tab">
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_nama_desa">Nama
+                                                            Desa</strong>
+                                                        <p class="mb-0" id="namaDesa"></p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_luas_desa">Luas
+                                                            Desa</strong>
+                                                        <p class="mb-0" id="luasDesa"></p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_nama_kecamatan">Nama
+                                                            Kecamatan</strong>
+                                                        <p class="mb-0" id="namaKecamatanDesa"></p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_nama_kabupaten">Nama
+                                                            Kabupaten</strong>
+                                                        <p class="mb-0" id="namaKabupatenDesa"></p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_nama_provinsi">Nama
+                                                            Provinsi</strong>
+                                                        <p class="mb-0" id="namaProvinsiDesa"></p>
                                                     </div>
                                                 </div>
                                             </div>

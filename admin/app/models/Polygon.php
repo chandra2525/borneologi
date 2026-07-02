@@ -108,6 +108,26 @@ class Polygon
             po.kode_polygon,
             po.nama_polygon,
             ST_AsText(po.geom_area),
+            des.id,
+            des.nama_desa COLLATE utf8mb4_unicode_ci,
+            'desa' COLLATE utf8mb4_unicode_ci,
+            po.is_active
+        FROM t_polygon po
+        LEFT JOIN m_desa des 
+            ON des.id = po.relasi_id 
+            AND po.relasi_tipe = 'desa'
+        WHERE 
+            po.deleted_at IS NULL
+            AND des.deleted_at IS NULL 
+            AND des.is_active = 1
+
+        UNION ALL
+
+        SELECT 
+            po.id,
+            po.kode_polygon,
+            po.nama_polygon,
+            ST_AsText(po.geom_area),
             kale.id,
             kale.nama_kaleka COLLATE utf8mb4_unicode_ci,
             'kaleka' COLLATE utf8mb4_unicode_ci,
@@ -388,6 +408,18 @@ class Polygon
         return $stmt->fetchAll();
     }
 
+    public function getDesa()
+    {
+        $sql = "SELECT id,nama_desa FROM m_desa
+                WHERE deleted_at IS NULL
+                ORDER BY nama_desa";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
     public function getKaleka()
     {
         $sql = "SELECT id,nama_kaleka FROM t_kaleka
@@ -590,7 +622,7 @@ class Polygon
     {
         $sql = "SELECT
                 kec.id,
-                kec.kode_kecamatan ,
+                kec.kode_kecamatan,
                 kec.nama_kecamatan,
                 po.id AS id_polygon,
                 ST_AsText(po.geom_area) AS geom_area
@@ -598,6 +630,34 @@ class Polygon
             LEFT JOIN m_kecamatan kec ON kec.id=po.relasi_id
             WHERE kec.deleted_at IS NULL AND kec.is_active = 1 AND po.deleted_at IS NULL AND po.relasi_tipe = 'kecamatan' AND po.is_active = 1
             ORDER BY kec.id ASC;";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+
+        $data = $stmt->fetchAll();
+
+        // convert geom_area
+        foreach ($data as &$row) {
+            if ($row['geom_area']) {
+                $row['geom_area'] = $this->parsePolygon($row['geom_area']);
+            }
+        }
+
+        return $data;
+    }
+
+    public function getPolygonDesaData()
+    {
+        $sql = "SELECT
+                des.id,
+                des.kode_desa,
+                des.nama_desa,
+                po.id AS id_polygon,
+                ST_AsText(po.geom_area) AS geom_area
+            FROM t_polygon po
+            LEFT JOIN m_desa des ON des.id=po.relasi_id
+            WHERE des.deleted_at IS NULL AND des.is_active = 1 AND po.deleted_at IS NULL AND po.relasi_tipe = 'desa' AND po.is_active = 1
+            ORDER BY des.id ASC;";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
@@ -844,10 +904,13 @@ class Polygon
         $sql = "SELECT
                 kab.id,
                 kab.nama_kabupaten,
-                po.id AS id_polygon
+                po.id AS id_polygon,
+                po.luas_ha,
+                pr.nama_provinsi
                 -- ST_AsText(po.geom_area) AS geom_area
             FROM t_polygon po
             LEFT JOIN m_kabupaten kab ON kab.id=po.relasi_id
+            LEFT JOIN m_provinsi pr ON pr.id=kab.id_provinsi
             WHERE po.id = :id
             LIMIT 1";
 
@@ -865,10 +928,43 @@ class Polygon
         $sql = "SELECT
                 kec.id,
                 kec.nama_kecamatan,
-                po.id AS id_polygon
+                po.id AS id_polygon,
+                po.luas_ha,
+                kab.nama_kabupaten,
+                pr.nama_provinsi
                 -- ST_AsText(po.geom_area) AS geom_area
             FROM t_polygon po
             LEFT JOIN m_kecamatan kec ON kec.id=po.relasi_id
+            LEFT JOIN m_kabupaten kab ON kab.id=kec.id_kabupaten
+            LEFT JOIN m_provinsi pr ON pr.id=kab.id_provinsi
+            WHERE po.id = :id
+            LIMIT 1";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->execute([
+            "id" => $id
+        ]);
+
+        return $stmt->fetch();
+    }
+
+    public function getDetailPolygonDesa($id)
+    {
+        $sql = "SELECT
+                des.id,
+                des.nama_desa,
+                po.id AS id_polygon,
+                po.luas_ha,
+                kec.nama_kecamatan,
+                kab.nama_kabupaten,
+                pr.nama_provinsi
+                -- ST_AsText(po.geom_area) AS geom_area
+            FROM t_polygon po
+            LEFT JOIN m_desa des ON des.id=po.relasi_id
+            LEFT JOIN m_kecamatan kec ON kec.id=des.id_kecamatan
+            LEFT JOIN m_kabupaten kab ON kab.id=kec.id_kabupaten
+            LEFT JOIN m_provinsi pr ON pr.id=kab.id_provinsi
             WHERE po.id = :id
             LIMIT 1";
 

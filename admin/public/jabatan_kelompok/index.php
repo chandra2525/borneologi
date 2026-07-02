@@ -87,6 +87,7 @@ $jabatanKelompoks = $controller->index();
                                             <tr>
                                                 <th>Kode Jabatan Kelompok</th>
                                                 <th>Nama Jabatan Kelompok</th>
+                                                <th>Pengurus</th>
                                                 <th>Deskripsi</th>
                                                 <th>Urutan</th>
                                                 <th>Status Aktif</th>
@@ -98,6 +99,7 @@ $jabatanKelompoks = $controller->index();
                                                 <tr>
                                                     <td><?= htmlspecialchars($jabatanKelompok['kode']) ?></td>
                                                     <td><?= htmlspecialchars($jabatanKelompok['nama']) ?></td>
+                                                    <td><?= $jabatanKelompok['is_pengurus'] ? 'Ya' : 'Tidak' ?></td>
                                                     <td><?= htmlspecialchars($jabatanKelompok['deskripsi']) ?></td>
                                                     <td><?= htmlspecialchars($jabatanKelompok['urutan']) ?></td>
                                                     <td><?= $jabatanKelompok['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
@@ -107,6 +109,7 @@ $jabatanKelompoks = $controller->index();
                                                                 data-id="<?= $jabatanKelompok['id'] ?>"
                                                                 data-kode="<?= htmlspecialchars($jabatanKelompok['kode']) ?>"
                                                                 data-nama="<?= htmlspecialchars($jabatanKelompok['nama']) ?>"
+                                                                data-is_pengurus="<?= htmlspecialchars($jabatanKelompok['is_pengurus']) ?>"
                                                                 data-deskripsi="<?= htmlspecialchars($jabatanKelompok['deskripsi']) ?>"
                                                                 data-urutan="<?= $jabatanKelompok['urutan'] ?>"
                                                                 data-status="<?= $jabatanKelompok['is_active'] ?>"
@@ -131,6 +134,7 @@ $jabatanKelompoks = $controller->index();
                                             <tr>
                                                 <th>Kode Jabatan Kelompok</th>
                                                 <th>Nama Jabatan Kelompok</th>
+                                                <th>Pengurus</th>
                                                 <th>Deskripsi</th>
                                                 <th>Urutan</th>
                                                 <th>Status Aktif</th>
@@ -170,6 +174,13 @@ $jabatanKelompoks = $controller->index();
                                     <label for="nama">Nama Jabatan Kelompok<code>*</code></label>
                                     <input type="text" name="nama" class="form-control" id="nama"
                                         placeholder="Masukkan nama jabatan kelompok">
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="add_is_pengurus" value="0"
+                                            name="is_pengurus">
+                                        <label for="add_is_pengurus" class="custom-control-label">Apakah Pengurus?</label>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="deskripsi">Deskripsi</label>
@@ -230,6 +241,13 @@ $jabatanKelompoks = $controller->index();
                                 <div class="form-group">
                                     <label for="nama">Nama Jabatan Kelompok<code>*</code></label>
                                     <input type="text" name="nama" id="edit_nama" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="edit_is_pengurus" value="1"
+                                            name="is_pengurus">
+                                        <label for="edit_is_pengurus" class="custom-control-label">Apakah Pengurus?</label>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label>Deskripsi</label>
@@ -301,9 +319,11 @@ $jabatanKelompoks = $controller->index();
     <script src="../assets/adminlte/plugins/jquery-validation/additional-methods.min.js"></script>
     <!-- Page specific script -->
     <script>
-        $(function () {
+        $(function() {
             $("#example1").DataTable({
-                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
@@ -319,7 +339,7 @@ $jabatanKelompoks = $controller->index();
     </script>
 
     <script>
-        $(function () {
+        $(function() {
             function initValidation(formId) {
                 $(formId).validate({
                     rules: {
@@ -351,14 +371,14 @@ $jabatanKelompoks = $controller->index();
                         }
                     },
                     errorElement: 'span',
-                    errorPlacement: function (error, element) {
+                    errorPlacement: function(error, element) {
                         error.addClass('invalid-feedback');
                         element.closest('.form-group').append(error);
                     },
-                    highlight: function (element) {
+                    highlight: function(element) {
                         $(element).addClass('is-invalid');
                     },
-                    unhighlight: function (element) {
+                    unhighlight: function(element) {
                         $(element).removeClass('is-invalid');
                     }
                 });
@@ -369,10 +389,11 @@ $jabatanKelompoks = $controller->index();
     </script>
 
     <script>
-        $(document).on("click", ".btn-edit", function () {
+        $(document).on("click", ".btn-edit", function() {
             let id = $(this).data("id");
             let kode = $(this).data("kode");
             let nama = $(this).data("nama");
+            let is_pengurus = $(this).data("is_pengurus");
             let deskripsi = $(this).data("deskripsi");
             let urutan = $(this).data("urutan");
             let status = $(this).data("status");
@@ -381,6 +402,7 @@ $jabatanKelompoks = $controller->index();
             $("#edit_id").val(id);
             $("#edit_kode").val(kode);
             $("#edit_nama").val(nama);
+            $("#edit_is_pengurus").prop("checked", is_pengurus == 1);
             $("#edit_deskripsi").val(deskripsi);
             $("#edit_urutan").val(urutan);
             $("input[name='is_active'][value='" + status + "']").prop("checked", true);
@@ -391,7 +413,7 @@ $jabatanKelompoks = $controller->index();
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        $(document).on("submit", ".form-delete", function (e) {
+        $(document).on("submit", ".form-delete", function(e) {
             e.preventDefault();
             let form = this;
             Swal.fire({

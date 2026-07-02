@@ -37,6 +37,24 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
     <link rel="stylesheet" href="../assets/adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="../assets/adminlte/dist/css/adminlte.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+
+    <!-- <style>
+        .select2-container .select2-selection--single {
+            height: 38px !important;
+            padding: 5px 10px;
+        }
+
+        .select2-container--bootstrap-5 .select2-selection {
+            min-height: 38px;
+        }
+
+        .select2-container {
+            width: 100% !important;
+        }
+    </style> -->
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -88,12 +106,12 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th>ID</th>
                                                 <th>Petani</th>
                                                 <th>Kelompok Tani</th>
                                                 <th>Jabatan Kelompok</th>
                                                 <th>Tanggal Gabung</th>
                                                 <th>Tanggal Keluar</th>
-                                                <th>Pengurus</th>
                                                 <th>Keterangan</th>
                                                 <th>Status Aktif</th>
                                                 <th>Aksi</th>
@@ -102,12 +120,12 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
                                         <tbody>
                                             <?php foreach ($petaniKelompoks as $petaniKelompok): ?>
                                                 <tr>
+                                                    <td><?= htmlspecialchars($petaniKelompok['id']) ?></td>
                                                     <td><?= htmlspecialchars($petaniKelompok['nama_petani']) ?></td>
                                                     <td><?= htmlspecialchars($petaniKelompok['nama_kelompok_tani']) ?></td>
                                                     <td><?= htmlspecialchars($petaniKelompok['nama_jabatan_kelompok']) ?></td>
                                                     <td><?= htmlspecialchars($petaniKelompok['tanggal_gabung']) ?></td>
                                                     <td><?= htmlspecialchars($petaniKelompok['tanggal_keluar']) ?></td>
-                                                    <td><?= $petaniKelompok['is_pengurus'] ? 'Ya' : 'Tidak' ?></td>
                                                     <td><?= htmlspecialchars($petaniKelompok['keterangan']) ?></td>
                                                     <td><?= $petaniKelompok['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
                                                     <td class="row">
@@ -119,7 +137,6 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
                                                                 data-id_jabatan_kelompok="<?= htmlspecialchars($petaniKelompok['id_jabatan_kelompok']) ?>"
                                                                 data-tanggal_gabung="<?= htmlspecialchars($petaniKelompok['tanggal_gabung']) ?>"
                                                                 data-tanggal_keluar="<?= htmlspecialchars($petaniKelompok['tanggal_keluar']) ?>"
-                                                                data-is_pengurus="<?= htmlspecialchars($petaniKelompok['is_pengurus']) ?>"
                                                                 data-keterangan="<?= htmlspecialchars($petaniKelompok['keterangan']) ?>"
                                                                 data-status="<?= $petaniKelompok['is_active'] ?>"
                                                                 data-toggle="modal" data-target="#modalEdit">
@@ -140,12 +157,12 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th>ID</th>
                                                 <th>Petani</th>
                                                 <th>Kelompok Tani</th>
                                                 <th>Jabatan Kelompok</th>
                                                 <th>Tanggal Gabung</th>
                                                 <th>Tanggal Keluar</th>
-                                                <th>Pengurus</th>
                                                 <th>Keterangan</th>
                                                 <th>Status Aktif</th>
                                                 <th>Aksi</th>
@@ -213,17 +230,12 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
                                         placeholder="Pilih Tanggal Gabung">
                                 </div>
                                 <div class="form-group">
-                                    <label for="tanggal_keluar">Tanggal Keluar<code>*</code></label>
+                                    <label for="tanggal_keluar">Tanggal Keluar</label>
                                     <input type="date" name="tanggal_keluar" class="form-control" id="tanggal_keluar"
                                         placeholder="Pilih Tanggal Keluar">
                                 </div>
-                                <div class="custom-control custom-checkbox">
-                                    <input class="custom-control-input" type="checkbox" id="add_is_pengurus" value="1"
-                                        name="is_pengurus">
-                                    <label for="add_is_pengurus" class="custom-control-label">Apakah Pengurus?</label>
-                                </div>
                                 <div class="form-group">
-                                    <label for="keterangan">Keterangan<code>*</code></label>
+                                    <label for="keterangan">Keterangan</label>
                                     <textarea name="keterangan" class="form-control" id="keterangan"
                                         placeholder="Masukkan Keterangan"></textarea>
                                 </div>
@@ -308,17 +320,12 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
                                         placeholder="Pilih Tanggal Gabung">
                                 </div>
                                 <div class="form-group">
-                                    <label for="tanggal_keluar">Tanggal Keluar<code>*</code></label>
+                                    <label for="tanggal_keluar">Tanggal Keluar</label>
                                     <input type="date" name="tanggal_keluar" class="form-control" id="edit_tanggal_keluar"
                                         placeholder="Pilih Tanggal Keluar">
                                 </div>
-                                <div class="custom-control custom-checkbox">
-                                    <input class="custom-control-input" type="checkbox" id="edit_is_pengurus" value="1"
-                                        name="is_pengurus">
-                                    <label for="edit_is_pengurus" class="custom-control-label">Apakah Pengurus?</label>
-                                </div>
                                 <div class="form-group">
-                                    <label for="keterangan">Keterangan<code>*</code></label>
+                                    <label for="keterangan">Keterangan</label>
                                     <textarea name="keterangan" class="form-control" id="edit_keterangan"
                                         placeholder="Masukkan Keterangan"></textarea>
                                 </div>
@@ -382,11 +389,16 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
     <!-- jquery-validation -->
     <script src="../assets/adminlte/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script src="../assets/adminlte/plugins/jquery-validation/additional-methods.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <!-- Page specific script -->
     <script>
-        $(function () {
+        $(function() {
             $("#example1").DataTable({
-                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
@@ -402,7 +414,7 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
     </script>
 
     <script>
-        $(function () {
+        $(function() {
             function initValidation(formId) {
                 $(formId).validate({
                     rules: {
@@ -419,10 +431,10 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
                             required: true
                         },
                         tanggal_keluar: {
-                            required: true
+                            required: false
                         },
                         keterangan: {
-                            required: true
+                            required: false
                         },
                         is_active: {
                             required: true
@@ -441,25 +453,25 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
                         tanggal_gabung: {
                             required: "Silahkan pilih Tanggal Gabung"
                         },
-                        tanggal_keluar: {
-                            required: "Silahkan pilih Tanggal Keluar"
-                        },
-                        keterangan: {
-                            required: "Silahkan masukkan Keterangan"
-                        },
+                        // tanggal_keluar: {
+                        //     required: "Silahkan pilih Tanggal Keluar"
+                        // },
+                        // keterangan: {
+                        //     required: "Silahkan masukkan Keterangan"
+                        // },
                         is_active: {
                             required: "Silahkan pilih Status Aktif"
                         }
                     },
                     errorElement: 'span',
-                    errorPlacement: function (error, element) {
+                    errorPlacement: function(error, element) {
                         error.addClass('invalid-feedback');
                         element.closest('.form-group').append(error);
                     },
-                    highlight: function (element) {
+                    highlight: function(element) {
                         $(element).addClass('is-invalid');
                     },
-                    unhighlight: function (element) {
+                    unhighlight: function(element) {
                         $(element).removeClass('is-invalid');
                     }
                 });
@@ -470,33 +482,54 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
     </script>
 
     <script>
-        $(document).on("click", ".btn-edit", function () {
+        $(document).on("click", ".btn-edit", function() {
             let id = $(this).data("id");
             let id_petani = $(this).data("id_petani");
             let id_kelompok_tani = $(this).data("id_kelompok_tani");
             let id_jabatan_kelompok = $(this).data("id_jabatan_kelompok");
             let tanggal_gabung = $(this).data("tanggal_gabung");
             let tanggal_keluar = $(this).data("tanggal_keluar");
-            let is_pengurus = $(this).data("is_pengurus");
             let keterangan = $(this).data("keterangan");
             let status = $(this).data("status");
 
             $("#edit_id").val(id);
-            $("#edit_id_petani").val(id_petani);
+            $("#edit_id_petani").val(id_petani).trigger('change');
             $("#edit_id_kelompok_tani").val(id_kelompok_tani);
             $("#edit_id_jabatan_kelompok").val(id_jabatan_kelompok);
             $("#edit_tanggal_gabung").val(tanggal_gabung);
             $("#edit_tanggal_keluar").val(tanggal_keluar);
-            $("#edit_is_pengurus").prop("checked", is_pengurus == 1);
             $("#edit_keterangan").val(keterangan);
             $("input[name='is_active'][value='" + status + "']").prop("checked", true);
+        });
+
+        $(document).ready(function() {
+            $('#id_petani').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: '-- Pilih Petani --',
+                allowClear: true
+            });
+
+            $('#edit_id_petani').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: '-- Pilih Petani --',
+                allowClear: true,
+                dropdownParent: $('#modalEdit') // jika dalam modal
+            });
+        });
+
+        $('#id_petani, #edit_id_petani').on('select2:open', function() {
+            setTimeout(() => {
+                document.querySelector('.select2-container--open .select2-search__field').focus();
+            }, 0);
         });
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        $(document).on("submit", ".form-delete", function (e) {
+        $(document).on("submit", ".form-delete", function(e) {
             e.preventDefault();
             let form = this;
             Swal.fire({
@@ -545,16 +578,16 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
     </script>
 
     <script>
-        document.getElementById('tanggal_gabung').addEventListener('focus', function () {
+        document.getElementById('tanggal_gabung').addEventListener('focus', function() {
             this.showPicker();
         });
-        document.getElementById('edit_tanggal_gabung').addEventListener('focus', function () {
+        document.getElementById('edit_tanggal_gabung').addEventListener('focus', function() {
             this.showPicker();
         });
-        document.getElementById('tanggal_keluar').addEventListener('focus', function () {
+        document.getElementById('tanggal_keluar').addEventListener('focus', function() {
             this.showPicker();
         });
-        document.getElementById('edit_tanggal_keluar').addEventListener('focus', function () {
+        document.getElementById('edit_tanggal_keluar').addEventListener('focus', function() {
             this.showPicker();
         });
     </script>

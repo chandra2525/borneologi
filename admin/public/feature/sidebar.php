@@ -198,8 +198,8 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item <?= ($menu == 'tipe_penyimpanan_benih' || $menu == 'tipe_penanaman') ? 'menu-open' : '' ?>">
-                            <a href="#" class="nav-link <?= ($menu == 'tipe_penyimpanan_benih' || $menu == 'tipe_penanaman') ? 'active' : '' ?>">
+                        <li class="nav-item <?= ($menu == 'tipe_penyimpanan_benih' || $menu == 'tipe_penanaman' || $menu == 'progress_status_monitoring' || $menu == 'negara') ? 'menu-open' : '' ?>">
+                            <a href="#" class="nav-link <?= ($menu == 'tipe_penyimpanan_benih' || $menu == 'tipe_penanaman' || $menu == 'progress_status_monitoring' || $menu == 'negara') ? 'active' : '' ?>">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>
                                     Master Benih
@@ -221,10 +221,24 @@
                                         <p>Tipe Penanaman</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="<?= ($menu == 'dashboard') ? 'progress_status_monitoring/' : '../progress_status_monitoring/' ?>index.php"
+                                        class="nav-link <?= ($menu == 'progress_status_monitoring') ? 'active' : '' ?>">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Progress Monitoring</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= ($menu == 'dashboard') ? 'negara/' : '../negara/' ?>index.php"
+                                        class="nav-link <?= ($menu == 'negara') ? 'active' : '' ?>">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Negara</p>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
-                        <li class="nav-item <?= ($menu == 'kategori_area' || $menu == 'penggunaan_lainnya' || $menu == 'penggunaan_pertanian' || $menu == 'lanskap' || $menu == 'fitur_tambahan' || $menu == 'jenis_pohon' || $menu == 'fungsi_pohon' || $menu == 'warna_air' || $menu == 'jenis_palung' || $menu == 'kecepatan_aliran' || $menu == 'progress_status_monitoring' || $menu == 'negara') ? 'menu-open' : '' ?>">
-                            <a href="#" class="nav-link <?= ($menu == 'kategori_area' || $menu == 'penggunaan_lainnya' || $menu == 'penggunaan_pertanian' || $menu == 'lanskap' || $menu == 'fitur_tambahan' || $menu == 'jenis_pohon' || $menu == 'fungsi_pohon' || $menu == 'warna_air' || $menu == 'jenis_palung' || $menu == 'kecepatan_aliran' || $menu == 'progress_status_monitoring' || $menu == 'negara') ? 'active' : '' ?>">
+                        <li class="nav-item <?= ($menu == 'kategori_area' || $menu == 'penggunaan_lainnya' || $menu == 'penggunaan_pertanian' || $menu == 'lanskap' || $menu == 'fitur_tambahan' || $menu == 'jenis_pohon' || $menu == 'fungsi_pohon' || $menu == 'warna_air' || $menu == 'jenis_palung' || $menu == 'kecepatan_aliran') ? 'menu-open' : '' ?>">
+                            <a href="#" class="nav-link <?= ($menu == 'kategori_area' || $menu == 'penggunaan_lainnya' || $menu == 'penggunaan_pertanian' || $menu == 'lanskap' || $menu == 'fitur_tambahan' || $menu == 'jenis_pohon' || $menu == 'fungsi_pohon' || $menu == 'warna_air' || $menu == 'jenis_palung' || $menu == 'kecepatan_aliran') ? 'active' : '' ?>">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>
                                     Master Observasi
@@ -300,20 +314,6 @@
                                         class="nav-link <?= ($menu == 'kecepatan_aliran') ? 'active' : '' ?>">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Kecepatan Aliran</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= ($menu == 'dashboard') ? 'progress_status_monitoring/' : '../progress_status_monitoring/' ?>index.php"
-                                        class="nav-link <?= ($menu == 'progress_status_monitoring') ? 'active' : '' ?>">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Progress Monitoring</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= ($menu == 'dashboard') ? 'negara/' : '../negara/' ?>index.php"
-                                        class="nav-link <?= ($menu == 'negara') ? 'active' : '' ?>">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Negara</p>
                                     </a>
                                 </li>
                             </ul>

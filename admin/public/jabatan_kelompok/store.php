@@ -13,6 +13,7 @@ $jabatanKelompok = new JabatanKelompok($pdo);
 $data = [
     "kode" => $_POST["kode"],
     "nama" => $_POST["nama"],
+    "is_pengurus" => isset($_POST["is_pengurus"]) ? 1 : 0,
     "deskripsi" => $_POST["deskripsi"],
     "urutan" => $_POST["urutan"],
     "is_active" => $_POST["is_active"],

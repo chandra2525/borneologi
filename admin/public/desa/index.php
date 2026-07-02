@@ -86,8 +86,8 @@ $kecamatan = $controller->getKecamatan();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Nama Kecamatan</th>
                                                 <th>Kode Desa</th>
+                                                <th>Nama Kecamatan</th>
                                                 <th>Nama Desa</th>
                                                 <th>Status Aktif</th>
                                                 <th>Aksi</th>
@@ -96,8 +96,8 @@ $kecamatan = $controller->getKecamatan();
                                         <tbody>
                                             <?php foreach ($desa as $desa): ?>
                                                 <tr>
-                                                    <td><?= htmlspecialchars($desa['nama_kecamatan']) ?></td>
                                                     <td><?= htmlspecialchars($desa['kode_desa']) ?></td>
+                                                    <td><?= htmlspecialchars($desa['nama_kecamatan']) ?></td>
                                                     <td><?= htmlspecialchars($desa['nama_desa']) ?></td>
                                                     <td><?= $desa['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
                                                     <td class="row">
@@ -126,8 +126,8 @@ $kecamatan = $controller->getKecamatan();
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <th>Nama Kecamatan</th>
                                                 <th>Kode Desa</th>
+                                                <th>Nama Kecamatan</th>
                                                 <th>Nama Desa</th>
                                                 <th>Status Aktif</th>
                                                 <th>Aksi</th>

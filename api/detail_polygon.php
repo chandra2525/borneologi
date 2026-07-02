@@ -76,6 +76,8 @@ try {
         $data = $controller->getDetailPolygonKab($id);
     } else if ($tipe === 'kecamatan') {
         $data = $controller->getDetailPolygonKec($id);
+    } else if ($tipe === 'desa') {
+        $data = $controller->getDetailPolygonDesa($id);
     } else if ($tipe === 'hutan_adat') {
         $data = $controller->getDetailPolygonHa($id);
     } else if ($tipe === 'kaleka') {

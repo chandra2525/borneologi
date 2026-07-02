@@ -16,6 +16,7 @@ $hutanAdats = $controller->getHutanAdat();
 $provinsis = $controller->getProvinsi();
 $kabupatens = $controller->getKabupaten();
 $kecamatans = $controller->getKecamatan();
+$desas = $controller->getDesa();
 $kalekas = $controller->getKaleka();
 $hutanLindung = $controller->getHutanLindung();
 $hutanProduksiTetap = $controller->getHutanProduksiTetap();
@@ -35,6 +36,8 @@ function getRelasiTipeLabel($tipe)
             return 'Hutan Adat';
         case 'kecamatan':
             return 'Kecamatan';
+        case 'desa':
+            return 'Desa';
         case 'kaleka':
             return 'Kaleka';
         case 'hutan_lindung':
@@ -300,6 +303,7 @@ function getRelasiTipeLabel($tipe)
                                         <option value="provinsi">Provinsi</option>
                                         <option value="kabupaten">Kabupaten</option>
                                         <option value="kecamatan">Kecamatan</option>
+                                        <option value="desa">Desa</option>
                                         <option value="kaleka">Kaleka</option>
                                         <option value="hutan_lindung">Hutan Lindung</option>
                                         <option value="hutan_produksi_tetap">Hutan Produksi Tetap</option>
@@ -355,6 +359,18 @@ function getRelasiTipeLabel($tipe)
                                         <?php foreach ($kecamatans as $k): ?>
                                             <option value="<?= $k['id'] ?>">
                                                 <?= htmlspecialchars($k['nama_kecamatan']) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" id="group_desa" style="display:none;">
+                                    <label>Desa<code>*</code></label>
+                                    <select class="form-control relasi-dropdown" id="edit_desa" name="desa">
+                                        <option value="">-- Pilih Desa --</option>
+                                        <?php foreach ($desas as $d): ?>
+                                            <option value="<?= $d['id'] ?>">
+                                                <?= htmlspecialchars($d['nama_desa']) ?>
                                             </option>
                                         <?php endforeach; ?>
                                     </select>
@@ -645,6 +661,15 @@ function getRelasiTipeLabel($tipe)
                 }
             });
 
+            $("#edit_desa").rules("add", {
+                required: function () {
+                    return $("#edit_relasi_tipe").val() === "desa";
+                },
+                messages: {
+                    required: "Silahkan pilih Desa"
+                }
+            });
+
             $("#edit_kaleka").rules("add", {
                 required: function () {
                     return $("#edit_relasi_tipe").val() === "kaleka";
@@ -739,6 +764,8 @@ function getRelasiTipeLabel($tipe)
                     $("#edit_kabupaten").val(relasi_id);
                 } else if (relasi_tipe === "kecamatan") {
                     $("#edit_kecamatan").val(relasi_id);
+                } else if (relasi_tipe === "desa") {
+                    $("#edit_desa").val(relasi_id);
                 } else if (relasi_tipe === "kaleka") {
                     $("#edit_kaleka").val(relasi_id);
                 } else if (relasi_tipe === "hutan_lindung") {
@@ -767,6 +794,7 @@ function getRelasiTipeLabel($tipe)
             $("#group_provinsi").hide();
             $("#group_kabupaten").hide();
             $("#group_kecamatan").hide();
+            $("#group_desa").hide();
             $("#group_kaleka").hide();
             $("#group_hutan_lindung").hide();
             $("#group_hutan_produksi_tetap").hide();
@@ -781,6 +809,7 @@ function getRelasiTipeLabel($tipe)
             $("#edit_provinsi").val("");
             $("#edit_kabupaten").val("");
             $("#edit_kecamatan").val("");
+            $("#edit_desa").val("");
             $("#edit_kaleka").val("");
             $("#edit_hutan_lindung").val("");
             $("#edit_hutan_produksi_tetap").val("");
@@ -794,6 +823,7 @@ function getRelasiTipeLabel($tipe)
             $("#edit_provinsi").prop("required", false);
             $("#edit_kabupaten").prop("required", false);
             $("#edit_kecamatan").prop("required", false);
+            $("#edit_desa").prop("required", false);
             $("#edit_kaleka").prop("required", false);
             $("#edit_hutan_lindung").prop("required", false);
             $("#edit_hutan_produksi_tetap").prop("required", false);
@@ -814,6 +844,9 @@ function getRelasiTipeLabel($tipe)
             } else if (tipe === "kecamatan") {
                 $("#group_kecamatan").show();
                 $("#edit_kecamatan").prop("required", true);
+            } else if (tipe === "desa") {
+                $("#group_desa").show();
+                $("#edit_desa").prop("required", true);
             } else if (tipe === "kaleka") {
                 $("#group_kaleka").show();
                 $("#edit_kaleka").prop("required", true);

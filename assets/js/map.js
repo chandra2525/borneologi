@@ -11,21 +11,6 @@ L.control
 const allPolygons = [];
 const allMarkers = [];
 
-map.createPane("paneProvinsi");
-map.getPane("paneProvinsi").style.zIndex = 400;
-
-map.createPane("paneKabupaten");
-map.getPane("paneKabupaten").style.zIndex = 400;
-
-map.createPane("paneKecamatan");
-map.getPane("paneKecamatan").style.zIndex = 400;
-
-map.createPane("paneHutanAdat");
-map.getPane("paneHutanAdat").style.zIndex = 400;
-
-map.createPane("paneKaleka");
-map.getPane("paneKaleka").style.zIndex = 400;
-
 map.createPane("paneHutanLindung");
 map.getPane("paneHutanLindung").style.zIndex = 400;
 
@@ -43,6 +28,24 @@ map.getPane("paneKawasanKonservasi").style.zIndex = 400;
 
 map.createPane("paneAreaPenggunaanLain");
 map.getPane("paneAreaPenggunaanLain").style.zIndex = 400;
+
+map.createPane("paneProvinsi");
+map.getPane("paneProvinsi").style.zIndex = 400;
+
+map.createPane("paneKabupaten");
+map.getPane("paneKabupaten").style.zIndex = 400;
+
+map.createPane("paneKecamatan");
+map.getPane("paneKecamatan").style.zIndex = 400;
+
+map.createPane("paneDesa");
+map.getPane("paneDesa").style.zIndex = 400;
+
+map.createPane("paneHutanAdat");
+map.getPane("paneHutanAdat").style.zIndex = 400;
+
+map.createPane("paneKaleka");
+map.getPane("paneKaleka").style.zIndex = 400;
 
 map.createPane("paneBankBenih");
 map.getPane("paneBankBenih").style.zIndex = 400;
@@ -228,13 +231,13 @@ map.on("click", function (e) {
   console.log("LatLng:", e.latlng.lat, e.latlng.lng);
 });
 
-let totalHutanAdat = 0;
 let totalProvinsi = 0;
 let totalKabupaten = 0;
+let totalDesa = 0;
 let totalKecamatan = 0;
+let totalHutanAdat = 0;
 let totalKaleka = 0;
 let totalBankBenih = 0;
-let totalSentinel = 0;
 let totalHutanLindung = 0;
 let totalHutanProduksiTetap = 0;
 let totalHutanProduksiTerbatas = 0;
@@ -245,6 +248,7 @@ let legend;
 
 const layerProvinsi = L.layerGroup().addTo(map);
 const layerKabupaten = L.layerGroup().addTo(map);
+const layerDesa = L.layerGroup(); // default OFF
 const layerKecamatan = L.layerGroup(); // default OFF
 const layerHutanAdat = L.layerGroup(); // default OFF
 const layerKaleka = L.layerGroup(); // default OFF
@@ -279,6 +283,7 @@ var layerSentinel = L.imageOverlay("api/cache/gunung_mas.png", ndviBounds, {
 let isLoaded = {
   provinsi: false,
   kabupaten: false,
+  desa: false,
   kecamatan: false,
   hutan_adat: false,
   kaleka: false,
@@ -295,6 +300,7 @@ let isLoaded = {
 let layerState = {
   provinsi: true,
   kabupaten: true,
+  desa: false,
   kecamatan: false,
   hutan_adat: false,
   kaleka: false,
@@ -495,6 +501,54 @@ function loadKecamatan() {
     .catch((err) => {
       console.error(err);
       alert("Gagal memuat data kecamatan");
+    })
+    .finally(() => {
+      hideLoading();
+    });
+}
+
+function loadDesa() {
+  if (isLoaded.desa) return;
+
+  showLoading();
+
+  fetch("api/desa.php", {
+    headers: {
+      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+
+      // totalDesa = data.desa.length;
+      totalDesa = new Set(data.desa.map((item) => item.id)).size;
+
+      data.desa.forEach((item) => {
+        const desa = L.polygon(item.tanah.geom_area, {
+          pane: "paneDesa",
+          color: "#9D6638",
+          weight: 2,
+          fillOpacity: 0.1,
+        }).addTo(layerDesa);
+
+        allPolygons.push(desa);
+
+        desa.on("click", (e) => {
+          showDesaModal(item.id_polygon, e.latlng);
+        });
+        const center = getCentroid(item.tanah.geom_area);
+        // buka untuk dapat pin icon marker
+        // L.marker(center).addTo(map);
+      });
+
+      updateLegend();
+      isLoaded.desa = true;
+      createTotalMarker(totalDesa, "desa");
+    })
+    .catch((err) => {
+      console.error(err);
+      alert("Gagal memuat data desa");
     })
     .finally(() => {
       hideLoading();
@@ -1115,6 +1169,18 @@ function updateLegend() {
         </div>
 
         <div>
+            <input type="checkbox" id="chkDesa" ${layerState.desa ? "checked" : ""}>
+            <span style="
+                width:18px;
+                height:18px;
+                display:inline-block;
+                border:2px solid #9D6638;
+                background:rgba(255, 234, 0, 0.1);
+            "></span>
+            <span data-lang="text_desa">Desa</span> (${totalDesa})
+        </div>
+
+        <div>
             <input type="checkbox" id="chkHutanAdat" ${layerState.hutan_adat ? "checked" : ""}>
             <span style="
                 width:18px;
@@ -1147,7 +1213,7 @@ function updateLegend() {
         <div>
             <input type="checkbox" id="chkSentinel" ${layerState.sentinel ? "checked" : ""}>
             <span style="background:#32342c; width:18px; height:18px; display:inline-block;"></span>
-            <span data-lang="text_sentinel">Citra Satelit (Sentinel)</span> (${totalSentinel})
+            <span data-lang="text_sentinel">Citra Satelit (Sentinel)</span>
         </div>
 
         <strong data-lang="text_kawasan_hutan"><br>Kawasan Hutan (Desember 2025)</strong>
@@ -1155,37 +1221,37 @@ function updateLegend() {
         <div>
             <input type="checkbox" id="chkHutanLindung" ${layerState.hutan_lindung ? "checked" : ""}>
             <span style="background:#56a832; width:18px; height:18px; display:inline-block;"></span>
-            <span data-lang="text_hutan_lindung">Hutan Lindung</span> (${totalHutanLindung})
+            <span data-lang="text_hutan_lindung">Hutan Lindung</span>
         </div>
 
         <div>
             <input type="checkbox" id="chkHutanProduksiTetap" ${layerState.hutan_produksi_tetap ? "checked" : ""}>
             <span style="background:#fdfc56; width:18px; height:18px; display:inline-block;"></span>
-            <span data-lang="text_hutan_produksi_tetap">Hutan Produksi Tetap</span> (${totalHutanProduksiTetap})
+            <span data-lang="text_hutan_produksi_tetap">Hutan Produksi Tetap</span>
         </div>
 
         <div>
             <input type="checkbox" id="chkHutanProduksiTerbatas" ${layerState.hutan_produksi_terbatas ? "checked" : ""}>
             <span style="background:#a7ed4c; width:18px; height:18px; display:inline-block;"></span>
-            <span data-lang="text_hutan_produksi_terbatas">Hutan Produksi Terbatas</span> (${totalHutanProduksiTerbatas})
+            <span data-lang="text_hutan_produksi_terbatas">Hutan Produksi Terbatas</span>
         </div>
 
         <div>
             <input type="checkbox" id="chkHutanProduksiKonversi" ${layerState.hutan_produksi_konversi ? "checked" : ""}>
             <span style="background:#e871f7; width:18px; height:18px; display:inline-block;"></span>
-            <span data-lang="text_hutan_produksi_konversi">Hutan Produksi Konversi</span> (${totalHutanProduksiKonversi})
+            <span data-lang="text_hutan_produksi_konversi">Hutan Produksi Konversi</span>
         </div>
 
         <div>
             <input type="checkbox" id="chkKawasanKonservasi" ${layerState.kawasan_konservasi ? "checked" : ""}>
             <span style="background:#9f53f5; width:18px; height:18px; display:inline-block;"></span>
-            <span data-lang="text_kawasan_konservasi">Kawasan Konservasi</span> (${totalKawasanKonservasi})
+            <span data-lang="text_kawasan_konservasi">Kawasan Konservasi</span>
         </div>
 
         <div>
             <input type="checkbox" id="chkAreaPenggunaanLain" ${layerState.area_penggunaan_lain ? "checked" : ""}>
             <span style="background:#F5F5F5; width:18px; height:18px; display:inline-block;"></span>
-            <span data-lang="text_area_penggunaan_lain">Area Penggunaan Lain</span> (${totalAreaPenggunaanLain})
+            <span data-lang="text_area_penggunaan_lain">Area Penggunaan Lain</span>
         </div>
 
         </div>
@@ -1235,6 +1301,19 @@ function updateLegend() {
           map.addLayer(layerKecamatan);
         } else {
           map.removeLayer(layerKecamatan);
+        }
+      }),
+    );
+
+    document.getElementById("chkDesa").addEventListener(
+      "change",
+      debounce(function () {
+        layerState.desa = this.checked;
+        if (this.checked) {
+          loadDesa();
+          map.addLayer(layerDesa);
+        } else {
+          map.removeLayer(layerDesa);
         }
       }),
     );
@@ -1797,6 +1876,7 @@ function showProvinsiModal(id, latlng) {
       // contoh isi data ke modal
       // document.getElementById("namaProvinsi").innerText = data.nama_provinsi;
       setTranslatedText("namaProvinsi", data.nama_provinsi);
+      setTranslatedText("luasProvinsi", "153430,363 km²");
     })
     .catch((err) => {
       console.error(err);
@@ -1846,6 +1926,8 @@ function showKabupatenModal(id, latlng) {
       // contoh isi data ke modal
       // document.getElementById("namaKabupaten").innerText = data.nama_kabupaten;
       setTranslatedText("namaKabupaten", data.nama_kabupaten);
+      setTranslatedText("luasKabupaten", parseFloat(data.luas_ha) + " km²");
+      setTranslatedText("namaProvinsiKab", data.nama_provinsi);
     })
     .catch((err) => {
       console.error(err);
@@ -1895,6 +1977,9 @@ function showKecamatanModal(id, latlng) {
       // contoh isi data ke modal
       // document.getElementById("namaKecamatan").innerText = data.nama_kecamatan;
       setTranslatedText("namaKecamatan", data.nama_kecamatan);
+      setTranslatedText("luasKecamatan", parseFloat(data.luas_ha) + " km²");
+      setTranslatedText("namaKabupatenKec", data.nama_kabupaten);
+      setTranslatedText("namaProvinsiKec", data.nama_provinsi);
     })
     .catch((err) => {
       console.error(err);
@@ -1903,6 +1988,59 @@ function showKecamatanModal(id, latlng) {
       document.getElementById("kecamatanModal").style.display = "block";
 
       document.getElementById("kecamatanModal").innerHTML = `
+        <p style="text-align:center; color:red;">Gagal memuat data</p>
+      `;
+    });
+}
+
+function showDesaModal(id, latlng) {
+  // document.querySelector(".modal-title-desa").innerText =
+  //   "Informasi Desa";
+  setTranslatedText("modal-title-desa", "Informasi Desa");
+
+  new bootstrap.Modal(document.getElementById("desaModal")).show();
+
+  // tampilkan loading
+  document.getElementById("loadingDetail").style.display = "block";
+  document.getElementById("desaModal").style.display = "none";
+
+  fetch(`api/detail_polygon.php?id=${id}&&tipe=desa`, {
+    headers: {
+      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+    },
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      // sembunyikan loading
+      document.getElementById("loadingDetail").style.display = "none";
+      document.getElementById("desaModal").style.display = "block";
+
+      if (!res.status) {
+        alert("Data tidak ditemukan");
+        document.getElementById("desaModal").innerHTML = `
+          <p style="text-align:center;">Data tidak ditemukan</p>
+        `;
+        return;
+      }
+
+      const data = res.data;
+      console.log(data);
+
+      // contoh isi data ke modal
+      // document.getElementById("namaDesa").innerText = data.nama_desa;
+      setTranslatedText("namaDesa", data.nama_desa);
+      setTranslatedText("luasDesa", data.luas_ha + " km²");
+      setTranslatedText("namaKecamatanDesa", data.nama_kecamatan);
+      setTranslatedText("namaKabupatenDesa", data.nama_kabupaten);
+      setTranslatedText("namaProvinsiDesa", data.nama_provinsi);
+    })
+    .catch((err) => {
+      console.error(err);
+
+      document.getElementById("loadingDetail").style.display = "none";
+      document.getElementById("desaModal").style.display = "block";
+
+      document.getElementById("desaModal").innerHTML = `
         <p style="text-align:center; color:red;">Gagal memuat data</p>
       `;
     });
@@ -3193,6 +3331,7 @@ const translations = {
     text_provinsi: "Provinsi",
     text_kabupaten: "Kabupaten",
     text_kecamatan: "Kecamatan",
+    text_desa: "Desa",
     text_hutan_adat: "Hutan Adat",
     text_kaleka: "Kaleka",
     text_bank_benih: "Bank Benih",
@@ -3345,6 +3484,7 @@ const translations = {
     text_provinsi: "Province",
     text_kabupaten: "Regency",
     text_kecamatan: "District",
+    text_desa: "Village",
     text_hutan_adat: "Customary Forest",
     text_kaleka: "Kaleka",
     text_bank_benih: "Seed Bank",

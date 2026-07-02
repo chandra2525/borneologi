@@ -45,6 +45,7 @@ class JabatanKelompokController
 
         $kode = trim($data['kode']);
         $nama = trim($data['nama']);
+        $is_pengurus = trim($data['is_pengurus']);
         $deskripsi = trim($data['deskripsi']);
         $urutan = (int) $data['urutan'];
         $is_active = isset($data['is_active']) ? 1 : 0;
@@ -52,6 +53,7 @@ class JabatanKelompokController
         return $this->model->create([
             'kode' => $kode,
             'nama' => $nama,
+            'is_pengurus' => $is_pengurus,
             'deskripsi' => $deskripsi,
             'urutan' => $urutan,
             'is_active' => $is_active,
@@ -72,6 +74,7 @@ class JabatanKelompokController
 
         $kode = trim($data['kode']);
         $nama = trim($data['nama']);
+        $is_pengurus = trim($data['is_pengurus']);
         $deskripsi = trim($data['deskripsi']);
         $urutan = (int) $data['urutan'];
         $is_active = isset($data['is_active']) ? 1 : 0;
@@ -79,6 +82,7 @@ class JabatanKelompokController
         return $this->model->update($id, [
             'kode' => $kode,
             'nama' => $nama,
+            'is_pengurus' => $is_pengurus,
             'deskripsi' => $deskripsi,
             'urutan' => $urutan,
             'is_active' => $is_active,
