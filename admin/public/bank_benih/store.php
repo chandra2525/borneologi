@@ -10,7 +10,14 @@ verifyCsrfToken();
 
 $foto_benih = null;
 
-if (isset($_FILES['foto_benih']) && $_FILES['foto_benih']['error'] == 0) {
+if (
+    isset($_FILES['foto_benih']) &&
+    $_FILES['foto_benih']['error'] !== UPLOAD_ERR_NO_FILE
+) {
+
+    if ($_FILES['foto_benih']['error'] !== UPLOAD_ERR_OK) {
+        die("Terjadi kesalahan saat upload foto.");
+    }
 
     $uploadDir = "../../uploads/bank_benih/";
 
@@ -18,13 +25,13 @@ if (isset($_FILES['foto_benih']) && $_FILES['foto_benih']['error'] == 0) {
         mkdir($uploadDir, 0777, true);
     }
 
-    $ext = pathinfo($_FILES['foto_benih']['name'], PATHINFO_EXTENSION);
-
-    $fileName = time() . '_' . uniqid() . '.' . $ext;
+    $ext = strtolower(
+        pathinfo($_FILES['foto_benih']['name'], PATHINFO_EXTENSION)
+    );
 
     $allowed = ['jpg', 'jpeg', 'png', 'webp'];
 
-    if (!in_array(strtolower($ext), $allowed)) {
+    if (!in_array($ext, $allowed)) {
         die("Format file tidak didukung");
     }
 
@@ -32,10 +39,14 @@ if (isset($_FILES['foto_benih']) && $_FILES['foto_benih']['error'] == 0) {
         die("Ukuran file maksimal 2MB");
     }
 
-    move_uploaded_file(
+    $fileName = time() . '_' . uniqid() . '.' . $ext;
+
+    if (!move_uploaded_file(
         $_FILES['foto_benih']['tmp_name'],
         $uploadDir . $fileName
-    );
+    )) {
+        die("Gagal menyimpan foto.");
+    }
 
     $foto_benih = $fileName;
 }

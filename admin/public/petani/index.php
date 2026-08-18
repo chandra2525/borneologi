@@ -223,11 +223,11 @@ $desas = $controller->getDesa();
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="tanggal_lahir">Tanggal Lahir<code>*</code></label>
+                                    <label for="tanggal_lahir">Tanggal Lahir</label>
                                     <input type="date" name="tanggal_lahir" class="form-control" id="tanggal_lahir">
                                 </div>
                                 <div class="form-group">
-                                    <label for="nomor_hp">Nomor HP<code>*</code></label>
+                                    <label for="nomor_hp">Nomor HP</label>
                                     <input type="number" name="nomor_hp" class="form-control" id="nomor_hp"
                                         placeholder="Masukkan Nomor HP" minlength="10" maxlength="13">
                                 </div>
@@ -243,7 +243,7 @@ $desas = $controller->getDesa();
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="alamat">Alamat<code>*</code></label>
+                                    <label for="alamat">Alamat</label>
                                     <textarea name="alamat" class="form-control" id="alamat"
                                         placeholder="Masukkan Alamat"></textarea>
                                 </div>
@@ -345,12 +345,12 @@ $desas = $controller->getDesa();
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="tanggal_lahir">Tanggal Lahir<code>*</code></label>
+                                    <label for="tanggal_lahir">Tanggal Lahir</label>
                                     <input type="date" name="tanggal_lahir" class="form-control"
                                         id="edit_tanggal_lahir">
                                 </div>
                                 <div class="form-group">
-                                    <label for="nomor_hp">Nomor HP<code>*</code></label>
+                                    <label for="nomor_hp">Nomor HP</label>
                                     <input type="number" name="nomor_hp" class="form-control" id="edit_nomor_hp"
                                         placeholder="Masukkan Nomor HP" minlength="10" maxlength="13">
                                 </div>
@@ -366,7 +366,7 @@ $desas = $controller->getDesa();
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="alamat">Alamat<code>*</code></label>
+                                    <label for="alamat">Alamat</label>
                                     <textarea name="alamat" class="form-control" id="edit_alamat"
                                         placeholder="Masukkan Alamat"></textarea>
                                 </div>
@@ -502,18 +502,18 @@ $desas = $controller->getDesa();
                         jenis_kelamin: {
                             required: true
                         },
-                        tanggal_lahir: {
-                            required: true
-                        },
-                        nomor_hp: {
-                            required: true
-                        },
+                        // tanggal_lahir: {
+                        //     required: true
+                        // },
+                        // nomor_hp: {
+                        //     required: true
+                        // },
                         id_desa: {
                             required: true
                         },
-                        alamat: {
-                            required: true
-                        },
+                        // alamat: {
+                        //     required: true
+                        // },
                         status_petani: {
                             required: true
                         },
@@ -537,18 +537,18 @@ $desas = $controller->getDesa();
                         jenis_kelamin: {
                             required: "Silahkan masukkan Jenis Kelamin"
                         },
-                        tanggal_lahir: {
-                            required: "Silahkan masukkan Tanggal Lahir"
-                        },
-                        nomor_hp: {
-                            required: "Silahkan masukkan Nomor HP"
-                        },
+                        // tanggal_lahir: {
+                        //     required: "Silahkan masukkan Tanggal Lahir"
+                        // },
+                        // nomor_hp: {
+                        //     required: "Silahkan masukkan Nomor HP"
+                        // },
                         id_desa: {
                             required: "Silahkan masukkan Desa"
                         },
-                        alamat: {
-                            required: "Silahkan masukkan Alamat"
-                        },
+                        // alamat: {
+                        //     required: "Silahkan masukkan Alamat"
+                        // },
                         status_petani: {
                             required: "Silahkan pilih Status Petani"
                         },
