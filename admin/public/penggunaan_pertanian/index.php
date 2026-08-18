@@ -179,7 +179,7 @@ $penggunaanPertanians = $controller->index();
                                 <div class="form-group">
                                     <label for="urutan">Urutan<code>*</code></label>
                                     <input type="number" name="urutan" class="form-control" id="urutan"
-                                        placeholder="Masukkan urutan">
+                                        value="<?= (new PenggunaanPertanian($pdo))->generateUrutan() ?>" placeholder="Masukkan urutan">
                                 </div>
                                 <div class="form-group">
                                     <label>Status Aktif <code>*</code></label>

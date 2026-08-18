@@ -1,19 +1,12 @@
 <?php
 
-require_once '../app/config/database.php';
-require_once '../app/controllers/DashboardController.php';
 require "../app/core/session.php";
-require_once '../app/core/csrf.php';
 require "../app/core/auth.php";
 require "../app/core/security_headers.php";
-require_once '../app/helpers/escape.php';
 
 secureSessionStart();
 
 checkAuth("dashboard");
-
-$controller = new DashboardController($pdo);
-$dashboardData = $controller->index();
 ?>
 
 
@@ -96,14 +89,14 @@ $dashboardData = $controller->index();
                             <!-- small box -->
                             <div class="small-box bg-info">
                                 <div class="inner">
-                                    <h3><?= $dashboardData[0]['total_kaleka'] ?></h3>
+                                    <h3>150</h3>
 
-                                    <p>Kaleka</p>
+                                    <p>New Orders</p>
                                 </div>
                                 <div class="icon">
                                     <i class="ion ion-bag"></i>
                                 </div>
-                                <a href="kaleka/index.php" class="small-box-footer">More info <i
+                                <a href="#" class="small-box-footer">More info <i
                                         class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
@@ -112,14 +105,14 @@ $dashboardData = $controller->index();
                             <!-- small box -->
                             <div class="small-box bg-success">
                                 <div class="inner">
-                                    <h3><?= $dashboardData[0]['total_hutan_adat'] ?></h3>
+                                    <h3>53<sup style="font-size: 20px">%</sup></h3>
 
-                                    <p>Hutan Adat</p>
+                                    <p>Bounce Rate</p>
                                 </div>
                                 <div class="icon">
                                     <i class="ion ion-stats-bars"></i>
                                 </div>
-                                <a href="hutan_adat/index.php" class="small-box-footer">More info <i
+                                <a href="#" class="small-box-footer">More info <i
                                         class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
@@ -128,14 +121,14 @@ $dashboardData = $controller->index();
                             <!-- small box -->
                             <div class="small-box bg-warning">
                                 <div class="inner">
-                                    <h3><?= $dashboardData[0]['total_desa'] ?></h3>
+                                    <h3>44</h3>
 
-                                    <p>Desa</p>
+                                    <p>User Registrations</p>
                                 </div>
                                 <div class="icon">
                                     <i class="ion ion-person-add"></i>
                                 </div>
-                                <a href="desa/index.php" class="small-box-footer">More info <i
+                                <a href="#" class="small-box-footer">More info <i
                                         class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
@@ -144,14 +137,14 @@ $dashboardData = $controller->index();
                             <!-- small box -->
                             <div class="small-box bg-danger">
                                 <div class="inner">
-                                    <h3><?= $dashboardData[0]['total_kecamatan'] ?></h3>
+                                    <h3>65</h3>
 
-                                    <p>Kecamatan</p>
+                                    <p>Unique Visitors</p>
                                 </div>
                                 <div class="icon">
                                     <i class="ion ion-pie-graph"></i>
                                 </div>
-                                <a href="kecamatan/index.php" class="small-box-footer">More info <i
+                                <a href="#" class="small-box-footer">More info <i
                                         class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>

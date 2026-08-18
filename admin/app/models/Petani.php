@@ -42,40 +42,57 @@ class Petani
 
     public function create($data)
     {
-
         $sql = "INSERT INTO t_petani
-            (nik,no_kk,nama_lengkap,nama_panggilan,jenis_kelamin,tanggal_lahir,nomor_hp,id_desa,alamat,status_petani,foto_profil_petani,is_active,created_by)
-            VALUES
-            (:nik,:no_kk,:nama_lengkap,:nama_panggilan,:jenis_kelamin,:tanggal_lahir,:nomor_hp,:id_desa,:alamat,:status_petani,:foto_profil_petani,:is_active,:created_by)";
+        (
+            nik,no_kk,nama_lengkap,nama_panggilan,jenis_kelamin,
+            tanggal_lahir,nomor_hp,id_desa,alamat,status_petani,
+            foto_profil_petani,is_active,created_by
+        )
+        VALUES
+        (
+            :nik,:no_kk,:nama_lengkap,:nama_panggilan,:jenis_kelamin,
+            :tanggal_lahir,:nomor_hp,:id_desa,:alamat,:status_petani,
+            :foto_profil_petani,:is_active,:created_by
+        )";
 
         $stmt = $this->pdo->prepare($sql);
 
-        return $stmt->execute($data);
+        if (empty($data['foto_profil_petani'])) {
+            $data['foto_profil_petani'] = null;
+        }
 
+        return $stmt->execute($data);
     }
 
     public function update($id, $data)
     {
-        $sql = "UPDATE t_petani
-            SET
-            nik=:nik,
-            no_kk=:no_kk,
-            nama_lengkap=:nama_lengkap,
-            nama_panggilan=:nama_panggilan,
-            jenis_kelamin=:jenis_kelamin,
-            tanggal_lahir=:tanggal_lahir,
-            nomor_hp=:nomor_hp,
-            id_desa=:id_desa,
-            alamat=:alamat,
-            status_petani=:status_petani,
-            foto_profil_petani=:foto_profil_petani,
-            is_active=:is_active,
-            updated_by=:updated_by
-            WHERE id=:id";
+        $sql = "UPDATE t_petani SET
+        nik=:nik,
+        no_kk=:no_kk,
+        nama_lengkap=:nama_lengkap,
+        nama_panggilan=:nama_panggilan,
+        jenis_kelamin=:jenis_kelamin,
+        tanggal_lahir=:tanggal_lahir,
+        nomor_hp=:nomor_hp,
+        id_desa=:id_desa,
+        alamat=:alamat,
+        status_petani=:status_petani,
+        is_active=:is_active,
+        updated_by=:updated_by";
+
+        if (!empty($data['foto_profil_petani'])) {
+            $sql .= ", foto_profil_petani=:foto_profil_petani";
+        }
+
+        $sql .= " WHERE id=:id";
 
         $stmt = $this->pdo->prepare($sql);
 
-        $data["id"] = $id;
+        $data['id'] = $id;
+
+        if (empty($data['foto_profil_petani'])) {
+            unset($data['foto_profil_petani']);
+        }
 
         return $stmt->execute($data);
     }
@@ -106,5 +123,4 @@ class Petani
 
         return $stmt->fetchAll();
     }
-
 }
