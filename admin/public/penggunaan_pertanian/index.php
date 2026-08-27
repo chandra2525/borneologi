@@ -85,6 +85,7 @@ $penggunaanPertanians = $controller->index();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Penggunaan Pertanian</th>
                                                 <th>Nama Penggunaan Pertanian</th>
                                                 <th>Deskripsi</th>
@@ -94,8 +95,10 @@ $penggunaanPertanians = $controller->index();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($penggunaanPertanians as $penggunaanPertanian): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($penggunaanPertanian['kode']) ?></td>
                                                     <td><?= htmlspecialchars($penggunaanPertanian['nama']) ?></td>
                                                     <td><?= htmlspecialchars($penggunaanPertanian['deskripsi']) ?></td>
@@ -129,6 +132,7 @@ $penggunaanPertanians = $controller->index();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Penggunaan Pertanian</th>
                                                 <th>Nama Penggunaan Pertanian</th>
                                                 <th>Deskripsi</th>
@@ -164,7 +168,7 @@ $penggunaanPertanians = $controller->index();
                                     <label for="kode">Kode Penggunaan Pertanian<code>*</code></label>
                                     <input type="text" name="kode" class="form-control" id="kode"
                                         value="<?= (new PenggunaanPertanian($pdo))->generateKode() ?>"
-                                        placeholder="Masukkan kode penggunaan pertanian">
+                                        placeholder="Masukkan kode penggunaan pertanian" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Penggunaan Pertanian<code>*</code></label>
@@ -225,7 +229,7 @@ $penggunaanPertanians = $controller->index();
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="kode">Kode Penggunaan Pertanian<code>*</code></label>
-                                    <input type="text" name="kode" id="edit_kode" class="form-control">
+                                    <input type="text" name="kode" id="edit_kode" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Penggunaan Pertanian<code>*</code></label>

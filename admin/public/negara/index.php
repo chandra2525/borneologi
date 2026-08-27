@@ -85,6 +85,7 @@ $negaras = $controller->index();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Negara</th>
                                                 <th>Nama Negara</th>
                                                 <th>Status Aktif</th>
@@ -92,8 +93,10 @@ $negaras = $controller->index();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($negaras as $negara): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($negara['kode']) ?></td>
                                                     <td><?= htmlspecialchars($negara['nama']) ?></td>
                                                     <td><?= $negara['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
@@ -122,6 +125,7 @@ $negaras = $controller->index();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Negara</th>
                                                 <th>Nama Negara</th>
                                                 <th>Status Aktif</th>

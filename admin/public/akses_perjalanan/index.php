@@ -85,6 +85,7 @@ $aksesPerjalanans = $controller->index();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Akses Perjalanan</th>
                                                 <th>Nama Akses Perjalanan</th>
                                                 <th>Deskripsi</th>
@@ -94,8 +95,10 @@ $aksesPerjalanans = $controller->index();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($aksesPerjalanans as $aksesPerjalanan): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($aksesPerjalanan['kode']) ?></td>
                                                     <td><?= htmlspecialchars($aksesPerjalanan['nama']) ?></td>
                                                     <td><?= htmlspecialchars($aksesPerjalanan['deskripsi']) ?></td>
@@ -129,6 +132,7 @@ $aksesPerjalanans = $controller->index();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Akses Perjalanan</th>
                                                 <th>Nama Akses Perjalanan</th>
                                                 <th>Deskripsi</th>
@@ -164,7 +168,7 @@ $aksesPerjalanans = $controller->index();
                                     <label for="kode">Kode Akses Perjalanan<code>*</code></label>
                                     <input type="text" name="kode" class="form-control" id="kode"
                                         value="<?= (new AksesPerjalanan($pdo))->generateKode() ?>"
-                                        placeholder="Masukkan kode akses perjalanan">
+                                        placeholder="Masukkan kode akses perjalanan" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Akses Perjalanan<code>*</code></label>
@@ -179,7 +183,7 @@ $aksesPerjalanans = $controller->index();
                                 <div class="form-group">
                                     <label for="urutan">Urutan<code>*</code></label>
                                     <input type="number" name="urutan" class="form-control" id="urutan"
-                                        placeholder="Masukkan urutan">
+                                        value="<?= (new AksesPerjalanan($pdo))->generateUrutan() ?>" placeholder="Masukkan urutan">
                                 </div>
                                 <div class="form-group">
                                     <label>Status Aktif <code>*</code></label>
@@ -225,7 +229,7 @@ $aksesPerjalanans = $controller->index();
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="kode">Kode Akses Perjalanan<code>*</code></label>
-                                    <input type="text" name="kode" id="edit_kode" class="form-control">
+                                    <input type="text" name="kode" id="edit_kode" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Akses Perjalanan<code>*</code></label>

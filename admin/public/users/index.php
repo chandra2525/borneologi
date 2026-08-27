@@ -87,6 +87,7 @@ $roles = $controller->getRoles();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Nama Lengkap</th>
                                                 <th>Username</th>
                                                 <th>Email</th>
@@ -97,8 +98,10 @@ $roles = $controller->getRoles();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($users as $user): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= e($user['nama_lengkap']) ?></td>
                                                     <td><?= e($user['username']) ?></td>
                                                     <td><?= e($user['email']) ?></td>
@@ -133,6 +136,7 @@ $roles = $controller->getRoles();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Nama Lengkap</th>
                                                 <th>Username</th>
                                                 <th>Email</th>
@@ -176,7 +180,7 @@ $roles = $controller->getRoles();
                                         placeholder="Masukkan email">
                                 </div>
                                 <div class="form-group">
-                                    <label for="nomor_hp">Nomor HP<code>*</code></label>
+                                    <label for="nomor_hp">Nomor HP</label>
                                     <input type="number" name="nomor_hp" class="form-control" id="nomor_hp"
                                         placeholder="Masukkan nomor HP">
                                 </div>
@@ -254,7 +258,7 @@ $roles = $controller->getRoles();
                                         placeholder="Masukkan email">
                                 </div>
                                 <div class="form-group">
-                                    <label for="nomor_hp">Nomor HP<code>*</code></label>
+                                    <label for="nomor_hp">Nomor HP</label>
                                     <input type="number" name="nomor_hp" class="form-control" id="edit_nomor_hp"
                                         placeholder="Masukkan nomor HP">
                                 </div>
@@ -378,9 +382,9 @@ $roles = $controller->getRoles();
                         nama_lengkap: {
                             required: true
                         },
-                        nomor_hp: {
-                            required: true
-                        },
+                        // nomor_hp: {
+                        //     required: true
+                        // },
                         is_active: {
                             required: true
                         }
@@ -401,9 +405,9 @@ $roles = $controller->getRoles();
                         nama_lengkap: {
                             required: "Silahkan masukkan Nama Lengkap"
                         },
-                        nomor_hp: {
-                            required: "Silahkan masukkan Nomor HP"
-                        },
+                        // nomor_hp: {
+                        //     required: "Silahkan masukkan Nomor HP"
+                        // },
                         is_active: {
                             required: "Silahkan pilih Status Pengguna"
                         }
@@ -440,9 +444,9 @@ $roles = $controller->getRoles();
                         nama_lengkap: {
                             required: true
                         },
-                        nomor_hp: {
-                            required: true
-                        },
+                        // nomor_hp: {
+                        //     required: true
+                        // },
                         is_active: {
                             required: true
                         }
@@ -463,9 +467,9 @@ $roles = $controller->getRoles();
                         nama_lengkap: {
                             required: "Silahkan masukkan Nama Lengkap"
                         },
-                        nomor_hp: {
-                            required: "Silahkan masukkan Nomor HP"
-                        },
+                        // nomor_hp: {
+                        //     required: "Silahkan masukkan Nomor HP"
+                        // },
                         is_active: {
                             required: "Silahkan pilih Status Pengguna"
                         }

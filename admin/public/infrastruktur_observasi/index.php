@@ -88,6 +88,7 @@ $kondisiJalans = $controller->getKondisiJalan();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Nama Lahan</th>
                                                 <th>Periode Pengecekan</th>
                                                 <th>Akses Perjalanan</th>
@@ -102,8 +103,10 @@ $kondisiJalans = $controller->getKondisiJalan();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($infrasturkturObservasis as $infrastrukturObservasi): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($infrastrukturObservasi['nama_lahan']) ?></td>
                                                     <td><?= htmlspecialchars($infrastrukturObservasi['periode_pengecekan']) ?></td>
                                                     <td><?= htmlspecialchars($infrastrukturObservasi['nama_akses_perjalanan']) ?></td>
@@ -152,6 +155,7 @@ $kondisiJalans = $controller->getKondisiJalan();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Nama Lahan</th>
                                                 <th>Periode Pengecekan</th>
                                                 <th>Akses Perjalanan</th>

@@ -86,6 +86,7 @@ $provinsi = $controller->getProvinsi();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Nama Provinsi</th>
                                                 <th>Kode Kabupaten</th>
                                                 <th>Nama Kabupaten</th>
@@ -95,8 +96,10 @@ $provinsi = $controller->getProvinsi();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($kabupaten as $kabupaten): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($kabupaten['nama_provinsi']) ?></td>
                                                     <td><?= htmlspecialchars($kabupaten['kode_kabupaten']) ?></td>
                                                     <td><?= htmlspecialchars($kabupaten['nama_kabupaten']) ?></td>
@@ -129,6 +132,7 @@ $provinsi = $controller->getProvinsi();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Nama Provinsi</th>
                                                 <th>Kode Kabupaten</th>
                                                 <th>Nama Kabupaten</th>

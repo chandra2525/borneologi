@@ -14,7 +14,7 @@ class Role
         $sql = "SELECT *
             FROM m_roles
             WHERE deleted_at IS NULL
-            ORDER BY urutan ASC";
+            ORDER BY id ASC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
@@ -50,7 +50,6 @@ class Role
         $stmt = $this->pdo->prepare($sql);
 
         return $stmt->execute($data);
-
     }
 
     public function update($id, $data)
@@ -110,4 +109,26 @@ class Role
         return "ROL" . str_pad($number, 3, "0", STR_PAD_LEFT);
     }
 
+    public function generateUrutan()
+    {
+        $sql = "SELECT urutan 
+            FROM m_roles 
+            WHERE deleted_at IS NULL
+            ORDER BY id DESC 
+            LIMIT 1";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $row = $stmt->fetch();
+
+        if (!$row) {
+            return 1;
+        }
+
+        $lastUrutan = $row['urutan'];
+        $number = (int) $lastUrutan;
+        $number++;
+
+        return $number;
+    }
 }

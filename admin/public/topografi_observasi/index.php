@@ -88,6 +88,7 @@ $fiturTambahans = $controller->getFiturTambahan();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Nama Lahan</th>
                                                 <th>Periode Pengecekan</th>
                                                 <th>Lanskap</th>
@@ -101,8 +102,10 @@ $fiturTambahans = $controller->getFiturTambahan();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($topografiObservasis as $topografiObservasi): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($topografiObservasi['nama_lahan']) ?></td>
                                                     <td><?= htmlspecialchars($topografiObservasi['periode_pengecekan']) ?></td>
                                                     <td><?= htmlspecialchars($topografiObservasi['lanskap']) ?></td>
@@ -143,6 +146,7 @@ $fiturTambahans = $controller->getFiturTambahan();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Nama Lahan</th>
                                                 <th>Periode Pengecekan</th>
                                                 <th>Lanskap</th>

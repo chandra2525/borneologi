@@ -19,7 +19,7 @@ class RoleMenuAccess {
             LEFT JOIN m_role_menu_access rma 
                 ON rma.id_menu = m.id AND rma.id_role = ?
             WHERE m.deleted_at IS NULL
-            ORDER BY m.urutan ASC
+            ORDER BY m.id ASC
         ");
 
         $stmt->execute([$role_id]);

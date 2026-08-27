@@ -35,6 +35,9 @@ $desas = $controller->getDesa();
     <link rel="stylesheet" href="../assets/adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="../assets/adminlte/dist/css/adminlte.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -56,12 +59,12 @@ $desas = $controller->getDesa();
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Data Petani</h1>
+                            <h1>Data Penerima Manfaat</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Master Data</a></li>
-                                <li class="breadcrumb-item active">Data Petani</li>
+                                <li class="breadcrumb-item active">Data Penerima Manfaat</li>
                             </ol>
                         </div>
                     </div>
@@ -75,10 +78,10 @@ $desas = $controller->getDesa();
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header row">
-                                    <h3 class="card-title col-9">Berikut adalah list dari Data Petani</h3>
+                                    <h3 class="card-title col-9">Berikut adalah list dari Data Penerima Manfaat</h3>
                                     <button class="col-3 btn btn-block btn-success" data-toggle="modal"
                                         data-target="#modalTambah">
-                                        Tambah Petani
+                                        Tambah Penerima Manfaat
                                     </button>
                                 </div>
                                 <!-- /.card-header -->
@@ -86,6 +89,7 @@ $desas = $controller->getDesa();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>NIK</th>
                                                 <th>No KK</th>
                                                 <th>Nama Lengkap</th>
@@ -95,15 +99,17 @@ $desas = $controller->getDesa();
                                                 <th>Nomor HP</th>
                                                 <th>Desa</th>
                                                 <th>Alamat</th>
-                                                <th>Foto Petani</th>
-                                                <th>Status Petani</th>
+                                                <th>Foto Penerima Manfaat</th>
+                                                <th>Status Penerima Manfaat</th>
                                                 <th>Status Aktif</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($petanis as $petani): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($petani['nik']) ?></td>
                                                     <td><?= htmlspecialchars($petani['no_kk']) ?></td>
                                                     <td><?= htmlspecialchars($petani['nama_lengkap']) ?></td>
@@ -116,8 +122,8 @@ $desas = $controller->getDesa();
                                                     <td><?= htmlspecialchars($petani['alamat']) ?></td>
                                                     <td>
                                                         <img class="img-circle elevation-2" src="<?= !empty($petani['foto_profil_petani'])
-                                                            ? '../../uploads/petani/' . htmlspecialchars($petani['foto_profil_petani'])
-                                                            : '../../../assets/image/petani_placeholder.jpg' ?>"
+                                                                                                        ? '../../uploads/petani/' . htmlspecialchars($petani['foto_profil_petani'])
+                                                                                                        : '../../../assets/image/petani_placeholder.jpg' ?>"
                                                             width="80">
                                                     </td>
                                                     <td><?= $petani['status_petani'] == 'aktif' ? 'Aktif' : 'Nonaktif' ?>
@@ -157,6 +163,7 @@ $desas = $controller->getDesa();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>NIK</th>
                                                 <th>No KK</th>
                                                 <th>Nama Lengkap</th>
@@ -166,8 +173,8 @@ $desas = $controller->getDesa();
                                                 <th>Nomor HP</th>
                                                 <th>Desa</th>
                                                 <th>Alamat</th>
-                                                <th>Foto Petani</th>
-                                                <th>Status Petani</th>
+                                                <th>Foto Penerima Manfaat</th>
+                                                <th>Status Penerima Manfaat</th>
                                                 <th>Status Aktif</th>
                                                 <th>Aksi</th>
                                             </tr>
@@ -186,61 +193,85 @@ $desas = $controller->getDesa();
             </section>
 
             <div class="modal fade" id="modalTambah">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title">Tambah Petani</h4>
+                            <h4 class="modal-title">Tambah Penerima Manfaat</h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                         <form id="formTambah" method="POST" action="store.php" enctype="multipart/form-data">
                             <?= csrfField() ?>
                             <div class="modal-body">
-                                <div class="form-group">
-                                    <label for="nik">NIK<code>*</code></label>
-                                    <input type="number" name="nik" class="form-control" id="nik"
-                                        placeholder="Masukkan NIK" minlength="16" maxlength="16">
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="nik">NIK</label>
+                                            <input type="number" name="nik" class="form-control" id="nik"
+                                                placeholder="Masukkan NIK" minlength="16" maxlength="16">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="no_kk">No KK</label>
+                                            <input type="number" name="no_kk" class="form-control" id="no_kk"
+                                                placeholder="Masukkan No KK" minlength="16" maxlength="16">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="no_kk">No KK<code>*</code></label>
-                                    <input type="number" name="no_kk" class="form-control" id="no_kk"
-                                        placeholder="Masukkan No KK" minlength="16" maxlength="16">
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="nama_lengkap">Nama Lengkap<code>*</code></label>
+                                            <input type="text" name="nama_lengkap" class="form-control" id="nama_lengkap"
+                                                placeholder="Masukkan Nama Lengkap" maxlength="200">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="nama_panggilan">Nama Panggilan</label>
+                                            <input type="text" name="nama_panggilan" class="form-control" id="nama_panggilan"
+                                                placeholder="Masukkan Nama Panggilan" maxlength="100">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="nama_lengkap">Nama Lengkap<code>*</code></label>
-                                    <input type="text" name="nama_lengkap" class="form-control" id="nama_lengkap"
-                                        placeholder="Masukkan Nama Lengkap" maxlength="200">
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="jenis_kelamin">Jenis Kelamin<code>*</code></label>
+                                            <select name="jenis_kelamin" class="form-control" id="jenis_kelamin">
+                                                <option value="L">Laki-laki</option>
+                                                <option value="P">Perempuan</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="tanggal_lahir">Tanggal Lahir</label>
+                                            <input type="date" name="tanggal_lahir" class="form-control" id="tanggal_lahir">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="nama_panggilan">Nama Panggilan<code>*</code></label>
-                                    <input type="text" name="nama_panggilan" class="form-control" id="nama_panggilan"
-                                        placeholder="Masukkan Nama Panggilan" maxlength="100">
-                                </div>
-                                <div class="form-group">
-                                    <label for="jenis_kelamin">Jenis Kelamin<code>*</code></label>
-                                    <select name="jenis_kelamin" class="form-control" id="jenis_kelamin">
-                                        <option value="L">Laki-laki</option>
-                                        <option value="P">Perempuan</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="tanggal_lahir">Tanggal Lahir</label>
-                                    <input type="date" name="tanggal_lahir" class="form-control" id="tanggal_lahir">
-                                </div>
-                                <div class="form-group">
-                                    <label for="nomor_hp">Nomor HP</label>
-                                    <input type="number" name="nomor_hp" class="form-control" id="nomor_hp"
-                                        placeholder="Masukkan Nomor HP" minlength="10" maxlength="13">
-                                </div>
-                                <div class="form-group">
-                                    <label for="id_desa">Desa<code>*</code></label>
-                                    <select name="id_desa" class="form-control" id="id_desa">
-                                        <option value="">-- Pilih Desa --</option>
-                                        <?php foreach ($desas as $d): ?>
-                                            <option value="<?= $d['id'] ?>">
-                                                <?= htmlspecialchars($d['nama_desa']) ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="nomor_hp">Nomor HP</label>
+                                            <input type="number" name="nomor_hp" class="form-control" id="nomor_hp"
+                                                placeholder="Masukkan Nomor HP" minlength="10" maxlength="13">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="id_desa">Desa<code>*</code></label>
+                                            <select name="id_desa" class="form-control" id="id_desa">
+                                                <option value="">-- Pilih Desa --</option>
+                                                <?php foreach ($desas as $d): ?>
+                                                    <option value="<?= $d['id'] ?>">
+                                                        <?= htmlspecialchars($d['nama_desa']) ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="alamat">Alamat</label>
@@ -252,45 +283,51 @@ $desas = $controller->getDesa();
                                     <input type="file" name="foto_profil_petani" class="form-control"
                                         id="foto_profil_petani" accept="image/*">
                                 </div>
-                                <div class="form-group">
-                                    <label>Status Petani<code>*</code></label>
-                                    <div class="form-group row">
-                                        <div class="col-sm-2">
-                                            <div class="custom-control custom-radio">
-                                                <input class="custom-control-input" type="radio"
-                                                    id="add_status_petani_aktif" name="status_petani" value="aktif"
-                                                    checked>
-                                                <label for="add_status_petani_aktif"
-                                                    class="custom-control-label">Aktif</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <div class="custom-control custom-radio">
-                                                <input class="custom-control-input" type="radio"
-                                                    id="add_status_petani_nonaktif" name="status_petani"
-                                                    value="nonaktif">
-                                                <label for="add_status_petani_nonaktif"
-                                                    class="custom-control-label">Nonaktif</label>
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label>Status Penerima Manfaat<code>*</code></label>
+                                            <div class="form-group row">
+                                                <div class="col-sm-2">
+                                                    <div class="custom-control custom-radio">
+                                                        <input class="custom-control-input" type="radio"
+                                                            id="add_status_petani_aktif" name="status_petani" value="aktif"
+                                                            checked>
+                                                        <label for="add_status_petani_aktif"
+                                                            class="custom-control-label">Aktif</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <div class="custom-control custom-radio">
+                                                        <input class="custom-control-input" type="radio"
+                                                            id="add_status_petani_nonaktif" name="status_petani"
+                                                            value="nonaktif">
+                                                        <label for="add_status_petani_nonaktif"
+                                                            class="custom-control-label">Nonaktif</label>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Status Aktif<code>*</code></label>
-                                    <div class="form-group row">
-                                        <div class="col-sm-2">
-                                            <div class="custom-control custom-radio">
-                                                <input class="custom-control-input" type="radio" id="add_status_aktif"
-                                                    name="is_active" value="1" checked>
-                                                <label for="add_status_aktif" class="custom-control-label">Aktif</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <div class="custom-control custom-radio">
-                                                <input class="custom-control-input" type="radio"
-                                                    id="add_status_nonaktif" name="is_active" value="0">
-                                                <label for="add_status_nonaktif"
-                                                    class="custom-control-label">Nonaktif</label>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label>Status Aktif<code>*</code></label>
+                                            <div class="form-group row">
+                                                <div class="col-sm-2">
+                                                    <div class="custom-control custom-radio">
+                                                        <input class="custom-control-input" type="radio" id="add_status_aktif"
+                                                            name="is_active" value="1" checked>
+                                                        <label for="add_status_aktif" class="custom-control-label">Aktif</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <div class="custom-control custom-radio">
+                                                        <input class="custom-control-input" type="radio"
+                                                            id="add_status_nonaktif" name="is_active" value="0">
+                                                        <label for="add_status_nonaktif"
+                                                            class="custom-control-label">Nonaktif</label>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -305,11 +342,11 @@ $desas = $controller->getDesa();
             </div>
 
             <div class="modal fade" id="modalEdit">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-xl">
                     <div class="modal-content">
 
                         <div class="modal-header">
-                            <h4 class="modal-title">Edit Petani</h4>
+                            <h4 class="modal-title">Edit Penerima Manfaat</h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
 
@@ -317,53 +354,77 @@ $desas = $controller->getDesa();
                             <?= csrfField() ?>
                             <input type="hidden" name="id" id="edit_id">
                             <div class="modal-body">
-                                <div class="form-group">
-                                    <label for="nik">NIK<code>*</code></label>
-                                    <input type="text" name="nik" id="edit_nik" class="form-control" minlength="16"
-                                        maxlength="16">
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="nik">NIK</label>
+                                            <input type="text" name="nik" id="edit_nik" class="form-control" minlength="16"
+                                                maxlength="16">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="no_kk">No KK</label>
+                                            <input type="text" name="no_kk" id="edit_no_kk" class="form-control" minlength="16"
+                                                maxlength="16">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="no_kk">No KK<code>*</code></label>
-                                    <input type="text" name="no_kk" id="edit_no_kk" class="form-control" minlength="16"
-                                        maxlength="16">
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="nama_lengkap">Nama Lengkap<code>*</code></label>
+                                            <input type="text" name="nama_lengkap" class="form-control" id="edit_nama_lengkap"
+                                                placeholder="Masukkan Nama Lengkap" maxlength="200">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="nama_panggilan">Nama Panggilan</label>
+                                            <input type="text" name="nama_panggilan" class="form-control"
+                                                id="edit_nama_panggilan" placeholder="Masukkan Nama Panggilan" maxlength="100">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="nama_lengkap">Nama Lengkap<code>*</code></label>
-                                    <input type="text" name="nama_lengkap" class="form-control" id="edit_nama_lengkap"
-                                        placeholder="Masukkan Nama Lengkap" maxlength="200">
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="jenis_kelamin">Jenis Kelamin<code>*</code></label>
+                                            <select name="jenis_kelamin" class="form-control" id="edit_jenis_kelamin">
+                                                <option value="L">Laki-laki</option>
+                                                <option value="P">Perempuan</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="tanggal_lahir">Tanggal Lahir</label>
+                                            <input type="date" name="tanggal_lahir" class="form-control"
+                                                id="edit_tanggal_lahir">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="nama_panggilan">Nama Panggilan<code>*</code></label>
-                                    <input type="text" name="nama_panggilan" class="form-control"
-                                        id="edit_nama_panggilan" placeholder="Masukkan Nama Panggilan" maxlength="100">
-                                </div>
-                                <div class="form-group">
-                                    <label for="jenis_kelamin">Jenis Kelamin<code>*</code></label>
-                                    <select name="jenis_kelamin" class="form-control" id="edit_jenis_kelamin">
-                                        <option value="L">Laki-laki</option>
-                                        <option value="P">Perempuan</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="tanggal_lahir">Tanggal Lahir</label>
-                                    <input type="date" name="tanggal_lahir" class="form-control"
-                                        id="edit_tanggal_lahir">
-                                </div>
-                                <div class="form-group">
-                                    <label for="nomor_hp">Nomor HP</label>
-                                    <input type="number" name="nomor_hp" class="form-control" id="edit_nomor_hp"
-                                        placeholder="Masukkan Nomor HP" minlength="10" maxlength="13">
-                                </div>
-                                <div class="form-group">
-                                    <label for="edit_id_desa">Desa<code>*</code></label>
-                                    <select name="id_desa" class="form-control" id="edit_id_desa">
-                                        <option value="">-- Pilih Desa --</option>
-                                        <?php foreach ($desas as $d): ?>
-                                            <option value="<?= $d['id'] ?>">
-                                                <?= htmlspecialchars($d['nama_desa']) ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="nomor_hp">Nomor HP</label>
+                                            <input type="number" name="nomor_hp" class="form-control" id="edit_nomor_hp"
+                                                placeholder="Masukkan Nomor HP" minlength="10" maxlength="13">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="edit_id_desa">Desa<code>*</code></label>
+                                            <select name="id_desa" class="form-control" id="edit_id_desa">
+                                                <option value="">-- Pilih Desa --</option>
+                                                <?php foreach ($desas as $d): ?>
+                                                    <option value="<?= $d['id'] ?>">
+                                                        <?= htmlspecialchars($d['nama_desa']) ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="alamat">Alamat</label>
@@ -380,44 +441,56 @@ $desas = $controller->getDesa();
                                         Kosongkan jika tidak ingin mengganti foto
                                     </small>
                                 </div>
-                                <div class="form-group">
-                                    <label>Status Petani<code>*</code></label>
-                                    <div class="form-group row">
-                                        <div class="col-sm-2">
-                                            <div class="custom-control custom-radio">
-                                                <input class="custom-control-input" type="radio"
-                                                    id="edit_status_petani_aktif" name="status_petani" value="aktif"
-                                                    checked>
-                                                <label for="edit_status_petani_aktif"
-                                                    class="custom-control-label">Aktif</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <div class="custom-control custom-radio">
-                                                <input class="custom-control-input" type="radio"
-                                                    id="edit_status_petani_nonaktif" name="status_petani"
-                                                    value="nonaktif">
-                                                <label for="edit_status_petani_nonaktif"
-                                                    class="custom-control-label">Nonaktif</label>
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label>Status Penerima Manfaat<code>*</code></label>
+                                            <div class="form-group row">
+                                                <div class="col-sm-2">
+                                                    <div class="custom-control custom-radio">
+                                                        <input class="custom-control-input" type="radio"
+                                                            id="edit_status_petani_aktif" name="status_petani" value="aktif"
+                                                            checked>
+                                                        <label for="edit_status_petani_aktif"
+                                                            class="custom-control-label">Aktif</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <div class="custom-control custom-radio">
+                                                        <input class="custom-control-input" type="radio"
+                                                            id="edit_status_petani_nonaktif" name="status_petani"
+                                                            value="nonaktif">
+                                                        <label for="edit_status_petani_nonaktif"
+                                                            class="custom-control-label">Nonaktif</label>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Status Aktif <code>*</code></label>
-                                    <div class="custom-control custom-radio">
-                                        <input class="custom-control-input edit_status" type="radio"
-                                            id="edit_status_aktif" name="is_active" value="1">
-                                        <label for="edit_status_aktif" class="custom-control-label">
-                                            Aktif
-                                        </label>
-                                    </div>
-                                    <div class="custom-control custom-radio">
-                                        <input class="custom-control-input edit_status" type="radio"
-                                            id="edit_status_nonaktif" name="is_active" value="0">
-                                        <label for="edit_status_nonaktif" class="custom-control-label">
-                                            Nonaktif
-                                        </label>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label>Status Aktif <code>*</code></label>
+                                            <div class="form-group row">
+                                                <div class="col-sm-2">
+                                                    <div class="custom-control custom-radio">
+                                                        <input class="custom-control-input edit_status" type="radio"
+                                                            id="edit_status_aktif" name="is_active" value="1">
+                                                        <label for="edit_status_aktif" class="custom-control-label">
+                                                            Aktif
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <div class="custom-control custom-radio">
+                                                        <input class="custom-control-input edit_status" type="radio"
+                                                            id="edit_status_nonaktif" name="is_active" value="0">
+                                                        <label for="edit_status_nonaktif" class="custom-control-label">
+                                                            Nonaktif
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -463,11 +536,15 @@ $desas = $controller->getDesa();
     <!-- jquery-validation -->
     <script src="../assets/adminlte/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script src="../assets/adminlte/plugins/jquery-validation/additional-methods.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- Page specific script -->
     <script>
-        $(function () {
+        $(function() {
             $("#example1").DataTable({
-                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
@@ -483,22 +560,22 @@ $desas = $controller->getDesa();
     </script>
 
     <script>
-        $(function () {
+        $(function() {
             function initValidation(formId) {
                 $(formId).validate({
                     rules: {
-                        nik: {
-                            required: true
-                        },
-                        no_kk: {
-                            required: true
-                        },
+                        // nik: {
+                        //     required: true
+                        // },
+                        // no_kk: {
+                        //     required: true
+                        // },
                         nama_lengkap: {
                             required: true
                         },
-                        nama_panggilan: {
-                            required: true
-                        },
+                        // nama_panggilan: {
+                        //     required: true
+                        // },
                         jenis_kelamin: {
                             required: true
                         },
@@ -522,18 +599,18 @@ $desas = $controller->getDesa();
                         }
                     },
                     messages: {
-                        nik: {
-                            required: "Silahkan masukkan NIK"
-                        },
-                        no_kk: {
-                            required: "Silahkan masukkan No KK"
-                        },
+                        // nik: {
+                        //     required: "Silahkan masukkan NIK"
+                        // },
+                        // no_kk: {
+                        //     required: "Silahkan masukkan No KK"
+                        // },
                         nama_lengkap: {
                             required: "Silahkan masukkan Nama Lengkap"
                         },
-                        nama_panggilan: {
-                            required: "Silahkan masukkan Nama Panggilan"
-                        },
+                        // nama_panggilan: {
+                        //     required: "Silahkan masukkan Nama Panggilan"
+                        // },
                         jenis_kelamin: {
                             required: "Silahkan masukkan Jenis Kelamin"
                         },
@@ -550,21 +627,21 @@ $desas = $controller->getDesa();
                         //     required: "Silahkan masukkan Alamat"
                         // },
                         status_petani: {
-                            required: "Silahkan pilih Status Petani"
+                            required: "Silahkan pilih Status Penerima Manfaat"
                         },
                         is_active: {
                             required: "Silahkan pilih Status Aktif"
                         }
                     },
                     errorElement: 'span',
-                    errorPlacement: function (error, element) {
+                    errorPlacement: function(error, element) {
                         error.addClass('invalid-feedback');
                         element.closest('.form-group').append(error);
                     },
-                    highlight: function (element) {
+                    highlight: function(element) {
                         $(element).addClass('is-invalid');
                     },
-                    unhighlight: function (element) {
+                    unhighlight: function(element) {
                         $(element).removeClass('is-invalid');
                     }
                 });
@@ -575,7 +652,7 @@ $desas = $controller->getDesa();
     </script>
 
     <script>
-        $(document).on("click", ".btn-edit", function () {
+        $(document).on("click", ".btn-edit", function() {
             let id = $(this).data("id");
             let nik = $(this).data("nik");
             let no_kk = $(this).data("no_kk");
@@ -598,18 +675,44 @@ $desas = $controller->getDesa();
             $("#edit_jenis_kelamin").val(jenis_kelamin);
             $("#edit_tanggal_lahir").val(tanggal_lahir);
             $("#edit_nomor_hp").val(nomor_hp);
-            $("#edit_id_desa").val(id_desa);
+            $("#edit_id_desa")
+                .val(String(id_desa))
+                .trigger("change");
             $("#edit_alamat").val(alamat);
             $("#edit_foto_lama").val(foto);
             $("input[name='status_petani'][value='" + status_petani + "']").prop("checked", true);
             $("input[name='is_active'][value='" + status + "']").prop("checked", true);
+        });
+
+        $(document).ready(function() {
+            $('#id_desa').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: '-- Pilih Desa --',
+                allowClear: true,
+                dropdownParent: $('#modalTambah')
+            });
+
+            $('#edit_id_desa').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: '-- Pilih Desa --',
+                allowClear: true,
+                dropdownParent: $('#modalEdit') // jika dalam modal
+            });
+        });
+
+        $('#id_desa, #edit_id_desa').on('select2:open', function() {
+            setTimeout(() => {
+                document.querySelector('.select2-container--open .select2-search__field').focus();
+            }, 0);
         });
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        $(document).on("submit", ".form-delete", function (e) {
+        $(document).on("submit", ".form-delete", function(e) {
             e.preventDefault();
             let form = this;
             Swal.fire({
@@ -647,21 +750,21 @@ $desas = $controller->getDesa();
         const urlParams = new URLSearchParams(window.location.search);
         const success = urlParams.get('success');
         if (success === "created") {
-            showToast("Data Petani berhasil ditambahkan", "created");
+            showToast("Data Penerima Manfaat berhasil ditambahkan", "created");
         }
         if (success === "updated") {
-            showToast("Data Petani berhasil diperbarui", "updated");
+            showToast("Data Penerima Manfaat berhasil diperbarui", "updated");
         }
         if (success === "deleted") {
-            showToast("Data Petani berhasil dihapus", "deleted");
+            showToast("Data Penerima Manfaat berhasil dihapus", "deleted");
         }
     </script>
 
     <script>
-        document.getElementById('tanggal_lahir').addEventListener('focus', function () {
+        document.getElementById('tanggal_lahir').addEventListener('focus', function() {
             this.showPicker();
         });
-        document.getElementById('edit_tanggal_lahir').addEventListener('focus', function () {
+        document.getElementById('edit_tanggal_lahir').addEventListener('focus', function() {
             this.showPicker();
         });
     </script>

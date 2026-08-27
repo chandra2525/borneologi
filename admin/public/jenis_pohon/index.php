@@ -85,6 +85,7 @@ $jenisPohons = $controller->index();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Jenis Pohon</th>
                                                 <th>Nama Jenis Pohon</th>
                                                 <th>Nama Latin</th>
@@ -95,8 +96,10 @@ $jenisPohons = $controller->index();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($jenisPohons as $jenisPohon): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($jenisPohon['kode']) ?></td>
                                                     <td><?= htmlspecialchars($jenisPohon['nama']) ?></td>
                                                     <td><?= htmlspecialchars($jenisPohon['nama_latin']) ?></td>
@@ -132,6 +135,7 @@ $jenisPohons = $controller->index();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Jenis Pohon</th>
                                                 <th>Nama Jenis Pohon</th>
                                                 <th>Nama Latin</th>
@@ -168,7 +172,7 @@ $jenisPohons = $controller->index();
                                     <label for="kode">Kode Jenis Pohon<code>*</code></label>
                                     <input type="text" name="kode" class="form-control" id="kode"
                                         value="<?= (new JenisPohon($pdo))->generateKode() ?>"
-                                        placeholder="Masukkan kode jenis pohon">
+                                        placeholder="Masukkan kode jenis pohon" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Jenis Pohon<code>*</code></label>
@@ -176,7 +180,7 @@ $jenisPohons = $controller->index();
                                         placeholder="Masukkan nama jenis pohon">
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama_latin">Nama Latin<code>*</code></label>
+                                    <label for="nama_latin">Nama Latin</label>
                                     <input type="text" name="nama_latin" class="form-control" id="nama_latin"
                                         placeholder="Masukkan nama latin">
                                 </div>
@@ -188,7 +192,7 @@ $jenisPohons = $controller->index();
                                 <div class="form-group">
                                     <label for="urutan">Urutan<code>*</code></label>
                                     <input type="number" name="urutan" class="form-control" id="urutan"
-                                        placeholder="Masukkan urutan">
+                                        value="<?= (new JenisPohon($pdo))->generateUrutan() ?>" placeholder="Masukkan urutan">
                                 </div>
                                 <div class="form-group">
                                     <label>Status Aktif <code>*</code></label>
@@ -234,14 +238,14 @@ $jenisPohons = $controller->index();
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="kode">Kode Jenis Pohon<code>*</code></label>
-                                    <input type="text" name="kode" id="edit_kode" class="form-control">
+                                    <input type="text" name="kode" id="edit_kode" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Jenis Pohon<code>*</code></label>
                                     <input type="text" name="nama" id="edit_nama" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama_latin">Nama Latin<code>*</code></label>
+                                    <label for="nama_latin">Nama Latin</label>
                                     <input type="text" name="nama_latin" id="edit_nama_latin" class="form-control">
                                 </div>
                                 <div class="form-group">
@@ -342,9 +346,9 @@ $jenisPohons = $controller->index();
                         nama: {
                             required: true
                         },
-                        nama_latin: {
-                            required: true
-                        },
+                        // nama_latin: {
+                        //     required: true
+                        // },
                         urutan: {
                             required: true
                         },
@@ -359,9 +363,9 @@ $jenisPohons = $controller->index();
                         nama: {
                             required: "Silahkan masukkan Nama Jenis Pohon"
                         },
-                        nama_latin: {
-                            required: "Silahkan masukkan Nama Latin"
-                        },
+                        // nama_latin: {
+                        //     required: "Silahkan masukkan Nama Latin"
+                        // },
                         urutan: {
                             required: "Silahkan masukkan Urutan"
                         },
@@ -392,7 +396,7 @@ $jenisPohons = $controller->index();
             let id = $(this).data("id");
             let kode = $(this).data("kode");
             let nama = $(this).data("nama");
-            let nama_latin = $(this).data("nama_latin");
+            // let nama_latin = $(this).data("nama_latin");
             let deskripsi = $(this).data("deskripsi");
             let urutan = $(this).data("urutan");
             let status = $(this).data("status");
@@ -401,7 +405,7 @@ $jenisPohons = $controller->index();
             $("#edit_id").val(id);
             $("#edit_kode").val(kode);
             $("#edit_nama").val(nama);
-            $("#edit_nama_latin").val(nama_latin);
+            // $("#edit_nama_latin").val(nama_latin);
             $("#edit_deskripsi").val(deskripsi);
             $("#edit_urutan").val(urutan);
             $("input[name='is_active'][value='" + status + "']").prop("checked", true);

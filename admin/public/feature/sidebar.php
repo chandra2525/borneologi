@@ -326,7 +326,7 @@
                         class="nav-link <?= ($menu == 'petani' || $menu == 'kelompok_tani' || $menu == 'petani_kelompok') ? 'active' : '' ?>">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
-                            Data Petani
+                            Data Penerima Manfaat
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
@@ -335,21 +335,21 @@
                             <a href="<?= ($menu == 'dashboard') ? 'petani/' : '../petani/' ?>index.php"
                                 class="nav-link <?= ($menu == 'petani') ? 'active' : '' ?>">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Petani</p>
+                                <p>Penerima Manfaat</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="<?= ($menu == 'dashboard') ? 'kelompok_tani/' : '../kelompok_tani/' ?>index.php"
                                 class="nav-link <?= ($menu == 'kelompok_tani') ? 'active' : '' ?>">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Kelompok Tani</p>
+                                <p>Kelompok</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="<?= ($menu == 'dashboard') ? 'petani_kelompok/' : '../petani_kelompok/' ?>index.php"
                                 class="nav-link <?= ($menu == 'petani_kelompok') ? 'active' : '' ?>">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Petani Kelompok</p>
+                                <p>Kelompok Penerima</p>
                             </a>
                         </li>
                     </ul>

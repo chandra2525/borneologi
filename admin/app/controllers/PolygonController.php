@@ -22,6 +22,96 @@ class PolygonController
         return $this->model->getAll();
     }
 
+    public function getDataTables(
+        $start,
+        $length,
+        $search,
+        $orderColumn,
+        $orderDir
+    ) {
+        $start = max(0, (int) $start);
+
+        $length = (int) $length;
+
+        if ($length < 1) {
+            $length = 10;
+        }
+
+        if ($length > 100) {
+            $length = 100;
+        }
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | Mapping kolom DataTables
+    |--------------------------------------------------------------------------
+    */
+
+        $allowedColumns = [
+            0 => 'id',
+            1 => 'kode_polygon',
+            2 => 'nama_polygon',
+            4 => 'relasi_nama',
+            5 => 'relasi_tipe',
+            6 => 'is_active'
+        ];
+
+        $orderColumn = $allowedColumns[$orderColumn] ?? 'id';
+
+        $orderDir = strtolower($orderDir) === 'desc'
+            ? 'DESC'
+            : 'ASC';
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | Total data
+    |--------------------------------------------------------------------------
+    */
+
+        $recordsTotal = $this->model->countAll();
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | Total data setelah search
+    |--------------------------------------------------------------------------
+    */
+
+        $search = trim($search);
+
+        if ($search === '') {
+
+            $recordsFiltered = $recordsTotal;
+        } else {
+
+            $recordsFiltered = $this->model->countFiltered($search);
+        }
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | Data
+    |--------------------------------------------------------------------------
+    */
+
+        $data = $this->model->getPaginated(
+            $start,
+            $length,
+            $search,
+            $orderColumn,
+            $orderDir
+        );
+
+
+        return [
+            'recordsTotal' => $recordsTotal,
+            'recordsFiltered' => $recordsFiltered,
+            'data' => $data
+        ];
+    }
+
     /*
     =========================
     GET POLYGON BY ID

@@ -11,7 +11,7 @@ secureSessionStart();
 checkAuth("non_dashboard");
 
 $controller = new PolygonController($pdo);
-$polygons = $controller->index();
+// $polygons = $controller->index();
 $hutanAdats = $controller->getHutanAdat();
 $provinsis = $controller->getProvinsi();
 $kabupatens = $controller->getKabupaten();
@@ -24,41 +24,6 @@ $hutanProduksiTerbatas = $controller->getHutanProduksiTerbatas();
 $hutanProduksiKonversi = $controller->getHutanProduksiKonversi();
 $kawasanKonservasi = $controller->getKawasanKonservasi();
 $areaPenggunaanLain = $controller->getAreaPenggunaanLain();
-
-function getRelasiTipeLabel($tipe)
-{
-    switch ($tipe) {
-        case 'provinsi':
-            return 'Provinsi';
-        case 'kabupaten':
-            return 'Kabupaten';
-        case 'hutan_adat':
-            return 'Hutan Adat';
-        case 'kecamatan':
-            return 'Kecamatan';
-        case 'desa':
-            return 'Desa';
-        case 'kaleka':
-            return 'Kaleka';
-        case 'hutan_lindung':
-            return 'Hutan Lindung';
-        case 'hutan_produksi_tetap':
-            return 'Hutan Produksi Tetap';
-        case 'hutan_produksi_terbatas':
-            return 'Hutan Produksi Terbatas';
-        case 'hutan_produksi_konversi':
-            return 'Hutan Produksi yang dapat di Konversi';
-        case 'kawasan_konservasi':
-            return 'Kawasan Konservasi (Taman Hutan Raya)';
-        case 'area_penggunaan_lain':
-            return 'Area Penggunaan Lain';
-        case 'tanpa_relasi':
-            return 'Tanpa Relasi';
-        default:
-            return 'Lainnya';
-    }
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -131,6 +96,7 @@ function getRelasiTipeLabel($tipe)
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Polygon</th>
                                                 <th>Nama Polygon</th>
                                                 <th>Geometri Area</th>
@@ -141,54 +107,10 @@ function getRelasiTipeLabel($tipe)
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php foreach ($polygons as $polygon): ?>
-                                                <tr>
-                                                    <td><?= htmlspecialchars($polygon['kode_polygon']) ?></td>
-                                                    <td><?= htmlspecialchars($polygon['nama_polygon']) ?></td>
-                                                    <td>
-                                                        <?php if (!empty($polygon['geom_area'])): ?>
-                                                            <button class="btn btn-block btn-primary btn-geom btn-sm"
-                                                                data-geom="<?= htmlspecialchars($polygon['geom_area']) ?>"
-                                                                data-toggle="modal" data-target="#modalGeom">
-                                                                <i class="fas fa-list"></i>
-                                                                Lihat
-                                                            </button>
-                                                        <?php else: ?>
-                                                            <span class="text-muted">Belum ada area</span>
-                                                        <?php endif; ?>
-                                                    </td>
-                                                    <td><?= htmlspecialchars($polygon['relasi_nama']) ?>
-                                                    <td><?= htmlspecialchars(getRelasiTipeLabel($polygon['relasi_tipe'])) ?>
-                                                    </td>
-                                                    <td><?= $polygon['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
-                                                    <td class="row">
-                                                        <div class="col">
-                                                            <button class="btn btn-block btn-info btn-edit"
-                                                                data-id="<?= $polygon['id'] ?>"
-                                                                data-kode_polygon="<?= htmlspecialchars($polygon['kode_polygon']) ?>"
-                                                                data-nama_polygon="<?= htmlspecialchars($polygon['nama_polygon']) ?>"
-                                                                data-relasi_id="<?= $polygon['relasi_id'] ?>"
-                                                                data-relasi_tipe="<?= $polygon['relasi_tipe'] ?>"
-                                                                data-status="<?= $polygon['is_active'] ?>"
-                                                                data-toggle="modal" data-target="#modalEdit">
-                                                                <i class="fas fa-edit"></i> Edit
-                                                                <!-- data-geom_area="<?= htmlspecialchars($polygon['geom_area']) ?>" -->
-                                                            </button>
-                                                        </div>
-
-                                                        <form method="POST" action="delete.php" class="form-delete col">
-                                                            <?= csrfField() ?>
-                                                            <input type="hidden" name="id" value="<?= $polygon['id'] ?>">
-                                                            <button type="submit" class="btn btn-block btn-danger">
-                                                                <i class="fas fa-trash"></i> Hapus
-                                                            </button>
-                                                        </form>
-                                                    </td>
-                                                </tr>
-                                            <?php endforeach; ?>
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Polygon</th>
                                                 <th>Nama Polygon</th>
                                                 <th>Geometri Area</th>
@@ -225,7 +147,7 @@ function getRelasiTipeLabel($tipe)
                                     <label for="kode_polygon">Kode Polygon<code>*</code></label>
                                     <input type="text" name="kode_polygon" class="form-control" id="kode_polygon"
                                         value="<?= (new Polygon($pdo))->generateKode() ?>"
-                                        placeholder="Masukkan Kode Polygon">
+                                        placeholder="Masukkan Kode Polygon" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama_polygon">Nama Polygon<code>*</code></label>
@@ -284,7 +206,7 @@ function getRelasiTipeLabel($tipe)
                                     <label for="kode_polygon">Kode Polygon<code>*</code></label>
                                     <input type="text" name="kode_polygon" class="form-control" id="edit_kode_polygon"
                                         value="<?= (new Polygon($pdo))->generateKode() ?>"
-                                        placeholder="Masukkan Kode Polygon">
+                                        placeholder="Masukkan Kode Polygon" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama_polygon">Nama Polygon<code>*</code></label>
@@ -551,11 +473,226 @@ function getRelasiTipeLabel($tipe)
     <script src="../assets/adminlte/plugins/jquery-validation/additional-methods.min.js"></script>
     <!-- Page specific script -->
     <script>
-        $(function () {
+        $(function() {
             $("#example1").DataTable({
-                "responsive": true, "lengthChange": false, "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+                    processing: true,
+
+                    serverSide: true,
+
+                    ajax: {
+                        url: "api.php",
+                        type: "GET",
+                        error: function(xhr) {
+                            console.error("API Error:", xhr.responseText);
+                            try {
+
+                                const response = JSON.parse(xhr.responseText);
+
+                                if (response.error) {
+                                    console.error("Server Error:", response.error);
+                                }
+
+                            } catch (e) {
+
+                                console.error(
+                                    "Response bukan JSON:",
+                                    xhr.responseText
+                                );
+                            }
+                        }
+                    },
+
+                    responsive: true,
+
+                    lengthChange: true,
+
+                    pageLength: 10,
+
+                    lengthMenu: [
+                        [10, 25, 50, 100],
+                        [10, 25, 50, 100]
+                    ],
+
+                    autoWidth: false,
+
+                    order: [
+                        [0, "asc"]
+                    ],
+
+                    columns: [
+
+                        // NO
+                        {
+                            data: null,
+                            searchable: false,
+                            orderable: false,
+
+                            render: function(data, type, row, meta) {
+
+                                return meta.settings._iDisplayStart +
+                                    meta.row +
+                                    1;
+                            }
+                        },
+
+
+                        // KODE POLYGON
+                        {
+                            data: "kode_polygon"
+                        },
+
+
+                        // NAMA POLYGON
+                        {
+                            data: "nama_polygon"
+                        },
+
+
+                        // GEOMETRI AREA
+                        {
+                            data: "geom_area",
+
+                            searchable: false,
+
+                            orderable: false,
+
+                            render: function(data, type, row) {
+
+                                return `
+                    <button
+                        type="button"
+                        class="btn btn-block btn-primary btn-geom"
+                        data-id="${row.id}"
+                        data-toggle="modal"
+                        data-target="#modalGeom">
+
+                        <i class="fas fa-list"></i>
+                        Lihat
+
+                    </button>
+                `;
+                            }
+                        },
+
+
+                        // RELASI NAMA
+                        {
+                            data: "relasi_nama"
+                        },
+
+
+                        // RELASI TIPE
+                        {
+                            data: "relasi_tipe",
+
+                            render: function(data) {
+
+                                return getRelasiTipeLabel(data);
+                            }
+                        },
+
+
+                        // STATUS
+                        {
+                            data: "is_active",
+
+                            render: function(data) {
+
+                                return parseInt(data) === 1 ?
+                                    "Aktif" :
+                                    "Nonaktif";
+                            }
+                        },
+
+
+                        // AKSI
+                        {
+                            data: null,
+
+                            searchable: false,
+
+                            orderable: false,
+
+                            render: function(data, type, row) {
+
+                                return `
+                    <div class="row">
+
+                        <div class="col">
+
+                            <button
+                                type="button"
+                                class="btn btn-block btn-info btn-edit"
+
+                                data-id="${row.id}"
+
+                                data-kode_polygon="${escapeHtml(row.kode_polygon)}"
+
+                                data-nama_polygon="${escapeHtml(row.nama_polygon)}"
+
+                                data-relasi_id="${row.relasi_id}"
+
+                                data-relasi_tipe="${row.relasi_tipe}"
+
+                                data-status="${row.is_active}"
+
+                                data-toggle="modal"
+                                data-target="#modalEdit">
+
+                                <i class="fas fa-edit"></i>
+                                Edit
+
+                            </button>
+
+                        </div>
+
+
+                        <form
+                            method="POST"
+                            action="delete.php"
+                            class="form-delete col">
+
+                            <input
+                                type="hidden"
+                                name="id"
+                                value="${row.id}">
+
+                            <button
+                                type="submit"
+                                class="btn btn-block btn-danger">
+
+                                <i class="fas fa-trash"></i>
+                                Hapus
+
+                            </button>
+
+                        </form>
+
+                    </div>
+                `;
+                            }
+                        }
+
+                    ],
+
+
+                    buttons: [
+                        "copy",
+                        "csv",
+                        "excel",
+                        "pdf",
+                        "print",
+                        "colvis"
+                    ]
+
+                })
+                .buttons()
+                .container()
+                .appendTo('#example1_wrapper .col-md-6:eq(0)');
+            $("#example1").on("error.dt", function(e, settings, techNote, message) {
+                console.error("DataTables Error:", message);
+            });
             $('#example2').DataTable({
                 "paging": true,
                 "lengthChange": false,
@@ -566,10 +703,70 @@ function getRelasiTipeLabel($tipe)
                 "responsive": true,
             });
         });
+
+        function escapeHtml(value) {
+            if (value === null || value === undefined) {
+                return '';
+            }
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function getRelasiTipeLabel(tipe) {
+
+            switch (tipe) {
+
+                case 'provinsi':
+                    return 'Provinsi';
+
+                case 'kabupaten':
+                    return 'Kabupaten';
+
+                case 'kecamatan':
+                    return 'Kecamatan';
+
+                case 'desa':
+                    return 'Desa';
+
+                case 'hutan_adat':
+                    return 'Hutan Adat';
+
+                case 'kaleka':
+                    return 'Kaleka';
+
+                case 'hutan_lindung':
+                    return 'Hutan Lindung';
+
+                case 'hutan_produksi_tetap':
+                    return 'Hutan Produksi Tetap';
+
+                case 'hutan_produksi_terbatas':
+                    return 'Hutan Produksi Terbatas';
+
+                case 'hutan_produksi_konversi':
+                    return 'Hutan Produksi yang dapat di Konversi';
+
+                case 'kawasan_konservasi':
+                    return 'Kawasan Konservasi (Taman Hutan Raya)';
+
+                case 'area_penggunaan_lain':
+                    return 'Area Penggunaan Lain';
+
+                case 'tanpa_relasi':
+                    return 'Tanpa Relasi';
+
+                default:
+                    return 'Lainnya';
+            }
+        }
     </script>
 
     <script>
-        $(function () {
+        $(function() {
             function initValidation(formId) {
                 $(formId).validate({
                     rules: {
@@ -607,14 +804,14 @@ function getRelasiTipeLabel($tipe)
                         }
                     },
                     errorElement: 'span',
-                    errorPlacement: function (error, element) {
+                    errorPlacement: function(error, element) {
                         error.addClass('invalid-feedback');
                         element.closest('.form-group').append(error);
                     },
-                    highlight: function (element) {
+                    highlight: function(element) {
                         $(element).addClass('is-invalid');
                     },
-                    unhighlight: function (element) {
+                    unhighlight: function(element) {
                         $(element).removeClass('is-invalid');
                     }
                 });
@@ -626,7 +823,7 @@ function getRelasiTipeLabel($tipe)
 
             // dynamic rules
             $("#edit_hutan_adat").rules("add", {
-                required: function () {
+                required: function() {
                     return $("#edit_relasi_tipe").val() === "hutan_adat";
                 },
                 messages: {
@@ -635,7 +832,7 @@ function getRelasiTipeLabel($tipe)
             });
 
             $("#edit_provinsi").rules("add", {
-                required: function () {
+                required: function() {
                     return $("#edit_relasi_tipe").val() === "provinsi";
                 },
                 messages: {
@@ -644,7 +841,7 @@ function getRelasiTipeLabel($tipe)
             });
 
             $("#edit_kabupaten").rules("add", {
-                required: function () {
+                required: function() {
                     return $("#edit_relasi_tipe").val() === "kabupaten";
                 },
                 messages: {
@@ -653,7 +850,7 @@ function getRelasiTipeLabel($tipe)
             });
 
             $("#edit_kecamatan").rules("add", {
-                required: function () {
+                required: function() {
                     return $("#edit_relasi_tipe").val() === "kecamatan";
                 },
                 messages: {
@@ -662,7 +859,7 @@ function getRelasiTipeLabel($tipe)
             });
 
             $("#edit_desa").rules("add", {
-                required: function () {
+                required: function() {
                     return $("#edit_relasi_tipe").val() === "desa";
                 },
                 messages: {
@@ -671,7 +868,7 @@ function getRelasiTipeLabel($tipe)
             });
 
             $("#edit_kaleka").rules("add", {
-                required: function () {
+                required: function() {
                     return $("#edit_relasi_tipe").val() === "kaleka";
                 },
                 messages: {
@@ -680,7 +877,7 @@ function getRelasiTipeLabel($tipe)
             });
 
             $("#edit_hutan_lindung").rules("add", {
-                required: function () {
+                required: function() {
                     return $("#edit_relasi_tipe").val() === "hutan_lindung";
                 },
                 messages: {
@@ -689,7 +886,7 @@ function getRelasiTipeLabel($tipe)
             });
 
             $("#edit_hutan_produksi_tetap").rules("add", {
-                required: function () {
+                required: function() {
                     return $("#edit_relasi_tipe").val() === "hutan_produksi_tetap";
                 },
                 messages: {
@@ -698,7 +895,7 @@ function getRelasiTipeLabel($tipe)
             });
 
             $("#edit_hutan_produksi_terbatas").rules("add", {
-                required: function () {
+                required: function() {
                     return $("#edit_relasi_tipe").val() === "hutan_produksi_terbatas";
                 },
                 messages: {
@@ -707,7 +904,7 @@ function getRelasiTipeLabel($tipe)
             });
 
             $("#edit_hutan_produksi_konversi").rules("add", {
-                required: function () {
+                required: function() {
                     return $("#edit_relasi_tipe").val() === "hutan_produksi_konversi";
                 },
                 messages: {
@@ -716,7 +913,7 @@ function getRelasiTipeLabel($tipe)
             });
 
             $("#edit_kawasan_konservasi").rules("add", {
-                required: function () {
+                required: function() {
                     return $("#edit_relasi_tipe").val() === "kawasan_konservasi";
                 },
                 messages: {
@@ -725,7 +922,7 @@ function getRelasiTipeLabel($tipe)
             });
 
             $("#edit_area_penggunaan_lain").rules("add", {
-                required: function () {
+                required: function() {
                     return $("#edit_relasi_tipe").val() === "area_penggunaan_lain";
                 },
                 messages: {
@@ -737,7 +934,7 @@ function getRelasiTipeLabel($tipe)
     </script>
 
     <script>
-        $(document).on("click", ".btn-edit", function () {
+        $(document).on("click", ".btn-edit", function() {
             let id = $(this).data("id");
             let kode_polygon = $(this).data("kode_polygon");
             let nama_polygon = $(this).data("nama_polygon");
@@ -787,7 +984,7 @@ function getRelasiTipeLabel($tipe)
         });
 
         // saat relasi tipe berubah
-        $("#edit_relasi_tipe").on("change", function () {
+        $("#edit_relasi_tipe").on("change", function() {
             let tipe = $(this).val();
 
             $("#group_hutan_adat").hide();
@@ -872,7 +1069,7 @@ function getRelasiTipeLabel($tipe)
         });
 
         // set relasi_id dari dropdown aktif
-        $(".relasi-dropdown").on("change", function () {
+        $(".relasi-dropdown").on("change", function() {
             let val = $(this).val();
             $("#edit_relasi_id").val(val);
         });
@@ -881,7 +1078,7 @@ function getRelasiTipeLabel($tipe)
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        $(document).on("submit", ".form-delete", function (e) {
+        $(document).on("submit", ".form-delete", function(e) {
             e.preventDefault();
             let form = this;
             Swal.fire({
@@ -930,7 +1127,7 @@ function getRelasiTipeLabel($tipe)
     </script>
 
     <script>
-        $(document).on("click", ".btn-geom", function () {
+        $(document).on("click", ".btn-geom", function() {
             let wkt = $(this).data("geom");
 
             if (!wkt) {

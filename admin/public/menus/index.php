@@ -87,10 +87,11 @@ $parents = $controller->getParents();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Menu</th>
                                                 <th>Nama Menu</th>
-                                                <th>Path</th>
-                                                <th>Icon</th>
+                                                <!-- <th>Path</th>
+                                                <th>Icon</th> -->
                                                 <th>Parent Menu</th>
                                                 <th>Urutan</th>
                                                 <th>Status Aktif</th>
@@ -98,12 +99,14 @@ $parents = $controller->getParents();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($menus as $menu): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($menu['kode']) ?></td>
                                                     <td><?= htmlspecialchars($menu['nama']) ?></td>
-                                                    <td><?= htmlspecialchars($menu['path']) ?></td>
-                                                    <td><?= htmlspecialchars($menu['icon']) ?></td>
+                                                    <!-- <td><?= htmlspecialchars($menu['path']) ?></td> -->
+                                                    <!-- <td><?= htmlspecialchars($menu['icon']) ?></td> -->
                                                     <td><?= htmlspecialchars($menu['parent_name']) ?></td>
                                                     <td><?= htmlspecialchars($menu['urutan']) ?></td>
                                                     <td><?= $menu['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
@@ -113,8 +116,6 @@ $parents = $controller->getParents();
                                                                 data-id="<?= $menu['id'] ?>"
                                                                 data-kode="<?= htmlspecialchars($menu['kode']) ?>"
                                                                 data-nama="<?= htmlspecialchars($menu['nama']) ?>"
-                                                                data-path="<?= htmlspecialchars($menu['path']) ?>"
-                                                                data-icon="<?= htmlspecialchars($menu['icon']) ?>"
                                                                 data-parent-id="<?= $menu['id_parent'] ?? '' ?>"
                                                                 data-urutan="<?= $menu['urutan'] ?>"
                                                                 data-status="<?= $menu['is_active'] ?>" data-toggle="modal"
@@ -136,10 +137,11 @@ $parents = $controller->getParents();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Menu</th>
                                                 <th>Nama Menu</th>
-                                                <th>Path</th>
-                                                <th>Icon</th>
+                                                <!-- <th>Path</th>
+                                                <th>Icon</th> -->
                                                 <th>Parent Menu</th>
                                                 <th>Urutan</th>
                                                 <th>Status Aktif</th>
@@ -173,14 +175,14 @@ $parents = $controller->getParents();
                                     <label for="kode">Kode Menu<code>*</code></label>
                                     <input type="text" name="kode" class="form-control" id="kode"
                                         value="<?= (new Menu($pdo))->generateKode() ?>"
-                                        placeholder="Masukkan kode menu">
+                                        placeholder="Masukkan kode menu" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Menu<code>*</code></label>
                                     <input type="text" name="nama" class="form-control" id="nama"
                                         placeholder="Masukkan nama menu">
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label for="path">Path<code>*</code></label>
                                     <input type="text" name="path" class="form-control" id="path"
                                         placeholder="Masukkan path menu">
@@ -189,7 +191,7 @@ $parents = $controller->getParents();
                                     <label for="icon">Icon<code>*</code></label>
                                     <input type="text" name="icon" class="form-control" id="icon"
                                         placeholder="Masukkan icon menu">
-                                </div>
+                                </div> -->
                                 <div class="form-group">
                                     <label>Parent Menu</label>
                                     <select name="id_parent" class="form-control">
@@ -204,7 +206,7 @@ $parents = $controller->getParents();
                                 <div class="form-group">
                                     <label for="urutan">Urutan<code>*</code></label>
                                     <input type="number" name="urutan" class="form-control" id="urutan"
-                                        placeholder="Masukkan urutan">
+                                        value="<?= (new Menu($pdo))->generateUrutan() ?>" placeholder="Masukkan urutan">
                                 </div>
                                 <div class="form-group">
                                     <label>Status Aktif <code>*</code></label>
@@ -250,20 +252,20 @@ $parents = $controller->getParents();
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="kode">Kode Menu<code>*</code></label>
-                                    <input type="text" name="kode" id="edit_kode" class="form-control">
+                                    <input type="text" name="kode" id="edit_kode" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Menu<code>*</code></label>
                                     <input type="text" name="nama" id="edit_nama" class="form-control">
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label>Path</label>
                                     <input type="text" name="path" id="edit_path" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label>Icon</label>
                                     <input type="text" name="icon" id="edit_icon" class="form-control">
-                                </div>
+                                </div> -->
                                 <div class="form-group">
                                     <label>Parent Menu</label>
                                     <select name="id_parent" id="edit_id_parent" class="form-control">
@@ -341,9 +343,11 @@ $parents = $controller->getParents();
     <script src="../assets/adminlte/plugins/jquery-validation/additional-methods.min.js"></script>
     <!-- Page specific script -->
     <script>
-        $(function () {
+        $(function() {
             $("#example1").DataTable({
-                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
@@ -359,7 +363,7 @@ $parents = $controller->getParents();
     </script>
 
     <script>
-        $(function () {
+        $(function() {
             function initValidation(formId) {
                 $(formId).validate({
                     rules: {
@@ -391,14 +395,14 @@ $parents = $controller->getParents();
                         }
                     },
                     errorElement: 'span',
-                    errorPlacement: function (error, element) {
+                    errorPlacement: function(error, element) {
                         error.addClass('invalid-feedback');
                         element.closest('.form-group').append(error);
                     },
-                    highlight: function (element) {
+                    highlight: function(element) {
                         $(element).addClass('is-invalid');
                     },
-                    unhighlight: function (element) {
+                    unhighlight: function(element) {
                         $(element).removeClass('is-invalid');
                     }
                 });
@@ -453,12 +457,12 @@ $parents = $controller->getParents();
     </script>
 
     <script>
-        $(document).on("click", ".btn-edit", function () {
+        $(document).on("click", ".btn-edit", function() {
             let id = $(this).data("id");
             let kode = $(this).data("kode");
             let nama = $(this).data("nama");
-            let path = $(this).data("path");
-            let icon = $(this).data("icon");
+            // let path = $(this).data("path");
+            // let icon = $(this).data("icon");
             // let id_parent = $(this).data("id_parent");
             let id_parent = $(this).data("parent-id");
             let urutan = $(this).data("urutan");
@@ -467,8 +471,8 @@ $parents = $controller->getParents();
             $("#edit_id").val(id);
             $("#edit_kode").val(kode);
             $("#edit_nama").val(nama);
-            $("#edit_path").val(path);
-            $("#edit_icon").val(icon);
+            // $("#edit_path").val(path);
+            // $("#edit_icon").val(icon);
             // $("#edit_id_parent").val(id_parent);
             $("#edit_id_parent").val(id_parent).trigger("change");
             $("#edit_urutan").val(urutan);
@@ -479,7 +483,7 @@ $parents = $controller->getParents();
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        $(document).on("submit", ".form-delete", function (e) {
+        $(document).on("submit", ".form-delete", function(e) {
             e.preventDefault();
             let form = this;
             Swal.fire({

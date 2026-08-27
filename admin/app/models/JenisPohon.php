@@ -14,7 +14,7 @@ class JenisPohon
         $sql = "SELECT *
             FROM m_jenis_pohon
             WHERE deleted_at IS NULL
-            ORDER BY urutan ASC";
+            ORDER BY id DESC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
@@ -109,6 +109,29 @@ class JenisPohon
         $number++;
 
         return "JEP" . str_pad($number, 3, "0", STR_PAD_LEFT);
+    }
+
+    public function generateUrutan()
+    {
+        $sql = "SELECT urutan 
+            FROM m_jenis_pohon 
+            WHERE deleted_at IS NULL
+            ORDER BY id DESC 
+            LIMIT 1";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $row = $stmt->fetch();
+
+        if (!$row) {
+            return 1;
+        }
+
+        $lastUrutan = $row['urutan'];
+        $number = (int) $lastUrutan;
+        $number++;
+
+        return $number;
     }
 
 }

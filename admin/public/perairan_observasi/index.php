@@ -89,6 +89,7 @@ $kecepatanAlirans = $controller->getKecepatanAliran();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Nama Lahan</th>
                                                 <th>Periode Pengecekan</th>
                                                 <th>Warna Air</th>
@@ -104,8 +105,10 @@ $kecepatanAlirans = $controller->getKecepatanAliran();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($perairanObservasis as $PerairanObservasi): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($PerairanObservasi['nama_lahan']) ?></td>
                                                     <td><?= htmlspecialchars($PerairanObservasi['periode_pengecekan']) ?></td>
                                                     <td><?= htmlspecialchars($PerairanObservasi['warna_air']) ?></td>
@@ -150,6 +153,7 @@ $kecepatanAlirans = $controller->getKecepatanAliran();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Nama Lahan</th>
                                                 <th>Periode Pengecekan</th>
                                                 <th>Warna Air</th>

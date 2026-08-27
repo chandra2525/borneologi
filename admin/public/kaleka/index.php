@@ -36,6 +36,9 @@ $desas = $controller->getDesa();
     <link rel="stylesheet" href="../assets/adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="../assets/adminlte/dist/css/adminlte.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -87,9 +90,10 @@ $desas = $controller->getDesa();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Kaleka</th>
                                                 <th>Nama Kaleka</th>
-                                                <th>Petani</th>
+                                                <th>Pemilik Kaleka</th>
                                                 <th>Desa</th>
                                                 <th>Luas (ha)</th>
                                                 <th>Keterangan</th>
@@ -98,8 +102,10 @@ $desas = $controller->getDesa();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($kalekas as $kaleka): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($kaleka['kode_kaleka']) ?></td>
                                                     <td><?= htmlspecialchars($kaleka['nama_kaleka']) ?></td>
                                                     <td><?= htmlspecialchars($kaleka['nama_petani']) ?></td>
@@ -136,9 +142,10 @@ $desas = $controller->getDesa();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Kaleka</th>
                                                 <th>Nama Kaleka</th>
-                                                <th>Petani</th>
+                                                <th>Pemilik Kaleka</th>
                                                 <th>Desa</th>
                                                 <th>Luas (ha)</th>
                                                 <th>Keterangan</th>
@@ -173,7 +180,7 @@ $desas = $controller->getDesa();
                                     <label for="kode_kaleka">Kode Kaleka<code>*</code></label>
                                     <input type="text" name="kode_kaleka" class="form-control" id="kode_kaleka"
                                         value="<?= (new Kaleka($pdo))->generateKode() ?>"
-                                        placeholder="Masukkan Kode Kaleka">
+                                        placeholder="Masukkan Kode Kaleka" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama_kaleka">Nama Kaleka<code>*</code></label>
@@ -181,9 +188,9 @@ $desas = $controller->getDesa();
                                         placeholder="Masukkan Nama Kaleka">
                                 </div>
                                 <div class="form-group">
-                                    <label for="id_petani">Petani<code>*</code></label>
+                                    <label for="id_petani">Pemilik Kaleka<code>*</code></label>
                                     <select name="id_petani" class="form-control" id="id_petani">
-                                        <option value="">-- Pilih Petani --</option>
+                                        <option value="">-- Pilih Pemilik Kaleka --</option>
                                         <?php foreach ($petanis as $p): ?>
                                             <option value="<?= $p['id'] ?>">
                                                 <?= htmlspecialchars($p['nama_lengkap']) ?>
@@ -208,7 +215,7 @@ $desas = $controller->getDesa();
                                         placeholder="Masukkan Luas dalam hektar">
                                 </div>
                                 <div class="form-group">
-                                    <label for="keterangan">Keterangan<code>*</code></label>
+                                    <label for="keterangan">Keterangan</label>
                                     <textarea name="keterangan" class="form-control" id="keterangan"
                                         placeholder="Masukkan Keterangan"></textarea>
                                 </div>
@@ -258,7 +265,7 @@ $desas = $controller->getDesa();
                                     <label for="kode_kaleka">Kode Kaleka<code>*</code></label>
                                     <input type="text" name="kode_kaleka" class="form-control" id="edit_kode_kaleka"
                                         value="<?= (new Kaleka($pdo))->generateKode() ?>"
-                                        placeholder="Masukkan Kode Kaleka">
+                                        placeholder="Masukkan Kode Kaleka" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama_kaleka">Nama Kaleka<code>*</code></label>
@@ -266,9 +273,9 @@ $desas = $controller->getDesa();
                                         placeholder="Masukkan Nama Kaleka">
                                 </div>
                                 <div class="form-group">
-                                    <label for="edit_id_petani">Petani<code>*</code></label>
+                                    <label for="edit_id_petani">Pemilik Kaleka<code>*</code></label>
                                     <select name="id_petani" class="form-control" id="edit_id_petani">
-                                        <option value="">-- Pilih Petani --</option>
+                                        <option value="">-- Pilih Pemilik Kaleka --</option>
                                         <?php foreach ($petanis as $p): ?>
                                             <option value="<?= $p['id'] ?>">
                                                 <?= htmlspecialchars($p['nama_lengkap']) ?>
@@ -293,7 +300,7 @@ $desas = $controller->getDesa();
                                         placeholder="Masukkan Luas dalam hektar">
                                 </div>
                                 <div class="form-group">
-                                    <label for="keterangan">Keterangan<code>*</code></label>
+                                    <label for="keterangan">Keterangan</label>
                                     <textarea name="keterangan" class="form-control" id="edit_keterangan"
                                         placeholder="Masukkan Keterangan"></textarea>
                                 </div>
@@ -357,6 +364,8 @@ $desas = $controller->getDesa();
     <!-- jquery-validation -->
     <script src="../assets/adminlte/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script src="../assets/adminlte/plugins/jquery-validation/additional-methods.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- Page specific script -->
     <script>
         $(function () {
@@ -397,7 +406,7 @@ $desas = $controller->getDesa();
                             required: true
                         },
                         keterangan: {
-                            required: true
+                            required: false
                         },
                         is_active: {
                             required: true
@@ -411,7 +420,7 @@ $desas = $controller->getDesa();
                             required: "Silahkan masukkan Nama Kaleka"
                         },
                         id_petani: {
-                            required: "Silahkan pilih Petani"
+                            required: "Silahkan pilih Pemilik Kaleka"
                         },
                         id_desa: {
                             required: "Silahkan pilih Desa"
@@ -419,9 +428,9 @@ $desas = $controller->getDesa();
                         luas_ha: {
                             required: "Silahkan masukkan Luas dalam hektar"
                         },
-                        keterangan: {
-                            required: "Silahkan masukkan Keterangan"
-                        },
+                        // keterangan: {
+                        //     required: "Silahkan masukkan Keterangan"
+                        // },
                         is_active: {
                             required: "Silahkan pilih Status Aktif"
                         }
@@ -458,11 +467,55 @@ $desas = $controller->getDesa();
             $("#edit_id").val(id);
             $("#edit_kode_kaleka").val(kode_kaleka);
             $("#edit_nama_kaleka").val(nama_kaleka);
-            $("#edit_id_petani").val(id_petani);
-            $("#edit_id_desa").val(id_desa);
+            $("#edit_id_petani")
+                .val(String(id_petani))
+                .trigger("change");
+            $("#edit_id_desa")
+                .val(String(id_desa))
+                .trigger("change");
             $("#edit_luas_ha").val(luas_ha);
             $("#edit_keterangan").val(keterangan);
             $("input[name='is_active'][value='" + status + "']").prop("checked", true);
+        });
+
+        $(document).ready(function() {
+            $('#id_petani').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: '-- Pilih Pemilik Kaleka --',
+                allowClear: true,
+                dropdownParent: $('#modalTambah')
+            });
+
+            $('#edit_id_petani').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: '-- Pilih Pemilik Kaleka --',
+                allowClear: true,
+                dropdownParent: $('#modalEdit') // jika dalam modal
+            });
+            
+            $('#id_desa').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: '-- Pilih Desa --',
+                allowClear: true,
+                dropdownParent: $('#modalTambah')
+            });
+
+            $('#edit_id_desa').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: '-- Pilih Desa --',
+                allowClear: true,
+                dropdownParent: $('#modalEdit') // jika dalam modal
+            });
+        });
+
+        $('#id_petani, #edit_id_petani, #id_desa, #edit_id_desa').on('select2:open', function() {
+            setTimeout(() => {
+                document.querySelector('.select2-container--open .select2-search__field').focus();
+            }, 0);
         });
     </script>
 

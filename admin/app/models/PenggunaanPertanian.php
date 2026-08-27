@@ -14,7 +14,7 @@ class PenggunaanPertanian
         $sql = "SELECT *
             FROM m_penggunaan_pertanian
             WHERE deleted_at IS NULL
-            ORDER BY urutan ASC";
+            ORDER BY id DESC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
@@ -114,7 +114,7 @@ class PenggunaanPertanian
     {
         $sql = "SELECT urutan 
             FROM m_penggunaan_pertanian 
-            -- WHERE deleted_at IS NULL
+            WHERE deleted_at IS NULL
             ORDER BY id DESC 
             LIMIT 1";
 

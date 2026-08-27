@@ -18,7 +18,7 @@ class KelompokTani
             LEFT JOIN m_akses_perjalanan ap ON ap.id=kt.id_akses_perjalanan
             LEFT JOIN m_kondisi_jalan kj ON kj.id=kt.id_kondisi_jalan
             WHERE kt.deleted_at IS NULL
-            ORDER BY kt.id ASC";
+            ORDER BY kt.id DESC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
@@ -102,7 +102,7 @@ class KelompokTani
     {
         $sql = "SELECT id,nama FROM m_kategori_kelompok
                 WHERE deleted_at IS NULL
-                ORDER BY id";
+                ORDER BY id DESC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
@@ -114,7 +114,7 @@ class KelompokTani
     {
         $sql = "SELECT id,nama_desa FROM m_desa
                 WHERE deleted_at IS NULL
-                ORDER BY id";
+                ORDER BY id DESC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
@@ -126,7 +126,7 @@ class KelompokTani
     {
         $sql = "SELECT id,nama FROM m_akses_perjalanan
                 WHERE deleted_at IS NULL
-                ORDER BY id";
+                ORDER BY id DESC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
@@ -138,7 +138,7 @@ class KelompokTani
     {
         $sql = "SELECT id,nama FROM m_kondisi_jalan
                 WHERE deleted_at IS NULL
-                ORDER BY id";
+                ORDER BY id DESC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();

@@ -38,6 +38,9 @@ $kondisiJalans = $controller->getKondisiJalan();
     <link rel="stylesheet" href="../assets/adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="../assets/adminlte/dist/css/adminlte.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -59,12 +62,12 @@ $kondisiJalans = $controller->getKondisiJalan();
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Data Kelompok Tani</h1>
+                            <h1>Data Kelompok</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Master Data</a></li>
-                                <li class="breadcrumb-item active">Data Kelompok Tani</li>
+                                <li class="breadcrumb-item active">Data Kelompok</li>
                             </ol>
                         </div>
                     </div>
@@ -78,10 +81,10 @@ $kondisiJalans = $controller->getKondisiJalan();
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header row">
-                                    <h3 class="card-title col-9">Berikut adalah list dari Data Kelompok Tani</h3>
+                                    <h3 class="card-title col-9">Berikut adalah list dari Data Kelompok</h3>
                                     <button class="col-3 btn btn-block btn-success" data-toggle="modal"
                                         data-target="#modalTambah">
-                                        Tambah Kelompok Tani
+                                        Tambah Kelompok
                                     </button>
                                 </div>
                                 <!-- /.card-header -->
@@ -89,6 +92,7 @@ $kondisiJalans = $controller->getKondisiJalan();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Kelompok</th>
                                                 <th>Nama Kelompok</th>
                                                 <th>Kategori Kelompok</th>
@@ -99,14 +103,16 @@ $kondisiJalans = $controller->getKondisiJalan();
                                                 <th>Tahun Bentuk</th>
                                                 <th>Nomor SK</th>
                                                 <th>Tanggal SK</th>
-                                                <th>Status Kelompok Tani</th>
+                                                <th>Status Kelompok</th>
                                                 <th>Status Aktif</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($kelompokTanis as $kelompokTani): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($kelompokTani['kode_kelompok']) ?></td>
                                                     <td><?= htmlspecialchars($kelompokTani['nama_kelompok']) ?></td>
                                                     <td><?= htmlspecialchars($kelompokTani['nama_kategori_kelompok']) ?></td>
@@ -154,6 +160,7 @@ $kondisiJalans = $controller->getKondisiJalan();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Kelompok</th>
                                                 <th>Nama Kelompok</th>
                                                 <th>Kategori Kelompok</th>
@@ -164,7 +171,7 @@ $kondisiJalans = $controller->getKondisiJalan();
                                                 <th>Tahun Bentuk</th>
                                                 <th>Nomor SK</th>
                                                 <th>Tanggal SK</th>
-                                                <th>Status Kelompok Tani</th>
+                                                <th>Status Kelompok</th>
                                                 <th>Status Aktif</th>
                                                 <th>Aksi</th>
                                             </tr>
@@ -183,129 +190,159 @@ $kondisiJalans = $controller->getKondisiJalan();
             </section>
 
             <div class="modal fade" id="modalTambah">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title">Tambah Kelompok Tani</h4>
+                            <h4 class="modal-title">Tambah Kelompok</h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                         <form id="formTambah" method="POST" action="store.php">
                             <?= csrfField() ?>
                             <div class="modal-body">
-                                <div class="form-group">
-                                    <label for="kode_kelompok">Kode Kelompok<code>*</code></label>
-                                    <input type="text" name="kode_kelompok" class="form-control" id="kode_kelompok"
-                                        value="<?= (new KelompokTani($pdo))->generateKode() ?>"
-                                        placeholder="Masukkan Kode Kelompok">
-                                </div>
-                                <div class="form-group">
-                                    <label for="nama_kelompok">Nama Kelompok<code>*</code></label>
-                                    <input type="text" name="nama_kelompok" class="form-control" id="nama_kelompok"
-                                        placeholder="Masukkan Nama Kelompok" minlength="2" maxlength="100">
-                                </div>
-                                <div class="form-group">
-                                    <label for="id_kategori_kelompok">Kategori Kelompok<code>*</code></label>
-                                    <select name="id_kategori_kelompok" class="form-control" id="id_kategori_kelompok">
-                                        <option value="">-- Pilih Kategori Kelompok --</option>
-                                        <?php foreach ($kategoriKelompoks as $kk): ?>
-                                            <option value="<?= $kk['id'] ?>">
-                                                <?= htmlspecialchars($kk['nama']) ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="id_desa">Desa<code>*</code></label>
-                                    <select name="id_desa" class="form-control" id="id_desa">
-                                        <option value="">-- Pilih Desa --</option>
-                                        <?php foreach ($desas as $d): ?>
-                                            <option value="<?= $d['id'] ?>">
-                                                <?= htmlspecialchars($d['nama_desa']) ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="alamat">Alamat<code>*</code></label>
-                                    <textarea name="alamat" class="form-control" id="alamat"
-                                        placeholder="Masukkan Alamat"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="id_akses_perjalanan">Akses Perjalanan<code>*</code></label>
-                                    <select name="id_akses_perjalanan" class="form-control" id="id_akses_perjalanan">
-                                        <option value="">-- Pilih Akses Perjalanan --</option>
-                                        <?php foreach ($aksesPerjalanans as $ap): ?>
-                                            <option value="<?= $ap['id'] ?>">
-                                                <?= htmlspecialchars($ap['nama']) ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="id_kondisi_jalan">Kondisi Jalan<code>*</code></label>
-                                    <select name="id_kondisi_jalan" class="form-control" id="id_kondisi_jalan">
-                                        <option value="">-- Pilih Kondisi Jalan --</option>
-                                        <?php foreach ($kondisiJalans as $kj): ?>
-                                            <option value="<?= $kj['id'] ?>">
-                                                <?= htmlspecialchars($kj['nama']) ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="tahun_bentuk">Tahun Bentuk<code>*</code></label>
-                                    <input type="number" name="tahun_bentuk" class="form-control" id="tahun_bentuk"
-                                        placeholder="Masukkan Tahun Bentuk" min="1900" max="<?= date('Y') ?>" minlength="4" maxlength="4">
-                                </div>
-                                <div class="form-group">
-                                    <label for="nomor_sk">Nomor SK<code>*</code></label>
-                                    <input type="number" name="nomor_sk" class="form-control" id="nomor_sk"
-                                        placeholder="Masukkan Nomor SK" minlength="1" maxlength="100">
-                                </div>
-                                <div class="form-group">
-                                    <label for="tanggal_sk">Tanggal SK<code>*</code></label>
-                                    <input type="date" name="tanggal_sk" class="form-control" id="tanggal_sk"
-                                        placeholder="Masukkan Tanggal SK">
-                                </div>
-                                <div class="form-group">
-                                    <label>Status Kelompok Tani<code>*</code></label>
-                                    <div class="form-group row">
-                                        <div class="col-sm-2">
-                                            <div class="custom-control custom-radio">
-                                                <input class="custom-control-input" type="radio"
-                                                    id="add_status_kelompok_aktif" name="status_kelompok" value="aktif"
-                                                    checked>
-                                                <label for="add_status_kelompok_aktif"
-                                                    class="custom-control-label">Aktif</label>
-                                            </div>
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="kode_kelompok">Kode Kelompok<code>*</code></label>
+                                            <input type="text" name="kode_kelompok" class="form-control" id="kode_kelompok"
+                                                value="<?= (new KelompokTani($pdo))->generateKode() ?>"
+                                                placeholder="Masukkan Kode Kelompok" readonly>
                                         </div>
-                                        <div class="col-sm-2">
-                                            <div class="custom-control custom-radio">
-                                                <input class="custom-control-input" type="radio"
-                                                    id="add_status_kelompok_nonaktif" name="status_kelompok"
-                                                    value="nonaktif">
-                                                <label for="add_status_kelompok_nonaktif"
-                                                    class="custom-control-label">Nonaktif</label>
-                                            </div>
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="nama_kelompok">Nama Kelompok<code>*</code></label>
+                                            <input type="text" name="nama_kelompok" class="form-control" id="nama_kelompok"
+                                                placeholder="Masukkan Nama Kelompok" minlength="2" maxlength="100">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="id_kategori_kelompok">Kategori Kelompok<code>*</code></label>
+                                            <select name="id_kategori_kelompok" class="form-control" id="id_kategori_kelompok">
+                                                <option value="">-- Pilih Kategori Kelompok --</option>
+                                                <?php foreach ($kategoriKelompoks as $kk): ?>
+                                                    <option value="<?= $kk['id'] ?>">
+                                                        <?= htmlspecialchars($kk['nama']) ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="id_desa">Desa<code>*</code></label>
+                                            <select name="id_desa" class="form-control" id="id_desa">
+                                                <option value="">-- Pilih Desa --</option>
+                                                <?php foreach ($desas as $d): ?>
+                                                    <option value="<?= $d['id'] ?>">
+                                                        <?= htmlspecialchars($d['nama_desa']) ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>Status Aktif<code>*</code></label>
-                                    <div class="form-group row">
-                                        <div class="col-sm-2">
-                                            <div class="custom-control custom-radio">
-                                                <input class="custom-control-input" type="radio" id="add_status_aktif"
-                                                    name="is_active" value="1" checked>
-                                                <label for="add_status_aktif" class="custom-control-label">Aktif</label>
+                                    <label for="alamat">Alamat</label>
+                                    <textarea name="alamat" class="form-control" id="alamat"
+                                        placeholder="Masukkan Alamat"></textarea>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="id_akses_perjalanan">Akses Perjalanan<code>*</code></label>
+                                            <select name="id_akses_perjalanan" class="form-control" id="id_akses_perjalanan">
+                                                <option value="">-- Pilih Akses Perjalanan --</option>
+                                                <?php foreach ($aksesPerjalanans as $ap): ?>
+                                                    <option value="<?= $ap['id'] ?>">
+                                                        <?= htmlspecialchars($ap['nama']) ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="id_kondisi_jalan">Kondisi Jalan<code>*</code></label>
+                                            <select name="id_kondisi_jalan" class="form-control" id="id_kondisi_jalan">
+                                                <option value="">-- Pilih Kondisi Jalan --</option>
+                                                <?php foreach ($kondisiJalans as $kj): ?>
+                                                    <option value="<?= $kj['id'] ?>">
+                                                        <?= htmlspecialchars($kj['nama']) ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="tahun_bentuk">Tahun Bentuk</label>
+                                            <input type="number" name="tahun_bentuk" class="form-control" id="tahun_bentuk"
+                                                placeholder="Masukkan Tahun Bentuk" min="1900" max="<?= date('Y') ?>" minlength="4" maxlength="4">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="nomor_sk">Nomor SK</label>
+                                            <input type="number" name="nomor_sk" class="form-control" id="nomor_sk"
+                                                placeholder="Masukkan Nomor SK" minlength="1" maxlength="100">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tanggal_sk">Tanggal SK</label>
+                                    <input type="date" name="tanggal_sk" class="form-control" id="tanggal_sk"
+                                        placeholder="Masukkan Tanggal SK">
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label>Status Kelompok<code>*</code></label>
+                                            <div class="form-group row">
+                                                <div class="col-sm-2">
+                                                    <div class="custom-control custom-radio">
+                                                        <input class="custom-control-input" type="radio"
+                                                            id="add_status_kelompok_aktif" name="status_kelompok" value="aktif"
+                                                            checked>
+                                                        <label for="add_status_kelompok_aktif"
+                                                            class="custom-control-label">Aktif</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <div class="custom-control custom-radio">
+                                                        <input class="custom-control-input" type="radio"
+                                                            id="add_status_kelompok_nonaktif" name="status_kelompok"
+                                                            value="nonaktif">
+                                                        <label for="add_status_kelompok_nonaktif"
+                                                            class="custom-control-label">Nonaktif</label>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-2">
-                                            <div class="custom-control custom-radio">
-                                                <input class="custom-control-input" type="radio"
-                                                    id="add_status_nonaktif" name="is_active" value="0">
-                                                <label for="add_status_nonaktif"
-                                                    class="custom-control-label">Nonaktif</label>
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label>Status Aktif<code>*</code></label>
+                                            <div class="form-group row">
+                                                <div class="col-sm-2">
+                                                    <div class="custom-control custom-radio">
+                                                        <input class="custom-control-input" type="radio" id="add_status_aktif"
+                                                            name="is_active" value="1" checked>
+                                                        <label for="add_status_aktif" class="custom-control-label">Aktif</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <div class="custom-control custom-radio">
+                                                        <input class="custom-control-input" type="radio"
+                                                            id="add_status_nonaktif" name="is_active" value="0">
+                                                        <label for="add_status_nonaktif"
+                                                            class="custom-control-label">Nonaktif</label>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -320,11 +357,11 @@ $kondisiJalans = $controller->getKondisiJalan();
             </div>
 
             <div class="modal fade" id="modalEdit">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-xl">
                     <div class="modal-content">
 
                         <div class="modal-header">
-                            <h4 class="modal-title">Edit Kelompok Tani</h4>
+                            <h4 class="modal-title">Edit Kelompok</h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
 
@@ -332,118 +369,154 @@ $kondisiJalans = $controller->getKondisiJalan();
                             <?= csrfField() ?>
                             <input type="hidden" name="id" id="edit_id">
                             <div class="modal-body">
-                                <div class="form-group">
-                                    <label for="kode_kelompok">Kode Kelompok<code>*</code></label>
-                                    <input type="text" name="kode_kelompok" id="edit_kode_kelompok" class="form-control" minlength="2"
-                                        maxlength="50">
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="kode_kelompok">Kode Kelompok<code>*</code></label>
+                                            <input type="text" name="kode_kelompok" id="edit_kode_kelompok" class="form-control" minlength="2"
+                                                maxlength="50" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="nama_kelompok">Nama Kelompok<code>*</code></label>
+                                            <input type="text" name="nama_kelompok" id="edit_nama_kelompok" class="form-control" minlength="2"
+                                                maxlength="100">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="edit_id_kategori_kelompok">Kategori Kelompok<code>*</code></label>
+                                            <select name="id_kategori_kelompok" class="form-control" id="edit_id_kategori_kelompok">
+                                                <option value="">-- Pilih Kategori Kelompok --</option>
+                                                <?php foreach ($kategoriKelompoks as $kk): ?>
+                                                    <option value="<?= $kk['id'] ?>">
+                                                        <?= htmlspecialchars($kk['nama']) ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="edit_id_desa">Desa<code>*</code></label>
+                                            <select name="id_desa" class="form-control" id="edit_id_desa">
+                                                <option value="">-- Pilih Desa --</option>
+                                                <?php foreach ($desas as $d): ?>
+                                                    <option value="<?= $d['id'] ?>">
+                                                        <?= htmlspecialchars($d['nama_desa']) ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama_kelompok">Nama Kelompok<code>*</code></label>
-                                    <input type="text" name="nama_kelompok" id="edit_nama_kelompok" class="form-control" minlength="2"
-                                        maxlength="100">
-                                </div>
-                                <div class="form-group">
-                                    <label for="edit_id_kategori_kelompok">Kategori Kelompok<code>*</code></label>
-                                    <select name="id_kategori_kelompok" class="form-control" id="edit_id_kategori_kelompok">
-                                        <option value="">-- Pilih Kategori Kelompok --</option>
-                                        <?php foreach ($kategoriKelompoks as $kk): ?>
-                                            <option value="<?= $kk['id'] ?>">
-                                                <?= htmlspecialchars($kk['nama']) ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="edit_id_desa">Desa<code>*</code></label>
-                                    <select name="id_desa" class="form-control" id="edit_id_desa">
-                                        <option value="">-- Pilih Desa --</option>
-                                        <?php foreach ($desas as $d): ?>
-                                            <option value="<?= $d['id'] ?>">
-                                                <?= htmlspecialchars($d['nama_desa']) ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="alamat">Alamat<code>*</code></label>
+                                    <label for="alamat">Alamat</label>
                                     <textarea name="alamat" class="form-control" id="edit_alamat"
                                         placeholder="Masukkan Alamat"></textarea>
                                 </div>
-                                <div class="form-group">
-                                    <label for="edit_id_akses_perjalanan">Akses Perjalanan<code>*</code></label>
-                                    <select name="id_akses_perjalanan" class="form-control" id="edit_id_akses_perjalanan">
-                                        <option value="">-- Pilih Akses Perjalanan --</option>
-                                        <?php foreach ($aksesPerjalanans as $ap): ?>
-                                            <option value="<?= $ap['id'] ?>">
-                                                <?= htmlspecialchars($ap['nama']) ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="edit_id_akses_perjalanan">Akses Perjalanan<code>*</code></label>
+                                            <select name="id_akses_perjalanan" class="form-control" id="edit_id_akses_perjalanan">
+                                                <option value="">-- Pilih Akses Perjalanan --</option>
+                                                <?php foreach ($aksesPerjalanans as $ap): ?>
+                                                    <option value="<?= $ap['id'] ?>">
+                                                        <?= htmlspecialchars($ap['nama']) ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="edit_id_kondisi_jalan">Kondisi Jalan<code>*</code></label>
+                                            <select name="id_kondisi_jalan" class="form-control" id="edit_id_kondisi_jalan">
+                                                <option value="">-- Pilih Kondisi Jalan --</option>
+                                                <?php foreach ($kondisiJalans as $kj): ?>
+                                                    <option value="<?= $kj['id'] ?>">
+                                                        <?= htmlspecialchars($kj['nama']) ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="tahun_bentuk">Tahun Bentuk</label>
+                                            <input type="number" name="tahun_bentuk" class="form-control" id="edit_tahun_bentuk"
+                                                placeholder="Masukkan Tahun Bentuk" min="1900" max="<?= date('Y') ?>" minlength="4" maxlength="4">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="nomor_sk">Nomor SK</label>
+                                            <input type="number" name="nomor_sk" class="form-control" id="edit_nomor_sk"
+                                                placeholder="Masukkan Nomor SK" minlength="1" maxlength="100">
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="edit_id_kondisi_jalan">Kondisi Jalan<code>*</code></label>
-                                    <select name="id_kondisi_jalan" class="form-control" id="edit_id_kondisi_jalan">
-                                        <option value="">-- Pilih Kondisi Jalan --</option>
-                                        <?php foreach ($kondisiJalans as $kj): ?>
-                                            <option value="<?= $kj['id'] ?>">
-                                                <?= htmlspecialchars($kj['nama']) ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="tahun_bentuk">Tahun Bentuk<code>*</code></label>
-                                    <input type="number" name="tahun_bentuk" class="form-control" id="edit_tahun_bentuk"
-                                        placeholder="Masukkan Tahun Bentuk" min="1900" max="<?= date('Y') ?>" minlength="4" maxlength="4">
-                                </div>
-                                <div class="form-group">
-                                    <label for="nomor_sk">Nomor SK<code>*</code></label>
-                                    <input type="number" name="nomor_sk" class="form-control" id="edit_nomor_sk"
-                                        placeholder="Masukkan Nomor SK" minlength="1" maxlength="100">
-                                </div>
-                                <div class="form-group">
-                                    <label for="tanggal_sk">Tanggal SK<code>*</code></label>
+                                    <label for="tanggal_sk">Tanggal SK</label>
                                     <input type="date" name="tanggal_sk" class="form-control" id="edit_tanggal_sk"
                                         placeholder="Masukkan Tanggal SK">
                                 </div>
-                                <div class="form-group">
-                                    <label>Status Kelompok Tani<code>*</code></label>
-                                    <div class="form-group row">
-                                        <div class="col-sm-2">
-                                            <div class="custom-control custom-radio">
-                                                <input class="custom-control-input" type="radio"
-                                                    id="edit_status_kelompok_aktif" name="status_kelompok" value="aktif"
-                                                    checked>
-                                                <label for="edit_status_kelompok_aktif"
-                                                    class="custom-control-label">Aktif</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <div class="custom-control custom-radio">
-                                                <input class="custom-control-input" type="radio"
-                                                    id="edit_status_kelompok_nonaktif" name="status_kelompok"
-                                                    value="nonaktif">
-                                                <label for="edit_status_kelompok_nonaktif"
-                                                    class="custom-control-label">Nonaktif</label>
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label>Status Kelompok<code>*</code></label>
+                                            <div class="form-group row">
+                                                <div class="col-sm-2">
+                                                    <div class="custom-control custom-radio">
+                                                        <input class="custom-control-input" type="radio"
+                                                            id="edit_status_kelompok_aktif" name="status_kelompok" value="aktif"
+                                                            checked>
+                                                        <label for="edit_status_kelompok_aktif"
+                                                            class="custom-control-label">Aktif</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <div class="custom-control custom-radio">
+                                                        <input class="custom-control-input" type="radio"
+                                                            id="edit_status_kelompok_nonaktif" name="status_kelompok"
+                                                            value="nonaktif">
+                                                        <label for="edit_status_kelompok_nonaktif"
+                                                            class="custom-control-label">Nonaktif</label>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Status Aktif <code>*</code></label>
-                                    <div class="custom-control custom-radio">
-                                        <input class="custom-control-input edit_status" type="radio"
-                                            id="edit_status_aktif" name="is_active" value="1">
-                                        <label for="edit_status_aktif" class="custom-control-label">
-                                            Aktif
-                                        </label>
-                                    </div>
-                                    <div class="custom-control custom-radio">
-                                        <input class="custom-control-input edit_status" type="radio"
-                                            id="edit_status_nonaktif" name="is_active" value="0">
-                                        <label for="edit_status_nonaktif" class="custom-control-label">
-                                            Nonaktif
-                                        </label>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label>Status Aktif <code>*</code></label>
+                                            <div class="form-group row">
+                                                <div class="col-sm-2">
+                                                    <div class="custom-control custom-radio">
+                                                        <input class="custom-control-input edit_status" type="radio"
+                                                            id="edit_status_aktif" name="is_active" value="1">
+                                                        <label for="edit_status_aktif" class="custom-control-label">
+                                                            Aktif
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <div class="custom-control custom-radio">
+                                                        <input class="custom-control-input edit_status" type="radio"
+                                                            id="edit_status_nonaktif" name="is_active" value="0">
+                                                        <label for="edit_status_nonaktif" class="custom-control-label">
+                                                            Nonaktif
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -489,11 +562,15 @@ $kondisiJalans = $controller->getKondisiJalan();
     <!-- jquery-validation -->
     <script src="../assets/adminlte/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script src="../assets/adminlte/plugins/jquery-validation/additional-methods.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- Page specific script -->
     <script>
-        $(function () {
+        $(function() {
             $("#example1").DataTable({
-                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
@@ -509,7 +586,7 @@ $kondisiJalans = $controller->getKondisiJalan();
     </script>
 
     <script>
-        $(function () {
+        $(function() {
             function initValidation(formId) {
                 $(formId).validate({
                     rules: {
@@ -525,24 +602,24 @@ $kondisiJalans = $controller->getKondisiJalan();
                         id_desa: {
                             required: true
                         },
-                        alamat: {
-                            required: true
-                        },
+                        // alamat: {
+                        //     required: true
+                        // },
                         id_akses_perjalanan: {
                             required: true
                         },
                         id_kondisi_jalan: {
                             required: true
                         },
-                        tahun_bentuk: {
-                            required: true
-                        },
-                        nomor_sk: {
-                            required: true
-                        },
-                        tanggal_sk: {
-                            required: true
-                        },
+                        // tahun_bentuk: {
+                        //     required: true
+                        // },
+                        // nomor_sk: {
+                        //     required: true
+                        // },
+                        // tanggal_sk: {
+                        //     required: true
+                        // },
                         status_kelompok: {
                             required: true
                         },
@@ -563,40 +640,40 @@ $kondisiJalans = $controller->getKondisiJalan();
                         id_desa: {
                             required: "Silahkan pilih Desa"
                         },
-                        alamat: {
-                            required: "Silahkan masukkan Alamat"
-                        },
+                        // alamat: {
+                        //     required: "Silahkan masukkan Alamat"
+                        // },
                         id_akses_perjalanan: {
                             required: "Silahkan pilih Akses Perjalanan"
                         },
                         id_kondisi_jalan: {
                             required: "Silahkan pilih Kondisi Jalan"
                         },
-                        tahun_bentuk: {
-                            required: "Silahkan masukkan Tahun Bentuk"
-                        },
-                        nomor_sk: {
-                            required: "Silahkan masukkan Nomor SK"
-                        },
-                        tanggal_sk: {
-                            required: "Silahkan pilih Tanggal SK"
-                        },
+                        // tahun_bentuk: {
+                        //     required: "Silahkan masukkan Tahun Bentuk"
+                        // },
+                        // nomor_sk: {
+                        //     required: "Silahkan masukkan Nomor SK"
+                        // },
+                        // tanggal_sk: {
+                        //     required: "Silahkan pilih Tanggal SK"
+                        // },
                         status_kelompok: {
-                            required: "Silahkan pilih Status Kelompok Tani"
+                            required: "Silahkan pilih Status Kelompok"
                         },
                         is_active: {
                             required: "Silahkan pilih Status Aktif"
                         }
                     },
                     errorElement: 'span',
-                    errorPlacement: function (error, element) {
+                    errorPlacement: function(error, element) {
                         error.addClass('invalid-feedback');
                         element.closest('.form-group').append(error);
                     },
-                    highlight: function (element) {
+                    highlight: function(element) {
                         $(element).addClass('is-invalid');
                     },
-                    unhighlight: function (element) {
+                    unhighlight: function(element) {
                         $(element).removeClass('is-invalid');
                     }
                 });
@@ -607,7 +684,7 @@ $kondisiJalans = $controller->getKondisiJalan();
     </script>
 
     <script>
-        $(document).on("click", ".btn-edit", function () {
+        $(document).on("click", ".btn-edit", function() {
             let id = $(this).data("id");
             let kode_kelompok = $(this).data("kode_kelompok");
             let nama_kelompok = $(this).data("nama_kelompok");
@@ -626,7 +703,9 @@ $kondisiJalans = $controller->getKondisiJalan();
             $("#edit_kode_kelompok").val(kode_kelompok);
             $("#edit_nama_kelompok").val(nama_kelompok);
             $("#edit_id_kategori_kelompok").val(id_kategori_kelompok);
-            $("#edit_id_desa").val(id_desa);
+            $("#edit_id_desa")
+                .val(String(id_desa))
+                .trigger("change");
             $("#edit_alamat").val(alamat);
             $("#edit_id_akses_perjalanan").val(id_akses_perjalanan);
             $("#edit_id_kondisi_jalan").val(id_kondisi_jalan);
@@ -636,12 +715,36 @@ $kondisiJalans = $controller->getKondisiJalan();
             $("input[name='status_kelompok'][value='" + status_kelompok + "']").prop("checked", true);
             $("input[name='is_active'][value='" + status + "']").prop("checked", true);
         });
+
+        $(document).ready(function() {
+            $('#id_desa').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: '-- Pilih Desa --',
+                allowClear: true,
+                dropdownParent: $('#modalTambah')
+            });
+
+            $('#edit_id_desa').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: '-- Pilih Desa --',
+                allowClear: true,
+                dropdownParent: $('#modalEdit') // jika dalam modal
+            });
+        });
+
+        $('#id_desa, #edit_id_desa').on('select2:open', function() {
+            setTimeout(() => {
+                document.querySelector('.select2-container--open .select2-search__field').focus();
+            }, 0);
+        });
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        $(document).on("submit", ".form-delete", function (e) {
+        $(document).on("submit", ".form-delete", function(e) {
             e.preventDefault();
             let form = this;
             Swal.fire({
@@ -679,21 +782,21 @@ $kondisiJalans = $controller->getKondisiJalan();
         const urlParams = new URLSearchParams(window.location.search);
         const success = urlParams.get('success');
         if (success === "created") {
-            showToast("Data Kelompok Tani berhasil ditambahkan", "created");
+            showToast("Data Kelompok berhasil ditambahkan", "created");
         }
         if (success === "updated") {
-            showToast("Data Kelompok Tani berhasil diperbarui", "updated");
+            showToast("Data Kelompok berhasil diperbarui", "updated");
         }
         if (success === "deleted") {
-            showToast("Data Kelompok Tani berhasil dihapus", "deleted");
+            showToast("Data Kelompok berhasil dihapus", "deleted");
         }
     </script>
 
     <script>
-        document.getElementById('tanggal_sk').addEventListener('focus', function () {
+        document.getElementById('tanggal_sk').addEventListener('focus', function() {
             this.showPicker();
         });
-        document.getElementById('edit_tanggal_sk').addEventListener('focus', function () {
+        document.getElementById('edit_tanggal_sk').addEventListener('focus', function() {
             this.showPicker();
         });
     </script>

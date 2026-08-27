@@ -85,6 +85,7 @@ $kategoriAreas = $controller->index();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Kategori Area</th>
                                                 <th>Nama Kategori Area</th>
                                                 <th>Deskripsi</th>
@@ -94,8 +95,10 @@ $kategoriAreas = $controller->index();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($kategoriAreas as $kategoriArea): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($kategoriArea['kode']) ?></td>
                                                     <td><?= htmlspecialchars($kategoriArea['nama']) ?></td>
                                                     <td><?= htmlspecialchars($kategoriArea['deskripsi']) ?></td>
@@ -129,6 +132,7 @@ $kategoriAreas = $controller->index();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Kategori Area</th>
                                                 <th>Nama Kategori Area</th>
                                                 <th>Deskripsi</th>
@@ -164,7 +168,7 @@ $kategoriAreas = $controller->index();
                                     <label for="kode">Kode Kategori Area<code>*</code></label>
                                     <input type="text" name="kode" class="form-control" id="kode"
                                         value="<?= (new KategoriArea($pdo))->generateKode() ?>"
-                                        placeholder="Masukkan kode kategori area">
+                                        placeholder="Masukkan kode kategori area" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Kategori Area<code>*</code></label>
@@ -179,7 +183,7 @@ $kategoriAreas = $controller->index();
                                 <div class="form-group">
                                     <label for="urutan">Urutan<code>*</code></label>
                                     <input type="number" name="urutan" class="form-control" id="urutan"
-                                        placeholder="Masukkan urutan">
+                                        value="<?= (new KategoriArea($pdo))->generateUrutan() ?>" placeholder="Masukkan urutan">
                                 </div>
                                 <div class="form-group">
                                     <label>Status Aktif <code>*</code></label>
@@ -225,7 +229,7 @@ $kategoriAreas = $controller->index();
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="kode">Kode Kategori Area<code>*</code></label>
-                                    <input type="text" name="kode" id="edit_kode" class="form-control">
+                                    <input type="text" name="kode" id="edit_kode" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Kategori Area<code>*</code></label>

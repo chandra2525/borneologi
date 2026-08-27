@@ -15,7 +15,7 @@ class Petani
             FROM t_petani p
             LEFT JOIN m_desa d ON d.id=p.id_desa
             WHERE p.deleted_at IS NULL
-            ORDER BY p.id ASC";
+            ORDER BY p.id DESC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
@@ -116,7 +116,7 @@ class Petani
     {
         $sql = "SELECT id,nama_desa FROM m_desa
                 WHERE deleted_at IS NULL
-                ORDER BY id";
+                ORDER BY id DESC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();

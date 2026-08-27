@@ -87,6 +87,7 @@ $bankBenihs = $controller->getBankBenih();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Monitoring</th>
                                                 <th>Nama Bank Benih</th>
                                                 <th>Jumlah Ditanam</th>
@@ -100,8 +101,10 @@ $bankBenihs = $controller->getBankBenih();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($detailMonitoringPenanamans as $detailMonitoringPenanaman): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($detailMonitoringPenanaman['kode_monitoring']) ?></td>
                                                     <td><?= htmlspecialchars($detailMonitoringPenanaman['nama_bank_benih']) ?></td>
                                                     <td><?= htmlspecialchars($detailMonitoringPenanaman['jumlah_ditanam']) ?></td>
@@ -142,6 +145,7 @@ $bankBenihs = $controller->getBankBenih();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Monitoring</th>
                                                 <th>Nama Bank Benih</th>
                                                 <th>Jumlah Ditanam</th>

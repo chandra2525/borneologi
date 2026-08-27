@@ -85,6 +85,7 @@ $jabatanKelompoks = $controller->index();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Jabatan Kelompok</th>
                                                 <th>Nama Jabatan Kelompok</th>
                                                 <th>Pengurus</th>
@@ -95,8 +96,10 @@ $jabatanKelompoks = $controller->index();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($jabatanKelompoks as $jabatanKelompok): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($jabatanKelompok['kode']) ?></td>
                                                     <td><?= htmlspecialchars($jabatanKelompok['nama']) ?></td>
                                                     <td><?= $jabatanKelompok['is_pengurus'] ? 'Ya' : 'Tidak' ?></td>
@@ -132,6 +135,7 @@ $jabatanKelompoks = $controller->index();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Jabatan Kelompok</th>
                                                 <th>Nama Jabatan Kelompok</th>
                                                 <th>Pengurus</th>
@@ -168,7 +172,7 @@ $jabatanKelompoks = $controller->index();
                                     <label for="kode">Kode Jabatan Kelompok<code>*</code></label>
                                     <input type="text" name="kode" class="form-control" id="kode"
                                         value="<?= (new JabatanKelompok($pdo))->generateKode() ?>"
-                                        placeholder="Masukkan kode jabatan kelompok">
+                                        placeholder="Masukkan kode jabatan kelompok" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Jabatan Kelompok<code>*</code></label>
@@ -190,7 +194,7 @@ $jabatanKelompoks = $controller->index();
                                 <div class="form-group">
                                     <label for="urutan">Urutan<code>*</code></label>
                                     <input type="number" name="urutan" class="form-control" id="urutan"
-                                        placeholder="Masukkan urutan">
+                                        value="<?= (new JabatanKelompok($pdo))->generateUrutan() ?>" placeholder="Masukkan urutan">
                                 </div>
                                 <div class="form-group">
                                     <label>Status Aktif <code>*</code></label>
@@ -236,7 +240,7 @@ $jabatanKelompoks = $controller->index();
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="kode">Kode Jabatan Kelompok<code>*</code></label>
-                                    <input type="text" name="kode" id="edit_kode" class="form-control">
+                                    <input type="text" name="kode" id="edit_kode" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Jabatan Kelompok<code>*</code></label>

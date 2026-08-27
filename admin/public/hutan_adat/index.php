@@ -72,6 +72,9 @@ function formatGeomTable($wkt)
     <link rel="stylesheet" href="../assets/adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="../assets/adminlte/dist/css/adminlte.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -123,6 +126,7 @@ function formatGeomTable($wkt)
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Hutan Adat</th>
                                                 <th>Nama Hutan Adat</th>
                                                 <th>Masyarakat Hukum Adat</th>
@@ -139,8 +143,10 @@ function formatGeomTable($wkt)
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($hutanAdats as $hutanAdat): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($hutanAdat['kode_hutan_adat']) ?></td>
                                                     <td><?= htmlspecialchars($hutanAdat['nama_hutan_adat']) ?></td>
                                                     <td><?= htmlspecialchars($hutanAdat['nama_masyarakat_hukum_adat']) ?>
@@ -200,6 +206,7 @@ function formatGeomTable($wkt)
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Hutan Adat</th>
                                                 <th>Nama Hutan Adat</th>
                                                 <th>Masyarakat Hukum Adat</th>
@@ -229,7 +236,7 @@ function formatGeomTable($wkt)
             </section>
 
             <div class="modal fade" id="modalTambah">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title">Tambah Hutan Adat</h4>
@@ -238,16 +245,22 @@ function formatGeomTable($wkt)
                         <form id="formTambah" method="POST" action="store.php" enctype="multipart/form-data">
                             <?= csrfField() ?>
                             <div class="modal-body">
-                                <div class="form-group">
-                                    <label for="kode_hutan_adat">Kode Hutan Adat<code>*</code></label>
-                                    <input type="text" name="kode_hutan_adat" class="form-control" id="kode_hutan_adat"
-                                        value="<?= (new HutanAdat($pdo))->generateKode() ?>"
-                                        placeholder="Masukkan Kode Hutan Adat">
-                                </div>
-                                <div class="form-group">
-                                    <label for="nama_hutan_adat">Nama Hutan Adat<code>*</code></label>
-                                    <input type="text" name="nama_hutan_adat" class="form-control" id="nama_hutan_adat"
-                                        placeholder="Masukkan Nama Hutan Adat">
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="kode_hutan_adat">Kode Hutan Adat<code>*</code></label>
+                                            <input type="text" name="kode_hutan_adat" class="form-control" id="kode_hutan_adat"
+                                                value="<?= (new HutanAdat($pdo))->generateKode() ?>"
+                                                placeholder="Masukkan Kode Hutan Adat" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="nama_hutan_adat">Nama Hutan Adat<code>*</code></label>
+                                            <input type="text" name="nama_hutan_adat" class="form-control" id="nama_hutan_adat"
+                                                placeholder="Masukkan Nama Hutan Adat">
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="id_masyarakat_hukum_adat">Masyarakat Hukum Adat<code>*</code></label>
@@ -261,36 +274,50 @@ function formatGeomTable($wkt)
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <label for="id_desa">Desa<code>*</code></label>
-                                    <select name="id_desa" class="form-control" id="id_desa">
-                                        <option value="">-- Pilih Desa --</option>
-                                        <?php foreach ($desas as $d): ?>
-                                            <option value="<?= $d['id'] ?>">
-                                                <?= htmlspecialchars($d['nama_desa']) ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
+
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="id_desa">Desa<code>*</code></label>
+                                            <select name="id_desa" class="form-control" id="id_desa">
+                                                <option value="">-- Pilih Desa --</option>
+                                                <?php foreach ($desas as $d): ?>
+                                                    <option value="<?= $d['id'] ?>">
+                                                        <?= htmlspecialchars($d['nama_desa']) ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="nomor_sk">Nomor SK<code>*</code></label>
+                                            <input type="text" name="nomor_sk" class="form-control" id="nomor_sk"
+                                                placeholder="Masukkan Nomor SK">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="nomor_sk">Nomor SK<code>*</code></label>
-                                    <input type="text" name="nomor_sk" class="form-control" id="nomor_sk"
-                                        placeholder="Masukkan Nomor SK">
-                                </div>
-                                <div class="form-group">
-                                    <label for="tanggal_sk">Tanggal SK<code>*</code></label>
-                                    <input type="date" name="tanggal_sk" class="form-control" id="tanggal_sk">
-                                </div>
-                                <div class="form-group">
-                                    <label for="id_status_kawasan">Status Kawasan<code>*</code></label>
-                                    <select name="id_status_kawasan" class="form-control" id="id_status_kawasan">
-                                        <option value="">-- Pilih Status Kawasan --</option>
-                                        <?php foreach ($statusKawasans as $sk): ?>
-                                            <option value="<?= $sk['id'] ?>">
-                                                <?= htmlspecialchars($sk['nama']) ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
+
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="tanggal_sk">Tanggal SK<code>*</code></label>
+                                            <input type="date" name="tanggal_sk" class="form-control" id="tanggal_sk">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="id_status_kawasan">Status Kawasan<code>*</code></label>
+                                            <select name="id_status_kawasan" class="form-control" id="id_status_kawasan">
+                                                <option value="">-- Pilih Status Kawasan --</option>
+                                                <?php foreach ($statusKawasans as $sk): ?>
+                                                    <option value="<?= $sk['id'] ?>">
+                                                        <?= htmlspecialchars($sk['nama']) ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="luas_ha">Luas (ha)<code>*</code></label>
@@ -316,14 +343,14 @@ function formatGeomTable($wkt)
                                 <div class="form-group">
                                     <label>Status Aktif<code>*</code></label>
                                     <div class="form-group row">
-                                        <div class="col-sm-2">
+                                        <div class="col-lg-2 col-2">
                                             <div class="custom-control custom-radio">
                                                 <input class="custom-control-input" type="radio" id="add_status_aktif"
                                                     name="is_active" value="1" checked>
                                                 <label for="add_status_aktif" class="custom-control-label">Aktif</label>
                                             </div>
                                         </div>
-                                        <div class="col-sm-2">
+                                        <div class="col-lg-2 col-2">
                                             <div class="custom-control custom-radio">
                                                 <input class="custom-control-input" type="radio"
                                                     id="add_status_nonaktif" name="is_active" value="0">
@@ -343,7 +370,7 @@ function formatGeomTable($wkt)
             </div>
 
             <div class="modal fade" id="modalEdit">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-xl">
                     <div class="modal-content">
 
                         <div class="modal-header">
@@ -355,16 +382,22 @@ function formatGeomTable($wkt)
                             <?= csrfField() ?>
                             <input type="hidden" name="id" id="edit_id">
                             <div class="modal-body">
-                                <div class="form-group">
-                                    <label for="kode_hutan_adat">Kode Hutan Adat<code>*</code></label>
-                                    <input type="text" name="kode_hutan_adat" class="form-control"
-                                        id="edit_kode_hutan_adat" value="<?= (new HutanAdat($pdo))->generateKode() ?>"
-                                        placeholder="Masukkan Kode Hutan Adat">
-                                </div>
-                                <div class="form-group">
-                                    <label for="nama_hutan_adat">Nama Hutan Adat<code>*</code></label>
-                                    <input type="text" name="nama_hutan_adat" class="form-control"
-                                        id="edit_nama_hutan_adat" placeholder="Masukkan Nama Hutan Adat">
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="kode_hutan_adat">Kode Hutan Adat<code>*</code></label>
+                                            <input type="text" name="kode_hutan_adat" class="form-control"
+                                                id="edit_kode_hutan_adat" value="<?= (new HutanAdat($pdo))->generateKode() ?>"
+                                                placeholder="Masukkan Kode Hutan Adat" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="nama_hutan_adat">Nama Hutan Adat<code>*</code></label>
+                                            <input type="text" name="nama_hutan_adat" class="form-control"
+                                                id="edit_nama_hutan_adat" placeholder="Masukkan Nama Hutan Adat">
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="edit_id_masyarakat_hukum_adat">Masyarakat Hukum
@@ -379,37 +412,49 @@ function formatGeomTable($wkt)
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <label for="edit_id_desa">Desa<code>*</code></label>
-                                    <select name="id_desa" class="form-control" id="edit_id_desa">
-                                        <option value="">-- Pilih Desa --</option>
-                                        <?php foreach ($desas as $d): ?>
-                                            <option value="<?= $d['id'] ?>">
-                                                <?= htmlspecialchars($d['nama_desa']) ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="edit_id_desa">Desa<code>*</code></label>
+                                            <select name="id_desa" class="form-control" id="edit_id_desa">
+                                                <option value="">-- Pilih Desa --</option>
+                                                <?php foreach ($desas as $d): ?>
+                                                    <option value="<?= $d['id'] ?>">
+                                                        <?= htmlspecialchars($d['nama_desa']) ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="edit_nomor_sk">Nomor SK<code>*</code></label>
+                                            <input type="text" name="nomor_sk" class="form-control" id="edit_nomor_sk"
+                                                placeholder="Masukkan Nomor SK">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="edit_nomor_sk">Nomor SK<code>*</code></label>
-                                    <input type="text" name="nomor_sk" class="form-control" id="edit_nomor_sk"
-                                        placeholder="Masukkan Nomor SK">
-                                </div>
-                                <div class="form-group">
-                                    <label for="edit_tanggal_sk">Tanggal SK<code>*</code></label>
-                                    <input type="date" name="tanggal_sk" class="form-control" id="edit_tanggal_sk"
-                                        placeholder="Masukkan Tanggal SK">
-                                </div>
-                                <div class="form-group">
-                                    <label for="edit_id_status_kawasan">Status Kawasan<code>*</code></label>
-                                    <select name="id_status_kawasan" class="form-control" id="edit_id_status_kawasan">
-                                        <option value="">-- Pilih Status Kawasan --</option>
-                                        <?php foreach ($statusKawasans as $sk): ?>
-                                            <option value="<?= $sk['id'] ?>">
-                                                <?= htmlspecialchars($sk['nama']) ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="edit_tanggal_sk">Tanggal SK<code>*</code></label>
+                                            <input type="date" name="tanggal_sk" class="form-control" id="edit_tanggal_sk"
+                                                placeholder="Masukkan Tanggal SK">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="edit_id_status_kawasan">Status Kawasan<code>*</code></label>
+                                            <select name="id_status_kawasan" class="form-control" id="edit_id_status_kawasan">
+                                                <option value="">-- Pilih Status Kawasan --</option>
+                                                <?php foreach ($statusKawasans as $sk): ?>
+                                                    <option value="<?= $sk['id'] ?>">
+                                                        <?= htmlspecialchars($sk['nama']) ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="edit_luas_ha">Luas (ha)<code>*</code></label>
@@ -434,19 +479,25 @@ function formatGeomTable($wkt)
                                 </div>
                                 <div class="form-group">
                                     <label>Status Aktif <code>*</code></label>
-                                    <div class="custom-control custom-radio">
-                                        <input class="custom-control-input edit_status" type="radio"
-                                            id="edit_status_aktif" name="is_active" value="1">
-                                        <label for="edit_status_aktif" class="custom-control-label">
-                                            Aktif
-                                        </label>
-                                    </div>
-                                    <div class="custom-control custom-radio">
-                                        <input class="custom-control-input edit_status" type="radio"
-                                            id="edit_status_nonaktif" name="is_active" value="0">
-                                        <label for="edit_status_nonaktif" class="custom-control-label">
-                                            Nonaktif
-                                        </label>
+                                    <div class="form-group row">
+                                        <div class="col-lg-2 col-2">
+                                            <div class="custom-control custom-radio">
+                                                <input class="custom-control-input edit_status" type="radio"
+                                                    id="edit_status_aktif" name="is_active" value="1">
+                                                <label for="edit_status_aktif" class="custom-control-label">
+                                                    Aktif
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 col-2">
+                                            <div class="custom-control custom-radio">
+                                                <input class="custom-control-input edit_status" type="radio"
+                                                    id="edit_status_nonaktif" name="is_active" value="0">
+                                                <label for="edit_status_nonaktif" class="custom-control-label">
+                                                    Nonaktif
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -512,11 +563,15 @@ function formatGeomTable($wkt)
     <!-- jquery-validation -->
     <script src="../assets/adminlte/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script src="../assets/adminlte/plugins/jquery-validation/additional-methods.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- Page specific script -->
     <script>
-        $(function () {
+        $(function() {
             $("#example1").DataTable({
-                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
@@ -532,7 +587,7 @@ function formatGeomTable($wkt)
     </script>
 
     <script>
-        $(function () {
+        $(function() {
             function initValidation(formId) {
                 $(formId).validate({
                     rules: {
@@ -606,14 +661,14 @@ function formatGeomTable($wkt)
                         }
                     },
                     errorElement: 'span',
-                    errorPlacement: function (error, element) {
+                    errorPlacement: function(error, element) {
                         error.addClass('invalid-feedback');
                         element.closest('.form-group').append(error);
                     },
-                    highlight: function (element) {
+                    highlight: function(element) {
                         $(element).addClass('is-invalid');
                     },
-                    unhighlight: function (element) {
+                    unhighlight: function(element) {
                         $(element).removeClass('is-invalid');
                     }
                 });
@@ -624,7 +679,7 @@ function formatGeomTable($wkt)
     </script>
 
     <script>
-        $(document).on("click", ".btn-edit", function () {
+        $(document).on("click", ".btn-edit", function() {
             let id = $(this).data("id");
             let kode_hutan_adat = $(this).data("kode_hutan_adat");
             let nama_hutan_adat = $(this).data("nama_hutan_adat");
@@ -641,22 +696,84 @@ function formatGeomTable($wkt)
             $("#edit_id").val(id);
             $("#edit_kode_hutan_adat").val(kode_hutan_adat);
             $("#edit_nama_hutan_adat").val(nama_hutan_adat);
-            $("#edit_id_masyarakat_hukum_adat").val(id_masyarakat_hukum_adat);
-            $("#edit_id_desa").val(id_desa);
+            $("#edit_id_masyarakat_hukum_adat")
+                .val(String(id_masyarakat_hukum_adat))
+                .trigger("change");
+            $("#edit_id_desa")
+                .val(String(id_desa))
+                .trigger("change");
             $("#edit_nomor_sk").val(nomor_sk);
             $("#edit_tanggal_sk").val(tanggal_sk);
-            $("#edit_id_status_kawasan").val(id_status_kawasan);
+            $("#edit_id_status_kawasan")
+                .val(String(id_status_kawasan))
+                .trigger("change");
             $("#edit_luas_ha").val(luas_ha);
             $("#edit_id_polygon").val(id_polygon);
             $("#edit_keterangan").val(keterangan);
             $("input[name='is_active'][value='" + status + "']").prop("checked", true);
+        });
+
+        $(document).ready(function() {
+            $('#id_masyarakat_hukum_adat').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: '-- Pilih Masyarakat Hukum Adat --',
+                allowClear: true,
+                dropdownParent: $('#modalTambah')
+            });
+
+            $('#edit_id_masyarakat_hukum_adat').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: '-- Pilih Masyarakat Hukum Adat --',
+                allowClear: true,
+                dropdownParent: $('#modalEdit') // jika dalam modal
+            });
+
+            $('#id_desa').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: '-- Pilih Desa --',
+                allowClear: true,
+                dropdownParent: $('#modalTambah')
+            });
+
+            $('#edit_id_desa').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: '-- Pilih Desa --',
+                allowClear: true,
+                dropdownParent: $('#modalEdit') // jika dalam modal
+            });
+
+            $('#id_status_kawasan').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: '-- Pilih Status Kawasan --',
+                allowClear: true,
+                dropdownParent: $('#modalTambah')
+            });
+
+            $('#edit_id_status_kawasan').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: '-- Pilih Status Kawasan --',
+                allowClear: true,
+                dropdownParent: $('#modalEdit') // jika dalam modal
+            });
+        });
+
+        $('#id_masyarakat_hukum_adat, #edit_id_masyarakat_hukum_adat, #id_desa, #edit_id_desa, #id_status_kawasan, #edit_id_status_kawasan').on('select2:open', function() {
+            setTimeout(() => {
+                document.querySelector('.select2-container--open .select2-search__field').focus();
+            }, 0);
         });
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        $(document).on("submit", ".form-delete", function (e) {
+        $(document).on("submit", ".form-delete", function(e) {
             e.preventDefault();
             let form = this;
             Swal.fire({
@@ -705,7 +822,7 @@ function formatGeomTable($wkt)
     </script>
 
     <script>
-        $(document).on("click", ".btn-geom", function () {
+        $(document).on("click", ".btn-geom", function() {
             let wkt = $(this).data("geom");
 
             if (!wkt) {
@@ -756,10 +873,10 @@ function formatGeomTable($wkt)
     </script>
 
     <script>
-        document.getElementById('tanggal_sk').addEventListener('focus', function () {
+        document.getElementById('tanggal_sk').addEventListener('focus', function() {
             this.showPicker();
         });
-        document.getElementById('edit_tanggal_sk').addEventListener('focus', function () {
+        document.getElementById('edit_tanggal_sk').addEventListener('focus', function() {
             this.showPicker();
         });
     </script>

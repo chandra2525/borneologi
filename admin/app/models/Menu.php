@@ -15,7 +15,7 @@ class Menu
                 FROM m_menus m
                 LEFT JOIN m_menus p ON m.id_parent = p.id
                 WHERE m.deleted_at IS NULL
-                ORDER BY m.urutan ASC";
+                ORDER BY m.id ASC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
@@ -143,5 +143,28 @@ class Menu
         $number++;
 
         return "MNU" . str_pad($number, 3, "0", STR_PAD_LEFT);
+    }
+
+    public function generateUrutan()
+    {
+        $sql = "SELECT urutan 
+            FROM m_menus 
+            WHERE deleted_at IS NULL
+            ORDER BY id DESC 
+            LIMIT 1";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $row = $stmt->fetch();
+
+        if (!$row) {
+            return 1;
+        }
+
+        $lastUrutan = $row['urutan'];
+        $number = (int) $lastUrutan;
+        $number++;
+
+        return $number;
     }
 }

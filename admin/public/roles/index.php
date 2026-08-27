@@ -86,6 +86,7 @@ $roles = $controller->index();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Role</th>
                                                 <th>Nama Role</th>
                                                 <th>Deskripsi</th>
@@ -95,8 +96,10 @@ $roles = $controller->index();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($roles as $role): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($role['kode']) ?></td>
                                                     <td><?= htmlspecialchars($role['nama']) ?></td>
                                                     <td><?= htmlspecialchars($role['deskripsi']) ?></td>
@@ -138,6 +141,7 @@ $roles = $controller->index();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Role</th>
                                                 <th>Nama Role</th>
                                                 <th>Deskripsi</th>
@@ -173,7 +177,7 @@ $roles = $controller->index();
                                     <label for="kode">Kode Role<code>*</code></label>
                                     <input type="text" name="kode" class="form-control" id="kode"
                                         value="<?= (new Role($pdo))->generateKode() ?>"
-                                        placeholder="Masukkan kode role">
+                                        placeholder="Masukkan kode role" readonly="true">
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Role<code>*</code></label>
@@ -188,6 +192,7 @@ $roles = $controller->index();
                                 <div class="form-group">
                                     <label for="urutan">Urutan<code>*</code></label>
                                     <input type="number" name="urutan" class="form-control" id="urutan"
+                                        value="<?= (new Role($pdo))->generateUrutan() ?>"
                                         placeholder="Masukkan urutan">
                                 </div>
                                 <div class="form-group">
@@ -234,7 +239,7 @@ $roles = $controller->index();
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="kode">Kode Role<code>*</code></label>
-                                    <input type="text" name="kode" id="edit_kode" class="form-control">
+                                    <input type="text" name="kode" id="edit_kode" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Role<code>*</code></label>

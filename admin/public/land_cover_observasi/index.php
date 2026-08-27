@@ -89,6 +89,7 @@ $penggunaanLainnyas = $controller->getPenggunaanLainnya();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Nama Lahan</th>
                                                 <th>Periode Pengecekan</th>
                                                 <th>Kategori Area</th>
@@ -100,8 +101,10 @@ $penggunaanLainnyas = $controller->getPenggunaanLainnya();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($landCoverObservasis as $landCoverObservasi): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($landCoverObservasi['nama_lahan']) ?></td>
                                                     <td><?= htmlspecialchars($landCoverObservasi['periode_pengecekan']) ?></td>
                                                     <td><?= htmlspecialchars($landCoverObservasi['nama_kategori_area']) ?></td>
@@ -138,6 +141,7 @@ $penggunaanLainnyas = $controller->getPenggunaanLainnya();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Nama Lahan</th>
                                                 <th>Periode Pengecekan</th>
                                                 <th>Kategori Area</th>

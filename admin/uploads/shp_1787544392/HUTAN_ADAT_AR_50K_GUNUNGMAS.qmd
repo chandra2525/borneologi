@@ -1,0 +1,70 @@
+<!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
+<qgis version="3.40.15-Bratislava">
+  <identifier>HUTAN_ADAT_AR_50K_GUNUNGMAS</identifier>
+  <parentidentifier></parentidentifier>
+  <language>IND</language>
+  <type>dataset</type>
+  <title>HUTAN_ADAT_AR_50K_GUNUNGMAS</title>
+  <abstract>Peta Penetapan Status Hutan Adat adalah peta tematik salah satu skema Perhutanan Sosial berupa pengakuan pengelolaan hutan adat kepada Masyarakat Hukum Adat. Peta ini merupakan bagian dari dokumen SK Menteri LHK tentang Penetapan Hutan Adat yang pasca terbitnya UU No. 11 Tahun 2020 tentang Cipta Kerja mengalami perubahan istilah menjadi Penetapan Status Hutan Adat. Pembuatan Peta Penetapan Status Hutan Adat melalui tahapan antara lain: Usulan Kepala Daerah yang kemudian dilanjutkan dengan tahap verifikasi dan validasi Hutan Adat (Dasar Hukum: Peraturan Menteri Lingkungan Hidup dan Kehutanan Republik Indonesia No. 9 Tahun 2021 tentang Pengelolaan Perhutanan Sosial)
+
+Merupakan layer penetapan status hutan adat tipe polygon dengan skala 1: 50.000. Hutan Adat adalah hutan yang berada dalam wilayah Masyarakat Hukum Adat dan merupakan salah satu skema Perhutanan Sosial. Peta ini merupakan bagian dari dokumen SK Menteri LHK tentang Penetapan Hutan Adat.</abstract>
+  <keywords vocabulary="Search keys">
+    <keyword>Hutan Adat (Update s/d Agustus 2023)</keyword>
+  </keywords>
+  <contact>
+    <contactAddress>
+      <type></type>
+      <address>Gedung Manggala Wanabakti Blok 1 Lantai 7</address>
+      <city>Jakarta Pusat</city>
+      <administrativearea>DKI Jakarta</administrativearea>
+      <postalcode>10270</postalcode>
+      <country></country>
+    </contactAddress>
+    <name>Belinda Arunarwati Margono</name>
+    <organization>Direktorat Inventarisasi Pemantauan Sumber Daya Hutan, Ditjen PKTL</organization>
+    <position>Direktur</position>
+    <voice>021-5730292</voice>
+    <fax></fax>
+    <email>ipsdh.pktl@menlhk.go.id</email>
+    <role></role>
+  </contact>
+  <links/>
+  <history>Tahapan 1: Hasil verifikasi objek oleh tim terpadu penetapan hutan adat Tahapan 2: Penyesuaian dengan peta RBI Tahapan 3: Cek topologi error</history>
+  <dates>
+    <date value="2022-06-01T00:00:00" type="Created"/>
+    <date value="2022-09-01T00:00:00" type="Published"/>
+    <date value="2022-09-01T00:00:00" type="Revised"/>
+  </dates>
+  <fees></fees>
+  <constraints type="Limitations of use">Data Penetapan Hutan Adat adalah sebagaimana Peta Lampiran SK Penetapan Hutan Adat</constraints>
+  <rights>Direktorat Penanganan Konflik Tenurial dan Hutan Adat, Direktorat Jenderal Perhutanan Sosial dan Kemitraan Lingkungan, Kementerian Lingkungan Hidup dan Kehutanan</rights>
+  <encoding></encoding>
+  <crs>
+    <spatialrefsys nativeFormat="Wkt">
+      <wkt>GEOGCRS["WGS 84",ENSEMBLE["World Geodetic System 1984 ensemble",MEMBER["World Geodetic System 1984 (Transit)"],MEMBER["World Geodetic System 1984 (G730)"],MEMBER["World Geodetic System 1984 (G873)"],MEMBER["World Geodetic System 1984 (G1150)"],MEMBER["World Geodetic System 1984 (G1674)"],MEMBER["World Geodetic System 1984 (G1762)"],MEMBER["World Geodetic System 1984 (G2139)"],MEMBER["World Geodetic System 1984 (G2296)"],ELLIPSOID["WGS 84",6378137,298.257223563,LENGTHUNIT["metre",1]],ENSEMBLEACCURACY[2.0]],PRIMEM["Greenwich",0,ANGLEUNIT["degree",0.0174532925199433]],CS[ellipsoidal,2],AXIS["geodetic latitude (Lat)",north,ORDER[1],ANGLEUNIT["degree",0.0174532925199433]],AXIS["geodetic longitude (Lon)",east,ORDER[2],ANGLEUNIT["degree",0.0174532925199433]],USAGE[SCOPE["Horizontal component of 3D system."],AREA["World."],BBOX[-90,-180,90,180]],ID["EPSG",4326]]</wkt>
+      <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
+      <srsid>3452</srsid>
+      <srid>4326</srid>
+      <authid>EPSG:4326</authid>
+      <description>WGS 84</description>
+      <projectionacronym>longlat</projectionacronym>
+      <ellipsoidacronym>EPSG:7030</ellipsoidacronym>
+      <geographicflag>true</geographicflag>
+    </spatialrefsys>
+  </crs>
+  <extent>
+    <spatial maxx="140.51829100000000494" maxz="0" minz="0" maxy="2.39497600000000022" crs="EPSG:4326" miny="-8.53237299999999976" minx="98.59251700000000085" dimensions="2"/>
+    <temporal>
+      <period>
+        <start>2022-08-31T17:00:00Z</start>
+        <end></end>
+      </period>
+    </temporal>
+    <temporal>
+      <period>
+        <start></start>
+        <end></end>
+      </period>
+    </temporal>
+  </extent>
+</qgis>

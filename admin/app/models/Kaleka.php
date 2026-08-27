@@ -29,7 +29,7 @@ class Kaleka
             LEFT JOIN t_petani pe ON pe.id=ka.id_petani
             LEFT JOIN m_desa d ON d.id=ka.id_desa
             WHERE ka.deleted_at IS NULL
-            ORDER BY ka.id ASC";
+            ORDER BY ka.id DESC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
@@ -108,7 +108,7 @@ class Kaleka
     {
         $sql = "SELECT id,nama_lengkap FROM t_petani
                 WHERE deleted_at IS NULL
-                ORDER BY id";
+                ORDER BY id DESC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
@@ -120,7 +120,7 @@ class Kaleka
     {
         $sql = "SELECT id,nama_desa FROM m_desa
                 WHERE deleted_at IS NULL
-                ORDER BY id";
+                ORDER BY id DESC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();

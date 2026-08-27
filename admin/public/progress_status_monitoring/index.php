@@ -85,6 +85,7 @@ $progressStatusMonitorings = $controller->index();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Progress Status Monitoring</th>
                                                 <th>Nama Progress Status Monitoring</th>
                                                 <th>Deskripsi</th>
@@ -94,8 +95,10 @@ $progressStatusMonitorings = $controller->index();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($progressStatusMonitorings as $progressStatusMonitoring): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($progressStatusMonitoring['kode']) ?></td>
                                                     <td><?= htmlspecialchars($progressStatusMonitoring['nama']) ?></td>
                                                     <td><?= htmlspecialchars($progressStatusMonitoring['deskripsi']) ?></td>
@@ -129,6 +132,7 @@ $progressStatusMonitorings = $controller->index();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Progress Status Monitoring</th>
                                                 <th>Nama Progress Status Monitoring</th>
                                                 <th>Deskripsi</th>
@@ -164,7 +168,7 @@ $progressStatusMonitorings = $controller->index();
                                     <label for="kode">Kode Progress Status Monitoring<code>*</code></label>
                                     <input type="text" name="kode" class="form-control" id="kode"
                                         value="<?= (new ProgressStatusMonitoring($pdo))->generateKode() ?>"
-                                        placeholder="Masukkan kode progress status monitoring">
+                                        placeholder="Masukkan kode progress status monitoring" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Progress Status Monitoring<code>*</code></label>
@@ -179,7 +183,7 @@ $progressStatusMonitorings = $controller->index();
                                 <div class="form-group">
                                     <label for="urutan">Urutan<code>*</code></label>
                                     <input type="number" name="urutan" class="form-control" id="urutan"
-                                        placeholder="Masukkan urutan">
+                                        value="<?= (new ProgressStatusMonitoring($pdo))->generateUrutan() ?>" placeholder="Masukkan urutan">
                                 </div>
                                 <div class="form-group">
                                     <label>Status Aktif <code>*</code></label>
@@ -225,7 +229,7 @@ $progressStatusMonitorings = $controller->index();
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="kode">Kode Progress Status Monitoring<code>*</code></label>
-                                    <input type="text" name="kode" id="edit_kode" class="form-control">
+                                    <input type="text" name="kode" id="edit_kode" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Progress Status Monitoring<code>*</code></label>

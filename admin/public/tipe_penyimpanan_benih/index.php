@@ -85,6 +85,7 @@ $tipePenyimpananBenihs = $controller->index();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Tipe Penyimpanan Benih</th>
                                                 <th>Nama Tipe Penyimpanan Benih</th>
                                                 <th>Deskripsi</th>
@@ -94,8 +95,10 @@ $tipePenyimpananBenihs = $controller->index();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($tipePenyimpananBenihs as $tipePenyimpananBenih): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($tipePenyimpananBenih['kode']) ?></td>
                                                     <td><?= htmlspecialchars($tipePenyimpananBenih['nama']) ?></td>
                                                     <td><?= htmlspecialchars($tipePenyimpananBenih['deskripsi']) ?></td>
@@ -129,6 +132,7 @@ $tipePenyimpananBenihs = $controller->index();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Tipe Penyimpanan Benih</th>
                                                 <th>Nama Tipe Penyimpanan Benih</th>
                                                 <th>Deskripsi</th>
@@ -164,7 +168,7 @@ $tipePenyimpananBenihs = $controller->index();
                                     <label for="kode">Kode Tipe Penyimpanan Benih<code>*</code></label>
                                     <input type="text" name="kode" class="form-control" id="kode"
                                         value="<?= (new TipePenyimpananBenih($pdo))->generateKode() ?>"
-                                        placeholder="Masukkan kode tipe penyimpanan benih">
+                                        placeholder="Masukkan kode tipe penyimpanan benih" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Tipe Penyimpanan Benih<code>*</code></label>
@@ -179,7 +183,7 @@ $tipePenyimpananBenihs = $controller->index();
                                 <div class="form-group">
                                     <label for="urutan">Urutan<code>*</code></label>
                                     <input type="number" name="urutan" class="form-control" id="urutan"
-                                        placeholder="Masukkan urutan">
+                                        value="<?= (new TipePenyimpananBenih($pdo))->generateUrutan() ?>"placeholder="Masukkan urutan">
                                 </div>
                                 <div class="form-group">
                                     <label>Status Aktif <code>*</code></label>
@@ -225,7 +229,7 @@ $tipePenyimpananBenihs = $controller->index();
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="kode">Kode Tipe Penyimpanan Benih<code>*</code></label>
-                                    <input type="text" name="kode" id="edit_kode" class="form-control">
+                                    <input type="text" name="kode" id="edit_kode" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Tipe Penyimpanan Benih<code>*</code></label>

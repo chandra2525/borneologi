@@ -88,6 +88,7 @@ $progressStatusMonitorings = $controller->getProgressStatusMonitoring();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Monitoring</th>
                                                 <th>Nama Lahan</th>
                                                 <th>Tipe Penanaman</th>
@@ -103,8 +104,10 @@ $progressStatusMonitorings = $controller->getProgressStatusMonitoring();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($monitoringPenanamans as $monitoringPenanaman): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($monitoringPenanaman['kode_monitoring']) ?></td>
                                                     <td><?= htmlspecialchars($monitoringPenanaman['nama_lahan']) ?></td>
                                                     <td><?= htmlspecialchars($monitoringPenanaman['nama_tipe_penanaman']) ?></td>
@@ -149,6 +152,7 @@ $progressStatusMonitorings = $controller->getProgressStatusMonitoring();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Monitoring</th>
                                                 <th>Nama Lahan</th>
                                                 <th>Tipe Penanaman</th>

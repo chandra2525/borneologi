@@ -88,6 +88,7 @@ $tipePenyimpananBenihs = $controller->getTipePenyimpananBenih();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Nomor Aksesi</th>
                                                 <th>Nama Lahan</th>
                                                 <th>Nama Negara</th>
@@ -113,8 +114,10 @@ $tipePenyimpananBenihs = $controller->getTipePenyimpananBenih();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($bankBenihs as $bankBenih): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($bankBenih['nomor_aksesi']) ?></td>
                                                     <td><?= htmlspecialchars($bankBenih['nama_lahan']) ?></td>
                                                     <td><?= htmlspecialchars($bankBenih['nama_negara']) ?></td>
@@ -184,6 +187,7 @@ $tipePenyimpananBenihs = $controller->getTipePenyimpananBenih();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Nomor Aksesi</th>
                                                 <th>Nama Lahan</th>
                                                 <th>Nama Negara</th>

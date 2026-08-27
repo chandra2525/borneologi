@@ -85,6 +85,7 @@ $penggunaanLainnyas = $controller->index();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Penggunaan Lainnya</th>
                                                 <th>Nama Penggunaan Lainnya</th>
                                                 <th>Deskripsi</th>
@@ -94,8 +95,10 @@ $penggunaanLainnyas = $controller->index();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($penggunaanLainnyas as $penggunaanLainnya): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($penggunaanLainnya['kode']) ?></td>
                                                     <td><?= htmlspecialchars($penggunaanLainnya['nama']) ?></td>
                                                     <td><?= htmlspecialchars($penggunaanLainnya['deskripsi']) ?></td>
@@ -129,6 +132,7 @@ $penggunaanLainnyas = $controller->index();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Penggunaan Lainnya</th>
                                                 <th>Nama Penggunaan Lainnya</th>
                                                 <th>Deskripsi</th>
@@ -164,7 +168,7 @@ $penggunaanLainnyas = $controller->index();
                                     <label for="kode">Kode Penggunaan Lainnya<code>*</code></label>
                                     <input type="text" name="kode" class="form-control" id="kode"
                                         value="<?= (new PenggunaanLainnya($pdo))->generateKode() ?>"
-                                        placeholder="Masukkan kode penggunaan lainnya">
+                                        placeholder="Masukkan kode penggunaan lainnya" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Penggunaan Lainnya<code>*</code></label>
@@ -179,7 +183,7 @@ $penggunaanLainnyas = $controller->index();
                                 <div class="form-group">
                                     <label for="urutan">Urutan<code>*</code></label>
                                     <input type="number" name="urutan" class="form-control" id="urutan"
-                                        placeholder="Masukkan urutan">
+                                        value="<?= (new PenggunaanLainnya($pdo))->generateUrutan() ?>"placeholder="Masukkan urutan">
                                 </div>
                                 <div class="form-group">
                                     <label>Status Aktif <code>*</code></label>
@@ -225,7 +229,7 @@ $penggunaanLainnyas = $controller->index();
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="kode">Kode Penggunaan Lainnya<code>*</code></label>
-                                    <input type="text" name="kode" id="edit_kode" class="form-control">
+                                    <input type="text" name="kode" id="edit_kode" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Penggunaan Lainnya<code>*</code></label>

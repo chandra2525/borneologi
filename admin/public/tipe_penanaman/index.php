@@ -85,6 +85,7 @@ $tipePenanamans = $controller->index();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Tipe Penanaman</th>
                                                 <th>Nama Tipe Penanaman</th>
                                                 <th>Deskripsi</th>
@@ -94,8 +95,10 @@ $tipePenanamans = $controller->index();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($tipePenanamans as $tipePenanaman): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($tipePenanaman['kode']) ?></td>
                                                     <td><?= htmlspecialchars($tipePenanaman['nama']) ?></td>
                                                     <td><?= htmlspecialchars($tipePenanaman['deskripsi']) ?></td>
@@ -129,6 +132,7 @@ $tipePenanamans = $controller->index();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Tipe Penanaman</th>
                                                 <th>Nama Tipe Penanaman</th>
                                                 <th>Deskripsi</th>
@@ -164,7 +168,7 @@ $tipePenanamans = $controller->index();
                                     <label for="kode">Kode Tipe Penanaman<code>*</code></label>
                                     <input type="text" name="kode" class="form-control" id="kode"
                                         value="<?= (new TipePenanaman($pdo))->generateKode() ?>"
-                                        placeholder="Masukkan kode tipe penanaman">
+                                        placeholder="Masukkan kode tipe penanaman" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Tipe Penanaman<code>*</code></label>
@@ -179,7 +183,7 @@ $tipePenanamans = $controller->index();
                                 <div class="form-group">
                                     <label for="urutan">Urutan<code>*</code></label>
                                     <input type="number" name="urutan" class="form-control" id="urutan"
-                                        placeholder="Masukkan urutan">
+                                        value="<?= (new TipePenanaman($pdo))->generateUrutan() ?>" placeholder="Masukkan urutan">
                                 </div>
                                 <div class="form-group">
                                     <label>Status Aktif <code>*</code></label>
@@ -225,7 +229,7 @@ $tipePenanamans = $controller->index();
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="kode">Kode Tipe Penanaman<code>*</code></label>
-                                    <input type="text" name="kode" id="edit_kode" class="form-control">
+                                    <input type="text" name="kode" id="edit_kode" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Tipe Penanaman<code>*</code></label>

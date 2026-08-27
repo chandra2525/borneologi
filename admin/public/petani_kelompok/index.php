@@ -76,12 +76,12 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Data Petani Kelompok</h1>
+                            <h1>Data Kelompok Penerima Manfaat</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Master Data</a></li>
-                                <li class="breadcrumb-item active">Data Petani Kelompok</li>
+                                <li class="breadcrumb-item active">Data Kelompok Penerima Manfaat</li>
                             </ol>
                         </div>
                     </div>
@@ -95,10 +95,10 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header row">
-                                    <h3 class="card-title col-9">Berikut adalah list dari Data Petani Kelompok</h3>
+                                    <h3 class="card-title col-9">Berikut adalah list dari Data Kelompok Penerima Manfaat</h3>
                                     <button class="col-3 btn btn-block btn-success" data-toggle="modal"
                                         data-target="#modalTambah">
-                                        Tambah Petani Kelompok
+                                        Tambah Kelompok Penerima Manfaat
                                     </button>
                                 </div>
                                 <!-- /.card-header -->
@@ -106,9 +106,9 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
-                                                <th>ID</th>
-                                                <th>Petani</th>
-                                                <th>Kelompok Tani</th>
+                                                <th class="text-center">No</th>
+                                                <th>Penerima Manfaat</th>
+                                                <th>Kelompok</th>
                                                 <th>Jabatan Kelompok</th>
                                                 <th>Tanggal Gabung</th>
                                                 <th>Tanggal Keluar</th>
@@ -118,9 +118,11 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($petaniKelompoks as $petaniKelompok): ?>
                                                 <tr>
-                                                    <td><?= htmlspecialchars($petaniKelompok['id']) ?></td>
+                                                    <td class="text-center"><?= $no++ ?></td>
+                                                    <!-- <td><?= htmlspecialchars($petaniKelompok['id']) ?></td> -->
                                                     <td><?= htmlspecialchars($petaniKelompok['nama_petani']) ?></td>
                                                     <td><?= htmlspecialchars($petaniKelompok['nama_kelompok_tani']) ?></td>
                                                     <td><?= htmlspecialchars($petaniKelompok['nama_jabatan_kelompok']) ?></td>
@@ -157,9 +159,9 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <th>ID</th>
-                                                <th>Petani</th>
-                                                <th>Kelompok Tani</th>
+                                                <th class="text-center">No</th>
+                                                <th>Penerima Manfaat</th>
+                                                <th>Kelompok</th>
                                                 <th>Jabatan Kelompok</th>
                                                 <th>Tanggal Gabung</th>
                                                 <th>Tanggal Keluar</th>
@@ -182,19 +184,19 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
             </section>
 
             <div class="modal fade" id="modalTambah">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title">Tambah Kelompok Tani</h4>
+                            <h4 class="modal-title">Tambah Kelompok Penerima Manfaat</h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                         <form id="formTambah" method="POST" action="store.php">
                             <?= csrfField() ?>
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label for="id_petani">Petani<code>*</code></label>
+                                    <label for="id_petani">Penerima Manfaat<code>*</code></label>
                                     <select name="id_petani" class="form-control" id="id_petani">
-                                        <option value="">-- Pilih Petani --</option>
+                                        <option value="">-- Pilih Penerima Manfaat --</option>
                                         <?php foreach ($petanis as $p): ?>
                                             <option value="<?= $p['id'] ?>">
                                                 <?= htmlspecialchars($p['nama_lengkap']) ?>
@@ -203,9 +205,9 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="id_kelompok_tani">Kelompok Tani<code>*</code></label>
+                                    <label for="id_kelompok_tani">Kelompok<code>*</code></label>
                                     <select name="id_kelompok_tani" class="form-control" id="id_kelompok_tani">
-                                        <option value="">-- Pilih Kelompok Tani --</option>
+                                        <option value="">-- Pilih Kelompok --</option>
                                         <?php foreach ($kelompokTanis as $kt): ?>
                                             <option value="<?= $kt['id'] ?>">
                                                 <?= htmlspecialchars($kt['nama_kelompok']) ?>
@@ -224,15 +226,21 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <label for="tanggal_gabung">Tanggal Gabung<code>*</code></label>
-                                    <input type="date" name="tanggal_gabung" class="form-control" id="tanggal_gabung"
-                                        placeholder="Pilih Tanggal Gabung">
-                                </div>
-                                <div class="form-group">
-                                    <label for="tanggal_keluar">Tanggal Keluar</label>
-                                    <input type="date" name="tanggal_keluar" class="form-control" id="tanggal_keluar"
-                                        placeholder="Pilih Tanggal Keluar">
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="tanggal_gabung">Tanggal Gabung</label>
+                                            <input type="date" name="tanggal_gabung" class="form-control" id="tanggal_gabung"
+                                                placeholder="Pilih Tanggal Gabung">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="tanggal_keluar">Tanggal Keluar</label>
+                                            <input type="date" name="tanggal_keluar" class="form-control" id="tanggal_keluar"
+                                                placeholder="Pilih Tanggal Keluar">
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="keterangan">Keterangan</label>
@@ -269,11 +277,11 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
             </div>
 
             <div class="modal fade" id="modalEdit">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
 
                         <div class="modal-header">
-                            <h4 class="modal-title">Edit Kelompok Tani</h4>
+                            <h4 class="modal-title">Edit Kelompok Penerima Manfaat</h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
 
@@ -282,9 +290,9 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
                             <input type="hidden" name="id" id="edit_id">
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label for="edit_id_petani">Petani<code>*</code></label>
+                                    <label for="edit_id_petani">Penerima Manfaat<code>*</code></label>
                                     <select name="id_petani" class="form-control" id="edit_id_petani">
-                                        <option value="">-- Pilih Petani --</option>
+                                        <option value="">-- Pilih Penerima Manfaat --</option>
                                         <?php foreach ($petanis as $p): ?>
                                             <option value="<?= $p['id'] ?>">
                                                 <?= htmlspecialchars($p['nama_lengkap']) ?>
@@ -293,9 +301,9 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="edit_id_kelompok_tani">Kelompok Tani<code>*</code></label>
+                                    <label for="edit_id_kelompok_tani">Kelompok<code>*</code></label>
                                     <select name="id_kelompok_tani" class="form-control" id="edit_id_kelompok_tani">
-                                        <option value="">-- Pilih Kelompok Tani --</option>
+                                        <option value="">-- Pilih Kelompok --</option>
                                         <?php foreach ($kelompokTanis as $kt): ?>
                                             <option value="<?= $kt['id'] ?>">
                                                 <?= htmlspecialchars($kt['nama_kelompok']) ?>
@@ -314,15 +322,21 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <label for="tanggal_gabung">Tanggal Gabung<code>*</code></label>
-                                    <input type="date" name="tanggal_gabung" class="form-control" id="edit_tanggal_gabung"
-                                        placeholder="Pilih Tanggal Gabung">
-                                </div>
-                                <div class="form-group">
-                                    <label for="tanggal_keluar">Tanggal Keluar</label>
-                                    <input type="date" name="tanggal_keluar" class="form-control" id="edit_tanggal_keluar"
-                                        placeholder="Pilih Tanggal Keluar">
+                                <div class="row">
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="tanggal_gabung">Tanggal Gabung</label>
+                                            <input type="date" name="tanggal_gabung" class="form-control" id="edit_tanggal_gabung"
+                                                placeholder="Pilih Tanggal Gabung">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <div class="form-group">
+                                            <label for="tanggal_keluar">Tanggal Keluar</label>
+                                            <input type="date" name="tanggal_keluar" class="form-control" id="edit_tanggal_keluar"
+                                                placeholder="Pilih Tanggal Keluar">
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="keterangan">Keterangan</label>
@@ -428,7 +442,7 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
                             required: true
                         },
                         tanggal_gabung: {
-                            required: true
+                            required: false
                         },
                         tanggal_keluar: {
                             required: false
@@ -442,17 +456,17 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
                     },
                     messages: {
                         id_petani: {
-                            required: "Silahkan pilih Petani"
+                            required: "Silahkan pilih Penerima Manfaat"
                         },
                         id_kelompok_tani: {
-                            required: "Silahkan pilih Kelompok Tani"
+                            required: "Silahkan pilih Kelompok"
                         },
                         id_jabatan_kelompok: {
                             required: "Silahkan pilih Jabatan Kelompok"
                         },
-                        tanggal_gabung: {
-                            required: "Silahkan pilih Tanggal Gabung"
-                        },
+                        // tanggal_gabung: {
+                        //     required: "Silahkan pilih Tanggal Gabung"
+                        // },
                         // tanggal_keluar: {
                         //     required: "Silahkan pilih Tanggal Keluar"
                         // },
@@ -493,9 +507,18 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
             let status = $(this).data("status");
 
             $("#edit_id").val(id);
-            $("#edit_id_petani").val(id_petani).trigger('change');
-            $("#edit_id_kelompok_tani").val(id_kelompok_tani);
-            $("#edit_id_jabatan_kelompok").val(id_jabatan_kelompok);
+            // Set Select2
+            $("#edit_id_petani")
+                .val(String(id_petani))
+                .trigger("change");
+
+            $("#edit_id_kelompok_tani")
+                .val(String(id_kelompok_tani))
+                .trigger("change");
+
+            $("#edit_id_jabatan_kelompok")
+                .val(String(id_jabatan_kelompok))
+                .trigger("change");
             $("#edit_tanggal_gabung").val(tanggal_gabung);
             $("#edit_tanggal_keluar").val(tanggal_keluar);
             $("#edit_keterangan").val(keterangan);
@@ -506,20 +529,53 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
             $('#id_petani').select2({
                 theme: 'bootstrap-5',
                 width: '100%',
-                placeholder: '-- Pilih Petani --',
-                allowClear: true
+                placeholder: '-- Pilih Penerima Manfaat --',
+                allowClear: true,
+                dropdownParent: $('#modalTambah')
             });
 
             $('#edit_id_petani').select2({
                 theme: 'bootstrap-5',
                 width: '100%',
-                placeholder: '-- Pilih Petani --',
+                placeholder: '-- Pilih Penerima Manfaat --',
+                allowClear: true,
+                dropdownParent: $('#modalEdit') // jika dalam modal
+            });
+
+            $('#id_kelompok_tani').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: '-- Pilih Kelompok --',
+                allowClear: true,
+                dropdownParent: $('#modalTambah')
+            });
+
+            $('#edit_id_kelompok_tani').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: '-- Pilih Kelompok --',
+                allowClear: true,
+                dropdownParent: $('#modalEdit') // jika dalam modal
+            });
+
+            $('#id_jabatan_kelompok').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: '-- Pilih Jabatan Kelompok --',
+                allowClear: true,
+                dropdownParent: $('#modalTambah')
+            });
+
+            $('#edit_id_jabatan_kelompok').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: '-- Pilih Jabatan Kelompok --',
                 allowClear: true,
                 dropdownParent: $('#modalEdit') // jika dalam modal
             });
         });
 
-        $('#id_petani, #edit_id_petani').on('select2:open', function() {
+        $('#id_petani, #edit_id_petani, #id_kelompok_tani, #edit_id_kelompok_tani, #id_jabatan_kelompok, #edit_id_jabatan_kelompok').on('select2:open', function() {
             setTimeout(() => {
                 document.querySelector('.select2-container--open .select2-search__field').focus();
             }, 0);
@@ -567,13 +623,13 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
         const urlParams = new URLSearchParams(window.location.search);
         const success = urlParams.get('success');
         if (success === "created") {
-            showToast("Data Kelompok Tani berhasil ditambahkan", "created");
+            showToast("Data Kelompok Penerima Manfaat berhasil ditambahkan", "created");
         }
         if (success === "updated") {
-            showToast("Data Kelompok Tani berhasil diperbarui", "updated");
+            showToast("Data Kelompok Penerima Manfaat berhasil diperbarui", "updated");
         }
         if (success === "deleted") {
-            showToast("Data Kelompok Tani berhasil dihapus", "deleted");
+            showToast("Data Kelompok Penerima Manfaat berhasil dihapus", "deleted");
         }
     </script>
 

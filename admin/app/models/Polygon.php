@@ -272,6 +272,556 @@ class Polygon
         return $stmt->fetchAll();
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | BASE QUERY UNTUK DATATABLES SERVER SIDE
+    |--------------------------------------------------------------------------
+    */
+    private function getDataTablesBaseQuery()
+    {
+        return "
+        SELECT
+            po.id,
+            po.kode_polygon,
+            po.nama_polygon,
+            ST_AsText(po.geom_area) AS geom_area,
+
+            CASE
+                WHEN po.relasi_tipe = 'hutan_adat'
+                    THEN ha.id
+
+                WHEN po.relasi_tipe = 'provinsi'
+                    THEN pr.id
+
+                WHEN po.relasi_tipe = 'kabupaten'
+                    THEN kab.id
+
+                WHEN po.relasi_tipe = 'kecamatan'
+                    THEN kec.id
+
+                WHEN po.relasi_tipe = 'desa'
+                    THEN des.id
+
+                WHEN po.relasi_tipe = 'kaleka'
+                    THEN kale.id
+
+                WHEN po.relasi_tipe IN (
+                    'hutan_lindung',
+                    'hutan_produksi_tetap',
+                    'hutan_produksi_terbatas',
+                    'hutan_produksi_konversi',
+                    'kawasan_konservasi',
+                    'area_penggunaan_lain'
+                )
+                    THEN fa.id
+
+                WHEN po.relasi_id IS NULL
+                    OR po.relasi_tipe IS NULL
+                    THEN 'Tanpa Relasi'
+
+                ELSE NULL
+            END AS relasi_id,
+
+            CONVERT(
+                CASE
+                    WHEN po.relasi_tipe = 'hutan_adat'
+                        THEN ha.nama_hutan_adat
+
+                    WHEN po.relasi_tipe = 'provinsi'
+                        THEN pr.nama_provinsi
+
+                    WHEN po.relasi_tipe = 'kabupaten'
+                        THEN kab.nama_kabupaten
+
+                    WHEN po.relasi_tipe = 'kecamatan'
+                        THEN kec.nama_kecamatan
+
+                    WHEN po.relasi_tipe = 'desa'
+                        THEN des.nama_desa
+
+                    WHEN po.relasi_tipe = 'kaleka'
+                        THEN kale.nama_kaleka
+
+                    WHEN po.relasi_tipe IN (
+                        'hutan_lindung',
+                        'hutan_produksi_tetap',
+                        'hutan_produksi_terbatas',
+                        'hutan_produksi_konversi',
+                        'kawasan_konservasi',
+                        'area_penggunaan_lain'
+                    )
+                        THEN fa.tipe_area
+
+                    WHEN po.relasi_id IS NULL
+                        OR po.relasi_tipe IS NULL
+                        THEN 'Tanpa Relasi'
+
+                    ELSE NULL
+                END USING utf8mb4
+            )
+            COLLATE utf8mb4_general_ci AS relasi_nama,
+
+            po.relasi_tipe,
+            po.is_active
+
+        FROM t_polygon po
+
+        LEFT JOIN t_hutan_adat ha
+            ON ha.id = po.relasi_id
+            AND po.relasi_tipe = 'hutan_adat'
+
+        LEFT JOIN m_provinsi pr
+            ON pr.id = po.relasi_id
+            AND po.relasi_tipe = 'provinsi'
+
+        LEFT JOIN m_kabupaten kab
+            ON kab.id = po.relasi_id
+            AND po.relasi_tipe = 'kabupaten'
+
+        LEFT JOIN m_kecamatan kec
+            ON kec.id = po.relasi_id
+            AND po.relasi_tipe = 'kecamatan'
+
+        LEFT JOIN m_desa des
+            ON des.id = po.relasi_id
+            AND po.relasi_tipe = 'desa'
+
+        LEFT JOIN t_kaleka kale
+            ON kale.id = po.relasi_id
+            AND po.relasi_tipe = 'kaleka'
+
+        LEFT JOIN t_forest_area fa
+            ON fa.id = po.relasi_id
+            AND po.relasi_tipe IN (
+                'hutan_lindung',
+                'hutan_produksi_tetap',
+                'hutan_produksi_terbatas',
+                'hutan_produksi_konversi',
+                'kawasan_konservasi',
+                'area_penggunaan_lain'
+            )
+
+        WHERE po.deleted_at IS NULL
+
+        AND (
+            (
+                po.relasi_tipe = 'hutan_adat'
+                AND ha.deleted_at IS NULL
+                AND ha.is_active = 1
+            )
+
+            OR
+
+            (
+                po.relasi_tipe = 'provinsi'
+                AND pr.deleted_at IS NULL
+                AND pr.is_active = 1
+            )
+
+            OR
+
+            (
+                po.relasi_tipe = 'kabupaten'
+                AND kab.deleted_at IS NULL
+                AND kab.is_active = 1
+            )
+
+            OR
+
+            (
+                po.relasi_tipe = 'kecamatan'
+                AND kec.deleted_at IS NULL
+                AND kec.is_active = 1
+            )
+
+            OR
+
+            (
+                po.relasi_tipe = 'desa'
+                AND des.deleted_at IS NULL
+                AND des.is_active = 1
+            )
+
+            OR
+
+            (
+                po.relasi_tipe = 'kaleka'
+                AND kale.deleted_at IS NULL
+                AND kale.is_active = 1
+            )
+
+            OR
+
+            (
+                po.relasi_tipe = 'hutan_lindung'
+                AND fa.tipe_area = 'Hutan Lindung'
+            )
+
+            OR
+
+            (
+                po.relasi_tipe = 'hutan_produksi_tetap'
+                AND fa.tipe_area = 'Hutan Produksi Tetap'
+            )
+
+            OR
+
+            (
+                po.relasi_tipe = 'hutan_produksi_terbatas'
+                AND fa.tipe_area = 'Hutan Produksi Terbatas'
+            )
+
+            OR
+
+            (
+                po.relasi_tipe = 'hutan_produksi_konversi'
+                AND fa.tipe_area = 'Hutan Produksi yang dapat di Konversi'
+            )
+
+            OR
+
+            (
+                po.relasi_tipe = 'kawasan_konservasi'
+                AND fa.tipe_area = 'Kawasan Konservasi (Taman Hutan Raya)'
+            )
+
+            OR
+
+            (
+                po.relasi_tipe = 'area_penggunaan_lain'
+                AND fa.tipe_area = 'Area Penggunaan Lain'
+            )
+
+            OR
+
+            (
+                po.relasi_id IS NULL
+                OR po.relasi_tipe IS NULL
+            )
+        )
+    ";
+    }
+
+
+    /*
+|--------------------------------------------------------------------------
+| TOTAL SEMUA DATA
+|--------------------------------------------------------------------------
+*/
+    public function countAll()
+    {
+        $sql = "
+        SELECT COUNT(*)
+        FROM (
+            " . $this->getDataTablesBaseQuery() . "
+        ) AS data_polygon
+    ";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+
+        return (int) $stmt->fetchColumn();
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | TOTAL DATA SETELAH SEARCH
+    |--------------------------------------------------------------------------
+    */
+    public function countFiltered($search)
+    {
+        $search = trim($search);
+
+        if ($search === '') {
+            return $this->countAll();
+        }
+
+        $sql = "
+        SELECT COUNT(*)
+        FROM (
+            " . $this->getDataTablesBaseQuery() . "
+        ) AS data_polygon
+    ";
+
+        /*
+    |--------------------------------------------------------------------------
+    | FILTER
+    |--------------------------------------------------------------------------
+    */
+
+        if (strcasecmp($search, 'Aktif') === 0) {
+
+            // Hanya data aktif
+            $sql .= "
+            WHERE data_polygon.is_active = 1
+        ";
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute();
+        } elseif (strcasecmp($search, 'Nonaktif') === 0) {
+
+            // Hanya data nonaktif
+            $sql .= "
+            WHERE data_polygon.is_active = 0
+        ";
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute();
+        } else {
+
+            // Search normal
+            $sql .= "
+            WHERE
+                CONVERT(data_polygon.kode_polygon USING utf8mb4)
+                    COLLATE utf8mb4_general_ci LIKE :search1
+
+                OR
+
+                CONVERT(data_polygon.nama_polygon USING utf8mb4)
+                    COLLATE utf8mb4_general_ci LIKE :search2
+
+                OR
+
+                CONVERT(data_polygon.relasi_nama USING utf8mb4)
+                    COLLATE utf8mb4_general_ci LIKE :search3
+
+                OR
+
+                CONVERT(data_polygon.relasi_tipe USING utf8mb4)
+                    COLLATE utf8mb4_general_ci LIKE :search4
+        ";
+
+            $stmt = $this->pdo->prepare($sql);
+
+            $keyword = '%' . $search . '%';
+
+            $stmt->bindValue(':search1', $keyword, PDO::PARAM_STR);
+            $stmt->bindValue(':search2', $keyword, PDO::PARAM_STR);
+            $stmt->bindValue(':search3', $keyword, PDO::PARAM_STR);
+            $stmt->bindValue(':search4', $keyword, PDO::PARAM_STR);
+
+            $stmt->execute();
+        }
+
+        return (int) $stmt->fetchColumn();
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | DATA PAGINATION
+    |--------------------------------------------------------------------------
+    */
+    public function getPaginated(
+        $start,
+        $length,
+        $search = '',
+        $orderColumn = 'id',
+        $orderDir = 'ASC'
+    ) {
+        $start = max(0, (int) $start);
+
+        $length = (int) $length;
+
+        if ($length < 1) {
+            $length = 10;
+        }
+
+        /*
+    |--------------------------------------------------------------------------
+    | Batasi maksimal data per request
+    |--------------------------------------------------------------------------
+    */
+        if ($length > 100) {
+            $length = 100;
+        }
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | Whitelist kolom sorting
+    |--------------------------------------------------------------------------
+    | Jangan langsung memasukkan $_GET ke ORDER BY.
+    |--------------------------------------------------------------------------
+    */
+        $allowedColumns = [
+            'id'            => 'id',
+            'kode_polygon'  => 'kode_polygon',
+            'nama_polygon'  => 'nama_polygon',
+            'relasi_nama'   => 'relasi_nama',
+            'relasi_tipe'   => 'relasi_tipe',
+            'is_active'     => 'is_active'
+        ];
+
+        $orderColumn = $allowedColumns[$orderColumn] ?? 'id';
+
+        $orderDir = strtoupper($orderDir) === 'DESC'
+            ? 'DESC'
+            : 'ASC';
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | Query
+    |--------------------------------------------------------------------------
+    */
+        $sql = "
+        SELECT *
+        FROM (
+            " . $this->getDataTablesBaseQuery() . "
+        ) AS data_polygon
+    ";
+
+        $params = [];
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | SEARCH
+    |--------------------------------------------------------------------------
+    */
+        $search = trim($search);
+
+        if ($search !== '') {
+
+            /*
+    |--------------------------------------------------------------------------
+    | FILTER STATUS
+    |--------------------------------------------------------------------------
+    */
+
+            if (strcasecmp($search, 'Aktif') === 0) {
+
+                $sql .= "
+            WHERE data_polygon.is_active = 1
+        ";
+
+                $params = [];
+            } elseif (strcasecmp($search, 'Nonaktif') === 0) {
+
+                $sql .= "
+            WHERE data_polygon.is_active = 0
+        ";
+
+                $params = [];
+            } else {
+
+                /*
+        |--------------------------------------------------------------------------
+        | SEARCH NORMAL
+        |--------------------------------------------------------------------------
+        */
+
+                $sql .= "
+            WHERE
+                CONVERT(data_polygon.kode_polygon USING utf8mb4)
+                    COLLATE utf8mb4_general_ci LIKE :search1
+
+                OR
+
+                CONVERT(data_polygon.nama_polygon USING utf8mb4)
+                    COLLATE utf8mb4_general_ci LIKE :search2
+
+                OR
+
+                CONVERT(data_polygon.relasi_nama USING utf8mb4)
+                    COLLATE utf8mb4_general_ci LIKE :search3
+
+                OR
+
+                CONVERT(data_polygon.relasi_tipe USING utf8mb4)
+                    COLLATE utf8mb4_general_ci LIKE :search4
+        ";
+
+                $keyword = '%' . $search . '%';
+
+                $params = [
+                    'search1' => $keyword,
+                    'search2' => $keyword,
+                    'search3' => $keyword,
+                    'search4' => $keyword
+                ];
+            }
+        }
+        /*
+    |--------------------------------------------------------------------------
+    | ORDER
+    |--------------------------------------------------------------------------
+    */
+        $sql .= "
+        ORDER BY data_polygon.$orderColumn $orderDir
+    ";
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | PAGINATION
+    |--------------------------------------------------------------------------
+    */
+        $sql .= "
+        LIMIT :start, :length
+    ";
+
+
+        $stmt = $this->pdo->prepare($sql);
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | Bind search
+    |--------------------------------------------------------------------------
+    */
+        if (!empty($params)) {
+            $stmt->bindValue(
+                ':search1',
+                $params['search1'],
+                PDO::PARAM_STR
+            );
+
+            $stmt->bindValue(
+                ':search2',
+                $params['search2'],
+                PDO::PARAM_STR
+            );
+
+            $stmt->bindValue(
+                ':search3',
+                $params['search3'],
+                PDO::PARAM_STR
+            );
+
+            $stmt->bindValue(
+                ':search4',
+                $params['search4'],
+                PDO::PARAM_STR
+            );
+        }
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | Bind pagination
+    |--------------------------------------------------------------------------
+    */
+        $stmt->bindValue(
+            ':start',
+            $start,
+            PDO::PARAM_INT
+        );
+
+        $stmt->bindValue(
+            ':length',
+            $length,
+            PDO::PARAM_INT
+        );
+
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function findById($id)
     {
         $sql = "SELECT *

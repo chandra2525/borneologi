@@ -88,6 +88,7 @@ $fungsiPohons = $controller->getFungsiPohon();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Nama Lahan</th>
                                                 <th>Periode Pengecekan</th>
                                                 <th>Jenis Pohon</th>
@@ -101,8 +102,10 @@ $fungsiPohons = $controller->getFungsiPohon();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($pohonObservasis as $pohonObservasi): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($pohonObservasi['nama_lahan']) ?></td>
                                                     <td><?= htmlspecialchars($pohonObservasi['periode_pengecekan']) ?></td>
                                                     <td><?= htmlspecialchars($pohonObservasi['jenis_pohon']) ?></td>
@@ -143,6 +146,7 @@ $fungsiPohons = $controller->getFungsiPohon();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Nama Lahan</th>
                                                 <th>Periode Pengecekan</th>
                                                 <th>Jenis Pohon</th>

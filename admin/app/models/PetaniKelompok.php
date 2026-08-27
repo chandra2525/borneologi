@@ -17,7 +17,7 @@ class PetaniKelompok
             LEFT JOIN t_kelompok_tani kt ON kt.id=pk.id_kelompok_tani
             LEFT JOIN m_jabatan_kelompok jk ON jk.id=pk.id_jabatan_kelompok
             WHERE pk.deleted_at IS NULL
-            ORDER BY pk.id ASC";
+            ORDER BY pk.id DESC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
@@ -96,7 +96,7 @@ class PetaniKelompok
     {
         $sql = "SELECT id,nama_lengkap FROM t_petani
                 WHERE deleted_at IS NULL
-                ORDER BY id";
+                ORDER BY id DESC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
@@ -108,7 +108,7 @@ class PetaniKelompok
     {
         $sql = "SELECT id,nama_kelompok FROM t_kelompok_tani
                 WHERE deleted_at IS NULL
-                ORDER BY id";
+                ORDER BY id DESC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();

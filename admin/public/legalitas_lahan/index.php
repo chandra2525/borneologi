@@ -85,6 +85,7 @@ $legalitasLahans = $controller->index();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Legalitas Lahan</th>
                                                 <th>Nama Legalitas Lahan</th>
                                                 <th>Deskripsi</th>
@@ -94,8 +95,10 @@ $legalitasLahans = $controller->index();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($legalitasLahans as $legalitasLahan): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($legalitasLahan['kode']) ?></td>
                                                     <td><?= htmlspecialchars($legalitasLahan['nama']) ?></td>
                                                     <td><?= htmlspecialchars($legalitasLahan['deskripsi']) ?></td>
@@ -129,6 +132,7 @@ $legalitasLahans = $controller->index();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Legalitas Lahan</th>
                                                 <th>Nama Legalitas Lahan</th>
                                                 <th>Deskripsi</th>
@@ -164,7 +168,7 @@ $legalitasLahans = $controller->index();
                                     <label for="kode">Kode Legalitas Lahan<code>*</code></label>
                                     <input type="text" name="kode" class="form-control" id="kode"
                                         value="<?= (new LegalitasLahan($pdo))->generateKode() ?>"
-                                        placeholder="Masukkan kode legalitas lahan">
+                                        placeholder="Masukkan kode legalitas lahan" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Legalitas Lahan<code>*</code></label>
@@ -179,7 +183,7 @@ $legalitasLahans = $controller->index();
                                 <div class="form-group">
                                     <label for="urutan">Urutan<code>*</code></label>
                                     <input type="number" name="urutan" class="form-control" id="urutan"
-                                        placeholder="Masukkan urutan">
+                                        value="<?= (new LegalitasLahan($pdo))->generateUrutan() ?>" placeholder="Masukkan urutan">
                                 </div>
                                 <div class="form-group">
                                     <label>Status Aktif <code>*</code></label>
@@ -225,7 +229,7 @@ $legalitasLahans = $controller->index();
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="kode">Kode Legalitas Lahan<code>*</code></label>
-                                    <input type="text" name="kode" id="edit_kode" class="form-control">
+                                    <input type="text" name="kode" id="edit_kode" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Legalitas Lahan<code>*</code></label>

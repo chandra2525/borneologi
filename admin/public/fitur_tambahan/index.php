@@ -85,6 +85,7 @@ $fiturTambahans = $controller->index();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Fitur Tambahan</th>
                                                 <th>Nama Fitur Tambahan</th>
                                                 <th>Deskripsi</th>
@@ -94,8 +95,10 @@ $fiturTambahans = $controller->index();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($fiturTambahans as $fiturTambahan): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($fiturTambahan['kode']) ?></td>
                                                     <td><?= htmlspecialchars($fiturTambahan['nama']) ?></td>
                                                     <td><?= htmlspecialchars($fiturTambahan['deskripsi']) ?></td>
@@ -129,6 +132,7 @@ $fiturTambahans = $controller->index();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Fitur Tambahan</th>
                                                 <th>Nama Fitur Tambahan</th>
                                                 <th>Deskripsi</th>
@@ -164,7 +168,7 @@ $fiturTambahans = $controller->index();
                                     <label for="kode">Kode Fitur Tambahan<code>*</code></label>
                                     <input type="text" name="kode" class="form-control" id="kode"
                                         value="<?= (new FiturTambahan($pdo))->generateKode() ?>"
-                                        placeholder="Masukkan kode fitur tambahan">
+                                        placeholder="Masukkan kode fitur tambahan" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Fitur Tambahan<code>*</code></label>
@@ -179,7 +183,7 @@ $fiturTambahans = $controller->index();
                                 <div class="form-group">
                                     <label for="urutan">Urutan<code>*</code></label>
                                     <input type="number" name="urutan" class="form-control" id="urutan"
-                                        placeholder="Masukkan urutan">
+                                        value="<?= (new FiturTambahan($pdo))->generateUrutan() ?>" placeholder="Masukkan urutan">
                                 </div>
                                 <div class="form-group">
                                     <label>Status Aktif <code>*</code></label>
@@ -225,7 +229,7 @@ $fiturTambahans = $controller->index();
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="kode">Kode Fitur Tambahan<code>*</code></label>
-                                    <input type="text" name="kode" id="edit_kode" class="form-control">
+                                    <input type="text" name="kode" id="edit_kode" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Fitur Tambahan<code>*</code></label>

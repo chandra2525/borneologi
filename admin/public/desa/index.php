@@ -86,6 +86,7 @@ $kecamatan = $controller->getKecamatan();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Desa</th>
                                                 <th>Nama Kecamatan</th>
                                                 <th>Nama Desa</th>
@@ -94,8 +95,10 @@ $kecamatan = $controller->getKecamatan();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($desa as $desa): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($desa['kode_desa']) ?></td>
                                                     <td><?= htmlspecialchars($desa['nama_kecamatan']) ?></td>
                                                     <td><?= htmlspecialchars($desa['nama_desa']) ?></td>
@@ -126,6 +129,7 @@ $kecamatan = $controller->getKecamatan();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Desa</th>
                                                 <th>Nama Kecamatan</th>
                                                 <th>Nama Desa</th>

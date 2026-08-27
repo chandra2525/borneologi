@@ -85,6 +85,7 @@ $jenisPalungs = $controller->index();
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Jenis Palung</th>
                                                 <th>Nama Jenis Palung</th>
                                                 <th>Deskripsi</th>
@@ -94,8 +95,10 @@ $jenisPalungs = $controller->index();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php foreach ($jenisPalungs as $jenisPalung): ?>
                                                 <tr>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($jenisPalung['kode']) ?></td>
                                                     <td><?= htmlspecialchars($jenisPalung['nama']) ?></td>
                                                     <td><?= htmlspecialchars($jenisPalung['deskripsi']) ?></td>
@@ -129,6 +132,7 @@ $jenisPalungs = $controller->index();
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th class="text-center">No</th>
                                                 <th>Kode Jenis Palung</th>
                                                 <th>Nama Jenis Palung</th>
                                                 <th>Deskripsi</th>
@@ -164,7 +168,7 @@ $jenisPalungs = $controller->index();
                                     <label for="kode">Kode Jenis Palung<code>*</code></label>
                                     <input type="text" name="kode" class="form-control" id="kode"
                                         value="<?= (new JenisPalung($pdo))->generateKode() ?>"
-                                        placeholder="Masukkan kode jenis palung">
+                                        placeholder="Masukkan kode jenis palung" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Jenis Palung<code>*</code></label>
@@ -179,7 +183,7 @@ $jenisPalungs = $controller->index();
                                 <div class="form-group">
                                     <label for="urutan">Urutan<code>*</code></label>
                                     <input type="number" name="urutan" class="form-control" id="urutan"
-                                        placeholder="Masukkan urutan">
+                                        value="<?= (new JenisPalung($pdo))->generateUrutan() ?>" placeholder="Masukkan urutan">
                                 </div>
                                 <div class="form-group">
                                     <label>Status Aktif <code>*</code></label>
@@ -225,7 +229,7 @@ $jenisPalungs = $controller->index();
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="kode">Kode Jenis Palung<code>*</code></label>
-                                    <input type="text" name="kode" id="edit_kode" class="form-control">
+                                    <input type="text" name="kode" id="edit_kode" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama">Nama Jenis Palung<code>*</code></label>
