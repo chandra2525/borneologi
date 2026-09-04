@@ -1,8 +1,11 @@
 <?php
-
 require "../../app/core/session.php";
+secureSessionStart();
 require "../../app/config/database.php";
 require "../../app/models/BankBenih.php";
+require "../../app/core/permission.php";
+
+Permission::authorize($pdo, 'Bank Benih', 'delete');
 
 secureSessionStart();
 

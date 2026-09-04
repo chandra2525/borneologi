@@ -1,7 +1,7 @@
 <?php
 require "../../app/core/session.php";
+secureSessionStart();
 require "../../app/core/csrf.php";
-
 require "../../app/config/database.php";
 require "../../app/models/HutanAdat.php";
 
@@ -9,7 +9,6 @@ require '../../../vendor/autoload.php';
 
 use Shapefile\ShapefileReader;
 
-secureSessionStart();
 verifyCsrfToken();
 
 $hutanAdat = new HutanAdat($pdo);

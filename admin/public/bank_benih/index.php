@@ -6,6 +6,7 @@ require_once '../../app/core/session.php';
 require_once '../../app/core/csrf.php';
 require_once "../../app/core/auth.php";
 require_once '../../app/helpers/escape.php';
+require_once "../../app/core/permission.php";
 
 secureSessionStart();
 checkAuth("non_dashboard");
@@ -15,6 +16,7 @@ $bankBenihs = $controller->index();
 $tanahs = $controller->getTanah();
 $negaras = $controller->getNegara();
 $tipePenyimpananBenihs = $controller->getTipePenyimpananBenih();
+Permission::authorize($pdo, 'Bank Benih', 'view');
 
 ?>
 
@@ -78,10 +80,12 @@ $tipePenyimpananBenihs = $controller->getTipePenyimpananBenih();
                             <div class="card">
                                 <div class="card-header row">
                                     <h3 class="card-title col-9">Berikut adalah list dari Data Bank Benih</h3>
-                                    <button class="col-3 btn btn-block btn-success" data-toggle="modal"
-                                        data-target="#modalTambah">
-                                        Tambah Bank Benih
-                                    </button>
+                                    <?php if (Permission::can($pdo, 'Bank Benih', 'create')): ?>
+                                        <button class="col-3 btn btn-block btn-success" data-toggle="modal"
+                                            data-target="#modalTambah">
+                                            Tambah Bank Benih
+                                        </button>
+                                    <?php endif; ?>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -138,49 +142,53 @@ $tipePenyimpananBenihs = $controller->getTipePenyimpananBenih();
                                                     <td><?= htmlspecialchars($bankBenih['titik_koleksi_lng']) ?></td>
                                                     <td>
                                                         <img class="img-circle elevation-2" src="<?= !empty($bankBenih['foto_benih'])
-                                                            ? '../../uploads/bank_benih/' . htmlspecialchars($bankBenih['foto_benih'])
-                                                            : '../../../assets/image/benih_placeholder.jpg' ?>"
+                                                                                                        ? '../../uploads/bank_benih/' . htmlspecialchars($bankBenih['foto_benih'])
+                                                                                                        : '../../../assets/image/benih_placeholder.jpg' ?>"
                                                             width="80">
                                                     </td>
                                                     <td><?= htmlspecialchars($bankBenih['catatan']) ?></td>
                                                     <td><?= $bankBenih['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
                                                     <td class="row">
-                                                        <div class="col">
-                                                            <button class="btn btn-block btn-info btn-edit"
-                                                                data-id="<?= $bankBenih['id'] ?>"
-                                                                data-nomor_aksesi="<?= htmlspecialchars($bankBenih['nomor_aksesi']) ?>"
-                                                                data-id_tanah="<?= htmlspecialchars($bankBenih['id_tanah']) ?>"
-                                                                data-id_negara="<?= htmlspecialchars($bankBenih['id_negara']) ?>"
-                                                                data-nama_lokal="<?= htmlspecialchars($bankBenih['nama_lokal']) ?>"
-                                                                data-nama_ilmiah="<?= htmlspecialchars($bankBenih['nama_ilmiah']) ?>"
-                                                                data-famili_tanaman="<?= htmlspecialchars($bankBenih['famili_tanaman']) ?>"
-                                                                data-provenance="<?= htmlspecialchars($bankBenih['provenance']) ?>"
-                                                                data-id_tipe_penyimpanan_benih="<?= htmlspecialchars($bankBenih['id_tipe_penyimpanan_benih']) ?>"
-                                                                data-tanggal_masuk="<?= htmlspecialchars($bankBenih['tanggal_masuk']) ?>"
-                                                                data-jumlah_stok="<?= htmlspecialchars($bankBenih['jumlah_stok']) ?>"
-                                                                data-satuan_stok="<?= htmlspecialchars($bankBenih['satuan_stok']) ?>"
-                                                                data-kadar_air_persen="<?= htmlspecialchars($bankBenih['kadar_air_persen']) ?>"
-                                                                data-viabilitas_persen="<?= htmlspecialchars($bankBenih['viabilitas_persen']) ?>"
-                                                                data-ketinggian_mdpl="<?= htmlspecialchars($bankBenih['ketinggian_mdpl']) ?>"
-                                                                data-masa_berlaku_sampai="<?= htmlspecialchars($bankBenih['masa_berlaku_sampai']) ?>"
-                                                                data-lokasi_penyimpanan="<?= htmlspecialchars($bankBenih['lokasi_penyimpanan']) ?>"
-                                                                data-titik_koleksi_lat="<?= htmlspecialchars($bankBenih['titik_koleksi_lat']) ?>"
-                                                                data-titik_koleksi_lng="<?= htmlspecialchars($bankBenih['titik_koleksi_lng']) ?>"
-                                                                data-foto="<?= $bankBenih['foto_benih'] ?>"
-                                                                data-catatan="<?= htmlspecialchars($bankBenih['catatan']) ?>"
-                                                                data-status="<?= $bankBenih['is_active'] ?>"
-                                                                data-toggle="modal" data-target="#modalEdit">
-                                                                <i class="fas fa-edit"></i> Edit
-                                                            </button>
-                                                        </div>
+                                                        <?php if (Permission::can($pdo, 'Bank Benih', 'update')): ?>
+                                                            <div class="col">
+                                                                <button class="btn btn-block btn-info btn-edit"
+                                                                    data-id="<?= $bankBenih['id'] ?>"
+                                                                    data-nomor_aksesi="<?= htmlspecialchars($bankBenih['nomor_aksesi']) ?>"
+                                                                    data-id_tanah="<?= htmlspecialchars($bankBenih['id_tanah']) ?>"
+                                                                    data-id_negara="<?= htmlspecialchars($bankBenih['id_negara']) ?>"
+                                                                    data-nama_lokal="<?= htmlspecialchars($bankBenih['nama_lokal']) ?>"
+                                                                    data-nama_ilmiah="<?= htmlspecialchars($bankBenih['nama_ilmiah']) ?>"
+                                                                    data-famili_tanaman="<?= htmlspecialchars($bankBenih['famili_tanaman']) ?>"
+                                                                    data-provenance="<?= htmlspecialchars($bankBenih['provenance']) ?>"
+                                                                    data-id_tipe_penyimpanan_benih="<?= htmlspecialchars($bankBenih['id_tipe_penyimpanan_benih']) ?>"
+                                                                    data-tanggal_masuk="<?= htmlspecialchars($bankBenih['tanggal_masuk']) ?>"
+                                                                    data-jumlah_stok="<?= htmlspecialchars($bankBenih['jumlah_stok']) ?>"
+                                                                    data-satuan_stok="<?= htmlspecialchars($bankBenih['satuan_stok']) ?>"
+                                                                    data-kadar_air_persen="<?= htmlspecialchars($bankBenih['kadar_air_persen']) ?>"
+                                                                    data-viabilitas_persen="<?= htmlspecialchars($bankBenih['viabilitas_persen']) ?>"
+                                                                    data-ketinggian_mdpl="<?= htmlspecialchars($bankBenih['ketinggian_mdpl']) ?>"
+                                                                    data-masa_berlaku_sampai="<?= htmlspecialchars($bankBenih['masa_berlaku_sampai']) ?>"
+                                                                    data-lokasi_penyimpanan="<?= htmlspecialchars($bankBenih['lokasi_penyimpanan']) ?>"
+                                                                    data-titik_koleksi_lat="<?= htmlspecialchars($bankBenih['titik_koleksi_lat']) ?>"
+                                                                    data-titik_koleksi_lng="<?= htmlspecialchars($bankBenih['titik_koleksi_lng']) ?>"
+                                                                    data-foto="<?= $bankBenih['foto_benih'] ?>"
+                                                                    data-catatan="<?= htmlspecialchars($bankBenih['catatan']) ?>"
+                                                                    data-status="<?= $bankBenih['is_active'] ?>"
+                                                                    data-toggle="modal" data-target="#modalEdit">
+                                                                    <i class="fas fa-edit"></i> Edit
+                                                                </button>
+                                                            </div>
+                                                        <?php endif; ?>
 
-                                                        <form method="POST" action="delete.php" class="form-delete col">
-                                                            <?= csrfField() ?>
-                                                            <input type="hidden" name="id" value="<?= $bankBenih['id'] ?>">
-                                                            <button type="submit" class="btn btn-block btn-danger">
-                                                                <i class="fas fa-trash"></i> Hapus
-                                                            </button>
-                                                        </form>
+                                                        <?php if (Permission::can($pdo, 'Bank Benih', 'delete')): ?>
+                                                            <form method="POST" action="delete.php" class="form-delete col">
+                                                                <?= csrfField() ?>
+                                                                <input type="hidden" name="id" value="<?= $bankBenih['id'] ?>">
+                                                                <button type="submit" class="btn btn-block btn-danger">
+                                                                    <i class="fas fa-trash"></i> Hapus
+                                                                </button>
+                                                            </form>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -591,9 +599,11 @@ $tipePenyimpananBenihs = $controller->getTipePenyimpananBenih();
     <script src="../assets/adminlte/plugins/jquery-validation/additional-methods.min.js"></script>
     <!-- Page specific script -->
     <script>
-        $(function () {
+        $(function() {
             $("#example1").DataTable({
-                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
@@ -609,7 +619,7 @@ $tipePenyimpananBenihs = $controller->getTipePenyimpananBenih();
     </script>
 
     <script>
-        $(function () {
+        $(function() {
             function initValidation(formId) {
                 $(formId).validate({
                     rules: {
@@ -737,14 +747,14 @@ $tipePenyimpananBenihs = $controller->getTipePenyimpananBenih();
                         }
                     },
                     errorElement: 'span',
-                    errorPlacement: function (error, element) {
+                    errorPlacement: function(error, element) {
                         error.addClass('invalid-feedback');
                         element.closest('.form-group').append(error);
                     },
-                    highlight: function (element) {
+                    highlight: function(element) {
                         $(element).addClass('is-invalid');
                     },
-                    unhighlight: function (element) {
+                    unhighlight: function(element) {
                         $(element).removeClass('is-invalid');
                     }
                 });
@@ -755,7 +765,7 @@ $tipePenyimpananBenihs = $controller->getTipePenyimpananBenih();
     </script>
 
     <script>
-        $(document).on("click", ".btn-edit", function () {
+        $(document).on("click", ".btn-edit", function() {
             let id = $(this).data("id");
             let nomor_aksesi = $(this).data("nomor_aksesi");
             let id_tanah = $(this).data("id_tanah");
@@ -807,7 +817,7 @@ $tipePenyimpananBenihs = $controller->getTipePenyimpananBenih();
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        $(document).on("submit", ".form-delete", function (e) {
+        $(document).on("submit", ".form-delete", function(e) {
             e.preventDefault();
             let form = this;
             Swal.fire({
@@ -856,16 +866,16 @@ $tipePenyimpananBenihs = $controller->getTipePenyimpananBenih();
     </script>
 
     <script>
-        document.getElementById('tanggal_masuk').addEventListener('focus', function () {
+        document.getElementById('tanggal_masuk').addEventListener('focus', function() {
             this.showPicker();
         });
-        document.getElementById('edit_tanggal_masuk').addEventListener('focus', function () {
+        document.getElementById('edit_tanggal_masuk').addEventListener('focus', function() {
             this.showPicker();
         });
-        document.getElementById('masa_berlaku_sampai').addEventListener('focus', function () {
+        document.getElementById('masa_berlaku_sampai').addEventListener('focus', function() {
             this.showPicker();
         });
-        document.getElementById('edit_masa_berlaku_sampai').addEventListener('focus', function () {
+        document.getElementById('edit_masa_berlaku_sampai').addEventListener('focus', function() {
             this.showPicker();
         });
     </script>

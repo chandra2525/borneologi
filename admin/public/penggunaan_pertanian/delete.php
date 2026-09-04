@@ -1,10 +1,11 @@
 <?php
-
 require "../../app/core/session.php";
+secureSessionStart();
 require "../../app/config/database.php";
 require "../../app/models/PenggunaanPertanian.php";
+require "../../app/core/permission.php";
 
-secureSessionStart();
+Permission::authorize($pdo, 'Penggunaan Pertanian', 'delete');
 
 $penggunaanPertanianModel = new PenggunaanPertanian($pdo);
 

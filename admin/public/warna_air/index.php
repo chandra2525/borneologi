@@ -6,12 +6,14 @@ require_once '../../app/core/session.php';
 require_once '../../app/core/csrf.php';
 require_once "../../app/core/auth.php";
 require_once '../../app/helpers/escape.php';
+require_once "../../app/core/permission.php";
 
 secureSessionStart();
 checkAuth("non_dashboard");
 
 $controller = new WarnaAirController($pdo);
 $warnaAirs = $controller->index();
+Permission::authorize($pdo, 'Warna Air', 'view');
 
 ?>
 
@@ -75,10 +77,12 @@ $warnaAirs = $controller->index();
                             <div class="card">
                                 <div class="card-header row">
                                     <h3 class="card-title col-9">Berikut adalah list dari Data Warna Air</h3>
-                                    <button class="col-3 btn btn-block btn-success" data-toggle="modal"
-                                        data-target="#modalTambah">
-                                        Tambah Warna Air
-                                    </button>
+                                    <?php if (Permission::can($pdo, 'Warna Air', 'create')): ?>
+                                        <button class="col-3 btn btn-block btn-success" data-toggle="modal"
+                                            data-target="#modalTambah">
+                                            Tambah Warna Air
+                                        </button>
+                                    <?php endif; ?>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -105,27 +109,31 @@ $warnaAirs = $controller->index();
                                                     <td><?= htmlspecialchars($warnaAir['urutan']) ?></td>
                                                     <td><?= $warnaAir['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
                                                     <td class="row">
-                                                        <div class="col">
-                                                            <button class="btn btn-block btn-info btn-edit"
-                                                                data-id="<?= $warnaAir['id'] ?>"
-                                                                data-kode="<?= htmlspecialchars($warnaAir['kode']) ?>"
-                                                                data-nama="<?= htmlspecialchars($warnaAir['nama']) ?>"
-                                                                data-deskripsi="<?= htmlspecialchars($warnaAir['deskripsi']) ?>"
-                                                                data-urutan="<?= $warnaAir['urutan'] ?>"
-                                                                data-status="<?= $warnaAir['is_active'] ?>"
-                                                                data-toggle="modal" data-target="#modalEdit">
-                                                                <i class="fas fa-edit"></i> Edit
-                                                            </button>
-                                                        </div>
+                                                        <?php if (Permission::can($pdo, 'Warna Air', 'update')): ?>
+                                                            <div class="col">
+                                                                <button class="btn btn-block btn-info btn-edit"
+                                                                    data-id="<?= $warnaAir['id'] ?>"
+                                                                    data-kode="<?= htmlspecialchars($warnaAir['kode']) ?>"
+                                                                    data-nama="<?= htmlspecialchars($warnaAir['nama']) ?>"
+                                                                    data-deskripsi="<?= htmlspecialchars($warnaAir['deskripsi']) ?>"
+                                                                    data-urutan="<?= $warnaAir['urutan'] ?>"
+                                                                    data-status="<?= $warnaAir['is_active'] ?>"
+                                                                    data-toggle="modal" data-target="#modalEdit">
+                                                                    <i class="fas fa-edit"></i> Edit
+                                                                </button>
+                                                            </div>
+                                                        <?php endif; ?>
 
-                                                        <form method="POST" action="delete.php" class="form-delete col">
-                                                            <?= csrfField() ?>
-                                                            <input type="hidden" name="id"
-                                                                value="<?= $warnaAir['id'] ?>">
-                                                            <button type="submit" class="btn btn-block btn-danger">
-                                                                <i class="fas fa-trash"></i> Hapus
-                                                            </button>
-                                                        </form>
+                                                        <?php if (Permission::can($pdo, 'Warna Air', 'delete')): ?>
+                                                            <form method="POST" action="delete.php" class="form-delete col">
+                                                                <?= csrfField() ?>
+                                                                <input type="hidden" name="id"
+                                                                    value="<?= $warnaAir['id'] ?>">
+                                                                <button type="submit" class="btn btn-block btn-danger">
+                                                                    <i class="fas fa-trash"></i> Hapus
+                                                                </button>
+                                                            </form>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -305,9 +313,11 @@ $warnaAirs = $controller->index();
     <script src="../assets/adminlte/plugins/jquery-validation/additional-methods.min.js"></script>
     <!-- Page specific script -->
     <script>
-        $(function () {
+        $(function() {
             $("#example1").DataTable({
-                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
@@ -323,7 +333,7 @@ $warnaAirs = $controller->index();
     </script>
 
     <script>
-        $(function () {
+        $(function() {
             function initValidation(formId) {
                 $(formId).validate({
                     rules: {
@@ -355,14 +365,14 @@ $warnaAirs = $controller->index();
                         }
                     },
                     errorElement: 'span',
-                    errorPlacement: function (error, element) {
+                    errorPlacement: function(error, element) {
                         error.addClass('invalid-feedback');
                         element.closest('.form-group').append(error);
                     },
-                    highlight: function (element) {
+                    highlight: function(element) {
                         $(element).addClass('is-invalid');
                     },
-                    unhighlight: function (element) {
+                    unhighlight: function(element) {
                         $(element).removeClass('is-invalid');
                     }
                 });
@@ -373,7 +383,7 @@ $warnaAirs = $controller->index();
     </script>
 
     <script>
-        $(document).on("click", ".btn-edit", function () {
+        $(document).on("click", ".btn-edit", function() {
             let id = $(this).data("id");
             let kode = $(this).data("kode");
             let nama = $(this).data("nama");
@@ -395,7 +405,7 @@ $warnaAirs = $controller->index();
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        $(document).on("submit", ".form-delete", function (e) {
+        $(document).on("submit", ".form-delete", function(e) {
             e.preventDefault();
             let form = this;
             Swal.fire({

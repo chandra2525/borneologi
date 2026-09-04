@@ -6,6 +6,7 @@ require_once '../../app/core/session.php';
 require_once '../../app/core/csrf.php';
 require_once "../../app/core/auth.php";
 require_once '../../app/helpers/escape.php';
+require_once "../../app/core/permission.php";
 
 secureSessionStart();
 checkAuth("non_dashboard");
@@ -15,6 +16,7 @@ $infrasturkturObservasis = $controller->index();
 $tanahs = $controller->getTanah();
 $aksesPerjalanans = $controller->getAksesPerjalanan();
 $kondisiJalans = $controller->getKondisiJalan();
+Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
 
 ?>
 
@@ -78,10 +80,12 @@ $kondisiJalans = $controller->getKondisiJalan();
                             <div class="card">
                                 <div class="card-header row">
                                     <h3 class="card-title col-9">Berikut adalah list dari Data Infrastruktur Observasi</h3>
-                                    <button class="col-3 btn btn-block btn-success" data-toggle="modal"
-                                        data-target="#modalTambah">
-                                        Tambah Infrastruktur Observasi
-                                    </button>
+                                    <?php if (Permission::can($pdo, 'Infrastruktur Observasi', 'create')): ?>
+                                        <button class="col-3 btn btn-block btn-success" data-toggle="modal"
+                                            data-target="#modalTambah">
+                                            Tambah Infrastruktur Observasi
+                                        </button>
+                                    <?php endif; ?>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -116,39 +120,43 @@ $kondisiJalans = $controller->getKondisiJalan();
                                                     <td><?= $infrastrukturObservasi['ada_listrik'] ? 'Iya' : 'Tidak' ?></td>
                                                     <td><?= $infrastrukturObservasi['ada_internet'] ? 'Iya' : 'Tidak' ?></td>
                                                     <td><?= match ($infrastrukturObservasi['sinyal_seluler']) {
-                                                        'tidak_ada' => 'Tidak Ada',
-                                                        'lemah' => 'Lemah',
-                                                        'sedang' => 'Sedang',
-                                                        'kuat' => 'Kuat',
-                                                        default => 'Tidak Ada',
-                                                    } ?></td>
+                                                            'tidak_ada' => 'Tidak Ada',
+                                                            'lemah' => 'Lemah',
+                                                            'sedang' => 'Sedang',
+                                                            'kuat' => 'Kuat',
+                                                            default => 'Tidak Ada',
+                                                        } ?></td>
                                                     <td><?= htmlspecialchars($infrastrukturObservasi['catatan']) ?></td>
                                                     <td class="row">
-                                                        <div class="col">
-                                                            <button class="btn btn-block btn-info btn-edit"
-                                                                data-id="<?= $infrastrukturObservasi['id'] ?>"
-                                                                data-id_tanah="<?= htmlspecialchars($infrastrukturObservasi['id_tanah']) ?>"
-                                                                data-periode_pengecekan="<?= htmlspecialchars($infrastrukturObservasi['periode_pengecekan']) ?>"
-                                                                data-id_akses_perjalanan="<?= htmlspecialchars($infrastrukturObservasi['id_akses_perjalanan']) ?>"
-                                                                data-id_kondisi_jalan="<?= htmlspecialchars($infrastrukturObservasi['id_kondisi_jalan']) ?>"
-                                                                data-jarak_ke_jalan_km="<?= htmlspecialchars($infrastrukturObservasi['jarak_ke_jalan_km']) ?>"
-                                                                data-ada_jembatan="<?= htmlspecialchars($infrastrukturObservasi['ada_jembatan']) ?>"
-                                                                data-ada_listrik="<?= htmlspecialchars($infrastrukturObservasi['ada_listrik']) ?>"
-                                                                data-ada_internet="<?= htmlspecialchars($infrastrukturObservasi['ada_internet']) ?>"
-                                                                data-sinyal_seluler="<?= htmlspecialchars($infrastrukturObservasi['sinyal_seluler']) ?>"
-                                                                data-catatan="<?= htmlspecialchars($infrastrukturObservasi['catatan']) ?>"
-                                                                data-toggle="modal" data-target="#modalEdit">
-                                                                <i class="fas fa-edit"></i> Edit
-                                                            </button>
-                                                        </div>
+                                                        <?php if (Permission::can($pdo, 'Infrastruktur Observasi', 'update')): ?>
+                                                            <div class="col">
+                                                                <button class="btn btn-block btn-info btn-edit"
+                                                                    data-id="<?= $infrastrukturObservasi['id'] ?>"
+                                                                    data-id_tanah="<?= htmlspecialchars($infrastrukturObservasi['id_tanah']) ?>"
+                                                                    data-periode_pengecekan="<?= htmlspecialchars($infrastrukturObservasi['periode_pengecekan']) ?>"
+                                                                    data-id_akses_perjalanan="<?= htmlspecialchars($infrastrukturObservasi['id_akses_perjalanan']) ?>"
+                                                                    data-id_kondisi_jalan="<?= htmlspecialchars($infrastrukturObservasi['id_kondisi_jalan']) ?>"
+                                                                    data-jarak_ke_jalan_km="<?= htmlspecialchars($infrastrukturObservasi['jarak_ke_jalan_km']) ?>"
+                                                                    data-ada_jembatan="<?= htmlspecialchars($infrastrukturObservasi['ada_jembatan']) ?>"
+                                                                    data-ada_listrik="<?= htmlspecialchars($infrastrukturObservasi['ada_listrik']) ?>"
+                                                                    data-ada_internet="<?= htmlspecialchars($infrastrukturObservasi['ada_internet']) ?>"
+                                                                    data-sinyal_seluler="<?= htmlspecialchars($infrastrukturObservasi['sinyal_seluler']) ?>"
+                                                                    data-catatan="<?= htmlspecialchars($infrastrukturObservasi['catatan']) ?>"
+                                                                    data-toggle="modal" data-target="#modalEdit">
+                                                                    <i class="fas fa-edit"></i> Edit
+                                                                </button>
+                                                            </div>
+                                                        <?php endif; ?>
 
-                                                        <form method="POST" action="delete.php" class="form-delete col">
-                                                            <?= csrfField() ?>
-                                                            <input type="hidden" name="id" value="<?= $infrastrukturObservasi['id'] ?>">
-                                                            <button type="submit" class="btn btn-block btn-danger">
-                                                                <i class="fas fa-trash"></i> Hapus
-                                                            </button>
-                                                        </form>
+                                                        <?php if (Permission::can($pdo, 'Infrastruktur Observasi', 'delete')): ?>
+                                                            <form method="POST" action="delete.php" class="form-delete col">
+                                                                <?= csrfField() ?>
+                                                                <input type="hidden" name="id" value="<?= $infrastrukturObservasi['id'] ?>">
+                                                                <button type="submit" class="btn btn-block btn-danger">
+                                                                    <i class="fas fa-trash"></i> Hapus
+                                                                </button>
+                                                            </form>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -493,9 +501,11 @@ $kondisiJalans = $controller->getKondisiJalan();
     <script src="../assets/adminlte/plugins/jquery-validation/additional-methods.min.js"></script>
     <!-- Page specific script -->
     <script>
-        $(function () {
+        $(function() {
             $("#example1").DataTable({
-                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
@@ -511,7 +521,7 @@ $kondisiJalans = $controller->getKondisiJalan();
     </script>
 
     <script>
-        $(function () {
+        $(function() {
             function initValidation(formId) {
                 $(formId).validate({
                     rules: {
@@ -556,7 +566,7 @@ $kondisiJalans = $controller->getKondisiJalan();
                         id_akses_perjalanan: {
                             required: "Silahkan pilih Akses Perjalanan"
                         },
-                        id_kondisi_jalan : {
+                        id_kondisi_jalan: {
                             required: "Silahkan pilih Kondisi Jalan"
                         },
                         jarak_ke_jalan_km: {
@@ -579,14 +589,14 @@ $kondisiJalans = $controller->getKondisiJalan();
                         }
                     },
                     errorElement: 'span',
-                    errorPlacement: function (error, element) {
+                    errorPlacement: function(error, element) {
                         error.addClass('invalid-feedback');
                         element.closest('.form-group').append(error);
                     },
-                    highlight: function (element) {
+                    highlight: function(element) {
                         $(element).addClass('is-invalid');
                     },
-                    unhighlight: function (element) {
+                    unhighlight: function(element) {
                         $(element).removeClass('is-invalid');
                     }
                 });
@@ -597,7 +607,7 @@ $kondisiJalans = $controller->getKondisiJalan();
     </script>
 
     <script>
-        $(document).on("click", ".btn-edit", function () {
+        $(document).on("click", ".btn-edit", function() {
             let id = $(this).data("id");
             let id_tanah = $(this).data("id_tanah");
             let periode_pengecekan = $(this).data("periode_pengecekan");
@@ -627,7 +637,7 @@ $kondisiJalans = $controller->getKondisiJalan();
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        $(document).on("submit", ".form-delete", function (e) {
+        $(document).on("submit", ".form-delete", function(e) {
             e.preventDefault();
             let form = this;
             Swal.fire({
@@ -676,10 +686,10 @@ $kondisiJalans = $controller->getKondisiJalan();
     </script>
 
     <script>
-        document.getElementById('periode_pengecekan').addEventListener('focus', function () {
+        document.getElementById('periode_pengecekan').addEventListener('focus', function() {
             this.showPicker();
         });
-        document.getElementById('edit_periode_pengecekan').addEventListener('focus', function () {
+        document.getElementById('edit_periode_pengecekan').addEventListener('focus', function() {
             this.showPicker();
         });
     </script>

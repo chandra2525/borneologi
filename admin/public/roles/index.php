@@ -6,9 +6,12 @@ require_once '../../app/core/session.php';
 require_once '../../app/core/csrf.php';
 require_once "../../app/core/auth.php";
 require_once '../../app/helpers/escape.php';
+require_once "../../app/core/permission.php";
 
 secureSessionStart();
 checkAuth("non_dashboard");
+
+Permission::authorize($pdo, 'Roles', 'view');
 
 $controller = new RoleController($pdo);
 $roles = $controller->index();
@@ -76,10 +79,12 @@ $roles = $controller->index();
                                 <div class="card-header row">
                                     <h3 class="card-title col-9">Berikut adalah list dari Data Role</h3>
                                     <!-- <a href="create.php" class="col-2 btn btn-block btn-success">Tambah Role</a> -->
-                                    <button class="col-3 btn btn-block btn-success" data-toggle="modal"
-                                        data-target="#modalTambah">
-                                        Tambah Role
-                                    </button>
+                                    <?php if (Permission::can($pdo, 'Roles', 'create')): ?>
+                                        <button class="col-3 btn btn-block btn-success" data-toggle="modal"
+                                            data-target="#modalTambah">
+                                            Tambah Role
+                                        </button>
+                                    <?php endif; ?>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -106,35 +111,41 @@ $roles = $controller->index();
                                                     <td><?= htmlspecialchars($role['urutan']) ?></td>
                                                     <td><?= $role['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
                                                     <td class="row">
-                                                        <div class="col">
-                                                            <button class="btn btn-block btn-primary btn-permission"
-                                                                data-id="<?= $role['id'] ?>"
-                                                                data-nama="<?= htmlspecialchars($role['nama']) ?>"
-                                                                data-toggle="modal" data-target="#modalPermission">
-                                                                <i class="fas fa-key"></i> Hak Akses
-                                                            </button>
-                                                        </div>
+                                                        <?php if (Permission::can($pdo, 'Roles', 'update')): ?>
+                                                            <div class="col">
+                                                                <button class="btn btn-block btn-primary btn-permission"
+                                                                    data-id="<?= $role['id'] ?>"
+                                                                    data-nama="<?= htmlspecialchars($role['nama']) ?>"
+                                                                    data-toggle="modal" data-target="#modalPermission">
+                                                                    <i class="fas fa-key"></i> Hak Akses
+                                                                </button>
+                                                            </div>
+                                                        <?php endif; ?>
 
-                                                        <div class="col">
-                                                            <button class="btn btn-block btn-info btn-edit"
-                                                                data-id="<?= $role['id'] ?>"
-                                                                data-kode="<?= htmlspecialchars($role['kode']) ?>"
-                                                                data-nama="<?= htmlspecialchars($role['nama']) ?>"
-                                                                data-deskripsi="<?= htmlspecialchars($role['deskripsi']) ?>"
-                                                                data-urutan="<?= $role['urutan'] ?>"
-                                                                data-status="<?= $role['is_active'] ?>" data-toggle="modal"
-                                                                data-target="#modalEdit">
-                                                                <i class="fas fa-edit"></i> Edit
-                                                            </button>
-                                                        </div>
+                                                        <?php if (Permission::can($pdo, 'Roles', 'update')): ?>
+                                                            <div class="col">
+                                                                <button class="btn btn-block btn-info btn-edit"
+                                                                    data-id="<?= $role['id'] ?>"
+                                                                    data-kode="<?= htmlspecialchars($role['kode']) ?>"
+                                                                    data-nama="<?= htmlspecialchars($role['nama']) ?>"
+                                                                    data-deskripsi="<?= htmlspecialchars($role['deskripsi']) ?>"
+                                                                    data-urutan="<?= $role['urutan'] ?>"
+                                                                    data-status="<?= $role['is_active'] ?>" data-toggle="modal"
+                                                                    data-target="#modalEdit">
+                                                                    <i class="fas fa-edit"></i> Edit
+                                                                </button>
+                                                            </div>
+                                                        <?php endif; ?>
 
-                                                        <form method="POST" action="delete.php" class="form-delete col">
-                                                            <?= csrfField() ?>
-                                                            <input type="hidden" name="id" value="<?= $role['id'] ?>">
-                                                            <button type="submit" class="btn btn-block btn-danger">
-                                                                <i class="fas fa-trash"></i> Hapus
-                                                            </button>
-                                                        </form>
+                                                        <?php if (Permission::can($pdo, 'Roles', 'delete')): ?>
+                                                            <form method="POST" action="delete.php" class="form-delete col">
+                                                                <?= csrfField() ?>
+                                                                <input type="hidden" name="id" value="<?= $role['id'] ?>">
+                                                                <button type="submit" class="btn btn-block btn-danger">
+                                                                    <i class="fas fa-trash"></i> Hapus
+                                                                </button>
+                                                            </form>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -301,8 +312,8 @@ $roles = $controller->index();
                                             <th>Create</th>
                                             <th>Update</th>
                                             <th>Delete</th>
-                                            <th>Approve</th>
-                                            <th>Export</th>
+                                            <!-- <th>Approve</th>
+                                            <th>Export</th> -->
                                         </tr>
                                     </thead>
                                     <tbody id="permissionTableBody">
@@ -356,9 +367,11 @@ $roles = $controller->index();
     <script src="../assets/adminlte/plugins/jquery-validation/additional-methods.min.js"></script>
     <!-- Page specific script -->
     <script>
-        $(function () {
+        $(function() {
             $("#example1").DataTable({
-                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
@@ -374,7 +387,7 @@ $roles = $controller->index();
     </script>
 
     <script>
-        $(function () {
+        $(function() {
             function initValidation(formId) {
                 $(formId).validate({
                     rules: {
@@ -406,14 +419,14 @@ $roles = $controller->index();
                         }
                     },
                     errorElement: 'span',
-                    errorPlacement: function (error, element) {
+                    errorPlacement: function(error, element) {
                         error.addClass('invalid-feedback');
                         element.closest('.form-group').append(error);
                     },
-                    highlight: function (element) {
+                    highlight: function(element) {
                         $(element).addClass('is-invalid');
                     },
-                    unhighlight: function (element) {
+                    unhighlight: function(element) {
                         $(element).removeClass('is-invalid');
                     }
                 });
@@ -468,7 +481,7 @@ $roles = $controller->index();
     </script>
 
     <script>
-        $(document).on("click", ".btn-edit", function () {
+        $(document).on("click", ".btn-edit", function() {
             let id = $(this).data("id");
             let kode = $(this).data("kode");
             let nama = $(this).data("nama");
@@ -488,7 +501,7 @@ $roles = $controller->index();
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        $(document).on("submit", ".form-delete", function (e) {
+        $(document).on("submit", ".form-delete", function(e) {
             e.preventDefault();
             let form = this;
             Swal.fire({
@@ -537,7 +550,7 @@ $roles = $controller->index();
     </script>
 
     <script>
-        $(document).on("click", ".btn-permission", function () {
+        $(document).on("click", ".btn-permission", function() {
             let role_id = $(this).data("id");
             let role_name = $(this).data("nama");
 
@@ -546,7 +559,9 @@ $roles = $controller->index();
             $("#permissionTableBody").html(
                 "<tr><td colspan='7' class='text-center'>Loading...</td></tr>"
             );
-            $.get("permission_data.php", { role_id: role_id }, function (data) {
+            $.get("permission_data.php", {
+                role_id: role_id
+            }, function(data) {
                 $("#permissionTableBody").html(data);
             });
         });

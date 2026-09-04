@@ -1,11 +1,12 @@
 <?php
 require "../../app/core/session.php";
+secureSessionStart();
 require "../../app/core/csrf.php";
-
 require "../../app/config/database.php";
 require "../../app/models/LegalitasLahan.php";
+require "../../app/core/permission.php";
 
-secureSessionStart();
+Permission::authorize($pdo, 'Legalitas Lahan', 'update');
 verifyCsrfToken();
 
 $legalitasLahanModel = new LegalitasLahan($pdo);

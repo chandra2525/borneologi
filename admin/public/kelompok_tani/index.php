@@ -6,6 +6,7 @@ require_once '../../app/core/session.php';
 require_once '../../app/core/csrf.php';
 require_once "../../app/core/auth.php";
 require_once '../../app/helpers/escape.php';
+require_once "../../app/core/permission.php";
 
 secureSessionStart();
 checkAuth("non_dashboard");
@@ -16,6 +17,7 @@ $kategoriKelompoks = $controller->getKategoriKelompok();
 $desas = $controller->getDesa();
 $aksesPerjalanans = $controller->getAksesPerjalanan();
 $kondisiJalans = $controller->getKondisiJalan();
+Permission::authorize($pdo, 'Kelompok', 'view');
 
 ?>
 
@@ -82,10 +84,12 @@ $kondisiJalans = $controller->getKondisiJalan();
                             <div class="card">
                                 <div class="card-header row">
                                     <h3 class="card-title col-9">Berikut adalah list dari Data Kelompok</h3>
-                                    <button class="col-3 btn btn-block btn-success" data-toggle="modal"
-                                        data-target="#modalTambah">
-                                        Tambah Kelompok
-                                    </button>
+                                    <?php if (Permission::can($pdo, 'Kelompok', 'create')): ?>
+                                        <button class="col-3 btn btn-block btn-success" data-toggle="modal"
+                                            data-target="#modalTambah">
+                                            Tambah Kelompok
+                                        </button>
+                                    <?php endif; ?>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -127,33 +131,37 @@ $kondisiJalans = $controller->getKondisiJalan();
                                                     </td>
                                                     <td><?= $kelompokTani['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
                                                     <td class="row">
-                                                        <div class="col">
-                                                            <button class="btn btn-block btn-info btn-edit"
-                                                                data-id="<?= $kelompokTani['id'] ?>"
-                                                                data-kode_kelompok="<?= htmlspecialchars($kelompokTani['kode_kelompok']) ?>"
-                                                                data-nama_kelompok="<?= htmlspecialchars($kelompokTani['nama_kelompok']) ?>"
-                                                                data-id_kategori_kelompok="<?= htmlspecialchars($kelompokTani['id_kategori_kelompok']) ?>"
-                                                                data-id_desa="<?= htmlspecialchars($kelompokTani['id_desa']) ?>"
-                                                                data-alamat="<?= htmlspecialchars($kelompokTani['alamat']) ?>"
-                                                                data-id_akses_perjalanan="<?= htmlspecialchars($kelompokTani['id_akses_perjalanan']) ?>"
-                                                                data-id_kondisi_jalan="<?= htmlspecialchars($kelompokTani['id_kondisi_jalan']) ?>"
-                                                                data-tahun_bentuk="<?= htmlspecialchars($kelompokTani['tahun_bentuk']) ?>"
-                                                                data-nomor_sk="<?= htmlspecialchars($kelompokTani['nomor_sk']) ?>"
-                                                                data-tanggal_sk="<?= htmlspecialchars($kelompokTani['tanggal_sk']) ?>"
-                                                                data-status_kelompok="<?= htmlspecialchars($kelompokTani['status_kelompok']) ?>"
-                                                                data-status="<?= $kelompokTani['is_active'] ?>"
-                                                                data-toggle="modal" data-target="#modalEdit">
-                                                                <i class="fas fa-edit"></i> Edit
-                                                            </button>
-                                                        </div>
+                                                        <?php if (Permission::can($pdo, 'Kelompok', 'update')): ?>
+                                                            <div class="col">
+                                                                <button class="btn btn-block btn-info btn-edit"
+                                                                    data-id="<?= $kelompokTani['id'] ?>"
+                                                                    data-kode_kelompok="<?= htmlspecialchars($kelompokTani['kode_kelompok']) ?>"
+                                                                    data-nama_kelompok="<?= htmlspecialchars($kelompokTani['nama_kelompok']) ?>"
+                                                                    data-id_kategori_kelompok="<?= htmlspecialchars($kelompokTani['id_kategori_kelompok']) ?>"
+                                                                    data-id_desa="<?= htmlspecialchars($kelompokTani['id_desa']) ?>"
+                                                                    data-alamat="<?= htmlspecialchars($kelompokTani['alamat']) ?>"
+                                                                    data-id_akses_perjalanan="<?= htmlspecialchars($kelompokTani['id_akses_perjalanan']) ?>"
+                                                                    data-id_kondisi_jalan="<?= htmlspecialchars($kelompokTani['id_kondisi_jalan']) ?>"
+                                                                    data-tahun_bentuk="<?= htmlspecialchars($kelompokTani['tahun_bentuk']) ?>"
+                                                                    data-nomor_sk="<?= htmlspecialchars($kelompokTani['nomor_sk']) ?>"
+                                                                    data-tanggal_sk="<?= htmlspecialchars($kelompokTani['tanggal_sk']) ?>"
+                                                                    data-status_kelompok="<?= htmlspecialchars($kelompokTani['status_kelompok']) ?>"
+                                                                    data-status="<?= $kelompokTani['is_active'] ?>"
+                                                                    data-toggle="modal" data-target="#modalEdit">
+                                                                    <i class="fas fa-edit"></i> Edit
+                                                                </button>
+                                                            </div>
+                                                        <?php endif; ?>
 
-                                                        <form method="POST" action="delete.php" class="form-delete col">
-                                                            <?= csrfField() ?>
-                                                            <input type="hidden" name="id" value="<?= $kelompokTani['id'] ?>">
-                                                            <button type="submit" class="btn btn-block btn-danger">
-                                                                <i class="fas fa-trash"></i> Hapus
-                                                            </button>
-                                                        </form>
+                                                        <?php if (Permission::can($pdo, 'Kelompok', 'delete')): ?>
+                                                            <form method="POST" action="delete.php" class="form-delete col">
+                                                                <?= csrfField() ?>
+                                                                <input type="hidden" name="id" value="<?= $kelompokTani['id'] ?>">
+                                                                <button type="submit" class="btn btn-block btn-danger">
+                                                                    <i class="fas fa-trash"></i> Hapus
+                                                                </button>
+                                                            </form>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>

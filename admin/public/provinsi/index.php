@@ -6,12 +6,14 @@ require_once '../../app/core/session.php';
 require_once '../../app/core/csrf.php';
 require_once "../../app/core/auth.php";
 require_once '../../app/helpers/escape.php';
+require_once "../../app/core/permission.php";
 
 secureSessionStart();
 checkAuth("non_dashboard");
 
 $controller = new ProvinsiController($pdo);
 $provinsi = $controller->index();
+Permission::authorize($pdo, 'Provinsi', 'view');
 
 ?>
 
@@ -75,10 +77,12 @@ $provinsi = $controller->index();
                             <div class="card">
                                 <div class="card-header row">
                                     <h3 class="card-title col-9">Berikut adalah list dari Data Provinsi</h3>
-                                    <button class="col-3 btn btn-block btn-success" data-toggle="modal"
-                                        data-target="#modalTambah">
-                                        Tambah Provinsi
-                                    </button>
+                                    <?php if (Permission::can($pdo, 'Provinsi', 'create')): ?>
+                                        <button class="col-3 btn btn-block btn-success" data-toggle="modal"
+                                            data-target="#modalTambah">
+                                            Tambah Provinsi
+                                        </button>
+                                    <?php endif; ?>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -101,24 +105,28 @@ $provinsi = $controller->index();
                                                     <td><?= htmlspecialchars($provinsi['nama_provinsi']) ?></td>
                                                     <td><?= $provinsi['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
                                                     <td class="row">
-                                                        <div class="col">
-                                                            <button class="btn btn-block btn-info btn-edit"
-                                                                data-id="<?= $provinsi['id'] ?>"
-                                                                data-kode_provinsi="<?= htmlspecialchars($provinsi['kode_provinsi']) ?>"
-                                                                data-nama_provinsi="<?= htmlspecialchars($provinsi['nama_provinsi']) ?>"
-                                                                data-status="<?= $provinsi['is_active'] ?>"
-                                                                data-toggle="modal" data-target="#modalEdit">
-                                                                <i class="fas fa-edit"></i> Edit
-                                                            </button>
-                                                        </div>
+                                                        <?php if (Permission::can($pdo, 'Provinsi', 'update')): ?>
+                                                            <div class="col">
+                                                                <button class="btn btn-block btn-info btn-edit"
+                                                                    data-id="<?= $provinsi['id'] ?>"
+                                                                    data-kode_provinsi="<?= htmlspecialchars($provinsi['kode_provinsi']) ?>"
+                                                                    data-nama_provinsi="<?= htmlspecialchars($provinsi['nama_provinsi']) ?>"
+                                                                    data-status="<?= $provinsi['is_active'] ?>"
+                                                                    data-toggle="modal" data-target="#modalEdit">
+                                                                    <i class="fas fa-edit"></i> Edit
+                                                                </button>
+                                                            </div>
+                                                        <?php endif; ?>
 
-                                                        <form method="POST" action="delete.php" class="form-delete col">
-                                                            <?= csrfField() ?>
-                                                            <input type="hidden" name="id" value="<?= $provinsi['id'] ?>">
-                                                            <button type="submit" class="btn btn-block btn-danger">
-                                                                <i class="fas fa-trash"></i> Hapus
-                                                            </button>
-                                                        </form>
+                                                        <?php if (Permission::can($pdo, 'Provinsi', 'delete')): ?>
+                                                            <form method="POST" action="delete.php" class="form-delete col">
+                                                                <?= csrfField() ?>
+                                                                <input type="hidden" name="id" value="<?= $provinsi['id'] ?>">
+                                                                <button type="submit" class="btn btn-block btn-danger">
+                                                                    <i class="fas fa-trash"></i> Hapus
+                                                                </button>
+                                                            </form>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -285,9 +293,11 @@ $provinsi = $controller->index();
     <script src="../assets/adminlte/plugins/jquery-validation/additional-methods.min.js"></script>
     <!-- Page specific script -->
     <script>
-        $(function () {
+        $(function() {
             $("#example1").DataTable({
-                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
@@ -303,7 +313,7 @@ $provinsi = $controller->index();
     </script>
 
     <script>
-        $(function () {
+        $(function() {
             function initValidation(formId) {
                 $(formId).validate({
                     rules: {
@@ -329,14 +339,14 @@ $provinsi = $controller->index();
                         }
                     },
                     errorElement: 'span',
-                    errorPlacement: function (error, element) {
+                    errorPlacement: function(error, element) {
                         error.addClass('invalid-feedback');
                         element.closest('.form-group').append(error);
                     },
-                    highlight: function (element) {
+                    highlight: function(element) {
                         $(element).addClass('is-invalid');
                     },
-                    unhighlight: function (element) {
+                    unhighlight: function(element) {
                         $(element).removeClass('is-invalid');
                     }
                 });
@@ -347,7 +357,7 @@ $provinsi = $controller->index();
     </script>
 
     <script>
-        $(document).on("click", ".btn-edit", function () {
+        $(document).on("click", ".btn-edit", function() {
             let id = $(this).data("id");
             let kode_provinsi = $(this).data("kode_provinsi");
             let nama_provinsi = $(this).data("nama_provinsi");
@@ -363,7 +373,7 @@ $provinsi = $controller->index();
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        $(document).on("submit", ".form-delete", function (e) {
+        $(document).on("submit", ".form-delete", function(e) {
             e.preventDefault();
             let form = this;
             Swal.fire({
@@ -412,48 +422,161 @@ $provinsi = $controller->index();
     </script>
 
     <script>
-        const provinsiData = [
-            { "kode_provinsi": "11", "nama_provinsi": "Aceh" },
-            { "kode_provinsi": "12", "nama_provinsi": "Sumatera Utara" },
-            { "kode_provinsi": "13", "nama_provinsi": "Sumatera Barat" },
-            { "kode_provinsi": "14", "nama_provinsi": "Riau" },
-            { "kode_provinsi": "15", "nama_provinsi": "Jambi" },
-            { "kode_provinsi": "16", "nama_provinsi": "Sumatera Selatan" },
-            { "kode_provinsi": "17", "nama_provinsi": "Bengkulu" },
-            { "kode_provinsi": "18", "nama_provinsi": "Lampung" },
-            { "kode_provinsi": "19", "nama_provinsi": "Kepulauan Bangka Belitung" },
-            { "kode_provinsi": "21", "nama_provinsi": "Kepulauan Riau" },
-            { "kode_provinsi": "31", "nama_provinsi": "DKI Jakarta" },
-            { "kode_provinsi": "32", "nama_provinsi": "Jawa Barat" },
-            { "kode_provinsi": "33", "nama_provinsi": "Jawa Tengah" },
-            { "kode_provinsi": "34", "nama_provinsi": "DI Yogyakarta" },
-            { "kode_provinsi": "35", "nama_provinsi": "Jawa Timur" },
-            { "kode_provinsi": "36", "nama_provinsi": "Banten" },
-            { "kode_provinsi": "51", "nama_provinsi": "Bali" },
-            { "kode_provinsi": "52", "nama_provinsi": "Nusa Tenggara Barat" },
-            { "kode_provinsi": "53", "nama_provinsi": "Nusa Tenggara Timur" },
-            { "kode_provinsi": "61", "nama_provinsi": "Kalimantan Barat" },
-            { "kode_provinsi": "62", "nama_provinsi": "Kalimantan Tengah" },
-            { "kode_provinsi": "63", "nama_provinsi": "Kalimantan Selatan" },
-            { "kode_provinsi": "64", "nama_provinsi": "Kalimantan Timur" },
-            { "kode_provinsi": "65", "nama_provinsi": "Kalimantan Utara" },
-            { "kode_provinsi": "71", "nama_provinsi": "Sulawesi Utara" },
-            { "kode_provinsi": "72", "nama_provinsi": "Sulawesi Tengah" },
-            { "kode_provinsi": "73", "nama_provinsi": "Sulawesi Selatan" },
-            { "kode_provinsi": "74", "nama_provinsi": "Sulawesi Tenggara" },
-            { "kode_provinsi": "75", "nama_provinsi": "Gorontalo" },
-            { "kode_provinsi": "76", "nama_provinsi": "Sulawesi Barat" },
-            { "kode_provinsi": "81", "nama_provinsi": "Maluku" },
-            { "kode_provinsi": "82", "nama_provinsi": "Maluku Utara" },
-            { "kode_provinsi": "91", "nama_provinsi": "Papua Barat" },
-            { "kode_provinsi": "92", "nama_provinsi": "Papua Barat Daya" },
-            { "kode_provinsi": "94", "nama_provinsi": "Papua" },
-            { "kode_provinsi": "95", "nama_provinsi": "Papua Selatan" },
-            { "kode_provinsi": "96", "nama_provinsi": "Papua Tengah" },
-            { "kode_provinsi": "97", "nama_provinsi": "Papua Pegunungan" }
+        const provinsiData = [{
+                "kode_provinsi": "11",
+                "nama_provinsi": "Aceh"
+            },
+            {
+                "kode_provinsi": "12",
+                "nama_provinsi": "Sumatera Utara"
+            },
+            {
+                "kode_provinsi": "13",
+                "nama_provinsi": "Sumatera Barat"
+            },
+            {
+                "kode_provinsi": "14",
+                "nama_provinsi": "Riau"
+            },
+            {
+                "kode_provinsi": "15",
+                "nama_provinsi": "Jambi"
+            },
+            {
+                "kode_provinsi": "16",
+                "nama_provinsi": "Sumatera Selatan"
+            },
+            {
+                "kode_provinsi": "17",
+                "nama_provinsi": "Bengkulu"
+            },
+            {
+                "kode_provinsi": "18",
+                "nama_provinsi": "Lampung"
+            },
+            {
+                "kode_provinsi": "19",
+                "nama_provinsi": "Kepulauan Bangka Belitung"
+            },
+            {
+                "kode_provinsi": "21",
+                "nama_provinsi": "Kepulauan Riau"
+            },
+            {
+                "kode_provinsi": "31",
+                "nama_provinsi": "DKI Jakarta"
+            },
+            {
+                "kode_provinsi": "32",
+                "nama_provinsi": "Jawa Barat"
+            },
+            {
+                "kode_provinsi": "33",
+                "nama_provinsi": "Jawa Tengah"
+            },
+            {
+                "kode_provinsi": "34",
+                "nama_provinsi": "DI Yogyakarta"
+            },
+            {
+                "kode_provinsi": "35",
+                "nama_provinsi": "Jawa Timur"
+            },
+            {
+                "kode_provinsi": "36",
+                "nama_provinsi": "Banten"
+            },
+            {
+                "kode_provinsi": "51",
+                "nama_provinsi": "Bali"
+            },
+            {
+                "kode_provinsi": "52",
+                "nama_provinsi": "Nusa Tenggara Barat"
+            },
+            {
+                "kode_provinsi": "53",
+                "nama_provinsi": "Nusa Tenggara Timur"
+            },
+            {
+                "kode_provinsi": "61",
+                "nama_provinsi": "Kalimantan Barat"
+            },
+            {
+                "kode_provinsi": "62",
+                "nama_provinsi": "Kalimantan Tengah"
+            },
+            {
+                "kode_provinsi": "63",
+                "nama_provinsi": "Kalimantan Selatan"
+            },
+            {
+                "kode_provinsi": "64",
+                "nama_provinsi": "Kalimantan Timur"
+            },
+            {
+                "kode_provinsi": "65",
+                "nama_provinsi": "Kalimantan Utara"
+            },
+            {
+                "kode_provinsi": "71",
+                "nama_provinsi": "Sulawesi Utara"
+            },
+            {
+                "kode_provinsi": "72",
+                "nama_provinsi": "Sulawesi Tengah"
+            },
+            {
+                "kode_provinsi": "73",
+                "nama_provinsi": "Sulawesi Selatan"
+            },
+            {
+                "kode_provinsi": "74",
+                "nama_provinsi": "Sulawesi Tenggara"
+            },
+            {
+                "kode_provinsi": "75",
+                "nama_provinsi": "Gorontalo"
+            },
+            {
+                "kode_provinsi": "76",
+                "nama_provinsi": "Sulawesi Barat"
+            },
+            {
+                "kode_provinsi": "81",
+                "nama_provinsi": "Maluku"
+            },
+            {
+                "kode_provinsi": "82",
+                "nama_provinsi": "Maluku Utara"
+            },
+            {
+                "kode_provinsi": "91",
+                "nama_provinsi": "Papua Barat"
+            },
+            {
+                "kode_provinsi": "92",
+                "nama_provinsi": "Papua Barat Daya"
+            },
+            {
+                "kode_provinsi": "94",
+                "nama_provinsi": "Papua"
+            },
+            {
+                "kode_provinsi": "95",
+                "nama_provinsi": "Papua Selatan"
+            },
+            {
+                "kode_provinsi": "96",
+                "nama_provinsi": "Papua Tengah"
+            },
+            {
+                "kode_provinsi": "97",
+                "nama_provinsi": "Papua Pegunungan"
+            }
         ];
 
-        $(function () {
+        $(function() {
             provinsiData.forEach(p => {
                 $("#nama_provinsi").append(
                     `<option value="${p.nama_provinsi}" data-kode="${p.kode_provinsi}">
@@ -467,12 +590,12 @@ $provinsi = $controller->index();
                     </option>`
                 );
 
-                $("#edit_nama").on("change", function () {
+                $("#edit_nama").on("change", function() {
                     let kode = $(this).find(":selected").data("kode");
                     $("#edit_kode").val(kode);
                 });
 
-                $("#edit_kode").on("keyup", function () {
+                $("#edit_kode").on("keyup", function() {
                     let kodeInput = $(this).val();
                     let found = provinsiData.find(p => p.kode_provinsi === kodeInput);
                     if (found) {
@@ -482,12 +605,12 @@ $provinsi = $controller->index();
             });
         });
 
-        $("#nama_provinsi").on("change", function () {
+        $("#nama_provinsi").on("change", function() {
             let kode = $(this).find(":selected").data("kode");
             $("#kode_provinsi").val(kode);
         });
 
-        $("#kode_provinsi").on("keyup", function () {
+        $("#kode_provinsi").on("keyup", function() {
             let kodeInput = $(this).val();
             let found = provinsiData.find(p => p.kode_provinsi === kodeInput);
             if (found) {

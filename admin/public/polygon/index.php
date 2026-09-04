@@ -6,6 +6,7 @@ require_once '../../app/core/session.php';
 require_once '../../app/core/csrf.php';
 require_once "../../app/core/auth.php";
 require_once '../../app/helpers/escape.php';
+require_once "../../app/core/permission.php";
 
 secureSessionStart();
 checkAuth("non_dashboard");
@@ -24,6 +25,7 @@ $hutanProduksiTerbatas = $controller->getHutanProduksiTerbatas();
 $hutanProduksiKonversi = $controller->getHutanProduksiKonversi();
 $kawasanKonservasi = $controller->getKawasanKonservasi();
 $areaPenggunaanLain = $controller->getAreaPenggunaanLain();
+Permission::authorize($pdo, 'Polygon', 'view');
 ?>
 
 <!DOCTYPE html>
@@ -86,10 +88,12 @@ $areaPenggunaanLain = $controller->getAreaPenggunaanLain();
                             <div class="card">
                                 <div class="card-header row">
                                     <h3 class="card-title col-9">Berikut adalah list dari Data Polygon</h3>
-                                    <button class="col-3 btn btn-block btn-success" data-toggle="modal"
-                                        data-target="#modalTambah">
-                                        Tambah Polygon
-                                    </button>
+                                    <?php if (Permission::can($pdo, 'Polygon', 'create')): ?>
+                                        <button class="col-3 btn btn-block btn-success" data-toggle="modal"
+                                            data-target="#modalTambah">
+                                            Tambah Polygon
+                                        </button>
+                                    <?php endif; ?>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -617,60 +621,59 @@ $areaPenggunaanLain = $controller->getAreaPenggunaanLain();
                             render: function(data, type, row) {
 
                                 return `
-                    <div class="row">
+                                    <div class="row">
+                                        <?php if (Permission::can($pdo, 'Polygon', 'update')): ?>
+                                        <div class="col">
+                                            <button
+                                                type="button"
+                                                class="btn btn-block btn-info btn-edit"
 
-                        <div class="col">
+                                                data-id="${row.id}"
 
-                            <button
-                                type="button"
-                                class="btn btn-block btn-info btn-edit"
+                                                data-kode_polygon="${escapeHtml(row.kode_polygon)}"
 
-                                data-id="${row.id}"
+                                                data-nama_polygon="${escapeHtml(row.nama_polygon)}"
 
-                                data-kode_polygon="${escapeHtml(row.kode_polygon)}"
+                                                data-relasi_id="${row.relasi_id}"
 
-                                data-nama_polygon="${escapeHtml(row.nama_polygon)}"
+                                                data-relasi_tipe="${row.relasi_tipe}"
 
-                                data-relasi_id="${row.relasi_id}"
+                                                data-status="${row.is_active}"
 
-                                data-relasi_tipe="${row.relasi_tipe}"
+                                                data-toggle="modal"
+                                                data-target="#modalEdit">
 
-                                data-status="${row.is_active}"
+                                                <i class="fas fa-edit"></i>
+                                                Edit
 
-                                data-toggle="modal"
-                                data-target="#modalEdit">
+                                            </button>
+                                        </div>
+                                        <?php endif; ?>
 
-                                <i class="fas fa-edit"></i>
-                                Edit
+                                        <?php if (Permission::can($pdo, 'Polygon', 'delete')): ?>
+                                        <form
+                                            method="POST"
+                                            action="delete.php"
+                                            class="form-delete col">
 
-                            </button>
+                                            <input
+                                                type="hidden"
+                                                name="id"
+                                                value="${row.id}">
 
-                        </div>
+                                            <button
+                                                type="submit"
+                                                class="btn btn-block btn-danger">
 
+                                                <i class="fas fa-trash"></i>
+                                                Hapus
 
-                        <form
-                            method="POST"
-                            action="delete.php"
-                            class="form-delete col">
+                                            </button>
 
-                            <input
-                                type="hidden"
-                                name="id"
-                                value="${row.id}">
-
-                            <button
-                                type="submit"
-                                class="btn btn-block btn-danger">
-
-                                <i class="fas fa-trash"></i>
-                                Hapus
-
-                            </button>
-
-                        </form>
-
-                    </div>
-                `;
+                                        </form>
+                                        <?php endif; ?>
+                                    </div>
+                                `;
                             }
                         }
 

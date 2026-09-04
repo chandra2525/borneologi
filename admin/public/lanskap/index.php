@@ -6,12 +6,14 @@ require_once '../../app/core/session.php';
 require_once '../../app/core/csrf.php';
 require_once "../../app/core/auth.php";
 require_once '../../app/helpers/escape.php';
+require_once "../../app/core/permission.php";
 
 secureSessionStart();
 checkAuth("non_dashboard");
 
 $controller = new LanskapController($pdo);
 $lanskaps = $controller->index();
+Permission::authorize($pdo, 'Lanskap', 'view');
 
 ?>
 
@@ -75,10 +77,12 @@ $lanskaps = $controller->index();
                             <div class="card">
                                 <div class="card-header row">
                                     <h3 class="card-title col-9">Berikut adalah list dari Data Lanskap</h3>
-                                    <button class="col-3 btn btn-block btn-success" data-toggle="modal"
-                                        data-target="#modalTambah">
-                                        Tambah Lanskap
-                                    </button>
+                                    <?php if (Permission::can($pdo, 'Lanskap', 'create')): ?>
+                                        <button class="col-3 btn btn-block btn-success" data-toggle="modal"
+                                            data-target="#modalTambah">
+                                            Tambah Lanskap
+                                        </button>
+                                    <?php endif; ?>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -105,27 +109,31 @@ $lanskaps = $controller->index();
                                                     <td><?= htmlspecialchars($lanskap['urutan']) ?></td>
                                                     <td><?= $lanskap['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
                                                     <td class="row">
-                                                        <div class="col">
-                                                            <button class="btn btn-block btn-info btn-edit"
-                                                                data-id="<?= $lanskap['id'] ?>"
-                                                                data-kode="<?= htmlspecialchars($lanskap['kode']) ?>"
-                                                                data-nama="<?= htmlspecialchars($lanskap['nama']) ?>"
-                                                                data-deskripsi="<?= htmlspecialchars($lanskap['deskripsi']) ?>"
-                                                                data-urutan="<?= $lanskap['urutan'] ?>"
-                                                                data-status="<?= $lanskap['is_active'] ?>"
-                                                                data-toggle="modal" data-target="#modalEdit">
-                                                                <i class="fas fa-edit"></i> Edit
-                                                            </button>
-                                                        </div>
+                                                        <?php if (Permission::can($pdo, 'Lanskap', 'update')): ?>
+                                                            <div class="col">
+                                                                <button class="btn btn-block btn-info btn-edit"
+                                                                    data-id="<?= $lanskap['id'] ?>"
+                                                                    data-kode="<?= htmlspecialchars($lanskap['kode']) ?>"
+                                                                    data-nama="<?= htmlspecialchars($lanskap['nama']) ?>"
+                                                                    data-deskripsi="<?= htmlspecialchars($lanskap['deskripsi']) ?>"
+                                                                    data-urutan="<?= $lanskap['urutan'] ?>"
+                                                                    data-status="<?= $lanskap['is_active'] ?>"
+                                                                    data-toggle="modal" data-target="#modalEdit">
+                                                                    <i class="fas fa-edit"></i> Edit
+                                                                </button>
+                                                            </div>
+                                                        <?php endif; ?>
 
-                                                        <form method="POST" action="delete.php" class="form-delete col">
-                                                            <?= csrfField() ?>
-                                                            <input type="hidden" name="id"
-                                                                value="<?= $lanskap['id'] ?>">
-                                                            <button type="submit" class="btn btn-block btn-danger">
-                                                                <i class="fas fa-trash"></i> Hapus
-                                                            </button>
-                                                        </form>
+                                                        <?php if (Permission::can($pdo, 'Lanskap', 'delete')): ?>
+                                                            <form method="POST" action="delete.php" class="form-delete col">
+                                                                <?= csrfField() ?>
+                                                                <input type="hidden" name="id"
+                                                                    value="<?= $lanskap['id'] ?>">
+                                                                <button type="submit" class="btn btn-block btn-danger">
+                                                                    <i class="fas fa-trash"></i> Hapus
+                                                                </button>
+                                                            </form>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -183,7 +191,7 @@ $lanskaps = $controller->index();
                                 <div class="form-group">
                                     <label for="urutan">Urutan<code>*</code></label>
                                     <input type="number" name="urutan" class="form-control" id="urutan"
-                                        value="<?= (new Lanskap($pdo))->generateUrutan() ?>"placeholder="Masukkan urutan">
+                                        value="<?= (new Lanskap($pdo))->generateUrutan() ?>" placeholder="Masukkan urutan">
                                 </div>
                                 <div class="form-group">
                                     <label>Status Aktif <code>*</code></label>
@@ -305,9 +313,11 @@ $lanskaps = $controller->index();
     <script src="../assets/adminlte/plugins/jquery-validation/additional-methods.min.js"></script>
     <!-- Page specific script -->
     <script>
-        $(function () {
+        $(function() {
             $("#example1").DataTable({
-                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
@@ -323,7 +333,7 @@ $lanskaps = $controller->index();
     </script>
 
     <script>
-        $(function () {
+        $(function() {
             function initValidation(formId) {
                 $(formId).validate({
                     rules: {
@@ -355,14 +365,14 @@ $lanskaps = $controller->index();
                         }
                     },
                     errorElement: 'span',
-                    errorPlacement: function (error, element) {
+                    errorPlacement: function(error, element) {
                         error.addClass('invalid-feedback');
                         element.closest('.form-group').append(error);
                     },
-                    highlight: function (element) {
+                    highlight: function(element) {
                         $(element).addClass('is-invalid');
                     },
-                    unhighlight: function (element) {
+                    unhighlight: function(element) {
                         $(element).removeClass('is-invalid');
                     }
                 });
@@ -373,7 +383,7 @@ $lanskaps = $controller->index();
     </script>
 
     <script>
-        $(document).on("click", ".btn-edit", function () {
+        $(document).on("click", ".btn-edit", function() {
             let id = $(this).data("id");
             let kode = $(this).data("kode");
             let nama = $(this).data("nama");
@@ -395,7 +405,7 @@ $lanskaps = $controller->index();
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        $(document).on("submit", ".form-delete", function (e) {
+        $(document).on("submit", ".form-delete", function(e) {
             e.preventDefault();
             let form = this;
             Swal.fire({

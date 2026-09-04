@@ -6,6 +6,7 @@ require_once '../../app/core/session.php';
 require_once '../../app/core/csrf.php';
 require_once "../../app/core/auth.php";
 require_once '../../app/helpers/escape.php';
+require_once "../../app/core/permission.php";
 
 secureSessionStart();
 checkAuth("non_dashboard");
@@ -14,6 +15,7 @@ $controller = new DetailMonitoringPenanamanController($pdo);
 $detailMonitoringPenanamans = $controller->index();
 $monitoringPenanamans = $controller->getMonitoringPenanaman();
 $bankBenihs = $controller->getBankBenih();
+Permission::authorize($pdo, 'Detail Monitoring', 'view');
 
 ?>
 
@@ -77,10 +79,12 @@ $bankBenihs = $controller->getBankBenih();
                             <div class="card">
                                 <div class="card-header row">
                                     <h3 class="card-title col-9">Berikut adalah list dari Data Detail Monitoring Penanaman</h3>
-                                    <button class="col-3 btn btn-block btn-success" data-toggle="modal"
-                                        data-target="#modalTambah">
-                                        Tambah Detail Monitoring Penanaman
-                                    </button>
+                                    <?php if (Permission::can($pdo, 'Detail Monitoring', 'create')): ?>
+                                        <button class="col-3 btn btn-block btn-success" data-toggle="modal"
+                                            data-target="#modalTambah">
+                                            Tambah Detail Monitoring Penanaman
+                                        </button>
+                                    <?php endif; ?>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -115,30 +119,34 @@ $bankBenihs = $controller->getBankBenih();
                                                     <td><?= htmlspecialchars($detailMonitoringPenanaman['diameter_rata2_cm']) ?></td>
                                                     <td><?= htmlspecialchars($detailMonitoringPenanaman['catatan']) ?></td>
                                                     <td class="row">
-                                                        <div class="col">
-                                                            <button class="btn btn-block btn-info btn-edit"
-                                                                data-id="<?= $detailMonitoringPenanaman['id'] ?>"
-                                                                data-id_monitoring="<?= htmlspecialchars($detailMonitoringPenanaman['id_monitoring']) ?>"
-                                                                data-id_bank_benih="<?= htmlspecialchars($detailMonitoringPenanaman['id_bank_benih']) ?>"
-                                                                data-jumlah_ditanam="<?= htmlspecialchars($detailMonitoringPenanaman['jumlah_ditanam']) ?>"
-                                                                data-satuan="<?= htmlspecialchars($detailMonitoringPenanaman['satuan']) ?>"
-                                                                data-jumlah_hidup="<?= htmlspecialchars($detailMonitoringPenanaman['jumlah_hidup']) ?>"
-                                                                data-jumlah_mati="<?= htmlspecialchars($detailMonitoringPenanaman['jumlah_mati']) ?>"
-                                                                data-tinggi_rata2_cm="<?= htmlspecialchars($detailMonitoringPenanaman['tinggi_rata2_cm']) ?>"
-                                                                data-diameter_rata2_cm="<?= htmlspecialchars($detailMonitoringPenanaman['diameter_rata2_cm']) ?>"
-                                                                data-catatan="<?= htmlspecialchars($detailMonitoringPenanaman['catatan']) ?>"
-                                                                data-toggle="modal" data-target="#modalEdit">
-                                                                <i class="fas fa-edit"></i> Edit
-                                                            </button>
-                                                        </div>
+                                                        <?php if (Permission::can($pdo, 'Detail Monitoring', 'update')): ?>
+                                                            <div class="col">
+                                                                <button class="btn btn-block btn-info btn-edit"
+                                                                    data-id="<?= $detailMonitoringPenanaman['id'] ?>"
+                                                                    data-id_monitoring="<?= htmlspecialchars($detailMonitoringPenanaman['id_monitoring']) ?>"
+                                                                    data-id_bank_benih="<?= htmlspecialchars($detailMonitoringPenanaman['id_bank_benih']) ?>"
+                                                                    data-jumlah_ditanam="<?= htmlspecialchars($detailMonitoringPenanaman['jumlah_ditanam']) ?>"
+                                                                    data-satuan="<?= htmlspecialchars($detailMonitoringPenanaman['satuan']) ?>"
+                                                                    data-jumlah_hidup="<?= htmlspecialchars($detailMonitoringPenanaman['jumlah_hidup']) ?>"
+                                                                    data-jumlah_mati="<?= htmlspecialchars($detailMonitoringPenanaman['jumlah_mati']) ?>"
+                                                                    data-tinggi_rata2_cm="<?= htmlspecialchars($detailMonitoringPenanaman['tinggi_rata2_cm']) ?>"
+                                                                    data-diameter_rata2_cm="<?= htmlspecialchars($detailMonitoringPenanaman['diameter_rata2_cm']) ?>"
+                                                                    data-catatan="<?= htmlspecialchars($detailMonitoringPenanaman['catatan']) ?>"
+                                                                    data-toggle="modal" data-target="#modalEdit">
+                                                                    <i class="fas fa-edit"></i> Edit
+                                                                </button>
+                                                            </div>
+                                                        <?php endif; ?>
 
-                                                        <form method="POST" action="delete.php" class="form-delete col">
-                                                            <?= csrfField() ?>
-                                                            <input type="hidden" name="id" value="<?= $detailMonitoringPenanaman['id'] ?>">
-                                                            <button type="submit" class="btn btn-block btn-danger">
-                                                                <i class="fas fa-trash"></i> Hapus
-                                                            </button>
-                                                        </form>
+                                                        <?php if (Permission::can($pdo, 'Detail Monitoring', 'delete')): ?>
+                                                            <form method="POST" action="delete.php" class="form-delete col">
+                                                                <?= csrfField() ?>
+                                                                <input type="hidden" name="id" value="<?= $detailMonitoringPenanaman['id'] ?>">
+                                                                <button type="submit" class="btn btn-block btn-danger">
+                                                                    <i class="fas fa-trash"></i> Hapus
+                                                                </button>
+                                                            </form>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -368,9 +376,11 @@ $bankBenihs = $controller->getBankBenih();
     <script src="../assets/adminlte/plugins/jquery-validation/additional-methods.min.js"></script>
     <!-- Page specific script -->
     <script>
-        $(function () {
+        $(function() {
             $("#example1").DataTable({
-                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
@@ -386,7 +396,7 @@ $bankBenihs = $controller->getBankBenih();
     </script>
 
     <script>
-        $(function () {
+        $(function() {
             function initValidation(formId) {
                 $(formId).validate({
                     rules: {
@@ -448,14 +458,14 @@ $bankBenihs = $controller->getBankBenih();
                         }
                     },
                     errorElement: 'span',
-                    errorPlacement: function (error, element) {
+                    errorPlacement: function(error, element) {
                         error.addClass('invalid-feedback');
                         element.closest('.form-group').append(error);
                     },
-                    highlight: function (element) {
+                    highlight: function(element) {
                         $(element).addClass('is-invalid');
                     },
-                    unhighlight: function (element) {
+                    unhighlight: function(element) {
                         $(element).removeClass('is-invalid');
                     }
                 });
@@ -466,7 +476,7 @@ $bankBenihs = $controller->getBankBenih();
     </script>
 
     <script>
-        $(document).on("click", ".btn-edit", function () {
+        $(document).on("click", ".btn-edit", function() {
             let id = $(this).data("id");
             let id_monitoring = $(this).data("id_monitoring");
             let id_bank_benih = $(this).data("id_bank_benih");
@@ -494,7 +504,7 @@ $bankBenihs = $controller->getBankBenih();
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        $(document).on("submit", ".form-delete", function (e) {
+        $(document).on("submit", ".form-delete", function(e) {
             e.preventDefault();
             let form = this;
             Swal.fire({
@@ -543,10 +553,10 @@ $bankBenihs = $controller->getBankBenih();
     </script>
 
     <script>
-        document.getElementById('satuan').addEventListener('focus', function () {
+        document.getElementById('satuan').addEventListener('focus', function() {
             this.showPicker();
         });
-        document.getElementById('edit_tanggal_lahir').addEventListener('focus', function () {
+        document.getElementById('edit_tanggal_lahir').addEventListener('focus', function() {
             this.showPicker();
         });
     </script>

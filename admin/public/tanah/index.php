@@ -6,6 +6,7 @@ require_once '../../app/core/session.php';
 require_once '../../app/core/csrf.php';
 require_once "../../app/core/auth.php";
 require_once '../../app/helpers/escape.php';
+require_once "../../app/core/permission.php";
 
 secureSessionStart();
 checkAuth("non_dashboard");
@@ -17,6 +18,7 @@ $hutanAdats = $controller->getHutanAdat();
 $kalekas = $controller->getKaleka();
 $legalitasLahans = $controller->getLegalitasLahan();
 $statusKawasans = $controller->getStatusKawasan();
+Permission::authorize($pdo, 'Tanah', 'view');
 
 function getRelasiTipeLabel($tipe)
 {
@@ -140,10 +142,12 @@ function formatGeomTable($wkt)
                             <div class="card">
                                 <div class="card-header row">
                                     <h3 class="card-title col-9">Berikut adalah list dari Data Tanah</h3>
-                                    <button class="col-3 btn btn-block btn-success" data-toggle="modal"
-                                        data-target="#modalTambah">
-                                        Tambah Tanah
-                                    </button>
+                                    <?php if (Permission::can($pdo, 'Tanah', 'create')): ?>
+                                        <button class="col-3 btn btn-block btn-success" data-toggle="modal"
+                                            data-target="#modalTambah">
+                                            Tambah Tanah
+                                        </button>
+                                    <?php endif; ?>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -214,39 +218,44 @@ function formatGeomTable($wkt)
                                                     <td><?= htmlspecialchars($tanah['keterangan']) ?></td>
                                                     <td><?= $tanah['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
                                                     <td class="row">
-                                                        <div class="col">
-                                                            <button class="btn btn-block btn-info btn-edit"
-                                                                data-id="<?= $tanah['id'] ?>"
-                                                                data-kode_tanah="<?= htmlspecialchars($tanah['kode_tanah']) ?>"
-                                                                data-id_petani="<?= htmlspecialchars($tanah['id_petani']) ?>"
-                                                                data-id_relasi="<?= htmlspecialchars($tanah['id_relasi']) ?>"
-                                                                data-tipe_relasi="<?= htmlspecialchars($tanah['tipe_relasi']) ?>"
-                                                                data-nama_lahan="<?= htmlspecialchars($tanah['nama_lahan']) ?>"
-                                                                data-id_legalitas_lahan="<?= htmlspecialchars($tanah['id_legalitas_lahan']) ?>"
-                                                                data-id_status_kawasan="<?= htmlspecialchars($tanah['id_status_kawasan']) ?>"
-                                                                data-luas_ha="<?= htmlspecialchars($tanah['luas_ha']) ?>"
-                                                                data-centroid_lat="<?= htmlspecialchars($tanah['centroid_lat']) ?>"
-                                                                data-centroid_lng="<?= htmlspecialchars($tanah['centroid_lng']) ?>"
-                                                                data-geom_area="<?= htmlspecialchars($tanah['geom_area']) ?>"
-                                                                data-tipe_lokasi="<?= $tanah['geom_area'] ? 'area' : 'point' ?>"
-                                                                data-sudah_validasi="<?= $tanah['sudah_validasi'] ?>"
-                                                                data-tanggal_validasi="<?= $tanah['tanggal_validasi'] ?>"
-                                                                data-sejarah="<?= htmlspecialchars($tanah['sejarah']) ?>"
-                                                                data-alamat_lokasi="<?= htmlspecialchars($tanah['alamat_lokasi']) ?>"
-                                                                data-keterangan="<?= htmlspecialchars($tanah['keterangan']) ?>"
-                                                                data-status="<?= $tanah['is_active'] ?>"
-                                                                data-toggle="modal" data-target="#modalEdit">
-                                                                <i class="fas fa-edit"></i> Edit
-                                                            </button>
-                                                        </div>
+                                                        <?php if (Permission::can($pdo, 'Tanah', 'update')): ?>
 
-                                                        <form method="POST" action="delete.php" class="form-delete col">
-                                                            <?= csrfField() ?>
-                                                            <input type="hidden" name="id" value="<?= $tanah['id'] ?>">
-                                                            <button type="submit" class="btn btn-block btn-danger">
-                                                                <i class="fas fa-trash"></i> Hapus
-                                                            </button>
-                                                        </form>
+                                                            <div class="col">
+                                                                <button class="btn btn-block btn-info btn-edit"
+                                                                    data-id="<?= $tanah['id'] ?>"
+                                                                    data-kode_tanah="<?= htmlspecialchars($tanah['kode_tanah']) ?>"
+                                                                    data-id_petani="<?= htmlspecialchars($tanah['id_petani']) ?>"
+                                                                    data-id_relasi="<?= htmlspecialchars($tanah['id_relasi']) ?>"
+                                                                    data-tipe_relasi="<?= htmlspecialchars($tanah['tipe_relasi']) ?>"
+                                                                    data-nama_lahan="<?= htmlspecialchars($tanah['nama_lahan']) ?>"
+                                                                    data-id_legalitas_lahan="<?= htmlspecialchars($tanah['id_legalitas_lahan']) ?>"
+                                                                    data-id_status_kawasan="<?= htmlspecialchars($tanah['id_status_kawasan']) ?>"
+                                                                    data-luas_ha="<?= htmlspecialchars($tanah['luas_ha']) ?>"
+                                                                    data-centroid_lat="<?= htmlspecialchars($tanah['centroid_lat']) ?>"
+                                                                    data-centroid_lng="<?= htmlspecialchars($tanah['centroid_lng']) ?>"
+                                                                    data-geom_area="<?= htmlspecialchars($tanah['geom_area']) ?>"
+                                                                    data-tipe_lokasi="<?= $tanah['geom_area'] ? 'area' : 'point' ?>"
+                                                                    data-sudah_validasi="<?= $tanah['sudah_validasi'] ?>"
+                                                                    data-tanggal_validasi="<?= $tanah['tanggal_validasi'] ?>"
+                                                                    data-sejarah="<?= htmlspecialchars($tanah['sejarah']) ?>"
+                                                                    data-alamat_lokasi="<?= htmlspecialchars($tanah['alamat_lokasi']) ?>"
+                                                                    data-keterangan="<?= htmlspecialchars($tanah['keterangan']) ?>"
+                                                                    data-status="<?= $tanah['is_active'] ?>"
+                                                                    data-toggle="modal" data-target="#modalEdit">
+                                                                    <i class="fas fa-edit"></i> Edit
+                                                                </button>
+                                                            </div>
+                                                        <?php endif; ?>
+
+                                                        <?php if (Permission::can($pdo, 'Tanah', 'delete')): ?>
+                                                            <form method="POST" action="delete.php" class="form-delete col">
+                                                                <?= csrfField() ?>
+                                                                <input type="hidden" name="id" value="<?= $tanah['id'] ?>">
+                                                                <button type="submit" class="btn btn-block btn-danger">
+                                                                    <i class="fas fa-trash"></i> Hapus
+                                                                </button>
+                                                            </form>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>

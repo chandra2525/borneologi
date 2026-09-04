@@ -5,8 +5,9 @@ require "../../app/core/csrf.php";
 
 require "../../app/config/database.php";
 require "../../app/models/Menu.php";
+require "../../app/core/permission.php";
 
-secureSessionStart();
+Permission::authorize($pdo, 'Menus', 'create');
 verifyCsrfToken();
 
 $menu = new Menu($pdo);

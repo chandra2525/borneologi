@@ -1,11 +1,10 @@
 <?php
 require "../../app/core/session.php";
+secureSessionStart();
 require "../../app/core/csrf.php";
-
 require "../../app/config/database.php";
 require "../../app/models/HutanAdat.php";
 
-secureSessionStart();
 verifyCsrfToken();
 
 $hutanAdatModel = new HutanAdat($pdo);

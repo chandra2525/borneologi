@@ -1,11 +1,12 @@
 <?php
 require "../../app/core/session.php";
+secureSessionStart();
 require "../../app/core/csrf.php";
-
 require "../../app/config/database.php";
 require "../../app/models/Desa.php";
+require "../../app/core/permission.php";
 
-secureSessionStart();
+Permission::authorize($pdo, 'Desa', 'create');
 verifyCsrfToken();
 
 $desa = new Desa($pdo);

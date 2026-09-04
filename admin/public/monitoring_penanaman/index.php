@@ -6,6 +6,7 @@ require_once '../../app/core/session.php';
 require_once '../../app/core/csrf.php';
 require_once "../../app/core/auth.php";
 require_once '../../app/helpers/escape.php';
+require_once "../../app/core/permission.php";
 
 secureSessionStart();
 checkAuth("non_dashboard");
@@ -15,6 +16,7 @@ $monitoringPenanamans = $controller->index();
 $tanahs = $controller->getTanah();
 $tipePenanamans = $controller->getTipePenanaman();
 $progressStatusMonitorings = $controller->getProgressStatusMonitoring();
+Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
 
 ?>
 
@@ -78,10 +80,12 @@ $progressStatusMonitorings = $controller->getProgressStatusMonitoring();
                             <div class="card">
                                 <div class="card-header row">
                                     <h3 class="card-title col-9">Berikut adalah list dari Data Monitoring Penanaman</h3>
-                                    <button class="col-3 btn btn-block btn-success" data-toggle="modal"
-                                        data-target="#modalTambah">
-                                        Tambah Monitoring Penanaman
-                                    </button>
+                                    <?php if (Permission::can($pdo, 'Monitoring Penanaman', 'create')): ?>
+                                        <button class="col-3 btn btn-block btn-success" data-toggle="modal"
+                                            data-target="#modalTambah">
+                                            Tambah Monitoring Penanaman
+                                        </button>
+                                    <?php endif; ?>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -120,32 +124,36 @@ $progressStatusMonitorings = $controller->getProgressStatusMonitoring();
                                                     <td><?= htmlspecialchars($monitoringPenanaman['catatan']) ?></td>
                                                     <td><?= $monitoringPenanaman['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
                                                     <td class="row">
-                                                        <div class="col">
-                                                            <button class="btn btn-block btn-info btn-edit"
-                                                                data-id="<?= $monitoringPenanaman['id'] ?>"
-                                                                data-kode_monitoring="<?= htmlspecialchars($monitoringPenanaman['kode_monitoring']) ?>"
-                                                                data-id_tanah="<?= htmlspecialchars($monitoringPenanaman['id_tanah']) ?>"
-                                                                data-id_tipe_penanaman="<?= htmlspecialchars($monitoringPenanaman['id_tipe_penanaman']) ?>"
-                                                                data-id_progress_status_monitoring="<?= htmlspecialchars($monitoringPenanaman['id_progress_status_monitoring']) ?>"
-                                                                data-periode_pengecekan="<?= htmlspecialchars($monitoringPenanaman['periode_pengecekan']) ?>"
-                                                                data-tanggal_tanam="<?= htmlspecialchars($monitoringPenanaman['tanggal_tanam']) ?>"
-                                                                data-tanggal_monitoring="<?= htmlspecialchars($monitoringPenanaman['tanggal_monitoring']) ?>"
-                                                                data-luas_tanam_ha="<?= htmlspecialchars($monitoringPenanaman['luas_tanam_ha']) ?>"
-                                                                data-survival_rate_persen="<?= htmlspecialchars($monitoringPenanaman['survival_rate_persen']) ?>"
-                                                                data-catatan="<?= htmlspecialchars($monitoringPenanaman['catatan']) ?>"
-                                                                data-status="<?= $monitoringPenanaman['is_active'] ?>"
-                                                                data-toggle="modal" data-target="#modalEdit">
-                                                                <i class="fas fa-edit"></i> Edit
-                                                            </button>
-                                                        </div>
+                                                        <?php if (Permission::can($pdo, 'Monitoring Penanaman', 'update')): ?>
+                                                            <div class="col">
+                                                                <button class="btn btn-block btn-info btn-edit"
+                                                                    data-id="<?= $monitoringPenanaman['id'] ?>"
+                                                                    data-kode_monitoring="<?= htmlspecialchars($monitoringPenanaman['kode_monitoring']) ?>"
+                                                                    data-id_tanah="<?= htmlspecialchars($monitoringPenanaman['id_tanah']) ?>"
+                                                                    data-id_tipe_penanaman="<?= htmlspecialchars($monitoringPenanaman['id_tipe_penanaman']) ?>"
+                                                                    data-id_progress_status_monitoring="<?= htmlspecialchars($monitoringPenanaman['id_progress_status_monitoring']) ?>"
+                                                                    data-periode_pengecekan="<?= htmlspecialchars($monitoringPenanaman['periode_pengecekan']) ?>"
+                                                                    data-tanggal_tanam="<?= htmlspecialchars($monitoringPenanaman['tanggal_tanam']) ?>"
+                                                                    data-tanggal_monitoring="<?= htmlspecialchars($monitoringPenanaman['tanggal_monitoring']) ?>"
+                                                                    data-luas_tanam_ha="<?= htmlspecialchars($monitoringPenanaman['luas_tanam_ha']) ?>"
+                                                                    data-survival_rate_persen="<?= htmlspecialchars($monitoringPenanaman['survival_rate_persen']) ?>"
+                                                                    data-catatan="<?= htmlspecialchars($monitoringPenanaman['catatan']) ?>"
+                                                                    data-status="<?= $monitoringPenanaman['is_active'] ?>"
+                                                                    data-toggle="modal" data-target="#modalEdit">
+                                                                    <i class="fas fa-edit"></i> Edit
+                                                                </button>
+                                                            </div>
+                                                        <?php endif; ?>
 
-                                                        <form method="POST" action="delete.php" class="form-delete col">
-                                                            <?= csrfField() ?>
-                                                            <input type="hidden" name="id" value="<?= $monitoringPenanaman['id'] ?>">
-                                                            <button type="submit" class="btn btn-block btn-danger">
-                                                                <i class="fas fa-trash"></i> Hapus
-                                                            </button>
-                                                        </form>
+                                                        <?php if (Permission::can($pdo, 'Monitoring Penanaman', 'delete')): ?>
+                                                            <form method="POST" action="delete.php" class="form-delete col">
+                                                                <?= csrfField() ?>
+                                                                <input type="hidden" name="id" value="<?= $monitoringPenanaman['id'] ?>">
+                                                                <button type="submit" class="btn btn-block btn-danger">
+                                                                    <i class="fas fa-trash"></i> Hapus
+                                                                </button>
+                                                            </form>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -194,7 +202,7 @@ $progressStatusMonitorings = $controller->getProgressStatusMonitoring();
                                     <label for="kode_monitoring">Kode Monitoring<code>*</code></label>
                                     <input type="text" name="kode_monitoring" class="form-control" id="kode_monitoring"
                                         value="<?= (new MonitoringPenanaman($pdo))->generateKode() ?>"
-                                        placeholder="Masukkan kode monitoring">
+                                        placeholder="Masukkan kode monitoring" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="id_tanah">Lahan<code>*</code></label>
@@ -301,7 +309,7 @@ $progressStatusMonitorings = $controller->getProgressStatusMonitoring();
                                 <div class="form-group">
                                     <label for="kode_monitoring">Kode Monitoring<code>*</code></label>
                                     <input type="text" name="kode_monitoring" class="form-control" id="edit_kode_monitoring"
-                                        placeholder="Masukkan kode monitoring">
+                                        placeholder="Masukkan kode monitoring" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="id_tanah">Lahan<code>*</code></label>
@@ -428,9 +436,11 @@ $progressStatusMonitorings = $controller->getProgressStatusMonitoring();
     <script src="../assets/adminlte/plugins/jquery-validation/additional-methods.min.js"></script>
     <!-- Page specific script -->
     <script>
-        $(function () {
+        $(function() {
             $("#example1").DataTable({
-                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
@@ -446,7 +456,7 @@ $progressStatusMonitorings = $controller->getProgressStatusMonitoring();
     </script>
 
     <script>
-        $(function () {
+        $(function() {
             function initValidation(formId) {
                 $(formId).validate({
                     rules: {
@@ -520,14 +530,14 @@ $progressStatusMonitorings = $controller->getProgressStatusMonitoring();
                         }
                     },
                     errorElement: 'span',
-                    errorPlacement: function (error, element) {
+                    errorPlacement: function(error, element) {
                         error.addClass('invalid-feedback');
                         element.closest('.form-group').append(error);
                     },
-                    highlight: function (element) {
+                    highlight: function(element) {
                         $(element).addClass('is-invalid');
                     },
-                    unhighlight: function (element) {
+                    unhighlight: function(element) {
                         $(element).removeClass('is-invalid');
                     }
                 });
@@ -538,7 +548,7 @@ $progressStatusMonitorings = $controller->getProgressStatusMonitoring();
     </script>
 
     <script>
-        $(document).on("click", ".btn-edit", function () {
+        $(document).on("click", ".btn-edit", function() {
             let id = $(this).data("id");
             let kode_monitoring = $(this).data("kode_monitoring");
             let id_tanah = $(this).data("id_tanah");
@@ -570,7 +580,7 @@ $progressStatusMonitorings = $controller->getProgressStatusMonitoring();
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        $(document).on("submit", ".form-delete", function (e) {
+        $(document).on("submit", ".form-delete", function(e) {
             e.preventDefault();
             let form = this;
             Swal.fire({
@@ -619,22 +629,22 @@ $progressStatusMonitorings = $controller->getProgressStatusMonitoring();
     </script>
 
     <script>
-        document.getElementById('periode_pengecekan').addEventListener('focus', function () {
+        document.getElementById('periode_pengecekan').addEventListener('focus', function() {
             this.showPicker();
         });
-        document.getElementById('tanggal_tanam').addEventListener('focus', function () {
+        document.getElementById('tanggal_tanam').addEventListener('focus', function() {
             this.showPicker();
         });
-        document.getElementById('tanggal_monitoring').addEventListener('focus', function () {
+        document.getElementById('tanggal_monitoring').addEventListener('focus', function() {
             this.showPicker();
         });
-        document.getElementById('edit_periode_pengecekan').addEventListener('focus', function () {
+        document.getElementById('edit_periode_pengecekan').addEventListener('focus', function() {
             this.showPicker();
         });
-        document.getElementById('edit_tanggal_tanam').addEventListener('focus', function () {
+        document.getElementById('edit_tanggal_tanam').addEventListener('focus', function() {
             this.showPicker();
         });
-        document.getElementById('edit_tanggal_monitoring').addEventListener('focus', function () {
+        document.getElementById('edit_tanggal_monitoring').addEventListener('focus', function() {
             this.showPicker();
         });
     </script>

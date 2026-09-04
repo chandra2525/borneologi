@@ -6,6 +6,7 @@ require_once '../../app/core/session.php';
 require_once '../../app/core/csrf.php';
 require_once "../../app/core/auth.php";
 require_once '../../app/helpers/escape.php';
+require_once "../../app/core/permission.php";
 
 secureSessionStart();
 checkAuth("non_dashboard");
@@ -13,6 +14,7 @@ checkAuth("non_dashboard");
 $controller = new MenuController($pdo);
 $menus = $controller->index();
 $parents = $controller->getParents();
+Permission::authorize($pdo, 'Menus', 'view');
 
 ?>
 
@@ -77,10 +79,12 @@ $parents = $controller->getParents();
                                 <div class="card-header row">
                                     <h3 class="card-title col-9">Berikut adalah list dari Data Menu</h3>
                                     <!-- <a href="create.php" class="col-2 btn btn-block btn-success">Tambah Menu</a> -->
-                                    <button class="col-3 btn btn-block btn-success" data-toggle="modal"
-                                        data-target="#modalTambah">
-                                        Tambah Menu
-                                    </button>
+                                    <?php if (Permission::can($pdo, 'Menus', 'create')): ?>
+                                        <button class="col-3 btn btn-block btn-success" data-toggle="modal"
+                                            data-target="#modalTambah">
+                                            Tambah Menu
+                                        </button>
+                                    <?php endif; ?>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -111,26 +115,30 @@ $parents = $controller->getParents();
                                                     <td><?= htmlspecialchars($menu['urutan']) ?></td>
                                                     <td><?= $menu['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
                                                     <td class="row">
-                                                        <div class="col">
-                                                            <button class="btn btn-block btn-info btn-edit"
-                                                                data-id="<?= $menu['id'] ?>"
-                                                                data-kode="<?= htmlspecialchars($menu['kode']) ?>"
-                                                                data-nama="<?= htmlspecialchars($menu['nama']) ?>"
-                                                                data-parent-id="<?= $menu['id_parent'] ?? '' ?>"
-                                                                data-urutan="<?= $menu['urutan'] ?>"
-                                                                data-status="<?= $menu['is_active'] ?>" data-toggle="modal"
-                                                                data-target="#modalEdit">
-                                                                <i class="fas fa-edit"></i> Edit
-                                                            </button>
-                                                        </div>
+                                                        <?php if (Permission::can($pdo, 'Menus', 'update')): ?>
+                                                            <div class="col">
+                                                                <button class="btn btn-block btn-info btn-edit"
+                                                                    data-id="<?= $menu['id'] ?>"
+                                                                    data-kode="<?= htmlspecialchars($menu['kode']) ?>"
+                                                                    data-nama="<?= htmlspecialchars($menu['nama']) ?>"
+                                                                    data-parent-id="<?= $menu['id_parent'] ?? '' ?>"
+                                                                    data-urutan="<?= $menu['urutan'] ?>"
+                                                                    data-status="<?= $menu['is_active'] ?>" data-toggle="modal"
+                                                                    data-target="#modalEdit">
+                                                                    <i class="fas fa-edit"></i> Edit
+                                                                </button>
+                                                            </div>
+                                                        <?php endif; ?>
 
-                                                        <form method="POST" action="delete.php" class="form-delete col">
-                                                            <?= csrfField() ?>
-                                                            <input type="hidden" name="id" value="<?= $menu['id'] ?>">
-                                                            <button type="submit" class="btn btn-block btn-danger">
-                                                                <i class="fas fa-trash"></i> Hapus
-                                                            </button>
-                                                        </form>
+                                                        <?php if (Permission::can($pdo, 'Menus', 'delete')): ?>
+                                                            <form method="POST" action="delete.php" class="form-delete col">
+                                                                <?= csrfField() ?>
+                                                                <input type="hidden" name="id" value="<?= $menu['id'] ?>">
+                                                                <button type="submit" class="btn btn-block btn-danger">
+                                                                    <i class="fas fa-trash"></i> Hapus
+                                                                </button>
+                                                            </form>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>

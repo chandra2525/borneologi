@@ -6,6 +6,7 @@ require_once '../../app/core/session.php';
 require_once '../../app/core/csrf.php';
 require_once "../../app/core/auth.php";
 require_once '../../app/helpers/escape.php';
+require_once "../../app/core/permission.php";
 
 secureSessionStart();
 checkAuth("non_dashboard");
@@ -13,6 +14,7 @@ checkAuth("non_dashboard");
 $controller = new DesaController($pdo);
 $desa = $controller->index();
 $kecamatan = $controller->getKecamatan();
+Permission::authorize($pdo, 'Desa', 'view');
 
 ?>
 
@@ -76,10 +78,12 @@ $kecamatan = $controller->getKecamatan();
                             <div class="card">
                                 <div class="card-header row">
                                     <h3 class="card-title col-9">Berikut adalah list dari Data Desa</h3>
-                                    <button class="col-3 btn btn-block btn-success" data-toggle="modal"
-                                        data-target="#modalTambah">
-                                        Tambah Desa
-                                    </button>
+                                    <?php if (Permission::can($pdo, 'Desa', 'create')): ?>
+                                        <button class="col-3 btn btn-block btn-success" data-toggle="modal"
+                                            data-target="#modalTambah">
+                                            Tambah Desa
+                                        </button>
+                                    <?php endif; ?>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -87,9 +91,9 @@ $kecamatan = $controller->getKecamatan();
                                         <thead>
                                             <tr>
                                                 <th class="text-center">No</th>
+                                                <th>Nama Desa</th>
                                                 <th>Kode Desa</th>
                                                 <th>Nama Kecamatan</th>
-                                                <th>Nama Desa</th>
                                                 <th>Status Aktif</th>
                                                 <th>Aksi</th>
                                             </tr>
@@ -99,30 +103,34 @@ $kecamatan = $controller->getKecamatan();
                                             <?php foreach ($desa as $desa): ?>
                                                 <tr>
                                                     <td class="text-center"><?= $no++ ?></td>
+                                                    <td><?= htmlspecialchars($desa['nama_desa']) ?></td>
                                                     <td><?= htmlspecialchars($desa['kode_desa']) ?></td>
                                                     <td><?= htmlspecialchars($desa['nama_kecamatan']) ?></td>
-                                                    <td><?= htmlspecialchars($desa['nama_desa']) ?></td>
                                                     <td><?= $desa['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
                                                     <td class="row">
-                                                        <div class="col">
-                                                            <button class="btn btn-block btn-info btn-edit"
-                                                                data-id="<?= $desa['id'] ?>"
-                                                                data-id_kecamatan="<?= $desa['id_kecamatan'] ?>"
-                                                                data-kode_desa="<?= htmlspecialchars($desa['kode_desa']) ?>"
-                                                                data-nama_desa="<?= htmlspecialchars($desa['nama_desa']) ?>"
-                                                                data-status="<?= $desa['is_active'] ?>" data-toggle="modal"
-                                                                data-target="#modalEdit">
-                                                                <i class="fas fa-edit"></i> Edit
-                                                            </button>
-                                                        </div>
+                                                        <?php if (Permission::can($pdo, 'Desa', 'update')): ?>
+                                                            <div class="col">
+                                                                <button class="btn btn-block btn-info btn-edit"
+                                                                    data-id="<?= $desa['id'] ?>"
+                                                                    data-id_kecamatan="<?= $desa['id_kecamatan'] ?>"
+                                                                    data-kode_desa="<?= htmlspecialchars($desa['kode_desa']) ?>"
+                                                                    data-nama_desa="<?= htmlspecialchars($desa['nama_desa']) ?>"
+                                                                    data-status="<?= $desa['is_active'] ?>" data-toggle="modal"
+                                                                    data-target="#modalEdit">
+                                                                    <i class="fas fa-edit"></i> Edit
+                                                                </button>
+                                                            </div>
+                                                        <?php endif; ?>
 
-                                                        <form method="POST" action="delete.php" class="form-delete col">
-                                                            <?= csrfField() ?>
-                                                            <input type="hidden" name="id" value="<?= $desa['id'] ?>">
-                                                            <button type="submit" class="btn btn-block btn-danger">
-                                                                <i class="fas fa-trash"></i> Hapus
-                                                            </button>
-                                                        </form>
+                                                        <?php if (Permission::can($pdo, 'Desa', 'delete')): ?>
+                                                            <form method="POST" action="delete.php" class="form-delete col">
+                                                                <?= csrfField() ?>
+                                                                <input type="hidden" name="id" value="<?= $desa['id'] ?>">
+                                                                <button type="submit" class="btn btn-block btn-danger">
+                                                                    <i class="fas fa-trash"></i> Hapus
+                                                                </button>
+                                                            </form>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -309,9 +317,11 @@ $kecamatan = $controller->getKecamatan();
     <script src="../assets/adminlte/plugins/jquery-validation/additional-methods.min.js"></script>
     <!-- Page specific script -->
     <script>
-        $(function () {
+        $(function() {
             $("#example1").DataTable({
-                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
@@ -327,7 +337,7 @@ $kecamatan = $controller->getKecamatan();
     </script>
 
     <script>
-        $(function () {
+        $(function() {
             function initValidation(formId) {
                 $(formId).validate({
                     rules: {
@@ -359,14 +369,14 @@ $kecamatan = $controller->getKecamatan();
                         }
                     },
                     errorElement: 'span',
-                    errorPlacement: function (error, element) {
+                    errorPlacement: function(error, element) {
                         error.addClass('invalid-feedback');
                         element.closest('.form-group').append(error);
                     },
-                    highlight: function (element) {
+                    highlight: function(element) {
                         $(element).addClass('is-invalid');
                     },
-                    unhighlight: function (element) {
+                    unhighlight: function(element) {
                         $(element).removeClass('is-invalid');
                     }
                 });
@@ -377,7 +387,7 @@ $kecamatan = $controller->getKecamatan();
     </script>
 
     <script>
-        $(document).on("click", ".btn-edit", function () {
+        $(document).on("click", ".btn-edit", function() {
             let id = $(this).data("id");
             let id_kecamatan = $(this).data("id_kecamatan");
             let kode_desa = $(this).data("kode_desa");
@@ -404,7 +414,7 @@ $kecamatan = $controller->getKecamatan();
             //     $("#edit_kode").val(kode_desa);
             // }, 300);
 
-            loadDesa(kodeKec, "#edit_nama", function () {
+            loadDesa(kodeKec, "#edit_nama", function() {
                 $("#edit_nama").val(nama_desa);
                 $("#edit_kode").val(kode_desa);
             });
@@ -416,7 +426,7 @@ $kecamatan = $controller->getKecamatan();
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        $(document).on("submit", ".form-delete", function (e) {
+        $(document).on("submit", ".form-delete", function(e) {
             e.preventDefault();
             let form = this;
             Swal.fire({
@@ -470,7 +480,7 @@ $kecamatan = $controller->getKecamatan();
         function loadDesa(kode_kecamatan, targetSelect, callback = null) {
             let url = `https://ibnux.github.io/data-indonesia/kelurahan/${kode_kecamatan}.json`;
 
-            $.getJSON(url, function (data) {
+            $.getJSON(url, function(data) {
                 $(targetSelect).html('<option>Loading...</option>');
 
                 // kosongkan select
@@ -493,12 +503,12 @@ $kecamatan = $controller->getKecamatan();
                 }));
 
                 if (callback) callback();
-            }).fail(function () {
+            }).fail(function() {
                 alert("Gagal mengambil data desa dari API");
             });
         }
 
-        $("select[name='id_kecamatan']").on("change", function () {
+        $("select[name='id_kecamatan']").on("change", function() {
             // let kode_kecamatan = $(this).val().padStart(2, '0'); // 1 → 
             // loadDesa(kode_kecamatan, "#nama_desa");
             let kode_kecamatan = $(this).find(':selected').data('kode');
@@ -506,7 +516,7 @@ $kecamatan = $controller->getKecamatan();
             loadDesa(kode_kecamatan, "#nama_desa");
         });
 
-        $("#edit_id_kecamatan").on("change", function () {
+        $("#edit_id_kecamatan").on("change", function() {
             // let kode_kecamatan = $(this).val().padStart(2, '0');
             // loadDesa(kode_kecamatan, "#edit_nama");
             let kode_kecamatan = $(this).find(':selected').data('kode');
@@ -514,16 +524,16 @@ $kecamatan = $controller->getKecamatan();
             loadDesa(kode_kecamatan, "#edit_nama");
         });
 
-        $(function () {
+        $(function() {
 
             // ================= TAMBAH =================
-            $("#nama_desa").on("change", function () {
+            $("#nama_desa").on("change", function() {
                 let selected = $(this).find(":selected");
 
                 $("#kode_desa").val(selected.data("kode") || "");
             });
 
-            $("#kode_desa").on("keyup", function () {
+            $("#kode_desa").on("keyup", function() {
                 let kodeInput = $(this).val();
 
                 let found = desaData.find(p => p.kode_desa === kodeInput);
@@ -535,13 +545,13 @@ $kecamatan = $controller->getKecamatan();
 
 
             // ================= EDIT =================
-            $("#edit_nama").on("change", function () {
+            $("#edit_nama").on("change", function() {
                 let selected = $(this).find(":selected");
 
                 $("#edit_kode").val(selected.data("kode") || "");
             });
 
-            $("#edit_kode").on("keyup", function () {
+            $("#edit_kode").on("keyup", function() {
                 let kodeInput = $(this).val();
 
                 let found = desaData.find(p => p.kode_desa === kodeInput);

@@ -2,20 +2,22 @@
 
 require_once '../app/config/database.php';
 require_once '../app/controllers/DashboardController.php';
-require "../app/core/session.php";
+require_once "../app/core/session.php";
 require_once '../app/core/csrf.php';
-require "../app/core/auth.php";
-require "../app/core/security_headers.php";
+require_once "../app/core/auth.php";
+require_once "../app/core/security_headers.php";
 require_once '../app/helpers/escape.php';
+require_once '../app/helpers/permission_helper.php';
+require_once "../app/core/permission.php";
 
 secureSessionStart();
-
 checkAuth("dashboard");
 
 $controller = new DashboardController($pdo);
 $dashboardData = $controller->index();
-?>
+Permission::authorize($pdo, 'Dashboard', 'view');
 
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -59,7 +61,10 @@ $dashboardData = $controller->index();
         </div>
 
         <!-- Navbar -->
-        <?php include "feature/navbar.php" ?>
+        <?php 
+        $menu = "dashboard";
+        include "feature/navbar.php" 
+        ?>
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->

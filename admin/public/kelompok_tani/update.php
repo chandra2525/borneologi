@@ -1,11 +1,12 @@
 <?php
 require "../../app/core/session.php";
+secureSessionStart();
 require "../../app/core/csrf.php";
-
 require "../../app/config/database.php";
 require "../../app/models/KelompokTani.php";
+require "../../app/core/permission.php";
 
-secureSessionStart();
+Permission::authorize($pdo, 'Kelompok', 'update');
 verifyCsrfToken();
 
 $kelompokTaniModel = new KelompokTani($pdo);

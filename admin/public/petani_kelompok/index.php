@@ -6,6 +6,7 @@ require_once '../../app/core/session.php';
 require_once '../../app/core/csrf.php';
 require_once "../../app/core/auth.php";
 require_once '../../app/helpers/escape.php';
+require_once "../../app/core/permission.php";
 
 secureSessionStart();
 checkAuth("non_dashboard");
@@ -15,6 +16,7 @@ $petaniKelompoks = $controller->index();
 $petanis = $controller->getPetani();
 $kelompokTanis = $controller->getKelompokTani();
 $jabatanKelompoks = $controller->getJabatanKelompok();
+Permission::authorize($pdo, 'Kelompok Penerima', 'view');
 
 ?>
 
@@ -96,10 +98,12 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
                             <div class="card">
                                 <div class="card-header row">
                                     <h3 class="card-title col-9">Berikut adalah list dari Data Kelompok Penerima Manfaat</h3>
-                                    <button class="col-3 btn btn-block btn-success" data-toggle="modal"
-                                        data-target="#modalTambah">
-                                        Tambah Kelompok Penerima Manfaat
-                                    </button>
+                                    <?php if (Permission::can($pdo, 'Kelompok Penerima', 'create')): ?>
+                                        <button class="col-3 btn btn-block btn-success" data-toggle="modal"
+                                            data-target="#modalTambah">
+                                            Tambah Kelompok Penerima Manfaat
+                                        </button>
+                                    <?php endif; ?>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -131,28 +135,32 @@ $jabatanKelompoks = $controller->getJabatanKelompok();
                                                     <td><?= htmlspecialchars($petaniKelompok['keterangan']) ?></td>
                                                     <td><?= $petaniKelompok['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
                                                     <td class="row">
-                                                        <div class="col">
-                                                            <button class="btn btn-block btn-info btn-edit"
-                                                                data-id="<?= $petaniKelompok['id'] ?>"
-                                                                data-id_petani="<?= htmlspecialchars($petaniKelompok['id_petani']) ?>"
-                                                                data-id_kelompok_tani="<?= htmlspecialchars($petaniKelompok['id_kelompok_tani']) ?>"
-                                                                data-id_jabatan_kelompok="<?= htmlspecialchars($petaniKelompok['id_jabatan_kelompok']) ?>"
-                                                                data-tanggal_gabung="<?= htmlspecialchars($petaniKelompok['tanggal_gabung']) ?>"
-                                                                data-tanggal_keluar="<?= htmlspecialchars($petaniKelompok['tanggal_keluar']) ?>"
-                                                                data-keterangan="<?= htmlspecialchars($petaniKelompok['keterangan']) ?>"
-                                                                data-status="<?= $petaniKelompok['is_active'] ?>"
-                                                                data-toggle="modal" data-target="#modalEdit">
-                                                                <i class="fas fa-edit"></i> Edit
-                                                            </button>
-                                                        </div>
+                                                        <?php if (Permission::can($pdo, 'Kelompok Penerima', 'update')): ?>
+                                                            <div class="col">
+                                                                <button class="btn btn-block btn-info btn-edit"
+                                                                    data-id="<?= $petaniKelompok['id'] ?>"
+                                                                    data-id_petani="<?= htmlspecialchars($petaniKelompok['id_petani']) ?>"
+                                                                    data-id_kelompok_tani="<?= htmlspecialchars($petaniKelompok['id_kelompok_tani']) ?>"
+                                                                    data-id_jabatan_kelompok="<?= htmlspecialchars($petaniKelompok['id_jabatan_kelompok']) ?>"
+                                                                    data-tanggal_gabung="<?= htmlspecialchars($petaniKelompok['tanggal_gabung']) ?>"
+                                                                    data-tanggal_keluar="<?= htmlspecialchars($petaniKelompok['tanggal_keluar']) ?>"
+                                                                    data-keterangan="<?= htmlspecialchars($petaniKelompok['keterangan']) ?>"
+                                                                    data-status="<?= $petaniKelompok['is_active'] ?>"
+                                                                    data-toggle="modal" data-target="#modalEdit">
+                                                                    <i class="fas fa-edit"></i> Edit
+                                                                </button>
+                                                            </div>
+                                                        <?php endif; ?>
 
-                                                        <form method="POST" action="delete.php" class="form-delete col">
-                                                            <?= csrfField() ?>
-                                                            <input type="hidden" name="id" value="<?= $petaniKelompok['id'] ?>">
-                                                            <button type="submit" class="btn btn-block btn-danger">
-                                                                <i class="fas fa-trash"></i> Hapus
-                                                            </button>
-                                                        </form>
+                                                        <?php if (Permission::can($pdo, 'Kelompok Penerima', 'delete')): ?>
+                                                            <form method="POST" action="delete.php" class="form-delete col">
+                                                                <?= csrfField() ?>
+                                                                <input type="hidden" name="id" value="<?= $petaniKelompok['id'] ?>">
+                                                                <button type="submit" class="btn btn-block btn-danger">
+                                                                    <i class="fas fa-trash"></i> Hapus
+                                                                </button>
+                                                            </form>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>

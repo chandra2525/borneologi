@@ -1,11 +1,12 @@
 <?php
 require "../../app/core/session.php";
+secureSessionStart();
 require "../../app/core/csrf.php";
-
 require "../../app/config/database.php";
 require "../../app/models/PetaniKelompok.php";
+require "../../app/core/permission.php";
 
-secureSessionStart();
+Permission::authorize($pdo, 'Kelompok Penerima', 'create');
 verifyCsrfToken();
 
 $petaniKelompok = new PetaniKelompok($pdo);

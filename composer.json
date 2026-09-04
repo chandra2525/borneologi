@@ -6,6 +6,7 @@
         }
     },
     "require": {
-        "gasparesganga/php-shapefile": "^3.4"
+        "gasparesganga/php-shapefile": "^3.4",
+        "phpoffice/phpspreadsheet": "^5.9"
     }
 }

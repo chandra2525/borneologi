@@ -6,12 +6,14 @@ require_once '../../app/core/session.php';
 require_once '../../app/core/csrf.php';
 require_once "../../app/core/auth.php";
 require_once '../../app/helpers/escape.php';
+require_once "../../app/core/permission.php";
 
 secureSessionStart();
 checkAuth("non_dashboard");
 
 $controller = new JabatanKelompokController($pdo);
 $jabatanKelompoks = $controller->index();
+Permission::authorize($pdo, 'Jabatan Kelompok', 'view');
 
 ?>
 
@@ -75,10 +77,12 @@ $jabatanKelompoks = $controller->index();
                             <div class="card">
                                 <div class="card-header row">
                                     <h3 class="card-title col-9">Berikut adalah list dari Data Jabatan Kelompok</h3>
-                                    <button class="col-3 btn btn-block btn-success" data-toggle="modal"
-                                        data-target="#modalTambah">
-                                        Tambah Jabatan Kelompok
-                                    </button>
+                                    <?php if (Permission::can($pdo, 'Jabatan Kelompok', 'create')): ?>
+                                        <button class="col-3 btn btn-block btn-success" data-toggle="modal"
+                                            data-target="#modalTambah">
+                                            Tambah Jabatan Kelompok
+                                        </button>
+                                    <?php endif; ?>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -107,28 +111,32 @@ $jabatanKelompoks = $controller->index();
                                                     <td><?= htmlspecialchars($jabatanKelompok['urutan']) ?></td>
                                                     <td><?= $jabatanKelompok['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
                                                     <td class="row">
-                                                        <div class="col">
-                                                            <button class="btn btn-block btn-info btn-edit"
-                                                                data-id="<?= $jabatanKelompok['id'] ?>"
-                                                                data-kode="<?= htmlspecialchars($jabatanKelompok['kode']) ?>"
-                                                                data-nama="<?= htmlspecialchars($jabatanKelompok['nama']) ?>"
-                                                                data-is_pengurus="<?= htmlspecialchars($jabatanKelompok['is_pengurus']) ?>"
-                                                                data-deskripsi="<?= htmlspecialchars($jabatanKelompok['deskripsi']) ?>"
-                                                                data-urutan="<?= $jabatanKelompok['urutan'] ?>"
-                                                                data-status="<?= $jabatanKelompok['is_active'] ?>"
-                                                                data-toggle="modal" data-target="#modalEdit">
-                                                                <i class="fas fa-edit"></i> Edit
-                                                            </button>
-                                                        </div>
+                                                        <?php if (Permission::can($pdo, 'Jabatan Kelompok', 'update')): ?>
+                                                            <div class="col">
+                                                                <button class="btn btn-block btn-info btn-edit"
+                                                                    data-id="<?= $jabatanKelompok['id'] ?>"
+                                                                    data-kode="<?= htmlspecialchars($jabatanKelompok['kode']) ?>"
+                                                                    data-nama="<?= htmlspecialchars($jabatanKelompok['nama']) ?>"
+                                                                    data-is_pengurus="<?= htmlspecialchars($jabatanKelompok['is_pengurus']) ?>"
+                                                                    data-deskripsi="<?= htmlspecialchars($jabatanKelompok['deskripsi']) ?>"
+                                                                    data-urutan="<?= $jabatanKelompok['urutan'] ?>"
+                                                                    data-status="<?= $jabatanKelompok['is_active'] ?>"
+                                                                    data-toggle="modal" data-target="#modalEdit">
+                                                                    <i class="fas fa-edit"></i> Edit
+                                                                </button>
+                                                            </div>
+                                                        <?php endif; ?>
 
-                                                        <form method="POST" action="delete.php" class="form-delete col">
-                                                            <?= csrfField() ?>
-                                                            <input type="hidden" name="id"
-                                                                value="<?= $jabatanKelompok['id'] ?>">
-                                                            <button type="submit" class="btn btn-block btn-danger">
-                                                                <i class="fas fa-trash"></i> Hapus
-                                                            </button>
-                                                        </form>
+                                                        <?php if (Permission::can($pdo, 'Jabatan Kelompok', 'delete')): ?>
+                                                            <form method="POST" action="delete.php" class="form-delete col">
+                                                                <?= csrfField() ?>
+                                                                <input type="hidden" name="id"
+                                                                    value="<?= $jabatanKelompok['id'] ?>">
+                                                                <button type="submit" class="btn btn-block btn-danger">
+                                                                    <i class="fas fa-trash"></i> Hapus
+                                                                </button>
+                                                            </form>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>

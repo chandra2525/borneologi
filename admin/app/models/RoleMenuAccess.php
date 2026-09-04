@@ -1,7 +1,7 @@
 <?php
 
-class RoleMenuAccess {
-
+class RoleMenuAccess
+{
     private $pdo;
 
     public function __construct($pdo)
@@ -11,14 +11,19 @@ class RoleMenuAccess {
 
     public function getByRole($role_id)
     {
-        $stmt = $this->pdo->prepare("SELECT 
-                m.id as menu_id,
-                m.nama as menu_name,
+        $stmt = $this->pdo->prepare("
+            SELECT 
+                m.id AS menu_id,
+                m.nama AS menu_name,
                 rma.*
             FROM m_menus m
+
             LEFT JOIN m_role_menu_access rma 
-                ON rma.id_menu = m.id AND rma.id_role = ?
+                ON rma.id_menu = m.id 
+                AND rma.id_role = ?
+
             WHERE m.deleted_at IS NULL
+
             ORDER BY m.id ASC
         ");
 
@@ -29,61 +34,91 @@ class RoleMenuAccess {
 
     public function save($role_id, $menu_id, $data)
     {
+        /*
+        |--------------------------------------------------------------------------
+        | Cek apakah permission sudah ada
+        |--------------------------------------------------------------------------
+        */
 
         $stmt = $this->pdo->prepare("
-            SELECT id 
-            FROM m_role_menu_access 
-            WHERE id_role=? AND id_menu=?
+            SELECT id
+            FROM m_role_menu_access
+            WHERE id_role = ?
+              AND id_menu = ?
+            LIMIT 1
         ");
 
-        $stmt->execute([$role_id,$menu_id]);
+        $stmt->execute([
+            $role_id,
+            $menu_id
+        ]);
 
-        if($stmt->fetch()){
+        $existing = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        /*
+        |--------------------------------------------------------------------------
+        | UPDATE
+        |--------------------------------------------------------------------------
+        */
+
+        if ($existing) {
 
             $update = $this->pdo->prepare("
                 UPDATE m_role_menu_access
-                SET 
-                can_view=?,
-                can_create=?,
-                can_update=?,
-                can_delete=?,
-                can_approve=?,
-                can_export=?
-                WHERE id_role=? AND id_menu=?
+                SET
+                    can_view = ?,
+                    can_create = ?,
+                    can_update = ?,
+                    can_delete = ?,
+                    can_approve = ?,
+                    can_export = ?,
+                    is_active = 1,
+                    deleted_at = NULL
+                WHERE id = ?
             ");
 
-            $update->execute([
+            return $update->execute([
                 $data['view'],
                 $data['create'],
                 $data['update'],
                 $data['delete'],
                 $data['approve'],
                 $data['export'],
-                $role_id,
-                $menu_id
+                $existing['id']
             ]);
-
-        }else{
-
-            $insert = $this->pdo->prepare("
-                INSERT INTO m_role_menu_access
-                (id_role,id_menu,can_view,can_create,can_update,can_delete,can_approve,can_export)
-                VALUES (?,?,?,?,?,?,?,?)
-            ");
-
-            $insert->execute([
-                $role_id,
-                $menu_id,
-                $data['view'],
-                $data['create'],
-                $data['update'],
-                $data['delete'],
-                $data['approve'],
-                $data['export']
-            ]);
-
         }
 
-    }
+        /*
+        |--------------------------------------------------------------------------
+        | INSERT
+        |--------------------------------------------------------------------------
+        */
 
+        $insert = $this->pdo->prepare("
+            INSERT INTO m_role_menu_access
+            (
+                id_role,
+                id_menu,
+                can_view,
+                can_create,
+                can_update,
+                can_delete,
+                can_approve,
+                can_export,
+                is_active
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)
+        ");
+
+        return $insert->execute([
+            $role_id,
+            $menu_id,
+            $data['view'],
+            $data['create'],
+            $data['update'],
+            $data['delete'],
+            $data['approve'],
+            $data['export']
+        ]);
+    }
 }

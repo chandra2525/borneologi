@@ -18,6 +18,10 @@ verifyCsrfToken();
 $username = $_POST['username'];
 $password = $_POST['password'];
 
+if (tooManyAttempts($pdo, $username)) {
+    die("Too many login attempts. Try again later.");
+}
+
 if (login($pdo, $username, $password)) {
     clearAttempts($pdo, $username);
     header("Location: index.php");
@@ -26,8 +30,4 @@ if (login($pdo, $username, $password)) {
     recordLoginAttempt($pdo, $username);
     header("Location: login.php?error=1");
     exit;
-}
-
-if (tooManyAttempts($pdo, $username)) {
-    die("Too many login attempts. Try again later.");
 }

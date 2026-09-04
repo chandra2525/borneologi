@@ -6,6 +6,7 @@ require_once '../../app/core/session.php';
 require_once '../../app/core/csrf.php';
 require_once "../../app/core/auth.php";
 require_once '../../app/helpers/escape.php';
+require_once "../../app/core/permission.php";
 
 secureSessionStart();
 checkAuth("non_dashboard");
@@ -13,6 +14,7 @@ checkAuth("non_dashboard");
 $controller = new UserController($pdo);
 $users = $controller->index();
 $roles = $controller->getRoles();
+Permission::authorize($pdo, 'Pengguna', 'view');
 
 ?>
 
@@ -77,10 +79,12 @@ $roles = $controller->getRoles();
                                 <div class="card-header row">
                                     <h3 class="card-title col-9">Berikut adalah list dari Data Pengguna</h3>
                                     <!-- <a href="create.php" class="col-2 btn btn-block btn-success">Tambah Pengguna</a> -->
-                                    <button class="col-3 btn btn-block btn-success" data-toggle="modal"
-                                        data-target="#modalTambah">
-                                        Tambah Pengguna
-                                    </button>
+                                    <?php if (Permission::can($pdo, 'Pengguna', 'create')): ?>
+                                        <button class="col-3 btn btn-block btn-success" data-toggle="modal"
+                                            data-target="#modalTambah">
+                                            Tambah Pengguna
+                                        </button>
+                                    <?php endif; ?>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -109,27 +113,31 @@ $roles = $controller->getRoles();
                                                     <td><?= e($user['role_name']) ?></td>
                                                     <td><?= $user['is_active'] ? "Aktif" : "Nonaktif" ?></td>
                                                     <td class="row">
-                                                        <div class="col">
-                                                            <button class="btn btn-block btn-info btn-edit"
-                                                                data-id="<?= $user['id'] ?>"
-                                                                data-username="<?= e_attr($user['username']) ?>"
-                                                                data-email="<?= e_attr($user['email']) ?>"
-                                                                data-nama_lengkap="<?= e_attr($user['nama_lengkap']) ?>"
-                                                                data-nomor_hp="<?= e_attr($user['nomor_hp']) ?>"
-                                                                data-id_role="<?= $user['id_role'] ?>"
-                                                                data-status="<?= $user['is_active'] ?>" data-toggle="modal"
-                                                                data-target="#modalEdit">
-                                                                <i class="fas fa-edit"></i> Edit
-                                                            </button>
-                                                        </div>
+                                                        <?php if (Permission::can($pdo, 'Pengguna', 'update')): ?>
+                                                            <div class="col">
+                                                                <button class="btn btn-block btn-info btn-edit"
+                                                                    data-id="<?= $user['id'] ?>"
+                                                                    data-username="<?= e_attr($user['username']) ?>"
+                                                                    data-email="<?= e_attr($user['email']) ?>"
+                                                                    data-nama_lengkap="<?= e_attr($user['nama_lengkap']) ?>"
+                                                                    data-nomor_hp="<?= e_attr($user['nomor_hp']) ?>"
+                                                                    data-id_role="<?= $user['id_role'] ?>"
+                                                                    data-status="<?= $user['is_active'] ?>" data-toggle="modal"
+                                                                    data-target="#modalEdit">
+                                                                    <i class="fas fa-edit"></i> Edit
+                                                                </button>
+                                                            </div>
+                                                        <?php endif; ?>
 
-                                                        <form method="POST" action="delete.php" class="form-delete col">
-                                                            <?= csrfField() ?>
-                                                            <input type="hidden" name="id" value="<?= $user['id'] ?>">
-                                                            <button type="submit" class="btn btn-block btn-danger">
-                                                                <i class="fas fa-trash"></i> Hapus
-                                                            </button>
-                                                        </form>
+                                                        <?php if (Permission::can($pdo, 'Pengguna', 'delete')): ?>
+                                                            <form method="POST" action="delete.php" class="form-delete col">
+                                                                <?= csrfField() ?>
+                                                                <input type="hidden" name="id" value="<?= $user['id'] ?>">
+                                                                <button type="submit" class="btn btn-block btn-danger">
+                                                                    <i class="fas fa-trash"></i> Hapus
+                                                                </button>
+                                                            </form>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -345,9 +353,11 @@ $roles = $controller->getRoles();
     <script src="../assets/adminlte/plugins/jquery-validation/additional-methods.min.js"></script>
     <!-- Page specific script -->
     <script>
-        $(function () {
+        $(function() {
             $("#example1").DataTable({
-                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
@@ -363,7 +373,7 @@ $roles = $controller->getRoles();
     </script>
 
     <script>
-        $(function () {
+        $(function() {
             function initValidationTambah(formId) {
                 $(formId).validate({
                     rules: {
@@ -413,19 +423,19 @@ $roles = $controller->getRoles();
                         }
                     },
                     errorElement: 'span',
-                    errorPlacement: function (error, element) {
+                    errorPlacement: function(error, element) {
                         error.addClass('invalid-feedback');
                         element.closest('.form-group').append(error);
                     },
-                    highlight: function (element) {
+                    highlight: function(element) {
                         $(element).addClass('is-invalid');
                     },
-                    unhighlight: function (element) {
+                    unhighlight: function(element) {
                         $(element).removeClass('is-invalid');
                     }
                 });
             }
-            
+
             function initValidationEdit(formId) {
                 $(formId).validate({
                     rules: {
@@ -475,14 +485,14 @@ $roles = $controller->getRoles();
                         }
                     },
                     errorElement: 'span',
-                    errorPlacement: function (error, element) {
+                    errorPlacement: function(error, element) {
                         error.addClass('invalid-feedback');
                         element.closest('.form-group').append(error);
                     },
-                    highlight: function (element) {
+                    highlight: function(element) {
                         $(element).addClass('is-invalid');
                     },
-                    unhighlight: function (element) {
+                    unhighlight: function(element) {
                         $(element).removeClass('is-invalid');
                     }
                 });
@@ -494,7 +504,7 @@ $roles = $controller->getRoles();
     </script>
 
     <script>
-        $(document).on("click", ".btn-edit", function () {
+        $(document).on("click", ".btn-edit", function() {
             let id = $(this).data("id");
             let id_role = $(this).data("id_role");
             let username = $(this).data("username");
@@ -516,7 +526,7 @@ $roles = $controller->getRoles();
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        $(document).on("submit", ".form-delete", function (e) {
+        $(document).on("submit", ".form-delete", function(e) {
             e.preventDefault();
             let form = this;
             Swal.fire({

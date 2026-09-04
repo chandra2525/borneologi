@@ -1,15 +1,16 @@
 <?php
 require "../../app/core/session.php";
+secureSessionStart();
 require "../../app/core/csrf.php";
-
 require "../../app/config/database.php";
 require "../../app/models/Polygon.php";
 
 require '../../../vendor/autoload.php';
+require "../../app/core/permission.php";
 
+Permission::authorize($pdo, 'Polygon', 'create');
 use Shapefile\ShapefileReader;
 
-secureSessionStart();
 verifyCsrfToken();
 
 $polygon = new Polygon($pdo);

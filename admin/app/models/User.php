@@ -121,7 +121,7 @@ class User
 
     public function update($id, $data)
     {
-        if(!empty($data['password_hash'])){
+        if (!empty($data['password_hash'])) {
             $sql = "UPDATE t_users
                 SET
                 id_role=:id_role,
@@ -166,4 +166,19 @@ class User
         ]);
     }
 
+    public function updatePassword($id, $passwordHash)
+    {
+        $sql = "UPDATE t_users
+            SET password_hash = :password_hash,
+                updated_by = :updated_by
+            WHERE id = :id";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        return $stmt->execute([
+            "password_hash" => $passwordHash,
+            "updated_by" => $id,
+            "id" => $id
+        ]);
+    }
 }

@@ -6,12 +6,14 @@ require_once '../../app/core/session.php';
 require_once '../../app/core/csrf.php';
 require_once "../../app/core/auth.php";
 require_once '../../app/helpers/escape.php';
+require_once "../../app/core/permission.php";
 
 secureSessionStart();
 checkAuth("non_dashboard");
 
 $controller = new KategoriKelompokController($pdo);
 $kategoriKelompoks = $controller->index();
+Permission::authorize($pdo, 'Kategori Kelompok', 'view');
 
 ?>
 
@@ -75,10 +77,12 @@ $kategoriKelompoks = $controller->index();
                             <div class="card">
                                 <div class="card-header row">
                                     <h3 class="card-title col-9">Berikut adalah list dari Data Kategori Kelompok</h3>
-                                    <button class="col-3 btn btn-block btn-success" data-toggle="modal"
-                                        data-target="#modalTambah">
-                                        Tambah Kategori Kelompok
-                                    </button>
+                                    <?php if (Permission::can($pdo, 'Kategori Kelompok', 'create')): ?>
+                                        <button class="col-3 btn btn-block btn-success" data-toggle="modal"
+                                            data-target="#modalTambah">
+                                            Tambah Kategori Kelompok
+                                        </button>
+                                    <?php endif; ?>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -107,28 +111,32 @@ $kategoriKelompoks = $controller->index();
                                                     <td><?= htmlspecialchars($kategoriKelompok['urutan']) ?></td>
                                                     <td><?= $kategoriKelompok['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
                                                     <td class="row">
-                                                        <div class="col">
-                                                            <button class="btn btn-block btn-info btn-edit"
-                                                                data-id="<?= $kategoriKelompok['id'] ?>"
-                                                                data-kode="<?= htmlspecialchars($kategoriKelompok['kode']) ?>"
-                                                                data-nama="<?= htmlspecialchars($kategoriKelompok['nama']) ?>"
-                                                                data-deskripsi="<?= htmlspecialchars($kategoriKelompok['deskripsi']) ?>"
-                                                                data-urutan="<?= $kategoriKelompok['urutan'] ?>"
-                                                                data-status="<?= $kategoriKelompok['is_active'] ?>"
-                                                                data-mha="<?= $kategoriKelompok['is_masyarakat_hukum_adat'] ?>"
-                                                                data-toggle="modal" data-target="#modalEdit">
-                                                                <i class="fas fa-edit"></i> Edit
-                                                            </button>
-                                                        </div>
+                                                        <?php if (Permission::can($pdo, 'Kategori Kelompok', 'update')): ?>
+                                                            <div class="col">
+                                                                <button class="btn btn-block btn-info btn-edit"
+                                                                    data-id="<?= $kategoriKelompok['id'] ?>"
+                                                                    data-kode="<?= htmlspecialchars($kategoriKelompok['kode']) ?>"
+                                                                    data-nama="<?= htmlspecialchars($kategoriKelompok['nama']) ?>"
+                                                                    data-deskripsi="<?= htmlspecialchars($kategoriKelompok['deskripsi']) ?>"
+                                                                    data-urutan="<?= $kategoriKelompok['urutan'] ?>"
+                                                                    data-status="<?= $kategoriKelompok['is_active'] ?>"
+                                                                    data-mha="<?= $kategoriKelompok['is_masyarakat_hukum_adat'] ?>"
+                                                                    data-toggle="modal" data-target="#modalEdit">
+                                                                    <i class="fas fa-edit"></i> Edit
+                                                                </button>
+                                                            </div>
+                                                        <?php endif; ?>
 
-                                                        <form method="POST" action="delete.php" class="form-delete col">
-                                                            <?= csrfField() ?>
-                                                            <input type="hidden" name="id"
-                                                                value="<?= $kategoriKelompok['id'] ?>">
-                                                            <button type="submit" class="btn btn-block btn-danger">
-                                                                <i class="fas fa-trash"></i> Hapus
-                                                            </button>
-                                                        </form>
+                                                        <?php if (Permission::can($pdo, 'Kategori Kelompok', 'delete')): ?>
+                                                            <form method="POST" action="delete.php" class="form-delete col">
+                                                                <?= csrfField() ?>
+                                                                <input type="hidden" name="id"
+                                                                    value="<?= $kategoriKelompok['id'] ?>">
+                                                                <button type="submit" class="btn btn-block btn-danger">
+                                                                    <i class="fas fa-trash"></i> Hapus
+                                                                </button>
+                                                            </form>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -321,9 +329,11 @@ $kategoriKelompoks = $controller->index();
     <script src="../assets/adminlte/plugins/jquery-validation/additional-methods.min.js"></script>
     <!-- Page specific script -->
     <script>
-        $(function () {
+        $(function() {
             $("#example1").DataTable({
-                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
@@ -339,7 +349,7 @@ $kategoriKelompoks = $controller->index();
     </script>
 
     <script>
-        $(function () {
+        $(function() {
             function initValidation(formId) {
                 $(formId).validate({
                     rules: {
@@ -371,14 +381,14 @@ $kategoriKelompoks = $controller->index();
                         }
                     },
                     errorElement: 'span',
-                    errorPlacement: function (error, element) {
+                    errorPlacement: function(error, element) {
                         error.addClass('invalid-feedback');
                         element.closest('.form-group').append(error);
                     },
-                    highlight: function (element) {
+                    highlight: function(element) {
                         $(element).addClass('is-invalid');
                     },
-                    unhighlight: function (element) {
+                    unhighlight: function(element) {
                         $(element).removeClass('is-invalid');
                     }
                 });
@@ -389,7 +399,7 @@ $kategoriKelompoks = $controller->index();
     </script>
 
     <script>
-        $(document).on("click", ".btn-edit", function () {
+        $(document).on("click", ".btn-edit", function() {
             let id = $(this).data("id");
             let kode = $(this).data("kode");
             let nama = $(this).data("nama");
@@ -411,7 +421,7 @@ $kategoriKelompoks = $controller->index();
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        $(document).on("submit", ".form-delete", function (e) {
+        $(document).on("submit", ".form-delete", function(e) {
             e.preventDefault();
             let form = this;
             Swal.fire({

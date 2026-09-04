@@ -1,11 +1,12 @@
 <?php
 require "../../app/core/session.php";
+secureSessionStart();
 require "../../app/core/csrf.php";
-
 require "../../app/config/database.php";
 require "../../app/models/TipePenyimpananBenih.php";
+require "../../app/core/permission.php";
 
-secureSessionStart();
+Permission::authorize($pdo, 'Tipe Penyimpanan Benih', 'update');
 verifyCsrfToken();
 
 $tipePenyimpananBenihModel = new TipePenyimpananBenih($pdo);

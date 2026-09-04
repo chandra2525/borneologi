@@ -6,6 +6,7 @@ require_once '../../app/core/session.php';
 require_once '../../app/core/csrf.php';
 require_once "../../app/core/auth.php";
 require_once '../../app/helpers/escape.php';
+require_once "../../app/core/permission.php";
 
 secureSessionStart();
 checkAuth("non_dashboard");
@@ -13,6 +14,7 @@ checkAuth("non_dashboard");
 $controller = new KabupatenController($pdo);
 $kabupaten = $controller->index();
 $provinsi = $controller->getProvinsi();
+Permission::authorize($pdo, 'Kabupaten', 'view');
 
 ?>
 
@@ -76,10 +78,12 @@ $provinsi = $controller->getProvinsi();
                             <div class="card">
                                 <div class="card-header row">
                                     <h3 class="card-title col-9">Berikut adalah list dari Data Kabupaten</h3>
-                                    <button class="col-3 btn btn-block btn-success" data-toggle="modal"
-                                        data-target="#modalTambah">
-                                        Tambah Kabupaten
-                                    </button>
+                                    <?php if (Permission::can($pdo, 'Kabupaten', 'create')): ?>
+                                        <button class="col-3 btn btn-block btn-success" data-toggle="modal"
+                                            data-target="#modalTambah">
+                                            Tambah Kabupaten
+                                        </button>
+                                    <?php endif; ?>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -87,9 +91,9 @@ $provinsi = $controller->getProvinsi();
                                         <thead>
                                             <tr>
                                                 <th class="text-center">No</th>
-                                                <th>Nama Provinsi</th>
-                                                <th>Kode Kabupaten</th>
                                                 <th>Nama Kabupaten</th>
+                                                <th>Kode Kabupaten</th>
+                                                <th>Nama Provinsi</th>
                                                 <th>Tipe</th>
                                                 <th>Status Aktif</th>
                                                 <th>Aksi</th>
@@ -100,32 +104,36 @@ $provinsi = $controller->getProvinsi();
                                             <?php foreach ($kabupaten as $kabupaten): ?>
                                                 <tr>
                                                     <td class="text-center"><?= $no++ ?></td>
-                                                    <td><?= htmlspecialchars($kabupaten['nama_provinsi']) ?></td>
-                                                    <td><?= htmlspecialchars($kabupaten['kode_kabupaten']) ?></td>
                                                     <td><?= htmlspecialchars($kabupaten['nama_kabupaten']) ?></td>
+                                                    <td><?= htmlspecialchars($kabupaten['kode_kabupaten']) ?></td>
+                                                    <td><?= htmlspecialchars($kabupaten['nama_provinsi']) ?></td>
                                                     <td><?= htmlspecialchars($kabupaten['tipe']) ?></td>
                                                     <td><?= $kabupaten['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
                                                     <td class="row">
-                                                        <div class="col">
-                                                            <button class="btn btn-block btn-info btn-edit"
-                                                                data-id="<?= $kabupaten['id'] ?>"
-                                                                data-id_provinsi="<?= $kabupaten['id_provinsi'] ?>"
-                                                                data-kode_kabupaten="<?= htmlspecialchars($kabupaten['kode_kabupaten']) ?>"
-                                                                data-nama_kabupaten="<?= htmlspecialchars($kabupaten['nama_kabupaten']) ?>"
-                                                                data-tipe="<?= htmlspecialchars($kabupaten['tipe']) ?>"
-                                                                data-status="<?= $kabupaten['is_active'] ?>"
-                                                                data-toggle="modal" data-target="#modalEdit">
-                                                                <i class="fas fa-edit"></i> Edit
-                                                            </button>
-                                                        </div>
+                                                        <?php if (Permission::can($pdo, 'Kabupaten', 'update')): ?>
+                                                            <div class="col">
+                                                                <button class="btn btn-block btn-info btn-edit"
+                                                                    data-id="<?= $kabupaten['id'] ?>"
+                                                                    data-id_provinsi="<?= $kabupaten['id_provinsi'] ?>"
+                                                                    data-kode_kabupaten="<?= htmlspecialchars($kabupaten['kode_kabupaten']) ?>"
+                                                                    data-nama_kabupaten="<?= htmlspecialchars($kabupaten['nama_kabupaten']) ?>"
+                                                                    data-tipe="<?= htmlspecialchars($kabupaten['tipe']) ?>"
+                                                                    data-status="<?= $kabupaten['is_active'] ?>"
+                                                                    data-toggle="modal" data-target="#modalEdit">
+                                                                    <i class="fas fa-edit"></i> Edit
+                                                                </button>
+                                                            </div>
+                                                        <?php endif; ?>
 
-                                                        <form method="POST" action="delete.php" class="form-delete col">
-                                                            <?= csrfField() ?>
-                                                            <input type="hidden" name="id" value="<?= $kabupaten['id'] ?>">
-                                                            <button type="submit" class="btn btn-block btn-danger">
-                                                                <i class="fas fa-trash"></i> Hapus
-                                                            </button>
-                                                        </form>
+                                                        <?php if (Permission::can($pdo, 'Kabupaten', 'delete')): ?>
+                                                            <form method="POST" action="delete.php" class="form-delete col">
+                                                                <?= csrfField() ?>
+                                                                <input type="hidden" name="id" value="<?= $kabupaten['id'] ?>">
+                                                                <button type="submit" class="btn btn-block btn-danger">
+                                                                    <i class="fas fa-trash"></i> Hapus
+                                                                </button>
+                                                            </form>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -323,9 +331,11 @@ $provinsi = $controller->getProvinsi();
     <script src="../assets/adminlte/plugins/jquery-validation/additional-methods.min.js"></script>
     <!-- Page specific script -->
     <script>
-        $(function () {
+        $(function() {
             $("#example1").DataTable({
-                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
@@ -341,7 +351,7 @@ $provinsi = $controller->getProvinsi();
     </script>
 
     <script>
-        $(function () {
+        $(function() {
             function initValidation(formId) {
                 $(formId).validate({
                     rules: {
@@ -373,14 +383,14 @@ $provinsi = $controller->getProvinsi();
                         }
                     },
                     errorElement: 'span',
-                    errorPlacement: function (error, element) {
+                    errorPlacement: function(error, element) {
                         error.addClass('invalid-feedback');
                         element.closest('.form-group').append(error);
                     },
-                    highlight: function (element) {
+                    highlight: function(element) {
                         $(element).addClass('is-invalid');
                     },
-                    unhighlight: function (element) {
+                    unhighlight: function(element) {
                         $(element).removeClass('is-invalid');
                     }
                 });
@@ -391,7 +401,7 @@ $provinsi = $controller->getProvinsi();
     </script>
 
     <script>
-        $(document).on("click", ".btn-edit", function () {
+        $(document).on("click", ".btn-edit", function() {
             let id = $(this).data("id");
             let id_provinsi = $(this).data("id_provinsi");
             let kode_kabupaten = $(this).data("kode_kabupaten");
@@ -410,7 +420,7 @@ $provinsi = $controller->getProvinsi();
 
             if (!kodeProv) return;
 
-            loadKabupaten(kodeProv, "#edit_nama", function () {
+            loadKabupaten(kodeProv, "#edit_nama", function() {
                 $("#edit_nama").val(nama_kabupaten);
                 $("#edit_kode").val(kode_kabupaten);
             });
@@ -422,7 +432,7 @@ $provinsi = $controller->getProvinsi();
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        $(document).on("submit", ".form-delete", function (e) {
+        $(document).on("submit", ".form-delete", function(e) {
             e.preventDefault();
             let form = this;
             Swal.fire({
@@ -476,7 +486,7 @@ $provinsi = $controller->getProvinsi();
         function loadKabupaten(kode_provinsi, targetSelect, callback = null) {
             let url = `https://ibnux.github.io/data-indonesia/kabupaten/${kode_provinsi}.json`;
 
-            $.getJSON(url, function (data) {
+            $.getJSON(url, function(data) {
                 $(targetSelect).html('<option>Loading...</option>');
 
                 // kosongkan select
@@ -503,12 +513,12 @@ $provinsi = $controller->getProvinsi();
                 }));
 
                 if (callback) callback();
-            }).fail(function () {
+            }).fail(function() {
                 alert("Gagal mengambil data kabupaten dari API");
             });
         }
 
-        $("select[name='id_provinsi']").on("change", function () {
+        $("select[name='id_provinsi']").on("change", function() {
             // let kode_provinsi = $(this).val().padStart(2, '0'); // 1 → 
             // loadkabupaten(kode_provinsi, "#nama_kabupaten");
             let kode_provinsi = $(this).find(':selected').data('kode');
@@ -516,7 +526,7 @@ $provinsi = $controller->getProvinsi();
             loadKabupaten(kode_provinsi, "#nama_kabupaten");
         });
 
-        $("#edit_id_provinsi").on("change", function () {
+        $("#edit_id_provinsi").on("change", function() {
             // let kode_provinsi = $(this).val().padStart(2, '0');
             // loadkabupaten(kode_provinsi, "#edit_nama");
             let kode_provinsi = $(this).find(':selected').data('kode');
@@ -524,17 +534,17 @@ $provinsi = $controller->getProvinsi();
             loadKabupaten(kode_provinsi, "#edit_nama");
         });
 
-        $(function () {
+        $(function() {
 
             // ================= TAMBAH =================
-            $("#nama_kabupaten").on("change", function () {
+            $("#nama_kabupaten").on("change", function() {
                 let selected = $(this).find(":selected");
 
                 $("#kode_kabupaten").val(selected.data("kode") || "");
                 $("#tipe").val(selected.data("tipe") || "");
             });
 
-            $("#kode_kabupaten").on("keyup", function () {
+            $("#kode_kabupaten").on("keyup", function() {
                 let kodeInput = $(this).val();
 
                 let found = kabupatenData.find(p => p.kode_kabupaten === kodeInput);
@@ -547,14 +557,14 @@ $provinsi = $controller->getProvinsi();
 
 
             // ================= EDIT =================
-            $("#edit_nama").on("change", function () {
+            $("#edit_nama").on("change", function() {
                 let selected = $(this).find(":selected");
 
                 $("#edit_kode").val(selected.data("kode") || "");
                 $("#edit_tipe").val(selected.data("tipe") || "");
             });
 
-            $("#edit_kode").on("keyup", function () {
+            $("#edit_kode").on("keyup", function() {
                 let kodeInput = $(this).val();
 
                 let found = kabupatenData.find(p => p.kode_kabupaten === kodeInput);

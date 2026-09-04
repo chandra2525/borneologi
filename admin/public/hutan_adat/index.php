@@ -6,6 +6,7 @@ require_once '../../app/core/session.php';
 require_once '../../app/core/csrf.php';
 require_once "../../app/core/auth.php";
 require_once '../../app/helpers/escape.php';
+require_once "../../app/core/permission.php";
 
 secureSessionStart();
 checkAuth("non_dashboard");
@@ -16,6 +17,7 @@ $kelompokTanis = $controller->getKelompokTani();
 $desas = $controller->getDesa();
 $statusKawasans = $controller->getStatusKawasan();
 $polygons = $controller->getPolygon();
+Permission::authorize($pdo, 'Hutan Adat', 'view');
 
 function formatGeomTable($wkt)
 {
@@ -116,10 +118,12 @@ function formatGeomTable($wkt)
                             <div class="card">
                                 <div class="card-header row">
                                     <h3 class="card-title col-9">Berikut adalah list dari Data Hutan Adat</h3>
-                                    <button class="col-3 btn btn-block btn-success" data-toggle="modal"
-                                        data-target="#modalTambah">
-                                        Tambah Hutan Adat
-                                    </button>
+                                    <?php if (Permission::can($pdo, 'Hutan Adat', 'create')): ?>
+                                        <button class="col-3 btn btn-block btn-success" data-toggle="modal"
+                                            data-target="#modalTambah">
+                                            Tambah Hutan Adat
+                                        </button>
+                                    <?php endif; ?>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -173,33 +177,36 @@ function formatGeomTable($wkt)
                                                     <td><?= htmlspecialchars($hutanAdat['keterangan']) ?></td>
                                                     <td><?= $hutanAdat['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
                                                     <td class="row">
-                                                        <div class="col">
-                                                            <button class="btn btn-block btn-info btn-edit"
-                                                                data-id="<?= $hutanAdat['id'] ?>"
-                                                                data-kode_hutan_adat="<?= htmlspecialchars($hutanAdat['kode_hutan_adat']) ?>"
-                                                                data-nama_hutan_adat="<?= htmlspecialchars($hutanAdat['nama_hutan_adat']) ?>"
-                                                                data-id_masyarakat_hukum_adat="<?= htmlspecialchars($hutanAdat['id_masyarakat_hukum_adat']) ?>"
-                                                                data-id_desa="<?= htmlspecialchars($hutanAdat['id_desa']) ?>"
-                                                                data-nomor_sk="<?= htmlspecialchars($hutanAdat['nomor_sk']) ?>"
-                                                                data-tanggal_sk="<?= htmlspecialchars($hutanAdat['tanggal_sk']) ?>"
-                                                                data-id_status_kawasan="<?= htmlspecialchars($hutanAdat['id_status_kawasan']) ?>"
-                                                                data-luas_ha="<?= htmlspecialchars($hutanAdat['luas_ha']) ?>"
-                                                                data-keterangan="<?= htmlspecialchars($hutanAdat['keterangan']) ?>"
-                                                                data-status="<?= $hutanAdat['is_active'] ?>"
-                                                                data-toggle="modal" data-target="#modalEdit">
-                                                                <i class="fas fa-edit"></i> Edit
-                                                                <!-- data-id_polygon="<?= htmlspecialchars($hutanAdat['id_polygon']) ?>"
+                                                        <?php if (Permission::can($pdo, 'Hutan Adat', 'update')): ?>
+                                                            <div class="col">
+                                                                <button class="btn btn-block btn-info btn-edit"
+                                                                    data-id="<?= $hutanAdat['id'] ?>"
+                                                                    data-kode_hutan_adat="<?= htmlspecialchars($hutanAdat['kode_hutan_adat']) ?>"
+                                                                    data-nama_hutan_adat="<?= htmlspecialchars($hutanAdat['nama_hutan_adat']) ?>"
+                                                                    data-id_masyarakat_hukum_adat="<?= htmlspecialchars($hutanAdat['id_masyarakat_hukum_adat']) ?>"
+                                                                    data-id_desa="<?= htmlspecialchars($hutanAdat['id_desa']) ?>"
+                                                                    data-nomor_sk="<?= htmlspecialchars($hutanAdat['nomor_sk']) ?>"
+                                                                    data-tanggal_sk="<?= htmlspecialchars($hutanAdat['tanggal_sk']) ?>"
+                                                                    data-id_status_kawasan="<?= htmlspecialchars($hutanAdat['id_status_kawasan']) ?>"
+                                                                    data-luas_ha="<?= htmlspecialchars($hutanAdat['luas_ha']) ?>"
+                                                                    data-keterangan="<?= htmlspecialchars($hutanAdat['keterangan']) ?>"
+                                                                    data-status="<?= $hutanAdat['is_active'] ?>"
+                                                                    data-toggle="modal" data-target="#modalEdit">
+                                                                    <i class="fas fa-edit"></i> Edit
+                                                                    <!-- data-id_polygon="<?= htmlspecialchars($hutanAdat['id_polygon']) ?>"
                                                                 data-geom_area="<?= htmlspecialchars($hutanAdat['geom_area']) ?>" -->
-                                                            </button>
-                                                        </div>
-
-                                                        <form method="POST" action="delete.php" class="form-delete col">
-                                                            <?= csrfField() ?>
-                                                            <input type="hidden" name="id" value="<?= $hutanAdat['id'] ?>">
-                                                            <button type="submit" class="btn btn-block btn-danger">
-                                                                <i class="fas fa-trash"></i> Hapus
-                                                            </button>
-                                                        </form>
+                                                                </button>
+                                                            </div>
+                                                        <?php endif; ?>
+                                                        <?php if (Permission::can($pdo, 'Hutan Adat', 'delete')): ?>
+                                                            <form method="POST" action="delete.php" class="form-delete col">
+                                                                <?= csrfField() ?>
+                                                                <input type="hidden" name="id" value="<?= $hutanAdat['id'] ?>">
+                                                                <button type="submit" class="btn btn-block btn-danger">
+                                                                    <i class="fas fa-trash"></i> Hapus
+                                                                </button>
+                                                            </form>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>

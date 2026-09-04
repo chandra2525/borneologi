@@ -1,10 +1,11 @@
 <?php
-
 require "../../app/core/session.php";
+secureSessionStart();
 require "../../app/config/database.php";
 require "../../app/models/TipePenyimpananBenih.php";
+require "../../app/core/permission.php";
 
-secureSessionStart();
+Permission::authorize($pdo, 'Tipe Penyimpanan Benih', 'delete');
 
 $tipePenyimpananBenihModel = new TipePenyimpananBenih($pdo);
 

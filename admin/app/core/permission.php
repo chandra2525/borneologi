@@ -1,23 +1,102 @@
 <?php
 
-function can($menu, $action)
+class Permission
 {
+    private PDO $pdo;
 
-    global $pdo;
+    public function __construct(PDO $pdo)
+    {
+        $this->pdo = $pdo;
+    }
 
-    $role = $_SESSION['role_id'];
+    /**
+     * Ambil role ID user yang sedang login.
+     */
+    private function getRoleId(): ?int
+    {
+        return isset($_SESSION['role'])
+            ? (int) $_SESSION['role']
+            : null;
+    }
 
-    $stmt = $pdo->prepare("
-        SELECT *
-        FROM m_role_menu_access r
-        JOIN m_menus m ON m.id=r.id_menu
-        WHERE r.id_role=? 
-        AND m.kode=?
-        AND r.can_" . $action . "=1
-    ");
+    /**
+     * Cek permission berdasarkan kode menu.
+     *
+     * Contoh:
+     * Permission::can($pdo, 'petani', 'view');
+     * Permission::can($pdo, 'petani', 'create');
+     */
+    public static function can(
+        PDO $pdo,
+        string $menuCode,
+        string $action
+    ): bool {
 
-    $stmt->execute([$role, $menu]);
+        $roleId = (new self($pdo))->getRoleId();
 
-    return $stmt->fetch() ? true : false;
+        if (!$roleId) {
+            return false;
+        }
 
+        $allowedActions = [
+            'view'    => 'can_view',
+            'create'  => 'can_create',
+            'update'  => 'can_update',
+            'delete'  => 'can_delete',
+            'approve' => 'can_approve',
+            'export'  => 'can_export',
+        ];
+
+        if (!isset($allowedActions[$action])) {
+            return false;
+        }
+
+        $column = $allowedActions[$action];
+
+        $sql = "
+            SELECT rma.$column
+            FROM m_role_menu_access rma
+
+            INNER JOIN m_menus m
+                ON m.id = rma.id_menu
+
+            WHERE rma.id_role = ?
+              AND m.nama = ?
+              AND m.is_active = 1
+              AND m.deleted_at IS NULL
+              AND rma.is_active = 1
+              AND rma.deleted_at IS NULL
+
+            LIMIT 1
+        ";
+
+        $stmt = $pdo->prepare($sql);
+
+        $stmt->execute([
+            $roleId,
+            $menuCode
+        ]);
+
+        return (bool) $stmt->fetchColumn();
+    }
+
+    /**
+     * Wajib memiliki permission.
+     */
+    public static function authorize(
+        PDO $pdo,
+        string $menuCode,
+        string $action = 'view'
+    ): void {
+
+        if (!self::can($pdo, $menuCode, $action)) {
+
+            http_response_code(403);
+
+            die('
+                <h1>403 - Forbidden</h1>
+                <p>Anda tidak memiliki hak akses untuk melakukan tindakan ini.</p>
+            ');
+        }
+    }
 }

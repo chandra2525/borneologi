@@ -6,6 +6,7 @@ require_once '../../app/core/session.php';
 require_once '../../app/core/csrf.php';
 require_once "../../app/core/auth.php";
 require_once '../../app/helpers/escape.php';
+require_once "../../app/core/permission.php";
 
 secureSessionStart();
 checkAuth("non_dashboard");
@@ -13,6 +14,7 @@ checkAuth("non_dashboard");
 $controller = new PetaniController($pdo);
 $petanis = $controller->index();
 $desas = $controller->getDesa();
+Permission::authorize($pdo, 'Penerima Manfaat', 'view');
 
 ?>
 
@@ -79,10 +81,31 @@ $desas = $controller->getDesa();
                             <div class="card">
                                 <div class="card-header row">
                                     <h3 class="card-title col-9">Berikut adalah list dari Data Penerima Manfaat</h3>
-                                    <button class="col-3 btn btn-block btn-success" data-toggle="modal"
-                                        data-target="#modalTambah">
-                                        Tambah Penerima Manfaat
-                                    </button>
+                                    <?php if (Permission::can($pdo, 'Penerima Manfaat', 'create')): ?>
+                                        <div class="col-md-12 text-right">
+                                            <a href="download_template.php"
+                                                class="btn btn-info">
+                                                <i class="fas fa-download"></i>
+                                                Download Template
+                                            </a>
+
+                                            <button type="button"
+                                                class="btn btn-warning"
+                                                data-toggle="modal"
+                                                data-target="#modalImport">
+                                                <i class="fas fa-file-excel"></i>
+                                                Import Excel
+                                            </button>
+
+                                            <button type="button"
+                                                class="btn btn-success"
+                                                data-toggle="modal"
+                                                data-target="#modalTambah">
+                                                <i class="fas fa-plus"></i>
+                                                Tambah
+                                            </button>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -130,33 +153,37 @@ $desas = $controller->getDesa();
                                                     </td>
                                                     <td><?= $petani['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
                                                     <td class="row">
-                                                        <div class="col">
-                                                            <button class="btn btn-block btn-info btn-edit"
-                                                                data-id="<?= $petani['id'] ?>"
-                                                                data-nik="<?= htmlspecialchars($petani['nik']) ?>"
-                                                                data-no_kk="<?= htmlspecialchars($petani['no_kk']) ?>"
-                                                                data-nama_lengkap="<?= htmlspecialchars($petani['nama_lengkap']) ?>"
-                                                                data-nama_panggilan="<?= htmlspecialchars($petani['nama_panggilan']) ?>"
-                                                                data-jenis_kelamin="<?= htmlspecialchars($petani['jenis_kelamin']) ?>"
-                                                                data-tanggal_lahir="<?= htmlspecialchars($petani['tanggal_lahir']) ?>"
-                                                                data-nomor_hp="<?= htmlspecialchars($petani['nomor_hp']) ?>"
-                                                                data-id_desa="<?= htmlspecialchars($petani['id_desa']) ?>"
-                                                                data-alamat="<?= htmlspecialchars($petani['alamat']) ?>"
-                                                                data-foto="<?= $petani['foto_profil_petani'] ?>"
-                                                                data-status_petani="<?= htmlspecialchars($petani['status_petani']) ?>"
-                                                                data-status="<?= $petani['is_active'] ?>"
-                                                                data-toggle="modal" data-target="#modalEdit">
-                                                                <i class="fas fa-edit"></i> Edit
-                                                            </button>
-                                                        </div>
+                                                        <?php if (Permission::can($pdo, 'Penerima Manfaat', 'update')): ?>
+                                                            <div class="col">
+                                                                <button class="btn btn-block btn-info btn-edit"
+                                                                    data-id="<?= $petani['id'] ?>"
+                                                                    data-nik="<?= htmlspecialchars($petani['nik']) ?>"
+                                                                    data-no_kk="<?= htmlspecialchars($petani['no_kk']) ?>"
+                                                                    data-nama_lengkap="<?= htmlspecialchars($petani['nama_lengkap']) ?>"
+                                                                    data-nama_panggilan="<?= htmlspecialchars($petani['nama_panggilan']) ?>"
+                                                                    data-jenis_kelamin="<?= htmlspecialchars($petani['jenis_kelamin']) ?>"
+                                                                    data-tanggal_lahir="<?= htmlspecialchars($petani['tanggal_lahir']) ?>"
+                                                                    data-nomor_hp="<?= htmlspecialchars($petani['nomor_hp']) ?>"
+                                                                    data-id_desa="<?= htmlspecialchars($petani['id_desa']) ?>"
+                                                                    data-alamat="<?= htmlspecialchars($petani['alamat']) ?>"
+                                                                    data-foto="<?= $petani['foto_profil_petani'] ?>"
+                                                                    data-status_petani="<?= htmlspecialchars($petani['status_petani']) ?>"
+                                                                    data-status="<?= $petani['is_active'] ?>"
+                                                                    data-toggle="modal" data-target="#modalEdit">
+                                                                    <i class="fas fa-edit"></i> Edit
+                                                                </button>
+                                                            </div>
+                                                        <?php endif; ?>
 
-                                                        <form method="POST" action="delete.php" class="form-delete col">
-                                                            <?= csrfField() ?>
-                                                            <input type="hidden" name="id" value="<?= $petani['id'] ?>">
-                                                            <button type="submit" class="btn btn-block btn-danger">
-                                                                <i class="fas fa-trash"></i> Hapus
-                                                            </button>
-                                                        </form>
+                                                        <?php if (Permission::can($pdo, 'Penerima Manfaat', 'delete')): ?>
+                                                            <form method="POST" action="delete.php" class="form-delete col">
+                                                                <?= csrfField() ?>
+                                                                <input type="hidden" name="id" value="<?= $petani['id'] ?>">
+                                                                <button type="submit" class="btn btn-block btn-danger">
+                                                                    <i class="fas fa-trash"></i> Hapus
+                                                                </button>
+                                                            </form>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -501,8 +528,162 @@ $desas = $controller->getDesa();
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="modalImport">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h4 class="modal-title">
+                                Import Data Penerima Manfaat
+                            </h4>
+
+                            <button type="button"
+                                class="close"
+                                data-dismiss="modal">
+                                &times;
+                            </button>
+                        </div>
+
+                        <form method="POST" action="import.php" enctype="multipart/form-data">
+                            <?= csrfField() ?>
+                            <div class="modal-body">
+
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle"></i>
+
+                                    Silahkan download template terlebih dahulu
+                                    sebelum melakukan import data.
+                                </div>
+
+                                <div class="form-group">
+
+                                    <label for="file_excel">
+                                        File Excel
+                                    </label>
+
+                                    <input type="file"
+                                        name="file_excel"
+                                        id="file_excel"
+                                        class="form-control"
+                                        accept=".xlsx,.xls"
+                                        required>
+
+                                    <small class="form-text text-muted">
+                                        Format file yang diperbolehkan:
+                                        .xlsx atau .xls
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer">
+
+                                <a href="download_template.php"
+                                    class="btn btn-info">
+                                    <i class="fas fa-download"></i>
+                                    Download Template
+                                </a>
+
+                                <button type="button"
+                                    class="btn btn-secondary"
+                                    data-dismiss="modal">
+                                    Batal
+                                </button>
+
+                                <button type="submit"
+                                    class="btn btn-success">
+                                    <i class="fas fa-upload"></i>
+                                    Import Data
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
             <!-- /.content -->
         </div>
+
+        <?php if (isset($_SESSION['import_result'])): ?>
+
+            <?php
+            $importResult = $_SESSION['import_result'];
+
+            unset($_SESSION['import_result']);
+            ?>
+
+            <div class="alert alert-success m-3">
+
+                <h5>
+                    <i class="fas fa-check-circle"></i>
+                    Import Berhasil
+                </h5>
+
+                <p class="mb-0">
+                    Berhasil mengimport
+                    <strong><?= $importResult['success'] ?></strong>
+                    data penerima manfaat.
+                </p>
+
+                <?php if (!empty($importResult['failed'])): ?>
+
+                    <hr>
+
+                    <strong>
+                        <?= count($importResult['failed']) ?>
+                        baris gagal diimport.
+                    </strong>
+
+                    <ul class="mb-0">
+
+                        <?php foreach (
+                            $importResult['failed']
+                            as $failed
+                        ): ?>
+
+                            <li>
+                                Baris <?= $failed['row'] ?>:
+                                <?= htmlspecialchars(
+                                    implode(', ', $failed['errors'])
+                                ) ?>
+                            </li>
+
+                        <?php endforeach; ?>
+
+                    </ul>
+
+                <?php endif; ?>
+
+            </div>
+
+        <?php endif; ?>
+
+
+        <?php if (isset($_SESSION['import_error'])): ?>
+
+            <?php
+            $importError = $_SESSION['import_error'];
+
+            unset($_SESSION['import_error']);
+            ?>
+
+            <div class="alert alert-danger m-3">
+
+                <h5>
+                    <i class="fas fa-exclamation-circle"></i>
+                    Import Gagal
+                </h5>
+
+                <?= htmlspecialchars($importError) ?>
+
+            </div>
+
+        <?php endif; ?>
+
         <!-- /.content-wrapper -->
         <?php include "../feature/footer.php" ?>
 

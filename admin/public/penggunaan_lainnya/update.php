@@ -1,11 +1,12 @@
 <?php
 require "../../app/core/session.php";
+secureSessionStart();
 require "../../app/core/csrf.php";
-
 require "../../app/config/database.php";
 require "../../app/models/PenggunaanLainnya.php";
+require "../../app/core/permission.php";
 
-secureSessionStart();
+Permission::authorize($pdo, 'Penggunaan Lainnya', 'update');
 verifyCsrfToken();
 
 $penggunaanLainnyaModel = new PenggunaanLainnya($pdo);

@@ -112,6 +112,23 @@ class Petani
         ]);
     }
 
+    public function getDesaByName($nama_desa)
+    {
+        $sql = "SELECT id, nama_desa
+            FROM m_desa
+            WHERE deleted_at IS NULL
+            AND LOWER(TRIM(nama_desa)) = LOWER(TRIM(:nama_desa))
+            LIMIT 1";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->execute([
+            'nama_desa' => $nama_desa
+        ]);
+
+        return $stmt->fetch();
+    }
+
     public function getDesa()
     {
         $sql = "SELECT id,nama_desa FROM m_desa
