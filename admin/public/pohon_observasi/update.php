@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/PohonObservasi.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Pohon Observasi', 'update');
 verifyCsrfToken();
@@ -24,6 +25,22 @@ $data = [
     "updated_by" => $_SESSION["user_id"]
 ];
 
-$pohonObservasiModel->update($_POST["id"], $data);
+$oldData = $pohonObservasiModel->findById($_POST["id"]);
+$result = $pohonObservasiModel->update($_POST["id"], $data);
+
+if ($result) {
+    $newData = $pohonObservasiModel->findById($_POST["id"]);
+    logActivity(
+        $pdo,
+        'UPDATE',
+        'Pohon Observasi',
+        $_POST["id"],
+        't_pohon_observasi',
+        $oldData,
+        $newData,
+        'Mengubah data Pohon Observasi',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=updated");

@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/LandCoverObservasi.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Land Cover Observasi', 'create');
 verifyCsrfToken();
@@ -22,6 +23,20 @@ $data = [
     "created_by" => $_SESSION["user_id"]
 ];
 
-$landCoverObservasi->create($data);
+$newId = $landCoverObservasi->create($data);
+
+if ($newId) {
+    logActivity(
+        $pdo,
+        'CREATE',
+        'Land Cover Observasi',
+        $newId,
+        't_land_cover_observasi',
+        null,
+        $data,
+        'Menambahkan data Land Cover Observasi',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=created");

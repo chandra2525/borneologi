@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/AksesPerjalanan.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Akses Perjalanan', 'update');
 verifyCsrfToken();
@@ -20,6 +21,22 @@ $data = [
     "updated_by" => $_SESSION["user_id"]
 ];
 
-$aksesPerjalananModel->update($_POST["id"], $data);
+$oldData = $aksesPerjalananModel->findById($_POST["id"]);
+$result = $aksesPerjalananModel->update($_POST["id"], $data);
+
+if ($result) {
+    $newData = $aksesPerjalananModel->findById($_POST["id"]);
+    logActivity(
+        $pdo,
+        'UPDATE',
+        'Akses Perjalanan',
+        $_POST["id"],
+        'm_akses_perjalanan',
+        $oldData,
+        $newData,
+        'Mengubah data Akses Perjalanan',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=updated");

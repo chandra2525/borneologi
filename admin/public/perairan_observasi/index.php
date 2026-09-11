@@ -247,32 +247,32 @@ Permission::authorize($pdo, 'Perairan Observasi', 'view');
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="kedalaman_cm">Kedalaman (cm)<code>*</code></label>
+                                    <label for="kedalaman_cm">Kedalaman (cm)</label>
                                     <input type="number" name="kedalaman_cm" class="form-control" id="kedalaman_cm"
                                         placeholder="Masukkan Kedalaman (cm)" min="0" max="99999999" step="0.01">
                                 </div>
                                 <div class="form-group">
-                                    <label for="lebar_m">Lebar (m)<code>*</code></label>
+                                    <label for="lebar_m">Lebar (m)</label>
                                     <input type="number" name="lebar_m" class="form-control" id="lebar_m"
                                         placeholder="Masukkan Lebar (m)" min="0" max="99999999" step="0.01">
                                 </div>
                                 <div class="form-group">
-                                    <label for="debit_lps">Debit (l/s)<code>*</code></label>
+                                    <label for="debit_lps">Debit (l/s)</label>
                                     <input type="number" name="debit_lps" class="form-control" id="debit_lps"
                                         placeholder="Masukkan Debit (l/s)" min="0" max="99999999" step="0.01">
                                 </div>
                                 <div class="form-group">
-                                    <label for="ph">PH<code>*</code></label>
+                                    <label for="ph">PH</label>
                                     <input type="number" name="ph" class="form-control" id="ph"
                                         placeholder="Masukkan PH" min="0" max="9999" step="0.01">
                                 </div>
                                 <div class="form-group">
-                                    <label for="kekeruhan_ntu">Kekeruhan (NTU)<code>*</code></label>
+                                    <label for="kekeruhan_ntu">Kekeruhan (NTU)</label>
                                     <input type="number" name="kekeruhan_ntu" class="form-control" id="kekeruhan_ntu"
                                         placeholder="Masukkan Kekeruhan (NTU)" min="0" max="99999999" step="0.01">
                                 </div>
                                 <div class="form-group">
-                                    <label for="catatan">Catatan<code>*</code></label>
+                                    <label for="catatan">Catatan</label>
                                     <textarea name="catatan" class="form-control" id="catatan"
                                         placeholder="Masukkan Catatan"></textarea>
                                 </div>
@@ -347,32 +347,32 @@ Permission::authorize($pdo, 'Perairan Observasi', 'view');
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="kedalaman_cm">Kedalaman (cm)<code>*</code></label>
+                                    <label for="kedalaman_cm">Kedalaman (cm)</label>
                                     <input type="number" name="kedalaman_cm" class="form-control" id="edit_kedalaman_cm"
                                         placeholder="Masukkan Kedalaman (cm)" min="0" max="100" step="0.01">
                                 </div>
                                 <div class="form-group">
-                                    <label for="lebar_m">Lebar (m)<code>*</code></label>
+                                    <label for="lebar_m">Lebar (m)</label>
                                     <input type="number" name="lebar_m" class="form-control" id="edit_lebar_m"
                                         placeholder="Masukkan Lebar (m)" min="0" max="99999999" step="0.01">
                                 </div>
                                 <div class="form-group">
-                                    <label for="debit_lps">Debit (l/s)<code>*</code></label>
+                                    <label for="debit_lps">Debit (l/s)</label>
                                     <input type="number" name="debit_lps" class="form-control" id="edit_debit_lps"
                                         placeholder="Masukkan Debit (l/s)" min="0" max="99999999" step="0.01">
                                 </div>
                                 <div class="form-group">
-                                    <label for="ph">PH<code>*</code></label>
+                                    <label for="ph">PH</label>
                                     <input type="number" name="ph" class="form-control" id="edit_ph"
                                         placeholder="Masukkan PH" min="0" max="9999" step="0.01">
                                 </div>
                                 <div class="form-group">
-                                    <label for="kekeruhan_ntu">Kekeruhan (NTU)<code>*</code></label>
+                                    <label for="kekeruhan_ntu">Kekeruhan (NTU)</label>
                                     <input type="number" name="kekeruhan_ntu" class="form-control" id="edit_kekeruhan_ntu"
                                         placeholder="Masukkan Kekeruhan (NTU)" min="0" max="99999999" step="0.01">
                                 </div>
                                 <div class="form-group">
-                                    <label for="catatan">Catatan<code>*</code></label>
+                                    <label for="catatan">Catatan</label>
                                     <textarea name="catatan" class="form-control" id="edit_catatan"
                                         placeholder="Masukkan Catatan"></textarea>
                                 </div>
@@ -461,22 +461,22 @@ Permission::authorize($pdo, 'Perairan Observasi', 'view');
                             required: true
                         },
                         kedalaman_cm: {
-                            required: true
+                            required: false
                         },
                         lebar_m: {
-                            required: true
+                            required: false
                         },
                         debit_lps: {
-                            required: true
+                            required: false
                         },
                         ph: {
-                            required: true
+                            required: false
                         },
                         kekeruhan_ntu: {
-                            required: true
+                            required: false
                         },
                         catatan: {
-                            required: true
+                            required: false
                         }
                     },
                     messages: {
@@ -495,24 +495,24 @@ Permission::authorize($pdo, 'Perairan Observasi', 'view');
                         id_kecepatan_aliran: {
                             required: "Silahkan pilih Kecepatan Aliran"
                         },
-                        kedalaman_cm: {
-                            required: "Silahkan masukkan Kedalaman (cm)"
-                        },
-                        lebar_m: {
-                            required: "Silahkan masukkan Lebar (m)"
-                        },
-                        debit_lps: {
-                            required: "Silahkan masukkan Debit (lps)"
-                        },
-                        ph: {
-                            required: "Silahkan masukkan pH"
-                        },
-                        kekeruhan_ntu: {
-                            required: "Silahkan masukkan Kekeruhan (NTU)"
-                        },
-                        catatan: {
-                            required: "Silahkan masukkan Catatan"
-                        }
+                        // kedalaman_cm: {
+                        //     required: "Silahkan masukkan Kedalaman (cm)"
+                        // },
+                        // lebar_m: {
+                        //     required: "Silahkan masukkan Lebar (m)"
+                        // },
+                        // debit_lps: {
+                        //     required: "Silahkan masukkan Debit (lps)"
+                        // },
+                        // ph: {
+                        //     required: "Silahkan masukkan pH"
+                        // },
+                        // kekeruhan_ntu: {
+                        //     required: "Silahkan masukkan Kekeruhan (NTU)"
+                        // },
+                        // catatan: {
+                        //     required: "Silahkan masukkan Catatan"
+                        // }
                     },
                     errorElement: 'span',
                     errorPlacement: function(error, element) {

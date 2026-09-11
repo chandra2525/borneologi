@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/Role.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Roles', 'update');
 verifyCsrfToken();
@@ -20,7 +21,23 @@ $data = [
     "updated_by" => $_SESSION["user_id"]
 ];
 
-$roleModel->update($_POST["id"], $data);
+$oldData = $roleModel->findById($_POST["id"]);
+$result = $roleModel->update($_POST["id"], $data);
+
+if ($result) {
+    $newData = $roleModel->findById($_POST["id"]);
+    logActivity(
+        $pdo,
+        'UPDATE',
+        'Roles',
+        $_POST["id"],
+        'm_roles',
+        $oldData,
+        $newData,
+        'Mengubah data Roles',
+        'SUCCESS'
+    );
+}
 
 // header("Location: index.php");
 header("Location: index.php?success=updated");

@@ -1,11 +1,12 @@
 <?php
 
 require "../../app/core/session.php";
+secureSessionStart();
 require "../../app/core/csrf.php";
-
 require "../../app/config/database.php";
 require "../../app/models/Menu.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Menus', 'create');
 verifyCsrfToken();
@@ -23,7 +24,21 @@ $data = [
     "created_by" => $_SESSION["user_id"]
 ];
 
-$menu->create($data);
+$newId = $menu->create($data);
+
+if ($newId) {
+    logActivity(
+        $pdo,
+        'CREATE',
+        'Menus',
+        $newId,
+        'm_menus',
+        null,
+        $data,
+        'Menambahkan data Menus',
+        'SUCCESS'
+    );
+}
 
 // header("Location:index.php");
 header("Location: index.php?success=created");

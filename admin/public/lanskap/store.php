@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/Lanskap.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Lanskap', 'create');
 verifyCsrfToken();
@@ -20,6 +21,20 @@ $data = [
     "created_by" => $_SESSION["user_id"]
 ];
 
-$lanskap->create($data);
+$newId = $lanskap->create($data);
+
+if ($newId) {
+    logActivity(
+        $pdo,
+        'CREATE',
+        'Lanskap',
+        $newId,
+        'm_lanskap',
+        null,
+        $data,
+        'Menambahkan data Lanskap',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=created");

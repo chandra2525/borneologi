@@ -232,12 +232,12 @@ Permission::authorize($pdo, 'Land Cover Observasi', 'view');
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="persentase_tutupan">Persentase Tutupan<code>*</code></label>
+                                    <label for="persentase_tutupan">Persentase Tutupan</label>
                                     <input type="number" name="persentase_tutupan" class="form-control" id="persentase_tutupan"
                                         placeholder="Masukkan Persentase Tutupan" min="0" max="100" step="0.01">
                                 </div>
                                 <div class="form-group">
-                                    <label for="catatan">Catatan<code>*</code></label>
+                                    <label for="catatan">Catatan</label>
                                     <textarea name="catatan" class="form-control" id="catatan"
                                         placeholder="Masukkan Catatan"></textarea>
                                 </div>
@@ -312,12 +312,11 @@ Permission::authorize($pdo, 'Land Cover Observasi', 'view');
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="persentase_tutupan">Persentase Tutupan<code>*</code></label>
                                     <input type="number" name="persentase_tutupan" class="form-control" id="edit_persentase_tutupan"
                                         placeholder="Masukkan Persentase Tutupan" min="0" max="100" step="0.01">
                                 </div>
                                 <div class="form-group">
-                                    <label for="catatan">Catatan<code>*</code></label>
+                                    <label for="catatan">Catatan</label>
                                     <textarea name="catatan" class="form-control" id="edit_catatan"
                                         placeholder="Masukkan Catatan"></textarea>
                                 </div>
@@ -406,10 +405,10 @@ Permission::authorize($pdo, 'Land Cover Observasi', 'view');
                             required: true
                         },
                         persentase_tutupan: {
-                            required: true
+                            required: false
                         },
                         catatan: {
-                            required: true
+                            required: false
                         }
                     },
                     messages: {
@@ -428,12 +427,12 @@ Permission::authorize($pdo, 'Land Cover Observasi', 'view');
                         id_penggunaan_lainnya: {
                             required: "Silahkan pilih Penggunaan Lainnya"
                         },
-                        persentase_tutupan: {
-                            required: "Silahkan masukkan Persentase Tutupan"
-                        },
-                        catatan: {
-                            required: "Silahkan masukkan Catatan"
-                        }
+                        // persentase_tutupan: {
+                        //     required: "Silahkan masukkan Persentase Tutupan"
+                        // },
+                        // catatan: {
+                        //     required: "Silahkan masukkan Catatan"
+                        // }
                     },
                     errorElement: 'span',
                     errorPlacement: function(error, element) {

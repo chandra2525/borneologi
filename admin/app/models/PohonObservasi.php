@@ -30,7 +30,7 @@ class PohonObservasi
             LEFT JOIN m_jenis_pohon jp ON jp.id = po.id_jenis_pohon
             LEFT JOIN m_fungsi_pohon fp ON fp.id = po.id_fungsi_pohon
             WHERE po.deleted_at IS NULL
-            ORDER BY po.id ASC";
+            ORDER BY po.id DESC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
@@ -65,8 +65,12 @@ class PohonObservasi
 
         $stmt = $this->pdo->prepare($sql);
 
-        return $stmt->execute($data);
+        // return $stmt->execute($data);
+        if ($stmt->execute($data)) {
+            return $this->pdo->lastInsertId();
+        }
 
+        return false;
     }
 
     public function update($id, $data)

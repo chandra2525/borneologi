@@ -30,7 +30,7 @@ class TopografiObservasi
             LEFT JOIN m_lanskap la ON la.id = tp.id_lanskap
             LEFT JOIN m_fitur_tambahan ft ON ft.id = tp.id_fitur_tambahan
             WHERE tp.deleted_at IS NULL
-            ORDER BY tp.id ASC";
+            ORDER BY tp.id DESC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
@@ -65,8 +65,12 @@ class TopografiObservasi
 
         $stmt = $this->pdo->prepare($sql);
 
-        return $stmt->execute($data);
+        // return $stmt->execute($data);
+        if ($stmt->execute($data)) {
+            return $this->pdo->lastInsertId();
+        }
 
+        return false;
     }
 
     public function update($id, $data)

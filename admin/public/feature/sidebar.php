@@ -80,6 +80,7 @@ $canLandCoverObservasi = canView($pdo, 'Land Cover Observasi');
 $canPerairanObservasi = canView($pdo, 'Perairan Observasi');
 $canPohonObservasi = canView($pdo, 'Pohon Observasi');
 $canTopografiObservasi = canView($pdo, 'Topografi Observasi');
+$canLogHistory  = canView($pdo, 'Log History');
 ?>
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -126,6 +127,15 @@ $canTopografiObservasi = canView($pdo, 'Topografi Observasi');
                             class="nav-link <?= ($menu == 'dashboard') ? 'active' : '' ?>">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>Dashboard</p>
+                        </a>
+                    </li>
+                <?php endif; ?>
+                 <?php if ($canLogHistory): ?>
+                    <li class="nav-item">
+                        <a href="<?= ($menu == 'dashboard') ? 'activity_log/' : '../activity_log/' ?>index.php"
+                            class="nav-link <?= ($menu == 'activity_log') ? 'active' : '' ?>">
+                            <i class="nav-icon fas fa-history"></i>
+                            <p>Log History</p>
                         </a>
                     </li>
                 <?php endif; ?>

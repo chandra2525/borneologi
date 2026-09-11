@@ -227,25 +227,25 @@ Permission::authorize($pdo, 'Detail Monitoring', 'view');
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="jumlah_hidup">Jumlah Hidup<code>*</code></label>
+                                    <label for="jumlah_hidup">Jumlah Hidup</label>
                                     <input type="number" name="jumlah_hidup" class="form-control" id="jumlah_hidup" placeholder="Masukkan Jumlah Hidup" min="0">
                                 </div>
                                 <div class="form-group">
-                                    <label for="jumlah_mati">Jumlah Mati<code>*</code></label>
+                                    <label for="jumlah_mati">Jumlah Mati</label>
                                     <input type="number" name="jumlah_mati" class="form-control" id="jumlah_mati" placeholder="Masukkan Jumlah Mati" min="0">
                                 </div>
                                 <div class="form-group">
-                                    <label for="tinggi_rata2_cm">Tinggi Rata-rata (cm)<code>*</code></label>
+                                    <label for="tinggi_rata2_cm">Tinggi Rata-rata (cm)</label>
                                     <input type="number" name="tinggi_rata2_cm" class="form-control" id="tinggi_rata2_cm"
                                         placeholder="Masukkan Tinggi Rata-rata (cm)" min="0">
                                 </div>
                                 <div class="form-group">
-                                    <label for="diameter_rata2_cm">Diameter Rata-rata (cm)<code>*</code></label>
+                                    <label for="diameter_rata2_cm">Diameter Rata-rata (cm)</label>
                                     <input type="number" name="diameter_rata2_cm" class="form-control" id="diameter_rata2_cm"
                                         placeholder="Masukkan Diameter Rata-rata (cm)" min="0">
                                 </div>
                                 <div class="form-group">
-                                    <label for="catatan">Catatan<code>*</code></label>
+                                    <label for="catatan">Catatan</label>
                                     <textarea name="catatan" class="form-control" id="catatan"
                                         placeholder="Masukkan Catatan"></textarea>
                                 </div>
@@ -309,25 +309,25 @@ Permission::authorize($pdo, 'Detail Monitoring', 'view');
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="jumlah_hidup">Jumlah Hidup<code>*</code></label>
+                                    <label for="jumlah_hidup">Jumlah Hidup</label>
                                     <input type="number" name="jumlah_hidup" class="form-control" id="edit_jumlah_hidup" placeholder="Masukkan Jumlah Hidup" min="0">
                                 </div>
                                 <div class="form-group">
-                                    <label for="jumlah_mati">Jumlah Mati<code>*</code></label>
+                                    <label for="jumlah_mati">Jumlah Mati</label>
                                     <input type="number" name="jumlah_mati" class="form-control" id="edit_jumlah_mati" placeholder="Masukkan Jumlah Mati" min="0">
                                 </div>
                                 <div class="form-group">
-                                    <label for="tinggi_rata2_cm">Tinggi Rata-rata (cm)<code>*</code></label>
+                                    <label for="tinggi_rata2_cm">Tinggi Rata-rata (cm)</label>
                                     <input type="number" name="tinggi_rata2_cm" class="form-control" id="edit_tinggi_rata2_cm"
                                         placeholder="Masukkan Tinggi Rata-rata (cm)" min="0">
                                 </div>
                                 <div class="form-group">
-                                    <label for="diameter_rata2_cm">Diameter Rata-rata (cm)<code>*</code></label>
+                                    <label for="diameter_rata2_cm">Diameter Rata-rata (cm)</label>
                                     <input type="number" name="diameter_rata2_cm" class="form-control" id="edit_diameter_rata2_cm"
                                         placeholder="Masukkan Diameter Rata-rata (cm)" min="0">
                                 </div>
                                 <div class="form-group">
-                                    <label for="catatan">Catatan<code>*</code></label>
+                                    <label for="catatan">Catatan</label>
                                     <textarea name="catatan" class="form-control" id="edit_catatan"
                                         placeholder="Masukkan Catatan"></textarea>
                                 </div>
@@ -413,19 +413,19 @@ Permission::authorize($pdo, 'Detail Monitoring', 'view');
                             required: true
                         },
                         jumlah_hidup: {
-                            required: true
+                            required: false
                         },
                         jumlah_mati: {
-                            required: true
+                            required: false
                         },
                         tinggi_rata2_cm: {
-                            required: true
+                            required: false
                         },
                         diameter_rata2_cm: {
-                            required: true
+                            required: false
                         },
                         catatan: {
-                            required: true
+                            required: false
                         }
                     },
                     messages: {
@@ -441,21 +441,21 @@ Permission::authorize($pdo, 'Detail Monitoring', 'view');
                         satuan: {
                             required: "Silahkan pilih Satuan"
                         },
-                        jumlah_hidup: {
-                            required: "Silahkan masukkan Jumlah Hidup"
-                        },
-                        jumlah_mati: {
-                            required: "Silahkan masukkan Jumlah Mati"
-                        },
-                        tinggi_rata2_cm: {
-                            required: "Silahkan masukkan Tinggi Rata-rata (cm)"
-                        },
-                        diameter_rata2_cm: {
-                            required: "Silahkan masukkan Diameter Rata-rata (cm)"
-                        },
-                        catatan: {
-                            required: "Silahkan masukkan Catatan"
-                        }
+                        // jumlah_hidup: {
+                        //     required: "Silahkan masukkan Jumlah Hidup"
+                        // },
+                        // jumlah_mati: {
+                        //     required: "Silahkan masukkan Jumlah Mati"
+                        // },
+                        // tinggi_rata2_cm: {
+                        //     required: "Silahkan masukkan Tinggi Rata-rata (cm)"
+                        // },
+                        // diameter_rata2_cm: {
+                        //     required: "Silahkan masukkan Diameter Rata-rata (cm)"
+                        // },
+                        // catatan: {
+                        //     required: "Silahkan masukkan Catatan"
+                        // }
                     },
                     errorElement: 'span',
                     errorPlacement: function(error, element) {

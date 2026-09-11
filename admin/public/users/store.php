@@ -1,11 +1,11 @@
 <?php
-
 require "../../app/core/session.php";
+secureSessionStart();
 require "../../app/core/csrf.php";
-
 require "../../app/config/database.php";
 require "../../app/models/User.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Pengguna', 'create');
 verifyCsrfToken();
@@ -30,6 +30,20 @@ $data = [
     "created_by" => $_SESSION["user_id"]
 ];
 
-$model->create($data);
+$newId = $model->create($data);
+
+if ($newId) {
+    logActivity(
+        $pdo,
+        'CREATE',
+        'Pengguna',
+        $newId,
+        't_users',
+        null,
+        $data,
+        'Menambahkan data pengguna',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=created");

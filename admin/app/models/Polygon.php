@@ -849,7 +849,12 @@ class Polygon
 
         $stmt = $this->pdo->prepare($sql);
 
-        return $stmt->execute($data);
+        // return $stmt->execute($data);
+        if ($stmt->execute($data)) {
+            return $this->pdo->lastInsertId();
+        }
+
+        return false;
     }
 
     public function update($id, $data)

@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/PerairanObservasi.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Perairan Observasi', 'create');
 verifyCsrfToken();
@@ -26,6 +27,20 @@ $data = [
     "created_by" => $_SESSION["user_id"]
 ];
 
-$perairanObservasi->create($data);
+$newId = $perairanObservasi->create($data);
+
+if ($newId) {
+    logActivity(
+        $pdo,
+        'CREATE',
+        'Perairan Observasi',
+        $newId,
+        't_perairan_observasi',
+        null,
+        $data,
+        'Menambahkan data Perairan Observasi',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=created");

@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/BankBenih.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Bank Benih', 'update');
 verifyCsrfToken();
@@ -84,6 +85,22 @@ $data = [
     "updated_by" => $_SESSION["user_id"]
 ];
 
-$bankBenihModel->update($_POST["id"], $data);
+$oldData = $bankBenihModel->findById($_POST["id"]);
+$result = $bankBenihModel->update($_POST["id"], $data);
+
+if ($result) {
+    $newData = $bankBenihModel->findById($_POST["id"]);
+    logActivity(
+        $pdo,
+        'UPDATE',
+        'Bank Benih',
+        $_POST["id"],
+        't_bank_benih',
+        $oldData,
+        $newData,
+        'Mengubah data Bank Benih',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=updated");

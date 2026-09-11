@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/KelompokTani.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Kelompok', 'update');
 verifyCsrfToken();
@@ -27,6 +28,22 @@ $data = [
     "updated_by" => $_SESSION["user_id"]
 ];
 
-$kelompokTaniModel->update($_POST["id"], $data);
+$oldData = $kelompokTaniModel->findById($_POST["id"]);
+$result = $kelompokTaniModel->update($_POST["id"], $data);
+
+if ($result) {
+    $newData = $kelompokTaniModel->findById($_POST["id"]);
+    logActivity(
+        $pdo,
+        'UPDATE',
+        'Kelompok',
+        $_POST["id"],
+        't_kelompok_tani',
+        $oldData,
+        $newData,
+        'Mengubah data Kelompok',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=updated");

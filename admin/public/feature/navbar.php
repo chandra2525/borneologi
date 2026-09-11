@@ -8,6 +8,36 @@ $menu1 = $menu ?? '';
         <li class="nav-item">
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle"
+                href="#"
+                id="languageDropdown"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false">
+
+                <i class="fas fa-language mr-1"></i>
+                <span id="currentLanguage">Indonesia</span>
+            </a>
+
+            <div class="dropdown-menu dropdown-menu-right"
+                aria-labelledby="languageDropdown">
+
+                <a class="dropdown-item language-option"
+                    href="#"
+                    data-lang="id">
+                    🇮🇩 Indonesia
+                </a>
+
+                <a class="dropdown-item language-option"
+                    href="#"
+                    data-lang="en">
+                    🇬🇧 English
+                </a>
+
+            </div>
+        </li>
         <li class="nav-item d-none d-sm-inline-block">
             <a href="#"
                 class="nav-link"
@@ -326,4 +356,86 @@ $menu1 = $menu ?? '';
             icon.classList.add("fa-eye");
         }
     }
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let currentLang = localStorage.getItem("language");
+        // Default bahasa Indonesia
+        if (!currentLang) {
+            currentLang = "id";
+            localStorage.setItem("language", "id");
+        }
+        updateLanguageLabel(currentLang);
+        document.querySelectorAll(".language-option").forEach(function(item) {
+            item.addEventListener("click", function(e) {
+                e.preventDefault();
+                const selectedLang = this.getAttribute("data-lang");
+                localStorage.setItem("language", selectedLang);
+                updateLanguageLabel(selectedLang);
+                // Reload halaman agar seluruh script halaman
+                // membaca bahasa yang baru dipilih
+                location.reload();
+            });
+        });
+    });
+
+    function updateLanguageLabel(lang) {
+        const languageElement =
+            document.getElementById("currentLanguage");
+        if (!languageElement) {
+            return;
+        }
+        if (lang === "en") {
+            languageElement.innerText = "English";
+        } else {
+            languageElement.innerText = "Indonesia";
+        }
+    }
+
+    async function autoTranslate(text, targetLang = "en") {
+        if (targetLang === "id") {
+            return text;
+        }
+        try {
+            const response = await fetch(
+                "https://translate.googleapis.com/translate_a/single?client=gtx&sl=id&tl=" +
+                targetLang +
+                "&dt=t&q=" +
+                encodeURIComponent(text)
+            );
+            const data = await response.json();
+            return data[0]
+                .map(item => item[0])
+                .join("");
+        } catch (error) {
+            console.error("Translation error:", error);
+            return text;
+        }
+    }
+
+    async function setTranslatedText(elementId, text) {
+        const lang = localStorage.getItem("language") || "id";
+        const translated = await autoTranslate(text, lang);
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.innerText = translated;
+        }
+    }
+
+    async function translatePage() {
+        const lang = localStorage.getItem("language") || "id";
+        const elements =
+            document.querySelectorAll("[data-translate]");
+        for (const element of elements) {
+            const originalText =
+                element.getAttribute("data-translate");
+            const translated =
+                await autoTranslate(originalText, lang);
+            element.innerText = translated;
+        }
+    }
+    document.addEventListener("DOMContentLoaded", function() {
+        translatePage();
+    });
 </script>

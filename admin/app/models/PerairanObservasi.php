@@ -34,7 +34,7 @@ class PerairanObservasi
             LEFT JOIN m_jenis_palung jp ON jp.id = po.id_jenis_palung
             LEFT JOIN m_kecepatan_aliran ka ON ka.id = po.id_kecepatan_aliran
             WHERE po.deleted_at IS NULL
-            ORDER BY po.id ASC";
+            ORDER BY po.id DESC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
@@ -69,8 +69,12 @@ class PerairanObservasi
 
         $stmt = $this->pdo->prepare($sql);
 
-        return $stmt->execute($data);
+        // return $stmt->execute($data);
+        if ($stmt->execute($data)) {
+            return $this->pdo->lastInsertId();
+        }
 
+        return false;
     }
 
     public function update($id, $data)

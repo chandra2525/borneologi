@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/PenggunaanLainnya.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Penggunaan Lainnya', 'create');
 verifyCsrfToken();
@@ -20,6 +21,20 @@ $data = [
     "created_by" => $_SESSION["user_id"]
 ];
 
-$penggunaanLainnya->create($data);
+$newId = $penggunaanLainnya->create($data);
+
+if ($newId) {
+    logActivity(
+        $pdo,
+        'CREATE',
+        'Penggunaan Lainnya',
+        $newId,
+        'm_penggunaan_lainnya',
+        null,
+        $data,
+        'Menambahkan data Penggunaan Lainnya',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=created");

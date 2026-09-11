@@ -7,8 +7,10 @@ require "../../app/models/Polygon.php";
 
 require '../../../vendor/autoload.php';
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Polygon', 'create');
+
 use Shapefile\ShapefileReader;
 
 verifyCsrfToken();
@@ -213,8 +215,22 @@ if (!empty($_FILES['shp_file']['tmp_name'])) {
 
                     $lastNumber++;
 
-                    $polygon->create($data);
+                    $newId = $polygon->create($data);
                     $no++;
+
+                    if ($newId) {
+                        logActivity(
+                            $pdo,
+                            'CREATE',
+                            'Polygon',
+                            $newId,
+                            't_polygon',
+                            null,
+                            $data,
+                            'Menambahkan data Polygon',
+                            'SUCCESS'
+                        );
+                    }
                 }
             }
         }

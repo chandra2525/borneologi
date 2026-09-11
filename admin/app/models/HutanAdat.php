@@ -31,7 +31,7 @@ class HutanAdat
             LEFT JOIN t_kelompok_tani kt ON kt.id=ha.id_masyarakat_hukum_adat
             LEFT JOIN m_status_kawasan sk ON sk.id=ha.id_status_kawasan
             WHERE ha.deleted_at IS NULL
-            ORDER BY ha.id ASC";
+            ORDER BY ha.id DESC";
         
         // $sql = "SELECT
         //     ha.id,
@@ -111,8 +111,12 @@ class HutanAdat
 
         $stmt = $this->pdo->prepare($sql);
 
-        return $stmt->execute($data);
+        // return $stmt->execute($data);
+        if ($stmt->execute($data)) {
+            return $this->pdo->lastInsertId();
+        }
 
+        return false;
     }
 
     public function update($id, $data)

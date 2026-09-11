@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/InfrastrukturObservasi.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Infrastruktur Observasi', 'update');
 verifyCsrfToken();
@@ -25,6 +26,22 @@ $data = [
     "updated_by" => $_SESSION["user_id"]
 ];
 
-$infrastrukturObservasiModel->update($_POST["id"], $data);
+$oldData = $infrastrukturObservasiModel->findById($_POST["id"]);
+$result = $infrastrukturObservasiModel->update($_POST["id"], $data);
+
+if ($result) {
+    $newData = $infrastrukturObservasiModel->findById($_POST["id"]);
+    logActivity(
+        $pdo,
+        'UPDATE',
+        'Infrastruktur Observasi',
+        $_POST["id"],
+        't_infrastruktur_observasi',
+        $oldData,
+        $newData,
+        'Mengubah data Infrastruktur Observasi',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=updated");

@@ -28,7 +28,7 @@ class DetailMonitoringPenanaman
             LEFT JOIN t_bank_benih bb ON bb.id = dm.id_bank_benih
             LEFT JOIN t_monitoring_penanaman mp ON mp.id = dm.id_monitoring
             WHERE dm.deleted_at IS NULL
-            ORDER BY dm.id ASC";
+            ORDER BY dm.id DESC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
@@ -63,8 +63,10 @@ class DetailMonitoringPenanaman
 
         $stmt = $this->pdo->prepare($sql);
 
-        return $stmt->execute($data);
-
+        // return $stmt->execute($data);
+        if ($stmt->execute($data)) {
+            return $this->pdo->lastInsertId();
+        }
     }
 
     public function update($id, $data)

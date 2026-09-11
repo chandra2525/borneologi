@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/Desa.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Desa', 'create');
 verifyCsrfToken();
@@ -19,6 +20,20 @@ $data = [
     "created_by" => $_SESSION["user_id"]
 ];
 
-$desa->create($data);
+$newId = $desa->create($data);
+
+if ($newId) {
+    logActivity(
+        $pdo,
+        'CREATE',
+        'Desa',
+        $newId,
+        'm_desa',
+        null,
+        $data,
+        'Menambahkan data Desa',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=created");

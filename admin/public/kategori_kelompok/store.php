@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/KategoriKelompok.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Kategori Kelompok', 'create');
 verifyCsrfToken();
@@ -22,6 +23,20 @@ $data = [
     "created_by" => $_SESSION["user_id"]
 ];
 
-$kategoriKelompok->create($data);
+$newId = $kategoriKelompok->create($data);
+
+if ($newId) {
+    logActivity(
+        $pdo,
+        'CREATE',
+        'Kategori Kelompok',
+        $newId,
+        'm_kategori_kelompok',
+        null,
+        $data,
+        'Menambahkan data Kategori Kelompok',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=created");

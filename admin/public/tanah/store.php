@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/Tanah.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Tanah', 'create');
 verifyCsrfToken();
@@ -33,6 +34,20 @@ $data = [
     "created_by" => $_SESSION["user_id"]
 ];
 
-$tanah->create($data);
+$newId = $tanah->create($data);
+
+if ($newId) {
+    logActivity(
+        $pdo,
+        'CREATE',
+        'Tanah',
+        $newId,
+        't_tanah',
+        null,
+        $data,
+        'Menambahkan data Tanah',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=created");

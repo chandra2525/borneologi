@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/HutanAdat.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Hutan Adat', 'create');
 verifyCsrfToken();
@@ -27,6 +28,20 @@ $data = [
     "created_by" => $_SESSION["user_id"]
 ];
 
-$hutanAdat->create($data);
+$newId = $hutanAdat->create($data);
+
+if ($newId) {
+    logActivity(
+        $pdo,
+        'CREATE',
+        'Hutan Adat',
+        $newId,
+        't_hutan_adat',
+        null,
+        $data,
+        'Menambahkan data Hutan Adat',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=created");

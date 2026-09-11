@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/KondisiJalan.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Kondisi Jalan', 'update');
 verifyCsrfToken();
@@ -20,6 +21,22 @@ $data = [
     "updated_by" => $_SESSION["user_id"]
 ];
 
-$kondisiJalanModel->update($_POST["id"], $data);
+$oldData = $kondisiJalanModel->findById($_POST["id"]);
+$result = $kondisiJalanModel->update($_POST["id"], $data);
+
+if ($result) {
+    $newData = $kondisiJalanModel->findById($_POST["id"]);
+    logActivity(
+        $pdo,
+        'UPDATE',
+        'Kondisi Jalan',
+        $_POST["id"],
+        'm_kondisi_jalan',
+        $oldData,
+        $newData,
+        'Mengubah data Kondisi Jalan',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=updated");

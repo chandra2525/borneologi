@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/MonitoringPenanaman.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Monitoring Penanaman', 'update');
 verifyCsrfToken();
@@ -26,6 +27,22 @@ $data = [
     "updated_by" => $_SESSION["user_id"]
 ];
 
-$monitoringPenanamanModel->update($_POST["id"], $data);
+$oldData = $monitoringPenanamanModel->findById($_POST["id"]);
+$result = $monitoringPenanamanModel->update($_POST["id"], $data);
+
+if ($result) {
+    $newData = $monitoringPenanamanModel->findById($_POST["id"]);
+    logActivity(
+        $pdo,
+        'UPDATE',
+        'Monitoring Penanaman',
+        $_POST["id"],
+        't_monitoring_penanaman',
+        $oldData,
+        $newData,
+        'Mengubah data Monitoring Penanaman',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=updated");

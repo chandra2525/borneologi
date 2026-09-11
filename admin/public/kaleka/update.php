@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/Kaleka.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Kaleka', 'update');
 verifyCsrfToken();
@@ -25,6 +26,22 @@ $data = [
     "updated_by" => $_SESSION["user_id"]
 ];
 
-$kalekaModel->update($_POST["id"], $data);
+$oldData = $kalekaModel->findById($_POST["id"]);
+$result = $kalekaModel->update($_POST["id"], $data);
+
+if ($result) {
+    $newData = $kalekaModel->findById($_POST["id"]);
+    logActivity(
+        $pdo,
+        'UPDATE',
+        'Kaleka',
+        $_POST["id"],
+        't_kaleka',
+        $oldData,
+        $newData,
+        'Mengubah data Kaleka',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=updated");

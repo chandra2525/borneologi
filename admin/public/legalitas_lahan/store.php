@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/LegalitasLahan.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Legalitas Lahan', 'create');
 verifyCsrfToken();
@@ -20,6 +21,20 @@ $data = [
     "created_by" => $_SESSION["user_id"]
 ];
 
-$legalitasLahan->create($data);
+$newId = $legalitasLahan->create($data);
+
+if ($newId) {
+    logActivity(
+        $pdo,
+        'CREATE',
+        'Legalitas Lahan',
+        $newId,
+        'm_legalitas_lahan',
+        null,
+        $data,
+        'Menambahkan data Legalitas Lahan',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=created");

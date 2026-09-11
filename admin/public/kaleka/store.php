@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/Kaleka.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Kaleka', 'create');
 verifyCsrfToken();
@@ -25,6 +26,20 @@ $data = [
     "created_by" => $_SESSION["user_id"]
 ];
 
-$kaleka->create($data);
+$newId = $kaleka->create($data);
+
+if ($newId) {
+    logActivity(
+        $pdo,
+        'CREATE',
+        'Kaleka',
+        $newId,
+        't_kaleka',
+        null,
+        $data,
+        'Menambahkan data Kaleka',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=created");

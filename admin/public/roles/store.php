@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/Role.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Roles', 'create');
 verifyCsrfToken();
@@ -20,7 +21,21 @@ $data = [
     "created_by" => $_SESSION["user_id"]
 ];
 
-$role->create($data);
+$newId = $role->create($data);
+
+if ($newId) {
+    logActivity(
+        $pdo,
+        'CREATE',
+        'Roles',
+        $newId,
+        'm_roles',
+        null,
+        $data,
+        'Menambahkan data Roles',
+        'SUCCESS'
+    );
+}
 
 // header("Location: index.php");
 header("Location: index.php?success=created");

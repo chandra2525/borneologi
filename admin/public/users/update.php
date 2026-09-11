@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/User.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Pengguna', 'update');
 verifyCsrfToken();
@@ -25,6 +26,22 @@ if (!empty($_POST["password"])) {
     $data["password_hash"] = password_hash($_POST["password"], PASSWORD_ARGON2ID);
 }
 
-$userModel->update($_POST["id"], $data);
+$oldData = $userModel->findById($_POST["id"]);
+$result = $userModel->update($_POST["id"], $data);
+
+if ($result) {
+    $newData = $userModel->findById($_POST["id"]);
+    logActivity(
+        $pdo,
+        'UPDATE',
+        'Pengguna',
+        $_POST["id"],
+        't_users',
+        $oldData,
+        $newData,
+        'Mengubah data pengguna',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=updated");

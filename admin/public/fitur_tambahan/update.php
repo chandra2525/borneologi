@@ -5,9 +5,9 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/FiturTambahan.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
-Permission::authorize($pdo, 'Roles', 'update');
-
+Permission::authorize($pdo, 'Fitur Tambahan', 'update');
 verifyCsrfToken();
 
 $fiturTambahanModel = new FiturTambahan($pdo);
@@ -21,6 +21,22 @@ $data = [
     "updated_by" => $_SESSION["user_id"]
 ];
 
-$fiturTambahanModel->update($_POST["id"], $data);
+$oldData = $fiturTambahanModel->findById($_POST["id"]);
+$result = $fiturTambahanModel->update($_POST["id"], $data);
+
+if ($result) {
+    $newData = $fiturTambahanModel->findById($_POST["id"]);
+    logActivity(
+        $pdo,
+        'UPDATE',
+        'Fitur Tambahan',
+        $_POST["id"],
+        'm_fitur_tambahan',
+        $oldData,
+        $newData,
+        'Mengubah data Fitur Tambahan',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=updated");

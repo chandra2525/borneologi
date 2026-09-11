@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/JabatanKelompok.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Jabatan Kelompok', 'update');
 verifyCsrfToken();
@@ -22,6 +23,22 @@ $data = [
     "updated_by" => $_SESSION["user_id"]
 ];
 
-$jabatanKelompokModel->update($_POST["id"], $data);
+$oldData = $jabatanKelompokModel->findById($_POST["id"]);
+$result = $jabatanKelompokModel->update($_POST["id"], $data);
+
+if ($result) {
+    $newData = $jabatanKelompokModel->findById($_POST["id"]);
+    logActivity(
+        $pdo,
+        'UPDATE',
+        'Jabatan Kelompok',
+        $_POST["id"],
+        'm_jabatan_kelompok',
+        $oldData,
+        $newData,
+        'Mengubah data Jabatan Kelompok',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=updated");

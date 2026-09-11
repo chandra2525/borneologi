@@ -343,7 +343,7 @@ function formatGeomTable($wkt)
                                     </select>
                                 </div> -->
                                 <div class="form-group">
-                                    <label for="keterangan">Keterangan<code>*</code></label>
+                                    <label for="keterangan">Keterangan</label>
                                     <textarea name="keterangan" class="form-control" id="keterangan"
                                         placeholder="Masukkan Keterangan"></textarea>
                                 </div>
@@ -480,7 +480,7 @@ function formatGeomTable($wkt)
                                     </select>
                                 </div> -->
                                 <div class="form-group">
-                                    <label for="keterangan">Keterangan<code>*</code></label>
+                                    <label for="keterangan">Keterangan</label>
                                     <textarea name="keterangan" class="form-control" id="edit_keterangan"
                                         placeholder="Masukkan Keterangan"></textarea>
                                 </div>
@@ -626,7 +626,7 @@ function formatGeomTable($wkt)
                         //     required: true
                         // },
                         keterangan: {
-                            required: true
+                            required: false
                         },
                         is_active: {
                             required: true
@@ -660,9 +660,9 @@ function formatGeomTable($wkt)
                         // id_polygon : {
                         //     required: "Silahkan pilih Polygon"
                         // },
-                        keterangan: {
-                            required: "Silahkan masukkan Keterangan"
-                        },
+                        // keterangan: {
+                        //     required: "Silahkan masukkan Keterangan"
+                        // },
                         is_active: {
                             required: "Silahkan pilih Status Aktif"
                         }

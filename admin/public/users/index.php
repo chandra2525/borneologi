@@ -58,12 +58,12 @@ Permission::authorize($pdo, 'Pengguna', 'view');
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Data Pengguna</h1>
+                            <h1 data-translate="Data Pengguna">Data Pengguna</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Master Data</a></li>
-                                <li class="breadcrumb-item active">Data Pengguna</li>
+                                <li class="breadcrumb-item"><a href="#" data-translate="Master Data">Master Data</a></li>
+                                <li class="breadcrumb-item active" data-translate="Data Pengguna">Data Pengguna</li>
                             </ol>
                         </div>
                     </div>
@@ -77,11 +77,15 @@ Permission::authorize($pdo, 'Pengguna', 'view');
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header row">
-                                    <h3 class="card-title col-9">Berikut adalah list dari Data Pengguna</h3>
+                                    <h3 class="card-title col-9"
+                                        data-translate="Berikut adalah list dari Data Pengguna">
+                                        Berikut adalah list dari Data Pengguna
+                                    </h3>
+                                    <!-- <h3 class="card-title col-9" id="deskripsiMenu">Berikut adalah list dari Data Pengguna</h3> -->
                                     <!-- <a href="create.php" class="col-2 btn btn-block btn-success">Tambah Pengguna</a> -->
                                     <?php if (Permission::can($pdo, 'Pengguna', 'create')): ?>
                                         <button class="col-3 btn btn-block btn-success" data-toggle="modal"
-                                            data-target="#modalTambah">
+                                            data-target="#modalTambah" data-translate="Tambah Pengguna">
                                             Tambah Pengguna
                                         </button>
                                     <?php endif; ?>
@@ -92,13 +96,13 @@ Permission::authorize($pdo, 'Pengguna', 'view');
                                         <thead>
                                             <tr>
                                                 <th class="text-center">No</th>
-                                                <th>Nama Lengkap</th>
-                                                <th>Username</th>
-                                                <th>Email</th>
-                                                <th>No HP</th>
-                                                <th>Role</th>
-                                                <th>Status Aktif</th>
-                                                <th>Aksi</th>
+                                                <th data-translate="Nama Lengkap">Nama Lengkap</th>
+                                                <th data-translate="Username">Username</th>
+                                                <th data-translate="Email">Email</th>
+                                                <th data-translate="No HP">No HP</th>
+                                                <th data-translate="Role">Role</th>
+                                                <th data-translate="Status Aktif">Status Aktif</th>
+                                                <th data-translate="Aksi">Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -134,7 +138,7 @@ Permission::authorize($pdo, 'Pengguna', 'view');
                                                                 <?= csrfField() ?>
                                                                 <input type="hidden" name="id" value="<?= $user['id'] ?>">
                                                                 <button type="submit" class="btn btn-block btn-danger">
-                                                                    <i class="fas fa-trash"></i> Hapus
+                                                                    <i class="fas fa-trash"></i> Delete
                                                                 </button>
                                                             </form>
                                                         <?php endif; ?>
@@ -145,13 +149,13 @@ Permission::authorize($pdo, 'Pengguna', 'view');
                                         <tfoot>
                                             <tr>
                                                 <th class="text-center">No</th>
-                                                <th>Nama Lengkap</th>
-                                                <th>Username</th>
-                                                <th>Email</th>
-                                                <th>No HP</th>
-                                                <th>Role</th>
-                                                <th>Status Aktif</th>
-                                                <th>Aksi</th>
+                                                <th data-translate="Nama Lengkap">Nama Lengkap</th>
+                                                <th data-translate="Username">Username</th>
+                                                <th data-translate="Email">Email</th>
+                                                <th data-translate="No HP">No HP</th>
+                                                <th data-translate="Role">Role</th>
+                                                <th data-translate="Status Aktif">Status Aktif</th>
+                                                <th data-translate="Aksi">Aksi</th>
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -171,7 +175,7 @@ Permission::authorize($pdo, 'Pengguna', 'view');
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title">Tambah Pengguna</h4>
+                            <h4 class="modal-title" data-translate="Tambah Pengguna">Tambah Pengguna</h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                         <form id="formTambah" method="POST" action="store.php">
@@ -220,22 +224,22 @@ Permission::authorize($pdo, 'Pengguna', 'view');
                                             <div class="custom-control custom-radio">
                                                 <input class="custom-control-input" type="radio" id="add_status_aktif"
                                                     name="is_active" value="1" checked>
-                                                <label for="add_status_aktif" class="custom-control-label">Aktif</label>
+                                                <label for="add_status_aktif" class="custom-control-label" data-translate="Aktif">Aktif</label>
                                             </div>
                                         </div>
-                                        <div class="col-sm-2">
+                                        <div class="col-sm-4">
                                             <div class="custom-control custom-radio">
                                                 <input class="custom-control-input" type="radio"
                                                     id="add_status_nonaktif" name="is_active" value="0">
                                                 <label for="add_status_nonaktif"
-                                                    class="custom-control-label">Nonaktif</label>
+                                                    class="custom-control-label" data-translate="Nonaktif">Nonaktif</label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                <button type="submit" class="btn btn-primary" data-translate="Simpan">Simpan</button>
                             </div>
                         </form>
                     </div>
@@ -247,7 +251,7 @@ Permission::authorize($pdo, 'Pengguna', 'view');
                     <div class="modal-content">
 
                         <div class="modal-header">
-                            <h4 class="modal-title">Edit Pengguna</h4>
+                            <h4 class="modal-title" data-translate="Edit Pengguna">Edit Pengguna</h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
 
@@ -296,21 +300,21 @@ Permission::authorize($pdo, 'Pengguna', 'view');
                                     <div class="custom-control custom-radio">
                                         <input class="custom-control-input edit_status" type="radio"
                                             id="edit_status_aktif" name="is_active" value="1">
-                                        <label for="edit_status_aktif" class="custom-control-label">
+                                        <label for="edit_status_aktif" class="custom-control-label" data-translate="Aktif">
                                             Aktif
                                         </label>
                                     </div>
                                     <div class="custom-control custom-radio">
                                         <input class="custom-control-input edit_status" type="radio"
                                             id="edit_status_nonaktif" name="is_active" value="0">
-                                        <label for="edit_status_nonaktif" class="custom-control-label">
+                                        <label for="edit_status_nonaktif" class="custom-control-label" data-translate="Nonaktif">
                                             Nonaktif
                                         </label>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Update</button>
+                                <button type="submit" class="btn btn-primary" data-translate="Update">Update</button>
                             </div>
                         </form>
                     </div>

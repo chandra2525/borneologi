@@ -156,7 +156,7 @@ function formatGeomTable($wkt)
                                             <tr>
                                                 <th class="text-center">No</th>
                                                 <th>Kode Tanah</th>
-                                                <th>Petani</th>
+                                                <th>Pemilik Tanah</th>
                                                 <th>Nama Relasi</th>
                                                 <th>Tipe Relasi</th>
                                                 <th>Nama Lahan</th>
@@ -264,7 +264,7 @@ function formatGeomTable($wkt)
                                             <tr>
                                                 <th class="text-center">No</th>
                                                 <th>Kode Tanah</th>
-                                                <th>Petani</th>
+                                                <th>Pemilik Tanah</th>
                                                 <th>Nama Relasi</th>
                                                 <th>Tipe Relasi</th>
                                                 <th>Nama Lahan</th>
@@ -315,9 +315,9 @@ function formatGeomTable($wkt)
                                     </div>
                                     <div class="col-lg-6 col-6">
                                         <div class="form-group">
-                                            <label for="id_petani">Petani<code>*</code></label>
+                                            <label for="id_petani">Pemilik Tanah<code>*</code></label>
                                             <select name="id_petani" class="form-control" id="id_petani">
-                                                <option value="">-- Pilih Petani --</option>
+                                                <option value="">-- Pilih Pemilik Tanah --</option>
                                                 <?php foreach ($petanis as $p): ?>
                                                     <option value="<?= $p['id'] ?>">
                                                         <?= htmlspecialchars($p['nama_lengkap']) ?>
@@ -481,27 +481,27 @@ function formatGeomTable($wkt)
                                     </div>
                                     <div class="col-lg-6 col-6">
                                         <div class="form-group">
-                                            <label for="tanggal_validasi">Tanggal Validasi<code>*</code></label>
+                                            <label for="tanggal_validasi">Tanggal Validasi</label>
                                             <input type="date" name="tanggal_validasi" class="form-control" id="tanggal_validasi">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="sejarah">Sejarah<code>*</code></label>
+                                    <label for="sejarah">Sejarah</label>
                                     <input type="text" name="sejarah" class="form-control" id="sejarah"
                                         placeholder="Masukkan sejarah">
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6 col-6">
                                         <div class="form-group">
-                                            <label for="alamat_lokasi">Alamat Lokasi<code>*</code></label>
+                                            <label for="alamat_lokasi">Alamat Lokasi</label>
                                             <textarea name="alamat_lokasi" class="form-control" id="alamat_lokasi"
                                                 rows="3" placeholder="Masukkan alamat lokasi"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-6">
                                         <div class="form-group">
-                                            <label for="keterangan">Keterangan<code>*</code></label>
+                                            <label for="keterangan">Keterangan</label>
                                             <textarea name="keterangan" class="form-control" id="keterangan"
                                                 rows="3" placeholder="Masukkan keterangan"></textarea>
                                         </div>
@@ -560,9 +560,9 @@ function formatGeomTable($wkt)
                                     </div>
                                     <div class="col-lg-6 col-6">
                                         <div class="form-group">
-                                            <label for="edit_id_petani">Petani<code>*</code></label>
+                                            <label for="edit_id_petani">Pemilik Tanah<code>*</code></label>
                                             <select name="id_petani" class="form-control" id="edit_id_petani">
-                                                <option value="">-- Pilih Petani --</option>
+                                                <option value="">-- Pilih Pemilik Tanah --</option>
                                                 <?php foreach ($petanis as $p): ?>
                                                     <option value="<?= $p['id'] ?>">
                                                         <?= htmlspecialchars($p['nama_lengkap']) ?>
@@ -727,27 +727,27 @@ function formatGeomTable($wkt)
                                     </div>
                                     <div class="col-lg-6 col-6">
                                         <div class="form-group">
-                                            <label for="tanggal_validasi">Tanggal Validasi<code>*</code></label>
+                                            <label for="tanggal_validasi">Tanggal Validasi</label>
                                             <input type="date" name="tanggal_validasi" class="form-control" id="edit_tanggal_validasi">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="edit_sejarah">Sejarah<code>*</code></label>
+                                    <label for="edit_sejarah">Sejarah</label>
                                     <input type="text" name="sejarah" class="form-control" id="edit_sejarah"
                                         placeholder="Masukkan sejarah">
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6 col-6">
                                         <div class="form-group">
-                                            <label for="alamat_lokasi">Alamat Lokasi<code>*</code></label>
+                                            <label for="alamat_lokasi">Alamat Lokasi</label>
                                             <textarea name="alamat_lokasi" class="form-control" id="edit_alamat_lokasi"
                                                 rows="3" placeholder="Masukkan alamat lokasi"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-6">
                                         <div class="form-group">
-                                            <label for="keterangan">Keterangan<code>*</code></label>
+                                            <label for="keterangan">Keterangan</label>
                                             <textarea name="keterangan" class="form-control" id="edit_keterangan"
                                                 rows="3" placeholder="Masukkan Keterangan"></textarea>
                                         </div>
@@ -913,16 +913,16 @@ function formatGeomTable($wkt)
                             required: true
                         },
                         tanggal_validasi: {
-                            required: true
+                            required: false
                         },
                         sejarah: {
-                            required: true
+                            required: false
                         },
                         alamat_lokasi: {
-                            required: true
+                            required: false
                         },
                         keterangan: {
-                            required: true
+                            required: false
                         },
                         is_active: {
                             required: true
@@ -933,7 +933,7 @@ function formatGeomTable($wkt)
                             required: "Silahkan masukkan Kode Tanah"
                         },
                         id_petani: {
-                            required: "Silahkan pilih Petani"
+                            required: "Silahkan pilih Pemilik Tanah"
                         },
                         id_relasi: {
                             required: "Silahkan pilih"
@@ -968,18 +968,18 @@ function formatGeomTable($wkt)
                         sudah_validasi: {
                             required: "Silahkan pilih Validasi"
                         },
-                        tanggal_validasi: {
-                            required: "Silahkan pilih tanggal validasi"
-                        },
-                        sejarah: {
-                            required: "Silahkan masukkan sejarah"
-                        },
-                        alamat_lokasi: {
-                            required: "Silahkan masukkan alamat lokasi"
-                        },
-                        keterangan: {
-                            required: "Silahkan masukkan Keterangan"
-                        },
+                        // tanggal_validasi: {
+                        //     required: "Silahkan pilih tanggal validasi"
+                        // },
+                        // sejarah: {
+                        //     required: "Silahkan masukkan sejarah"
+                        // },
+                        // alamat_lokasi: {
+                        //     required: "Silahkan masukkan alamat lokasi"
+                        // },
+                        // keterangan: {
+                        //     required: "Silahkan masukkan Keterangan"
+                        // },
                         is_active: {
                             required: "Silahkan pilih Status Aktif"
                         }

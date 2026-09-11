@@ -238,7 +238,7 @@ Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="jarak_ke_jalan_km">Jarak ke Jalan (km)<code>*</code></label>
+                                    <label for="jarak_ke_jalan_km">Jarak ke Jalan (km)</label>
                                     <input type="number" name="jarak_ke_jalan_km" class="form-control" id="jarak_ke_jalan_km"
                                         placeholder="Masukkan Jarak ke Jalan (km)" min="0" step="0.01">
                                 </div>
@@ -313,7 +313,7 @@ Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="catatan">Catatan<code>*</code></label>
+                                    <label for="catatan">Catatan</label>
                                     <textarea name="catatan" class="form-control" id="catatan"
                                         placeholder="Masukkan Catatan"></textarea>
                                 </div>
@@ -377,7 +377,7 @@ Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="jarak_ke_jalan_km">Jarak ke Jalan (km)<code>*</code></label>
+                                    <label for="jarak_ke_jalan_km">Jarak ke Jalan (km)</label>
                                     <input type="number" name="jarak_ke_jalan_km" class="form-control" id="edit_jarak_ke_jalan_km"
                                         placeholder="Masukkan Jarak ke Jalan (km)" min="0" step="0.01">
                                 </div>
@@ -452,7 +452,7 @@ Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="catatan">Catatan<code>*</code></label>
+                                    <label for="catatan">Catatan</label>
                                     <textarea name="catatan" class="form-control" id="edit_catatan"
                                         placeholder="Masukkan Catatan"></textarea>
                                 </div>
@@ -538,7 +538,7 @@ Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
                             required: true
                         },
                         jarak_ke_jalan_km: {
-                            required: true
+                            required: false
                         },
                         ada_jembatan: {
                             required: true
@@ -553,7 +553,7 @@ Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
                             required: true
                         },
                         catatan: {
-                            required: true
+                            required: false
                         }
                     },
                     messages: {
@@ -569,9 +569,9 @@ Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
                         id_kondisi_jalan: {
                             required: "Silahkan pilih Kondisi Jalan"
                         },
-                        jarak_ke_jalan_km: {
-                            required: "Silahkan masukkan Jarak ke Jalan (km)"
-                        },
+                        // jarak_ke_jalan_km: {
+                        //     required: "Silahkan masukkan Jarak ke Jalan (km)"
+                        // },
                         ada_jembatan: {
                             required: "Silahkan pilih Ada Jembatan"
                         },
@@ -584,9 +584,9 @@ Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
                         sinyal_seluler: {
                             required: "Silahkan pilih Sinyal Seluler"
                         },
-                        catatan: {
-                            required: "Silahkan masukkan Catatan"
-                        }
+                        // catatan: {
+                        //     required: "Silahkan masukkan Catatan"
+                        // }
                     },
                     errorElement: 'span',
                     errorPlacement: function(error, element) {

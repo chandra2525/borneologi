@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/JenisPalung.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Jenis Palung', 'update');
 verifyCsrfToken();
@@ -20,6 +21,22 @@ $data = [
     "updated_by" => $_SESSION["user_id"]
 ];
 
-$jenisPalungModel->update($_POST["id"], $data);
+$oldData = $jenisPalungModel->findById($_POST["id"]);
+$result = $jenisPalungModel->update($_POST["id"], $data);
+
+if ($result) {
+    $newData = $jenisPalungModel->findById($_POST["id"]);
+    logActivity(
+        $pdo,
+        'UPDATE',
+        'Jenis Palung',
+        $_POST["id"],
+        'm_jenis_palung',
+        $oldData,
+        $newData,
+        'Mengubah data Jenis Palung',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=updated");

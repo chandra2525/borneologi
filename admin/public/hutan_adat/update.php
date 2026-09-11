@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/HutanAdat.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Hutan Adat', 'update');
 verifyCsrfToken();
@@ -27,6 +28,22 @@ $data = [
     "updated_by" => $_SESSION["user_id"]
 ];
 
-$hutanAdatModel->update($_POST["id"], $data);
+$oldData = $hutanAdatModel->findById($_POST["id"]);
+$result = $hutanAdatModel->update($_POST["id"], $data);
+
+if ($result) {
+    $newData = $hutanAdatModel->findById($_POST["id"]);
+    logActivity(
+        $pdo,
+        'UPDATE',
+        'Hutan Adat',
+        $_POST["id"],
+        't_hutan_adat',
+        $oldData,
+        $newData,
+        'Mengubah data Hutan Adat',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=updated");

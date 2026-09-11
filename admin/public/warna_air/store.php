@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/WarnaAir.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Warna Air', 'create');
 verifyCsrfToken();
@@ -20,6 +21,20 @@ $data = [
     "created_by" => $_SESSION["user_id"]
 ];
 
-$warnaAir->create($data);
+$newId = $warnaAir->create($data);
+
+if ($newId) {
+    logActivity(
+        $pdo,
+        'CREATE',
+        'Warna Air',
+        $newId,
+        'm_warna_air',
+        null,
+        $data,
+        'Menambahkan data Warna Air',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=created");

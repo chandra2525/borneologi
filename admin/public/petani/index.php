@@ -133,19 +133,19 @@ Permission::authorize($pdo, 'Penerima Manfaat', 'view');
                                             <?php foreach ($petanis as $petani): ?>
                                                 <tr>
                                                     <td class="text-center"><?= $no++ ?></td>
-                                                    <td><?= htmlspecialchars($petani['nik']) ?></td>
-                                                    <td><?= htmlspecialchars($petani['no_kk']) ?></td>
-                                                    <td><?= htmlspecialchars($petani['nama_lengkap']) ?></td>
-                                                    <td><?= htmlspecialchars($petani['nama_panggilan']) ?></td>
+                                                    <td><?= htmlspecialchars($petani['nik'] ?? '') ?></td>
+                                                    <td><?= htmlspecialchars($petani['no_kk'] ?? '') ?></td>
+                                                    <td><?= htmlspecialchars($petani['nama_lengkap'] ?? '') ?></td>
+                                                    <td><?= htmlspecialchars($petani['nama_panggilan'] ?? '') ?></td>
                                                     <td><?= $petani['jenis_kelamin'] == 'L' ? 'Laki-laki' : 'Perempuan' ?>
                                                     </td>
-                                                    <td><?= htmlspecialchars($petani['tanggal_lahir']) ?></td>
-                                                    <td><?= htmlspecialchars($petani['nomor_hp']) ?></td>
-                                                    <td><?= htmlspecialchars($petani['nama_desa']) ?></td>
-                                                    <td><?= htmlspecialchars($petani['alamat']) ?></td>
+                                                    <td><?= htmlspecialchars($petani['tanggal_lahir'] ?? '') ?></td>
+                                                    <td><?= htmlspecialchars($petani['nomor_hp'] ?? '') ?></td>
+                                                    <td><?= htmlspecialchars($petani['nama_desa'] ?? '') ?></td>
+                                                    <td><?= htmlspecialchars($petani['alamat'] ?? '') ?></td>
                                                     <td>
                                                         <img class="img-circle elevation-2" src="<?= !empty($petani['foto_profil_petani'])
-                                                                                                        ? '../../uploads/petani/' . htmlspecialchars($petani['foto_profil_petani'])
+                                                                                                        ? '../../uploads/petani/' . htmlspecialchars($petani['foto_profil_petani'] ?? '')
                                                                                                         : '../../../assets/image/petani_placeholder.jpg' ?>"
                                                             width="80">
                                                     </td>
@@ -157,17 +157,17 @@ Permission::authorize($pdo, 'Penerima Manfaat', 'view');
                                                             <div class="col">
                                                                 <button class="btn btn-block btn-info btn-edit"
                                                                     data-id="<?= $petani['id'] ?>"
-                                                                    data-nik="<?= htmlspecialchars($petani['nik']) ?>"
-                                                                    data-no_kk="<?= htmlspecialchars($petani['no_kk']) ?>"
-                                                                    data-nama_lengkap="<?= htmlspecialchars($petani['nama_lengkap']) ?>"
-                                                                    data-nama_panggilan="<?= htmlspecialchars($petani['nama_panggilan']) ?>"
-                                                                    data-jenis_kelamin="<?= htmlspecialchars($petani['jenis_kelamin']) ?>"
-                                                                    data-tanggal_lahir="<?= htmlspecialchars($petani['tanggal_lahir']) ?>"
-                                                                    data-nomor_hp="<?= htmlspecialchars($petani['nomor_hp']) ?>"
-                                                                    data-id_desa="<?= htmlspecialchars($petani['id_desa']) ?>"
-                                                                    data-alamat="<?= htmlspecialchars($petani['alamat']) ?>"
+                                                                    data-nik="<?= htmlspecialchars($petani['nik'] ?? '') ?>"
+                                                                    data-no_kk="<?= htmlspecialchars($petani['no_kk'] ?? '') ?>"
+                                                                    data-nama_lengkap="<?= htmlspecialchars($petani['nama_lengkap'] ?? '') ?>"
+                                                                    data-nama_panggilan="<?= htmlspecialchars($petani['nama_panggilan'] ?? '') ?>"
+                                                                    data-jenis_kelamin="<?= htmlspecialchars($petani['jenis_kelamin'] ?? '') ?>"
+                                                                    data-tanggal_lahir="<?= htmlspecialchars($petani['tanggal_lahir'] ?? '') ?>"
+                                                                    data-nomor_hp="<?= htmlspecialchars($petani['nomor_hp'] ?? '') ?>"
+                                                                    data-id_desa="<?= htmlspecialchars($petani['id_desa'] ?? '') ?>"
+                                                                    data-alamat="<?= htmlspecialchars($petani['alamat'] ?? '') ?>"
                                                                     data-foto="<?= $petani['foto_profil_petani'] ?>"
-                                                                    data-status_petani="<?= htmlspecialchars($petani['status_petani']) ?>"
+                                                                    data-status_petani="<?= htmlspecialchars($petani['status_petani'] ?? '') ?>"
                                                                     data-status="<?= $petani['is_active'] ?>"
                                                                     data-toggle="modal" data-target="#modalEdit">
                                                                     <i class="fas fa-edit"></i> Edit
@@ -293,7 +293,7 @@ Permission::authorize($pdo, 'Penerima Manfaat', 'view');
                                                 <option value="">-- Pilih Desa --</option>
                                                 <?php foreach ($desas as $d): ?>
                                                     <option value="<?= $d['id'] ?>">
-                                                        <?= htmlspecialchars($d['nama_desa']) ?>
+                                                        <?= htmlspecialchars($d['nama_desa'] ?? '') ?>
                                                     </option>
                                                 <?php endforeach; ?>
                                             </select>
@@ -446,7 +446,7 @@ Permission::authorize($pdo, 'Penerima Manfaat', 'view');
                                                 <option value="">-- Pilih Desa --</option>
                                                 <?php foreach ($desas as $d): ?>
                                                     <option value="<?= $d['id'] ?>">
-                                                        <?= htmlspecialchars($d['nama_desa']) ?>
+                                                        <?= htmlspecialchars($d['nama_desa'] ?? '') ?>
                                                     </option>
                                                 <?php endforeach; ?>
                                             </select>
@@ -648,7 +648,7 @@ Permission::authorize($pdo, 'Penerima Manfaat', 'view');
                             <li>
                                 Baris <?= $failed['row'] ?>:
                                 <?= htmlspecialchars(
-                                    implode(', ', $failed['errors'])
+                                    implode(', ', $failed['errors'] ?? '')
                                 ) ?>
                             </li>
 

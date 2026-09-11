@@ -244,7 +244,7 @@ Permission::authorize($pdo, 'Bank Benih', 'view');
                             <?= csrfField() ?>
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label for="nomor_aksesi">Nomor Aksesi<code>*</code></label>
+                                    <label for="nomor_aksesi">Nomor Aksesi</label>
                                     <input type="text" name="nomor_aksesi" class="form-control" id="nomor_aksesi"
                                         placeholder="Masukkan Nomor Aksesi" maxlength="50">
                                 </div>
@@ -276,17 +276,17 @@ Permission::authorize($pdo, 'Bank Benih', 'view');
                                         placeholder="Masukkan Nama Lokal" maxlength="100">
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama_ilmiah">Nama Ilmiah<code>*</code></label>
+                                    <label for="nama_ilmiah">Nama Ilmiah</label>
                                     <input type="text" name="nama_ilmiah" class="form-control" id="nama_ilmiah"
                                         placeholder="Masukkan Nama Ilmiah" maxlength="100">
                                 </div>
                                 <div class="form-group">
-                                    <label for="famili_tanaman">Famili Tanaman<code>*</code></label>
+                                    <label for="famili_tanaman">Famili Tanaman</label>
                                     <input type="text" name="famili_tanaman" class="form-control" id="famili_tanaman"
                                         placeholder="Masukkan Famili Tanaman" maxlength="100">
                                 </div>
                                 <div class="form-group">
-                                    <label for="provenance">Provenance<code>*</code></label>
+                                    <label for="provenance">Provenance</label>
                                     <input type="text" name="provenance" class="form-control" id="provenance"
                                         placeholder="Masukkan Provenance" maxlength="100">
                                 </div>
@@ -322,36 +322,36 @@ Permission::authorize($pdo, 'Bank Benih', 'view');
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="kadar_air_persen">Kadar Air (%)<code>*</code></label>
+                                    <label for="kadar_air_persen">Kadar Air (%)</label>
                                     <input type="number" name="kadar_air_persen" class="form-control" id="kadar_air_persen"
                                         placeholder="Masukkan Kadar Air" min="0" max="100">
                                 </div>
                                 <div class="form-group">
-                                    <label for="viabilitas_persen">Viabilitas (%)<code>*</code></label>
+                                    <label for="viabilitas_persen">Viabilitas (%)</label>
                                     <input type="number" name="viabilitas_persen" class="form-control" id="viabilitas_persen"
                                         placeholder="Masukkan Viabilitas" min="0" max="100">
                                 </div>
                                 <div class="form-group">
-                                    <label for="ketinggian_mdpl">Ketinggian (mdpl)<code>*</code></label>
+                                    <label for="ketinggian_mdpl">Ketinggian (mdpl)</label>
                                     <input type="number" name="ketinggian_mdpl" class="form-control" id="ketinggian_mdpl"
                                         placeholder="Masukkan Ketinggian" min="0">
                                 </div>
                                 <div class="form-group">
-                                    <label for="masa_berlaku_sampai">Masa Berlaku Sampai<code>*</code></label>
+                                    <label for="masa_berlaku_sampai">Masa Berlaku Sampai</label>
                                     <input type="date" name="masa_berlaku_sampai" class="form-control" id="masa_berlaku_sampai">
                                 </div>
                                 <div class="form-group">
-                                    <label for="lokasi_penyimpanan">Lokasi Penyimpanan<code>*</code></label>
+                                    <label for="lokasi_penyimpanan">Lokasi Penyimpanan</label>
                                     <input type="text" name="lokasi_penyimpanan" class="form-control" id="lokasi_penyimpanan"
                                         placeholder="Masukkan Lokasi Penyimpanan" maxlength="30">
                                 </div>
                                 <div class="form-group">
-                                    <label for="titik_koleksi_lat">Titik Koleksi Latitude<code>*</code></label>
+                                    <label for="titik_koleksi_lat">Titik Koleksi Latitude</label>
                                     <input type="number" name="titik_koleksi_lat" class="form-control" id="titik_koleksi_lat"
                                         placeholder="Masukkan Latitude">
                                 </div>
                                 <div class="form-group">
-                                    <label for="titik_koleksi_lng">Titik Koleksi Longitude<code>*</code></label>
+                                    <label for="titik_koleksi_lng">Titik Koleksi Longitude</label>
                                     <input type="number" name="titik_koleksi_lng" class="form-control" id="titik_koleksi_lng"
                                         placeholder="Masukkan Longitude" min="-180" max="180">
                                 </div>
@@ -361,7 +361,7 @@ Permission::authorize($pdo, 'Bank Benih', 'view');
                                         id="foto_benih" accept="image/*">
                                 </div>
                                 <div class="form-group">
-                                    <label for="catatan">Catatan<code>*</code></label>
+                                    <label for="catatan">Catatan</label>
                                     <textarea name="catatan" class="form-control" id="catatan"
                                         placeholder="Masukkan Catatan"></textarea>
                                 </div>
@@ -408,7 +408,7 @@ Permission::authorize($pdo, 'Bank Benih', 'view');
                             <input type="hidden" name="id" id="edit_id">
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label for="nomor_aksesi">Nomor Aksesi<code>*</code></label>
+                                    <label for="nomor_aksesi">Nomor Aksesi</label>
                                     <input type="text" name="nomor_aksesi" class="form-control" id="edit_nomor_aksesi"
                                         placeholder="Masukkan Nomor Aksesi" maxlength="50">
                                 </div>
@@ -440,17 +440,17 @@ Permission::authorize($pdo, 'Bank Benih', 'view');
                                         placeholder="Masukkan Nama Lokal" maxlength="100">
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama_ilmiah">Nama Ilmiah<code>*</code></label>
+                                    <label for="nama_ilmiah">Nama Ilmiah</label>
                                     <input type="text" name="nama_ilmiah" class="form-control" id="edit_nama_ilmiah"
                                         placeholder="Masukkan Nama Ilmiah" maxlength="100">
                                 </div>
                                 <div class="form-group">
-                                    <label for="famili_tanaman">Famili Tanaman<code>*</code></label>
+                                    <label for="famili_tanaman">Famili Tanaman</label>
                                     <input type="text" name="famili_tanaman" class="form-control" id="edit_famili_tanaman"
                                         placeholder="Masukkan Famili Tanaman" maxlength="100">
                                 </div>
                                 <div class="form-group">
-                                    <label for="provenance">Provenance<code>*</code></label>
+                                    <label for="provenance">Provenance</label>
                                     <input type="text" name="provenance" class="form-control" id="edit_provenance"
                                         placeholder="Masukkan Provenance" maxlength="100">
                                 </div>
@@ -486,36 +486,36 @@ Permission::authorize($pdo, 'Bank Benih', 'view');
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="kadar_air_persen">Kadar Air (%)<code>*</code></label>
+                                    <label for="kadar_air_persen">Kadar Air (%)</label>
                                     <input type="number" name="kadar_air_persen" class="form-control" id="edit_kadar_air_persen"
                                         placeholder="Masukkan Kadar Air" min="0" max="100">
                                 </div>
                                 <div class="form-group">
-                                    <label for="viabilitas_persen">Viabilitas (%)<code>*</code></label>
+                                    <label for="viabilitas_persen">Viabilitas (%)</label>
                                     <input type="number" name="viabilitas_persen" class="form-control" id="edit_viabilitas_persen"
                                         placeholder="Masukkan Viabilitas" min="0" max="100">
                                 </div>
                                 <div class="form-group">
-                                    <label for="ketinggian_mdpl">Ketinggian (mdpl)<code>*</code></label>
+                                    <label for="ketinggian_mdpl">Ketinggian (mdpl)</label>
                                     <input type="number" name="ketinggian_mdpl" class="form-control" id="edit_ketinggian_mdpl"
                                         placeholder="Masukkan Ketinggian" min="0">
                                 </div>
                                 <div class="form-group">
-                                    <label for="masa_berlaku_sampai">Masa Berlaku Sampai<code>*</code></label>
+                                    <label for="masa_berlaku_sampai">Masa Berlaku Sampai</label>
                                     <input type="date" name="masa_berlaku_sampai" class="form-control" id="edit_masa_berlaku_sampai">
                                 </div>
                                 <div class="form-group">
-                                    <label for="lokasi_penyimpanan">Lokasi Penyimpanan<code>*</code></label>
+                                    <label for="lokasi_penyimpanan">Lokasi Penyimpanan</label>
                                     <input type="text" name="lokasi_penyimpanan" class="form-control" id="edit_lokasi_penyimpanan"
                                         placeholder="Masukkan Lokasi Penyimpanan" maxlength="30">
                                 </div>
                                 <div class="form-group">
-                                    <label for="titik_koleksi_lat">Titik Koleksi Latitude<code>*</code></label>
+                                    <label for="titik_koleksi_lat">Titik Koleksi Latitude</label>
                                     <input type="number" name="titik_koleksi_lat" class="form-control" id="edit_titik_koleksi_lat"
                                         placeholder="Masukkan Latitude">
                                 </div>
                                 <div class="form-group">
-                                    <label for="titik_koleksi_lng">Titik Koleksi Longitude<code>*</code></label>
+                                    <label for="titik_koleksi_lng">Titik Koleksi Longitude</label>
                                     <input type="number" name="titik_koleksi_lng" class="form-control" id="edit_titik_koleksi_lng"
                                         placeholder="Masukkan Longitude" min="-180" max="180">
                                 </div>
@@ -530,7 +530,7 @@ Permission::authorize($pdo, 'Bank Benih', 'view');
                                     </small>
                                 </div>
                                 <div class="form-group">
-                                    <label for="catatan">Catatan<code>*</code></label>
+                                    <label for="catatan">Catatan</label>
                                     <textarea name="catatan" class="form-control" id="edit_catatan"
                                         placeholder="Masukkan Catatan"></textarea>
                                 </div>
@@ -624,7 +624,7 @@ Permission::authorize($pdo, 'Bank Benih', 'view');
                 $(formId).validate({
                     rules: {
                         nomor_aksesi: {
-                            required: true
+                            required: false
                         },
                         id_tanah: {
                             required: true
@@ -636,13 +636,13 @@ Permission::authorize($pdo, 'Bank Benih', 'view');
                             required: true
                         },
                         nama_ilmiah: {
-                            required: true
+                            required: false
                         },
                         famili_tanaman: {
-                            required: true
+                            required: false
                         },
                         provenance: {
-                            required: true
+                            required: false
                         },
                         id_tipe_penyimpanan_benih: {
                             required: true
@@ -657,37 +657,37 @@ Permission::authorize($pdo, 'Bank Benih', 'view');
                             required: true
                         },
                         kadar_air_persen: {
-                            required: true
+                            required: false
                         },
                         viabilitas_persen: {
-                            required: true
+                            required: false
                         },
                         ketinggian_mdpl: {
-                            required: true
+                            required: false
                         },
                         masa_berlaku_sampai: {
-                            required: true
+                            required: false
                         },
                         lokasi_penyimpanan: {
-                            required: true
+                            required: false
                         },
                         titik_koleksi_lat: {
-                            required: true
+                            required: false
                         },
                         titik_koleksi_lng: {
-                            required: true
+                            required: false
                         },
                         catatan: {
-                            required: true
+                            required: false
                         },
                         is_active: {
                             required: true
                         }
                     },
                     messages: {
-                        nomor_aksesi: {
-                            required: "Silahkan masukkan Nomor Aksesi"
-                        },
+                        // nomor_aksesi: {
+                        //     required: "Silahkan masukkan Nomor Aksesi"
+                        // },
                         id_tanah: {
                             required: "Silahkan pilih Tanah"
                         },
@@ -697,15 +697,15 @@ Permission::authorize($pdo, 'Bank Benih', 'view');
                         nama_lokal: {
                             required: "Silahkan masukkan Nama Lokal"
                         },
-                        nama_ilmiah: {
-                            required: "Silahkan masukkan Nama Ilmiah"
-                        },
-                        famili_tanaman: {
-                            required: "Silahkan masukkan Famili Tanaman"
-                        },
-                        provenance: {
-                            required: "Silahkan masukkan Provenance"
-                        },
+                        // nama_ilmiah: {
+                        //     required: "Silahkan masukkan Nama Ilmiah"
+                        // },
+                        // famili_tanaman: {
+                        //     required: "Silahkan masukkan Famili Tanaman"
+                        // },
+                        // provenance: {
+                        //     required: "Silahkan masukkan Provenance"
+                        // },
                         id_tipe_penyimpanan_benih: {
                             required: "Silahkan pilih Tipe Penyimpanan Benih"
                         },
@@ -718,30 +718,30 @@ Permission::authorize($pdo, 'Bank Benih', 'view');
                         satuan_stok: {
                             required: "Silahkan masukkan Satuan Stok"
                         },
-                        kadar_air_persen: {
-                            required: "Silahkan masukkan Kadar Air"
-                        },
-                        viabilitas_persen: {
-                            required: "Silahkan masukkan Viabilitas"
-                        },
-                        ketinggian_mdpl: {
-                            required: "Silahkan masukkan Ketinggian MDPL"
-                        },
-                        masa_berlaku_sampai: {
-                            required: "Silahkan masukkan Masa Berlaku Sampai"
-                        },
-                        lokasi_penyimpanan: {
-                            required: "Silahkan masukkan Lokasi Penyimpanan"
-                        },
-                        titik_koleksi_lat: {
-                            required: "Silahkan masukkan Titik Koleksi Latitude"
-                        },
-                        titik_koleksi_lng: {
-                            required: "Silahkan masukkan Titik Koleksi Longitude"
-                        },
-                        catatan: {
-                            required: "Silahkan masukkan Catatan"
-                        },
+                        // kadar_air_persen: {
+                        //     required: "Silahkan masukkan Kadar Air"
+                        // },
+                        // viabilitas_persen: {
+                        //     required: "Silahkan masukkan Viabilitas"
+                        // },
+                        // ketinggian_mdpl: {
+                        //     required: "Silahkan masukkan Ketinggian MDPL"
+                        // },
+                        // masa_berlaku_sampai: {
+                        //     required: "Silahkan masukkan Masa Berlaku Sampai"
+                        // },
+                        // lokasi_penyimpanan: {
+                        //     required: "Silahkan masukkan Lokasi Penyimpanan"
+                        // },
+                        // titik_koleksi_lat: {
+                        //     required: "Silahkan masukkan Titik Koleksi Latitude"
+                        // },
+                        // titik_koleksi_lng: {
+                        //     required: "Silahkan masukkan Titik Koleksi Longitude"
+                        // },
+                        // catatan: {
+                        //     required: "Silahkan masukkan Catatan"
+                        // },
                         is_active: {
                             required: "Silahkan pilih Status Aktif"
                         }

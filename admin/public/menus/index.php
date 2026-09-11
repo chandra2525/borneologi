@@ -107,22 +107,22 @@ Permission::authorize($pdo, 'Menus', 'view');
                                             <?php foreach ($menus as $menu): ?>
                                                 <tr>
                                                     <td class="text-center"><?= $no++ ?></td>
-                                                    <td><?= htmlspecialchars($menu['kode']) ?></td>
-                                                    <td><?= htmlspecialchars($menu['nama']) ?></td>
-                                                    <!-- <td><?= htmlspecialchars($menu['path']) ?></td> -->
-                                                    <!-- <td><?= htmlspecialchars($menu['icon']) ?></td> -->
-                                                    <td><?= htmlspecialchars($menu['parent_name']) ?></td>
-                                                    <td><?= htmlspecialchars($menu['urutan']) ?></td>
+                                                    <td><?= htmlspecialchars($menu['kode'] ?? '') ?></td>
+                                                    <td><?= htmlspecialchars($menu['nama'] ?? '') ?></td>
+                                                    <!-- <td><?= htmlspecialchars($menu['path'] ?? '') ?></td> -->
+                                                    <!-- <td><?= htmlspecialchars($menu['icon'] ?? '') ?></td> -->
+                                                    <td><?= htmlspecialchars($menu['parent_name'] ?? '') ?></td>
+                                                    <td><?= htmlspecialchars($menu['urutan'] ?? '') ?></td>
                                                     <td><?= $menu['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
                                                     <td class="row">
                                                         <?php if (Permission::can($pdo, 'Menus', 'update')): ?>
                                                             <div class="col">
                                                                 <button class="btn btn-block btn-info btn-edit"
                                                                     data-id="<?= $menu['id'] ?>"
-                                                                    data-kode="<?= htmlspecialchars($menu['kode']) ?>"
-                                                                    data-nama="<?= htmlspecialchars($menu['nama']) ?>"
+                                                                    data-kode="<?= htmlspecialchars($menu['kode'] ?? '') ?>"
+                                                                    data-nama="<?= htmlspecialchars($menu['nama'] ?? '') ?>"
                                                                     data-parent-id="<?= $menu['id_parent'] ?? '' ?>"
-                                                                    data-urutan="<?= $menu['urutan'] ?>"
+                                                                    data-urutan="<?= $menu['urutan'] ?? '' ?>"
                                                                     data-status="<?= $menu['is_active'] ?>" data-toggle="modal"
                                                                     data-target="#modalEdit">
                                                                     <i class="fas fa-edit"></i> Edit
@@ -206,7 +206,7 @@ Permission::authorize($pdo, 'Menus', 'view');
                                         <option value="">-- Menu Utama --</option>
                                         <?php foreach ($parents as $p): ?>
                                             <option value="<?= $p['id'] ?>">
-                                                <?= htmlspecialchars($p['nama']) ?>
+                                                <?= htmlspecialchars($p['nama'] ?? '') ?>
                                             </option>
                                         <?php endforeach; ?>
                                     </select>
@@ -280,7 +280,7 @@ Permission::authorize($pdo, 'Menus', 'view');
                                         <option value="">-- Menu Utama --</option>
                                         <?php foreach ($parents as $p): ?>
                                             <option value="<?= $p['id'] ?>">
-                                                <?= htmlspecialchars($p['nama']) ?>
+                                                <?= htmlspecialchars($p['nama'] ?? '') ?>
                                             </option>
                                         <?php endforeach; ?>
                                     </select>

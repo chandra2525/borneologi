@@ -233,17 +233,17 @@ Permission::authorize($pdo, 'Pohon Observasi', 'view');
                                         placeholder="Masukkan Jumlah Pohon" min="0" max="99999999" step="1">
                                 </div>
                                 <div class="form-group">
-                                    <label for="diameter_rata2_cm">Diameter Rata-Rata (cm)<code>*</code></label>
+                                    <label for="diameter_rata2_cm">Diameter Rata-Rata (cm)</label>
                                     <input type="number" name="diameter_rata2_cm" class="form-control" id="diameter_rata2_cm"
                                         placeholder="Masukkan Diameter Rata-Rata (cm)" min="0" max="99999999" step="0.01">
                                 </div>
                                 <div class="form-group">
-                                    <label for="tinggi_rata2_m">Tinggi Rata-Rata (m)<code>*</code></label>
+                                    <label for="tinggi_rata2_m">Tinggi Rata-Rata (m)</label>
                                     <input type="number" name="tinggi_rata2_m" class="form-control" id="tinggi_rata2_m"
                                         placeholder="Masukkan Tinggi Rata-Rata (m)" min="0" max="99999999" step="0.01">
                                 </div>
                                 <div class="form-group">
-                                    <label for="kondisi">Kondisi<code>*</code></label>
+                                    <label for="kondisi">Kondisi</label>
                                     <select name="kondisi" class="form-control" id="kondisi">
                                         <option value="">-- Pilih Kondisi --</option>
                                         <option value="baik">Baik</option>
@@ -252,7 +252,7 @@ Permission::authorize($pdo, 'Pohon Observasi', 'view');
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="catatan">Catatan<code>*</code></label>
+                                    <label for="catatan">Catatan</label>
                                     <textarea name="catatan" class="form-control" id="catatan"
                                         placeholder="Masukkan Catatan"></textarea>
                                 </div>
@@ -321,17 +321,17 @@ Permission::authorize($pdo, 'Pohon Observasi', 'view');
                                         placeholder="Masukkan Jumlah Pohon" min="0" max="99999999" step="1">
                                 </div>
                                 <div class="form-group">
-                                    <label for="diameter_rata2_cm">Diameter Rata-Rata (cm)<code>*</code></label>
+                                    <label for="diameter_rata2_cm">Diameter Rata-Rata (cm)</label>
                                     <input type="number" name="diameter_rata2_cm" class="form-control" id="edit_diameter_rata2_cm"
                                         placeholder="Masukkan Diameter Rata-Rata (cm)" min="0" max="100" step="0.01">
                                 </div>
                                 <div class="form-group">
-                                    <label for="tinggi_rata2_m">Tinggi Rata-Rata (m)<code>*</code></label>
+                                    <label for="tinggi_rata2_m">Tinggi Rata-Rata (m)</label>
                                     <input type="number" name="tinggi_rata2_m" class="form-control" id="edit_tinggi_rata2_m"
                                         placeholder="Masukkan Tinggi Rata-Rata (m)" min="0" max="99999999" step="0.01">
                                 </div>
                                 <div class="form-group">
-                                    <label for="kondisi">Kondisi<code>*</code></label>
+                                    <label for="kondisi">Kondisi</label>
                                     <select name="kondisi" class="form-control" id="edit_kondisi">
                                         <option value="">-- Pilih Kondisi --</option>
                                         <option value="baik">Baik</option>
@@ -340,7 +340,7 @@ Permission::authorize($pdo, 'Pohon Observasi', 'view');
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="catatan">Catatan<code>*</code></label>
+                                    <label for="catatan">Catatan</label>
                                     <textarea name="catatan" class="form-control" id="edit_catatan"
                                         placeholder="Masukkan Catatan"></textarea>
                                 </div>
@@ -429,16 +429,16 @@ Permission::authorize($pdo, 'Pohon Observasi', 'view');
                             required: true
                         },
                         diameter_rata2_cm: {
-                            required: true
+                            required: false
                         },
                         tinggi_rata2_m: {
-                            required: true
+                            required: false
                         },
                         kondisi: {
-                            required: true
+                            required: false
                         },
                         catatan: {
-                            required: true
+                            required: false
                         }
                     },
                     messages: {
@@ -457,18 +457,18 @@ Permission::authorize($pdo, 'Pohon Observasi', 'view');
                         jumlah_pohon: {
                             required: "Silahkan pilih Jumlah Pohon"
                         },
-                        diameter_rata2_cm: {
-                            required: "Silahkan masukkan Diameter Rata-Rata (cm)"
-                        },
-                        tinggi_rata2_m: {
-                            required: "Silahkan masukkan Tinggi Rata-Rata (m)"
-                        },
-                        kondisi: {
-                            required: "Silahkan masukkan Kondisi"
-                        },
-                        catatan: {
-                            required: "Silahkan masukkan Catatan"
-                        }
+                        // diameter_rata2_cm: {
+                        //     required: "Silahkan masukkan Diameter Rata-Rata (cm)"
+                        // },
+                        // tinggi_rata2_m: {
+                        //     required: "Silahkan masukkan Tinggi Rata-Rata (m)"
+                        // },
+                        // kondisi: {
+                        //     required: "Silahkan masukkan Kondisi"
+                        // },
+                        // catatan: {
+                        //     required: "Silahkan masukkan Catatan"
+                        // }
                     },
                     errorElement: 'span',
                     errorPlacement: function(error, element) {

@@ -30,7 +30,7 @@ class LandCoverObservasi
             LEFT JOIN m_penggunaan_pertanian pp ON pp.id = lc.id_penggunaan_pertanian
             LEFT JOIN m_penggunaan_lainnya pl ON pl.id = lc.id_penggunaan_lainnya
             WHERE lc.deleted_at IS NULL
-            ORDER BY lc.id ASC";
+            ORDER BY lc.id DESC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
@@ -65,8 +65,12 @@ class LandCoverObservasi
 
         $stmt = $this->pdo->prepare($sql);
 
-        return $stmt->execute($data);
+        // return $stmt->execute($data);
+        if ($stmt->execute($data)) {
+            return $this->pdo->lastInsertId();
+        }
 
+        return false;
     }
 
     public function update($id, $data)

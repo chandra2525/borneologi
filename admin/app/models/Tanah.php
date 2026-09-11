@@ -66,7 +66,7 @@ class Tanah
 
             WHERE ta.deleted_at IS NULL
 
-            ORDER BY ta.id ASC;";
+            ORDER BY ta.id DESC;";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
@@ -101,8 +101,12 @@ class Tanah
 
         $stmt = $this->pdo->prepare($sql);
 
-        return $stmt->execute($data);
+        // return $stmt->execute($data);
+        if ($stmt->execute($data)) {
+            return $this->pdo->lastInsertId();
+        }
 
+        return false;
     }
 
     public function update($id, $data)

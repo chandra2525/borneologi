@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/AksesPerjalanan.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Akses Perjalanan', 'create');
 verifyCsrfToken();
@@ -20,6 +21,20 @@ $data = [
     "created_by" => $_SESSION["user_id"]
 ];
 
-$aksesPerjalanan->create($data);
+$newId = $aksesPerjalanan->create($data);
+
+if ($newId) {
+    logActivity(
+        $pdo,
+        'CREATE',
+        'Akses Perjalanan',
+        $newId,
+        'm_akses_perjalanan',
+        null,
+        $data,
+        'Menambahkan data Akses Perjalanan',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=created");

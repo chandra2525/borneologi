@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/Lanskap.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Lanskap', 'update');
 verifyCsrfToken();
@@ -20,6 +21,22 @@ $data = [
     "updated_by" => $_SESSION["user_id"]
 ];
 
-$lanskapModel->update($_POST["id"], $data);
+$oldData = $lanskapModel->findById($_POST["id"]);
+$result = $lanskapModel->update($_POST["id"], $data);
+
+if ($result) {
+    $newData = $lanskapModel->findById($_POST["id"]);
+    logActivity(
+        $pdo,
+        'UPDATE',
+        'Lanskap',
+        $_POST["id"],
+        'm_lanskap',
+        $oldData,
+        $newData,
+        'Mengubah data Lanskap',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=updated");

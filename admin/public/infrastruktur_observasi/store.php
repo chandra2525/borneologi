@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/InfrastrukturObservasi.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Infrastruktur Observasi', 'create');
 verifyCsrfToken();
@@ -25,6 +26,20 @@ $data = [
     "created_by" => $_SESSION["user_id"]
 ];
 
-$infrastrukturObservasi->create($data);
+$newId = $infrastrukturObservasi->create($data);
+
+if ($newId) {
+    logActivity(
+        $pdo,
+        'CREATE',
+        'Infrastruktur Observasi',
+        $newId,
+        't_infrastruktur_observasi',
+        null,
+        $data,
+        'Menambahkan data Infrastruktur Observasi',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=created");

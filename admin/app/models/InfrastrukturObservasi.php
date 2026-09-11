@@ -31,7 +31,7 @@ class InfrastrukturObservasi
             LEFT JOIN m_akses_perjalanan ap ON ap.id = io.id_akses_perjalanan
             LEFT JOIN m_kondisi_jalan kj ON kj.id = io.id_kondisi_jalan
             WHERE io.deleted_at IS NULL
-            ORDER BY io.id ASC";
+            ORDER BY io.id DESC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
@@ -66,8 +66,12 @@ class InfrastrukturObservasi
 
         $stmt = $this->pdo->prepare($sql);
 
-        return $stmt->execute($data);
+        // return $stmt->execute($data);
+        if ($stmt->execute($data)) {
+            return $this->pdo->lastInsertId();
+        }
 
+        return false;
     }
 
     public function update($id, $data)

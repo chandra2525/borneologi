@@ -6,6 +6,7 @@ require_once "../app/core/csrf.php";
 require_once "../app/core/auth.php";
 require_once "../app/core/security.php";
 require_once "../app/models/User.php";
+require_once "../app/core/activity_log.php";
 
 secureSessionStart();
 
@@ -181,5 +182,17 @@ echo json_encode([
     "message" => "Password berhasil diubah.",
     "csrf_token" => $newCsrfToken
 ]);
+
+logActivity(
+    $pdo,
+    'UPDATE',
+    'Ubah Password',
+    $_SESSION['user_id'],
+    't_users',
+    null,
+    null,
+    'User berhasil mengubah password',
+    'SUCCESS'
+);
 
 exit;

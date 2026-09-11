@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/Kecamatan.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Kecamatan', 'update');
 verifyCsrfToken();
@@ -19,6 +20,22 @@ $data = [
     "updated_by" => $_SESSION["user_id"]
 ];
 
-$kecamatanModel->update($_POST["id"], $data);
+$oldData = $kecamatanModel->findById($_POST["id"]);
+$result = $kecamatanModel->update($_POST["id"], $data);
+
+if ($result) {
+    $newData = $kecamatanModel->findById($_POST["id"]);
+    logActivity(
+        $pdo,
+        'UPDATE',
+        'Kecamatan',
+        $_POST["id"],
+        'm_kecamatan',
+        $oldData,
+        $newData,
+        'Mengubah data Kecamatan',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=updated");

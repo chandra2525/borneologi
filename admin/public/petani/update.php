@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/Petani.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Penerima Manfaat', 'update');
 verifyCsrfToken();
@@ -75,6 +76,22 @@ $data = [
     "updated_by" => $_SESSION["user_id"]
 ];
 
-$petaniModel->update($_POST["id"], $data);
+$oldData = $petaniModel->findById($_POST["id"]);
+$result = $petaniModel->update($_POST["id"], $data);
+
+if ($result) {
+    $newData = $petaniModel->findById($_POST["id"]);
+    logActivity(
+        $pdo,
+        'UPDATE',
+        'Penerima Manfaat',
+        $_POST["id"],
+        't_petani',
+        $oldData,
+        $newData,
+        'Mengubah data Penerima Manfaat',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=updated");

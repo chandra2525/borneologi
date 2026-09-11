@@ -2,6 +2,8 @@
 
 require_once "../app/core/session.php";
 require_once "../app/core/csrf.php";
+require_once "../app/core/activity_log.php";
+require_once "../app/config/database.php";
 
 secureSessionStart();
 
@@ -13,6 +15,18 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 // Validasi CSRF
 verifyCsrfToken();
+
+logActivity(
+    $pdo,
+    'LOGOUT',
+    'Logout',
+    null,
+    't_users',
+    null,
+    null,
+    'User melakukan logout',
+    'SUCCESS'
+);
 
 // Hapus seluruh data session
 $_SESSION = [];

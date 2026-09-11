@@ -228,12 +228,12 @@ Permission::authorize($pdo, 'Topografi Observasi', 'view');
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="elevasi_mdpl">Elevasi (mdpl)<code>*</code></label>
+                                    <label for="elevasi_mdpl">Elevasi (mdpl)</label>
                                     <input type="number" name="elevasi_mdpl" class="form-control" id="elevasi_mdpl"
                                         placeholder="Masukkan Elevasi (mdpl)" min="0" max="99999999" step="1">
                                 </div>
                                 <div class="form-group">
-                                    <label for="kemiringan_derajat">Kemiringan Derajat<code>*</code></label>
+                                    <label for="kemiringan_derajat">Kemiringan Derajat</label>
                                     <input type="number" name="kemiringan_derajat" class="form-control" id="kemiringan_derajat"
                                         placeholder="Masukkan Kemiringan Derajat" min="0" max="99999" step="0.01">
                                 </div>
@@ -258,12 +258,12 @@ Permission::authorize($pdo, 'Topografi Observasi', 'view');
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="arah_lereng">Arah Lereng<code>*</code></label>
+                                    <label for="arah_lereng">Arah Lereng</label>
                                     <input type="text" name="arah_lereng" class="form-control" id="arah_lereng"
                                         placeholder="Masukkan Arah Lereng" maxlength="50">
                                 </div>
                                 <div class="form-group">
-                                    <label for="catatan">Catatan<code>*</code></label>
+                                    <label for="catatan">Catatan</label>
                                     <textarea name="catatan" class="form-control" id="catatan"
                                         placeholder="Masukkan Catatan"></textarea>
                                 </div>
@@ -327,12 +327,12 @@ Permission::authorize($pdo, 'Topografi Observasi', 'view');
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="elevasi_mdpl">Elevasi (mdpl)<code>*</code></label>
+                                    <label for="elevasi_mdpl">Elevasi (mdpl)</label>
                                     <input type="number" name="elevasi_mdpl" class="form-control" id="edit_elevasi_mdpl"
                                         placeholder="Masukkan Elevasi (mdpl)" min="0" max="99999999" step="1">
                                 </div>
                                 <div class="form-group">
-                                    <label for="kemiringan_derajat">Kemiringan Derajat<code>*</code></label>
+                                    <label for="kemiringan_derajat">Kemiringan Derajat</label>
                                     <input type="number" name="kemiringan_derajat" class="form-control" id="edit_kemiringan_derajat"
                                         placeholder="Masukkan Kemiringan Derajat" min="0" max="100" step="0.01">
                                 </div>
@@ -357,12 +357,12 @@ Permission::authorize($pdo, 'Topografi Observasi', 'view');
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="arah_lereng">Arah Lereng<code>*</code></label>
+                                    <label for="arah_lereng">Arah Lereng</label>
                                     <input type="text" name="arah_lereng" class="form-control" id="edit_arah_lereng"
                                         placeholder="Masukkan Arah Lereng" maxlength="50">
                                 </div>
                                 <div class="form-group">
-                                    <label for="catatan">Catatan<code>*</code></label>
+                                    <label for="catatan">Catatan</label>
                                     <textarea name="catatan" class="form-control" id="edit_catatan"
                                         placeholder="Masukkan Catatan"></textarea>
                                 </div>
@@ -448,19 +448,19 @@ Permission::authorize($pdo, 'Topografi Observasi', 'view');
                             required: true
                         },
                         elevasi_mdpl: {
-                            required: true
+                            required: false
                         },
                         kemiringan_derajat: {
-                            required: true
+                            required: false
                         },
                         rawan_erosi: {
                             required: true
                         },
                         arah_lereng: {
-                            required: true
+                            required: false
                         },
                         catatan: {
-                            required: true
+                            required: false
                         }
                     },
                     messages: {
@@ -476,21 +476,21 @@ Permission::authorize($pdo, 'Topografi Observasi', 'view');
                         id_fitur_tambahan: {
                             required: "Silahkan pilih Fitur Tambahan"
                         },
-                        elevasi_mdpl: {
-                            required: "Silahkan masukkan Elevasi (mdpl)"
-                        },
-                        kemiringan_derajat: {
-                            required: "Silahkan masukkan Kemiringan Derajat"
-                        },
+                        // elevasi_mdpl: {
+                        //     required: "Silahkan masukkan Elevasi (mdpl)"
+                        // },
+                        // kemiringan_derajat: {
+                        //     required: "Silahkan masukkan Kemiringan Derajat"
+                        // },
                         rawan_erosi: {
                             required: "Silahkan pilih Rawan Erosi"
                         },
-                        arah_lereng: {
-                            required: "Silahkan masukkan Arah Lereng"
-                        },
-                        catatan: {
-                            required: "Silahkan masukkan Catatan"
-                        }
+                        // arah_lereng: {
+                        //     required: "Silahkan masukkan Arah Lereng"
+                        // },
+                        // catatan: {
+                        //     required: "Silahkan masukkan Catatan"
+                        // }
                     },
                     errorElement: 'span',
                     errorPlacement: function(error, element) {

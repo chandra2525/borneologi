@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/BankBenih.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Bank Benih', 'create');
 verifyCsrfToken();
@@ -68,6 +69,20 @@ $data = [
     "created_by" => $_SESSION["user_id"]
 ];
 
-$bankBenih->create($data);
+$newId = $bankBenih->create($data);
+
+if ($newId) {
+    logActivity(
+        $pdo,
+        'CREATE',
+        'Bank Benih',
+        $newId,
+        't_bank_benih',
+        null,
+        $data,
+        'Menambahkan data Bank Benih',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=created");

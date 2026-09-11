@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/StatusKawasan.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Status Kawasan', 'update');
 verifyCsrfToken();
@@ -20,6 +21,22 @@ $data = [
     "updated_by" => $_SESSION["user_id"]
 ];
 
-$statusKawasanModel->update($_POST["id"], $data);
+$oldData = $statusKawasanModel->findById($_POST["id"]);
+$result = $statusKawasanModel->update($_POST["id"], $data);
+
+if ($result) {
+    $newData = $statusKawasanModel->findById($_POST["id"]);
+    logActivity(
+        $pdo,
+        'UPDATE',
+        'Status Kawasan',
+        $_POST["id"],
+        'm_status_kawasan',
+        $oldData,
+        $newData,
+        'Mengubah data Status Kawasan',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=updated");

@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/MonitoringPenanaman.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Monitoring Penanaman', 'create');
 verifyCsrfToken();
@@ -26,6 +27,20 @@ $data = [
     "created_by" => $_SESSION["user_id"]
 ];
 
-$monitoringPenanaman->create($data);
+$newId = $monitoringPenanaman->create($data);
+
+if ($newId) {
+    logActivity(
+        $pdo,
+        'CREATE',
+        'Monitoring Penanaman',
+        $newId,
+        't_monitoring_penanaman',
+        null,
+        $data,
+        'Menambahkan data Monitoring Penanaman',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=created");

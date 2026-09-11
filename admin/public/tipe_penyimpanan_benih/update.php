@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/TipePenyimpananBenih.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Tipe Penyimpanan Benih', 'update');
 verifyCsrfToken();
@@ -20,6 +21,22 @@ $data = [
     "updated_by" => $_SESSION["user_id"]
 ];
 
-$tipePenyimpananBenihModel->update($_POST["id"], $data);
+$oldData = $tipePenyimpananBenihModel->findById($_POST["id"]);
+$result = $tipePenyimpananBenihModel->update($_POST["id"], $data);
+
+if ($result) {
+    $newData = $tipePenyimpananBenihModel->findById($_POST["id"]);
+    logActivity(
+        $pdo,
+        'UPDATE',
+        'Tipe Penyimpanan Benih',
+        $_POST["id"],
+        'm_tipe_penyimpanan_benih',
+        $oldData,
+        $newData,
+        'Mengubah data Tipe Penyimpanan Benih',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=updated");

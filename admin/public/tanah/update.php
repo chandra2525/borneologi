@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/Tanah.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Tanah', 'update');
 verifyCsrfToken();
@@ -33,6 +34,22 @@ $data = [
     "updated_by" => $_SESSION["user_id"]
 ];
 
-$tanahModel->update($_POST["id"], $data);
+$oldData = $tanahModel->findById($_POST["id"]);
+$result = $tanahModel->update($_POST["id"], $data);
+
+if ($result) {
+    $newData = $tanahModel->findById($_POST["id"]);
+    logActivity(
+        $pdo,
+        'UPDATE',
+        'Tanah',
+        $_POST["id"],
+        't_tanah',
+        $oldData,
+        $newData,
+        'Mengubah data Tanah',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=updated");

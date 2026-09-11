@@ -32,7 +32,7 @@ class MonitoringPenanaman
             LEFT JOIN m_tipe_penanaman tp ON tp.id = mp.id_tipe_penanaman
             LEFT JOIN m_progress_status_monitoring ps ON ps.id = mp.id_progress_status_monitoring
             WHERE mp.deleted_at IS NULL
-            ORDER BY mp.id ASC";
+            ORDER BY mp.id DESC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
@@ -67,8 +67,12 @@ class MonitoringPenanaman
 
         $stmt = $this->pdo->prepare($sql);
 
-        return $stmt->execute($data);
+        // return $stmt->execute($data);
+        if ($stmt->execute($data)) {
+            return $this->pdo->lastInsertId();
+        }
 
+        return false;
     }
 
     public function update($id, $data)

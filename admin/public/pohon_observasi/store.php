@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/PohonObservasi.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Pohon Observasi', 'create');
 verifyCsrfToken();
@@ -24,6 +25,20 @@ $data = [
     "created_by" => $_SESSION["user_id"]
 ];
 
-$pohonObservasi->create($data);
+$newId = $pohonObservasi->create($data);
+
+if ($newId) {
+    logActivity(
+        $pdo,
+        'CREATE',
+        'Pohon Observasi',
+        $newId,
+        't_pohon_observasi',
+        null,
+        $data,
+        'Menambahkan data Pohon Observasi',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=created");

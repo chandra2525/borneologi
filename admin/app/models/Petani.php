@@ -61,7 +61,12 @@ class Petani
             $data['foto_profil_petani'] = null;
         }
 
-        return $stmt->execute($data);
+        // return $stmt->execute($data);
+        if ($stmt->execute($data)) {
+            return $this->pdo->lastInsertId();
+        }
+
+        return false;
     }
 
     public function update($id, $data)

@@ -250,17 +250,17 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                                     <input type="date" name="tanggal_monitoring" class="form-control" id="tanggal_monitoring">
                                 </div>
                                 <div class="form-group">
-                                    <label for="luas_tanam_ha">Luas Tanam (ha)<code>*</code></label>
+                                    <label for="luas_tanam_ha">Luas Tanam (ha)</label>
                                     <input type="number" name="luas_tanam_ha" class="form-control" id="luas_tanam_ha"
                                         placeholder="Masukkan Luas Tanam (ha)" min="0">
                                 </div>
                                 <div class="form-group">
-                                    <label for="survival_rate_persen">Survival Rate (%)<code>*</code></label>
+                                    <label for="survival_rate_persen">Survival Rate (%)</label>
                                     <input type="number" name="survival_rate_persen" class="form-control" id="survival_rate_persen"
                                         placeholder="Masukkan Survival Rate (%)" min="0">
                                 </div>
                                 <div class="form-group">
-                                    <label for="catatan">Catatan<code>*</code></label>
+                                    <label for="catatan">Catatan</label>
                                     <textarea name="catatan" class="form-control" id="catatan"
                                         placeholder="Masukkan Catatan"></textarea>
                                 </div>
@@ -357,17 +357,17 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                                     <input type="date" name="tanggal_monitoring" class="form-control" id="edit_tanggal_monitoring">
                                 </div>
                                 <div class="form-group">
-                                    <label for="luas_tanam_ha">Luas Tanam (ha)<code>*</code></label>
+                                    <label for="luas_tanam_ha">Luas Tanam (ha)</label>
                                     <input type="number" name="luas_tanam_ha" class="form-control" id="edit_luas_tanam_ha"
                                         placeholder="Masukkan Luas Tanam (ha)" min="0">
                                 </div>
                                 <div class="form-group">
-                                    <label for="survival_rate_persen">Survival Rate (%)<code>*</code></label>
+                                    <label for="survival_rate_persen">Survival Rate (%)</label>
                                     <input type="number" name="survival_rate_persen" class="form-control" id="edit_survival_rate_persen"
                                         placeholder="Masukkan Survival Rate (%)" min="0">
                                 </div>
                                 <div class="form-group">
-                                    <label for="catatan">Catatan<code>*</code></label>
+                                    <label for="catatan">Catatan</label>
                                     <textarea name="catatan" class="form-control" id="edit_catatan"
                                         placeholder="Masukkan Catatan"></textarea>
                                 </div>
@@ -482,13 +482,13 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                             required: true
                         },
                         luas_tanam_ha: {
-                            required: true
+                            required: false
                         },
                         survival_rate_persen: {
-                            required: true
+                            required: false
                         },
                         catatan: {
-                            required: true
+                            required: false
                         },
                         is_active: {
                             required: true
@@ -516,15 +516,15 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                         tanggal_monitoring: {
                             required: "Silahkan masukkan Tanggal Monitoring"
                         },
-                        luas_tanam_ha: {
-                            required: "Silahkan masukkan Luas Tanam (ha)"
-                        },
-                        survival_rate_persen: {
-                            required: "Silahkan masukkan Survival Rate (%)"
-                        },
-                        catatan: {
-                            required: "Silahkan masukkan Catatan"
-                        },
+                        // luas_tanam_ha: {
+                        //     required: "Silahkan masukkan Luas Tanam (ha)"
+                        // },
+                        // survival_rate_persen: {
+                        //     required: "Silahkan masukkan Survival Rate (%)"
+                        // },
+                        // catatan: {
+                        //     required: "Silahkan masukkan Catatan"
+                        // },
                         is_active: {
                             required: "Silahkan pilih Status Aktif"
                         }

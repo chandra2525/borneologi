@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/Kabupaten.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Kabupaten', 'create');
 verifyCsrfToken();
@@ -20,6 +21,20 @@ $data = [
     "created_by" => $_SESSION["user_id"]
 ];
 
-$kabupaten->create($data);
+$newId = $kabupaten->create($data);
+
+if ($newId) {
+    logActivity(
+        $pdo,
+        'CREATE',
+        'Kabupaten',
+        $newId,
+        'm_kabupaten',
+        null,
+        $data,
+        'Menambahkan data Kabupaten',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=created");

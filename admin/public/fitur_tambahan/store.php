@@ -5,8 +5,9 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/FiturTambahan.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
-Permission::authorize($pdo, 'Roles', 'create');
+Permission::authorize($pdo, 'Fitur Tambahan', 'create');
 
 verifyCsrfToken();
 
@@ -21,6 +22,20 @@ $data = [
     "created_by" => $_SESSION["user_id"]
 ];
 
-$fiturTambahan->create($data);
+$newId = $fiturTambahan->create($data);
+
+if ($newId) {
+    logActivity(
+        $pdo,
+        'CREATE',
+        'Fitur Tambahan',
+        $newId,
+        'm_fitur_tambahan',
+        null,
+        $data,
+        'Menambahkan data Fitur Tambahan',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=created");

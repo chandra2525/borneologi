@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/Menu.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Menus', 'update');
 verifyCsrfToken();
@@ -22,7 +23,23 @@ $data = [
     "updated_by" => $_SESSION["user_id"]
 ];
 
-$menuModel->update($_POST["id"], $data);
+$oldData = $menuModel->findById($_POST["id"]);
+$result = $menuModel->update($_POST["id"], $data);
+
+if ($result) {
+    $newData = $menuModel->findById($_POST["id"]);
+    logActivity(
+        $pdo,
+        'UPDATE',
+        'Menus',
+        $_POST["id"],
+        'm_menus',
+        $oldData,
+        $newData,
+        'Mengubah data Menus',
+        'SUCCESS'
+    );
+}
 
 // header("Location: index.php");
 header("Location: index.php?success=updated");

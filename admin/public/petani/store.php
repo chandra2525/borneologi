@@ -5,6 +5,7 @@ require "../../app/core/csrf.php";
 require "../../app/config/database.php";
 require "../../app/models/Petani.php";
 require "../../app/core/permission.php";
+require '../../app/core/activity_log.php';
 
 Permission::authorize($pdo, 'Penerima Manfaat', 'create');
 verifyCsrfToken();
@@ -59,7 +60,21 @@ $data = [
     "created_by" => $_SESSION["user_id"]
 ];
 
-$petani->create($data);
+$newId = $petani->create($data);
+
+if ($newId) {
+    logActivity(
+        $pdo,
+        'CREATE',
+        'Penerima Manfaat',
+        $newId,
+        't_petani',
+        null,
+        $data,
+        'Menambahkan data Penerima Manfaat',
+        'SUCCESS'
+    );
+}
 
 header("Location: index.php?success=created");
 exit;
