@@ -80,7 +80,8 @@ $canLandCoverObservasi = canView($pdo, 'Land Cover Observasi');
 $canPerairanObservasi = canView($pdo, 'Perairan Observasi');
 $canPohonObservasi = canView($pdo, 'Pohon Observasi');
 $canTopografiObservasi = canView($pdo, 'Topografi Observasi');
-$canLogHistory  = canView($pdo, 'Log History');
+$canLogHistory = canView($pdo, 'Log History');
+$canGlosarium = canView($pdo, 'Glosarium');
 ?>
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -130,7 +131,7 @@ $canLogHistory  = canView($pdo, 'Log History');
                         </a>
                     </li>
                 <?php endif; ?>
-                 <?php if ($canLogHistory): ?>
+                <?php if ($canLogHistory): ?>
                     <li class="nav-item">
                         <a href="<?= ($menu == 'dashboard') ? 'activity_log/' : '../activity_log/' ?>index.php"
                             class="nav-link <?= ($menu == 'activity_log') ? 'active' : '' ?>">
@@ -151,8 +152,10 @@ $canLogHistory  = canView($pdo, 'Log History');
                     </a>
                     <ul class="nav nav-treeview">
                         <?php if ($canMasterUser): ?>
-                            <li class="nav-item <?= ($menu == 'user' || $menu == 'roles' || $menu == 'menus') ? 'menu-open' : '' ?>">
-                                <a href="#" class="nav-link <?= ($menu == 'user' || $menu == 'roles' || $menu == 'menus') ? 'active' : '' ?>">
+                            <li
+                                class="nav-item <?= ($menu == 'user' || $menu == 'roles' || $menu == 'menus') ? 'menu-open' : '' ?>">
+                                <a href="#"
+                                    class="nav-link <?= ($menu == 'user' || $menu == 'roles' || $menu == 'menus') ? 'active' : '' ?>">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>
                                         Master User
@@ -191,8 +194,10 @@ $canLogHistory  = canView($pdo, 'Log History');
                             </li>
                         <?php endif; ?>
                         <?php if ($canMasterWilayah): ?>
-                            <li class="nav-item <?= ($menu == 'provinsi' || $menu == 'kabupaten' || $menu == 'kecamatan' || $menu == 'desa') ? 'menu-open' : '' ?>">
-                                <a href="#" class="nav-link <?= ($menu == 'provinsi' || $menu == 'kabupaten' || $menu == 'kecamatan' || $menu == 'desa') ? 'active' : '' ?>">
+                            <li
+                                class="nav-item <?= ($menu == 'provinsi' || $menu == 'kabupaten' || $menu == 'kecamatan' || $menu == 'desa') ? 'menu-open' : '' ?>">
+                                <a href="#"
+                                    class="nav-link <?= ($menu == 'provinsi' || $menu == 'kabupaten' || $menu == 'kecamatan' || $menu == 'desa') ? 'active' : '' ?>">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>
                                         Master Wilayah
@@ -240,8 +245,10 @@ $canLogHistory  = canView($pdo, 'Log History');
                             </li>
                         <?php endif; ?>
                         <?php if ($canMasterKelompok): ?>
-                            <li class="nav-item <?= ($menu == 'kategori_kelompok' || $menu == 'jabatan_kelompok') ? 'menu-open' : '' ?>">
-                                <a href="#" class="nav-link <?= ($menu == 'kategori_kelompok' || $menu == 'jabatan_kelompok') ? 'active' : '' ?>">
+                            <li
+                                class="nav-item <?= ($menu == 'kategori_kelompok' || $menu == 'jabatan_kelompok') ? 'menu-open' : '' ?>">
+                                <a href="#"
+                                    class="nav-link <?= ($menu == 'kategori_kelompok' || $menu == 'jabatan_kelompok') ? 'active' : '' ?>">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>
                                         Master Kelompok
@@ -271,8 +278,10 @@ $canLogHistory  = canView($pdo, 'Log History');
                             </li>
                         <?php endif; ?>
                         <?php if ($canMasterJalan): ?>
-                            <li class="nav-item <?= ($menu == 'akses_perjalanan' || $menu == 'kondisi_jalan') ? 'menu-open' : '' ?>">
-                                <a href="#" class="nav-link <?= ($menu == 'akses_perjalanan' || $menu == 'kondisi_jalan') ? 'active' : '' ?>">
+                            <li
+                                class="nav-item <?= ($menu == 'akses_perjalanan' || $menu == 'kondisi_jalan') ? 'menu-open' : '' ?>">
+                                <a href="#"
+                                    class="nav-link <?= ($menu == 'akses_perjalanan' || $menu == 'kondisi_jalan') ? 'active' : '' ?>">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>
                                         Master Jalan
@@ -302,8 +311,10 @@ $canLogHistory  = canView($pdo, 'Log History');
                             </li>
                         <?php endif; ?>
                         <?php if ($canMasterLahan): ?>
-                            <li class="nav-item <?= ($menu == 'legalitas_lahan' || $menu == 'status_kawasan') ? 'menu-open' : '' ?>">
-                                <a href="#" class="nav-link <?= ($menu == 'legalitas_lahan' || $menu == 'status_kawasan') ? 'active' : '' ?>">
+                            <li
+                                class="nav-item <?= ($menu == 'legalitas_lahan' || $menu == 'status_kawasan') ? 'menu-open' : '' ?>">
+                                <a href="#"
+                                    class="nav-link <?= ($menu == 'legalitas_lahan' || $menu == 'status_kawasan') ? 'active' : '' ?>">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>
                                         Master Lahan
@@ -333,8 +344,10 @@ $canLogHistory  = canView($pdo, 'Log History');
                             </li>
                         <?php endif; ?>
                         <?php if ($canMasterBenih): ?>
-                            <li class="nav-item <?= ($menu == 'tipe_penyimpanan_benih' || $menu == 'tipe_penanaman' || $menu == 'progress_status_monitoring' || $menu == 'negara') ? 'menu-open' : '' ?>">
-                                <a href="#" class="nav-link <?= ($menu == 'tipe_penyimpanan_benih' || $menu == 'tipe_penanaman' || $menu == 'progress_status_monitoring' || $menu == 'negara') ? 'active' : '' ?>">
+                            <li
+                                class="nav-item <?= ($menu == 'tipe_penyimpanan_benih' || $menu == 'tipe_penanaman' || $menu == 'progress_status_monitoring' || $menu == 'negara') ? 'menu-open' : '' ?>">
+                                <a href="#"
+                                    class="nav-link <?= ($menu == 'tipe_penyimpanan_benih' || $menu == 'tipe_penanaman' || $menu == 'progress_status_monitoring' || $menu == 'negara') ? 'active' : '' ?>">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>
                                         Master Benih
@@ -382,8 +395,10 @@ $canLogHistory  = canView($pdo, 'Log History');
                             </li>
                         <?php endif; ?>
                         <?php if ($canMasterObservasi): ?>
-                            <li class="nav-item <?= ($menu == 'kategori_area' || $menu == 'penggunaan_lainnya' || $menu == 'penggunaan_pertanian' || $menu == 'lanskap' || $menu == 'fitur_tambahan' || $menu == 'jenis_pohon' || $menu == 'fungsi_pohon' || $menu == 'warna_air' || $menu == 'jenis_palung' || $menu == 'kecepatan_aliran') ? 'menu-open' : '' ?>">
-                                <a href="#" class="nav-link <?= ($menu == 'kategori_area' || $menu == 'penggunaan_lainnya' || $menu == 'penggunaan_pertanian' || $menu == 'lanskap' || $menu == 'fitur_tambahan' || $menu == 'jenis_pohon' || $menu == 'fungsi_pohon' || $menu == 'warna_air' || $menu == 'jenis_palung' || $menu == 'kecepatan_aliran') ? 'active' : '' ?>">
+                            <li
+                                class="nav-item <?= ($menu == 'kategori_area' || $menu == 'penggunaan_lainnya' || $menu == 'penggunaan_pertanian' || $menu == 'lanskap' || $menu == 'fitur_tambahan' || $menu == 'jenis_pohon' || $menu == 'fungsi_pohon' || $menu == 'warna_air' || $menu == 'jenis_palung' || $menu == 'kecepatan_aliran') ? 'menu-open' : '' ?>">
+                                <a href="#"
+                                    class="nav-link <?= ($menu == 'kategori_area' || $menu == 'penggunaan_lainnya' || $menu == 'penggunaan_pertanian' || $menu == 'lanskap' || $menu == 'fitur_tambahan' || $menu == 'jenis_pohon' || $menu == 'fungsi_pohon' || $menu == 'warna_air' || $menu == 'jenis_palung' || $menu == 'kecepatan_aliran') ? 'active' : '' ?>">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>
                                         Master Observasi
@@ -680,6 +695,15 @@ $canLogHistory  = canView($pdo, 'Log History');
                                 </li>
                             <?php endif; ?>
                         </ul>
+                    </li>
+                <?php endif; ?>
+                <?php if ($canGlosarium): ?>
+                    <li class="nav-item">
+                        <a href="<?= ($menu == 'dashboard') ? 'glosarium/' : '../glosarium/' ?>index.php"
+                            class="nav-link <?= ($menu == 'glosarium') ? 'active' : '' ?>">
+                            <i class="nav-icon fas fa-book"></i>
+                            <p>Glosarium</p>
+                        </a>
                     </li>
                 <?php endif; ?>
             </ul>

@@ -1,106 +1,481 @@
 <?php
+
 require "../../app/core/session.php";
-secureSessionStart();
 require "../../app/core/csrf.php";
 require "../../app/config/database.php";
-require "../../app/models/BankBenih.php";
+require "../../app/controllers/BankBenihController.php";
 require "../../app/core/permission.php";
-require '../../app/core/activity_log.php';
+require "../../app/core/activity_log.php";
 
-Permission::authorize($pdo, 'Bank Benih', 'update');
+secureSessionStart();
+
+
+/*
+|--------------------------------------------------------------------------
+| PERMISSION
+|--------------------------------------------------------------------------
+*/
+
+Permission::authorize(
+    $pdo,
+    'Bank Benih',
+    'update'
+);
+
+
+/*
+|--------------------------------------------------------------------------
+| CSRF
+|--------------------------------------------------------------------------
+*/
+
 verifyCsrfToken();
 
-$bankBenihModel = new BankBenih($pdo);
 
-$foto_benih = $_POST['foto_lama'] ?? null;
+/*
+|--------------------------------------------------------------------------
+| VALIDASI ID
+|--------------------------------------------------------------------------
+*/
+
+if (
+    !isset($_POST['id']) ||
+    !is_numeric($_POST['id'])
+) {
+
+    header(
+        "Location: index.php?error=invalid_id"
+    );
+
+    exit;
+}
+
+
+$id = (int)$_POST['id'];
+
+
+/*
+|--------------------------------------------------------------------------
+| MODEL
+|--------------------------------------------------------------------------
+*/
+
+$bankBenihModel =
+    new BankBenih($pdo);
+
+
+/*
+|--------------------------------------------------------------------------
+| CEK DATA
+|--------------------------------------------------------------------------
+*/
+
+$oldData =
+    $bankBenihModel->findById($id);
+
+
+if (!$oldData) {
+
+    header(
+        "Location: index.php?error=not_found"
+    );
+
+    exit;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| FOTO LAMA
+|--------------------------------------------------------------------------
+*/
+
+$fotoLama =
+    $oldData['foto_benih'] ?? null;
+
+$fotoBenih =
+    $fotoLama;
+
+$fotoBaru =
+    null;
+
+
+/*
+|--------------------------------------------------------------------------
+| UPLOAD FOTO BARU
+|--------------------------------------------------------------------------
+*/
 
 if (
     isset($_FILES['foto_benih']) &&
-    $_FILES['foto_benih']['error'] == 0
+    $_FILES['foto_benih']['error']
+        !== UPLOAD_ERR_NO_FILE
 ) {
 
-    $uploadDir = "../../uploads/bank_benih/";
 
-    // Buat folder jika belum ada
-    if (!is_dir($uploadDir)) {
-        mkdir($uploadDir, 0777, true);
-    }
+    /*
+     * Error upload
+     */
 
-    $fileTmp  = $_FILES['foto_benih']['tmp_name'];
-    $fileName = $_FILES['foto_benih']['name'];
-    $fileSize = $_FILES['foto_benih']['size'];
-
-    $ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-
-    /* Validasi ekstensi */
-    $allowed = ['jpg', 'jpeg', 'png', 'webp'];
-
-    if (!in_array($ext, $allowed)) {
-        die("Format file tidak didukung");
-    }
-
-    /* Validasi ukuran max 2MB */
-    if ($fileSize > 2 * 1024 * 1024) {
-        die("Ukuran file maksimal 2MB");
-    }
-    /* Generate nama file baru */
-    $newFileName = time() . '_' . uniqid() . '.' . $ext;
-
-    /* Upload file */
-    move_uploaded_file($fileTmp, $uploadDir . $newFileName);
-
-    /* Hapus foto lama jika ada */
     if (
-        !empty($_POST['foto_lama']) &&
-        file_exists($uploadDir . $_POST['foto_lama'])
+        $_FILES['foto_benih']['error']
+        !== UPLOAD_ERR_OK
     ) {
-        unlink($uploadDir . $_POST['foto_lama']);
+
+        header(
+            "Location: edit.php?id={$id}&error=upload_failed"
+        );
+
+        exit;
     }
 
-    $foto_benih = $newFileName;
+
+    /*
+     * Maksimal 2 MB
+     */
+
+    if (
+        $_FILES['foto_benih']['size']
+        > 2 * 1024 * 1024
+    ) {
+
+        header(
+            "Location: edit.php?id={$id}&error=file_too_large"
+        );
+
+        exit;
+    }
+
+
+    /*
+     * MIME validation
+     */
+
+    $tmpFile =
+        $_FILES['foto_benih']['tmp_name'];
+
+
+    $finfo =
+        new finfo(FILEINFO_MIME_TYPE);
+
+
+    $mime =
+        $finfo->file($tmpFile);
+
+
+    $allowedMime = [
+
+        'image/jpeg' => 'jpg',
+
+        'image/png' => 'png',
+
+        'image/webp' => 'webp'
+
+    ];
+
+
+    if (
+        !isset($allowedMime[$mime])
+    ) {
+
+        header(
+            "Location: edit.php?id={$id}&error=invalid_file"
+        );
+
+        exit;
+    }
+
+
+    /*
+     * Pastikan benar-benar image
+     */
+
+    $imageInfo =
+        @getimagesize($tmpFile);
+
+
+    if ($imageInfo === false) {
+
+        header(
+            "Location: edit.php?id={$id}&error=invalid_image"
+        );
+
+        exit;
+    }
+
+
+    /*
+     * Folder upload
+     */
+
+    $uploadDir =
+        "../../uploads/bank_benih/";
+
+
+    if (!is_dir($uploadDir)) {
+
+        if (
+            !mkdir(
+                $uploadDir,
+                0755,
+                true
+            )
+        ) {
+
+            header(
+                "Location: edit.php?id={$id}&error=upload_folder"
+            );
+
+            exit;
+        }
+    }
+
+
+    /*
+     * Generate nama file
+     */
+
+    $extension =
+        $allowedMime[$mime];
+
+
+    $fileName =
+        date('YmdHis')
+        . '_'
+        . bin2hex(
+            random_bytes(8)
+        )
+        . '.'
+        . $extension;
+
+
+    $destination =
+        $uploadDir . $fileName;
+
+
+    /*
+     * Simpan foto
+     */
+
+    if (
+        !move_uploaded_file(
+            $tmpFile,
+            $destination
+        )
+    ) {
+
+        header(
+            "Location: edit.php?id={$id}&error=upload_failed"
+        );
+
+        exit;
+    }
+
+
+    $fotoBaru =
+        $fileName;
+
+    $fotoBenih =
+        $fileName;
 }
 
-$data = [
-    "nomor_aksesi" => $_POST["nomor_aksesi"],
-    "id_tanah" => $_POST["id_tanah"],
-    "id_negara" => $_POST["id_negara"],
-    "nama_lokal" => $_POST["nama_lokal"],
-    "nama_ilmiah" => $_POST["nama_ilmiah"],
-    "famili_tanaman" => $_POST["famili_tanaman"],
-    "provenance" => $_POST["provenance"],
-    "id_tipe_penyimpanan_benih" => $_POST["id_tipe_penyimpanan_benih"],
-    "tanggal_masuk" => $_POST["tanggal_masuk"],
-    "jumlah_stok" => $_POST["jumlah_stok"],
-    "satuan_stok" => $_POST["satuan_stok"],
-    "kadar_air_persen" => $_POST["kadar_air_persen"],
-    "viabilitas_persen" => $_POST["viabilitas_persen"],
-    "ketinggian_mdpl" => $_POST["ketinggian_mdpl"],
-    "masa_berlaku_sampai" => $_POST["masa_berlaku_sampai"],
-    "lokasi_penyimpanan" => $_POST["lokasi_penyimpanan"],
-    "titik_koleksi_lat" => $_POST["titik_koleksi_lat"],
-    "titik_koleksi_lng" => $_POST["titik_koleksi_lng"],
-    "foto_benih" => $foto_benih,
-    "catatan" => $_POST["catatan"],
-    "is_active" => $_POST["is_active"],
-    "updated_by" => $_SESSION["user_id"]
-];
 
-$oldData = $bankBenihModel->findById($_POST["id"]);
-$result = $bankBenihModel->update($_POST["id"], $data);
+/*
+|--------------------------------------------------------------------------
+| DATA POST
+|--------------------------------------------------------------------------
+*/
 
-if ($result) {
-    $newData = $bankBenihModel->findById($_POST["id"]);
-    logActivity(
-        $pdo,
-        'UPDATE',
-        'Bank Benih',
-        $_POST["id"],
-        't_bank_benih',
-        $oldData,
-        $newData,
-        'Mengubah data Bank Benih',
-        'SUCCESS'
+$data = $_POST;
+
+
+/*
+ * Pastikan foto menggunakan
+ * nama file yang benar
+ */
+
+$data['foto_benih'] =
+    $fotoBenih;
+
+
+/*
+|--------------------------------------------------------------------------
+| UPDATE MELALUI CONTROLLER
+|--------------------------------------------------------------------------
+*/
+
+$controller =
+    new BankBenihController($pdo);
+
+
+try {
+
+    $result =
+        $controller->update(
+            $id,
+            $data,
+            $_SESSION['user_id']
+        );
+
+
+} catch (Throwable $e) {
+
+    /*
+     * Jika database gagal,
+     * hapus foto baru.
+     */
+
+    if (
+        $fotoBaru !== null
+    ) {
+
+        $newFile =
+            "../../uploads/bank_benih/"
+            . $fotoBaru;
+
+
+        if (
+            file_exists($newFile)
+        ) {
+
+            unlink($newFile);
+
+        }
+
+    }
+
+
+    error_log(
+        "Bank Benih UPDATE ERROR: "
+        . $e->getMessage()
     );
+
+
+    header(
+        "Location: edit.php?id={$id}&error=update_failed"
+    );
+
+    exit;
 }
 
-header("Location: index.php?success=updated");
+
+/*
+|--------------------------------------------------------------------------
+| UPDATE GAGAL
+|--------------------------------------------------------------------------
+*/
+
+if (!$result) {
+
+    /*
+     * Hapus foto baru jika database gagal
+     */
+
+    if (
+        $fotoBaru !== null
+    ) {
+
+        $newFile =
+            "../../uploads/bank_benih/"
+            . $fotoBaru;
+
+
+        if (
+            file_exists($newFile)
+        ) {
+
+            unlink($newFile);
+
+        }
+
+    }
+
+
+    header(
+        "Location: edit.php?id={$id}&error=update_failed"
+    );
+
+    exit;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| HAPUS FOTO LAMA
+|--------------------------------------------------------------------------
+|
+| Hanya dilakukan setelah database
+| berhasil diperbarui.
+|
+*/
+
+if (
+    $fotoBaru !== null &&
+    !empty($fotoLama)
+) {
+
+    $oldFile =
+        "../../uploads/bank_benih/"
+        . basename($fotoLama);
+
+
+    if (
+        file_exists($oldFile)
+    ) {
+
+        unlink($oldFile);
+
+    }
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| DATA BARU
+|--------------------------------------------------------------------------
+*/
+
+$newData =
+    $bankBenihModel->findById($id);
+
+
+/*
+|--------------------------------------------------------------------------
+| ACTIVITY LOG
+|--------------------------------------------------------------------------
+*/
+
+logActivity(
+
+    $pdo,
+
+    'UPDATE',
+
+    'Bank Benih',
+
+    $id,
+
+    't_bank_benih',
+
+    $oldData,
+
+    $newData,
+
+    'Mengubah data Bank Benih',
+
+    'SUCCESS'
+
+);
+
+
+/*
+|--------------------------------------------------------------------------
+| REDIRECT
+|--------------------------------------------------------------------------
+*/
+
+header(
+    "Location: index.php?success=updated"
+);
+
+exit;

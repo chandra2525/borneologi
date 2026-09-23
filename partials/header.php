@@ -24,6 +24,8 @@
     <link href="css/magnific-popup.css" rel="stylesheet">
 
     <link href="css/templatemo-first-portfolio-style.css" rel="stylesheet">
+    
+    <link href="css/template-glosarium.css" rel="stylesheet">
 
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />

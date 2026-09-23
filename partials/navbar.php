@@ -46,6 +46,10 @@
                     <a class="nav-link click-scroll" href="#section_2" data-lang="menu_map">Map</a>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link click-scroll" href="#section_3" data-lang="menu_glosarium">Glosarium</a>
+                </li>
+
                 <!-- <li class="nav-item">
                     <a class="nav-link click-scroll" href="#section_3">Services</a>
                 </li>

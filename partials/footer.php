@@ -27,3 +27,4 @@
 <script src="js/custom.js"></script>
 
 <script src="assets/js/map.js"></script>
+<script src="assets/js/glosarium.js"></script>

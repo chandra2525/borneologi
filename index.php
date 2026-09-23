@@ -256,7 +256,8 @@ include 'partials/header.php';
                                                                 <th data-lang="text_nama_panggilan">Nama Panggilan</th>
                                                                 <th data-lang="text_jenis_kelamin">Jenis Kelamin</th>
                                                                 <th data-lang="text_umur">Umur</th>
-                                                                <th data-lang="text_status_penerima_manfaat">Status Penerima Manfaat</th>
+                                                                <th data-lang="text_status_penerima_manfaat">Status
+                                                                    Penerima Manfaat</th>
                                                                 <th data-lang="text_alamat">Alamat</th>
                                                                 <th data-lang="text_foto">Foto</th>
                                                             </tr>
@@ -591,9 +592,9 @@ include 'partials/header.php';
                                     <div class="modal-body">
                                         <ul class="nav nav-tabs custom-tabs" id="myTabDesa" role="tablist">
                                             <li class="nav-item" role="presentation">
-                                                <button class="nav-link active" id="tab1Desa-tab"
-                                                    data-bs-toggle="tab" data-bs-target="#tab1Desa" type="button"
-                                                    role="tab" aria-controls="tab1Desa" aria-selected="false"
+                                                <button class="nav-link active" id="tab1Desa-tab" data-bs-toggle="tab"
+                                                    data-bs-target="#tab1Desa" type="button" role="tab"
+                                                    aria-controls="tab1Desa" aria-selected="false"
                                                     data-lang="text_data_desa">Data
                                                     Desa</button>
                                             </li>
@@ -658,7 +659,8 @@ include 'partials/header.php';
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab"
                                                     data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1"
-                                                    aria-selected="true" data-lang="text_penerima_manfaat">Penerima Manfaat</button>
+                                                    aria-selected="true" data-lang="text_penerima_manfaat">Penerima
+                                                    Manfaat</button>
                                             </li>
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link" id="tab2-tab" data-bs-toggle="tab"
@@ -691,8 +693,8 @@ include 'partials/header.php';
                                                             </div>
 
                                                             <a href="" id="penerimaManfaatFotoLink" class="popup-image">
-                                                                <img id="penerimaManfaatFoto" class="projects-image img-fluid"
-                                                                    alt="">
+                                                                <img id="penerimaManfaatFoto"
+                                                                    class="projects-image img-fluid" alt="">
                                                             </a>
                                                         </div>
                                                     </div>
@@ -732,7 +734,8 @@ include 'partials/header.php';
 
                                                     <div class="col-lg-5 col-md-12 col-12">
                                                         <strong class="site-footer-title d-block mb-3"
-                                                            data-lang="text_kelompok_penerima_manfaat">Kelompok Penerima Manfaat
+                                                            data-lang="text_kelompok_penerima_manfaat">Kelompok Penerima
+                                                            Manfaat
                                                         </strong>
                                                         <table class="profile-thumb">
                                                             <tr>
@@ -1307,18 +1310,20 @@ include 'partials/header.php';
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link active" id="tab1benih-tab" data-bs-toggle="tab"
                                                     data-bs-target="#tab1benih" type="button" role="tab"
-                                                    aria-controls="tab1benih" aria-selected="false" data-lang="text_benih">Benih</button>
+                                                    aria-controls="tab1benih" aria-selected="false"
+                                                    data-lang="text_benih">Benih</button>
                                             </li>
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link" id="tab2monitoring-tab" data-bs-toggle="tab"
                                                     data-bs-target="#tab2monitoring" type="button" role="tab"
-                                                    aria-controls="tab2monitoring"
-                                                    aria-selected="false" data-lang="text_monitoring">Monitoring</button>
+                                                    aria-controls="tab2monitoring" aria-selected="false"
+                                                    data-lang="text_monitoring">Monitoring</button>
                                             </li>
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link" id="tab3tanahBenih-tab" data-bs-toggle="tab"
                                                     data-bs-target="#tab3tanahBenih" type="button" role="tab"
-                                                    aria-controls="tab3tanahBenih" aria-selected="false" data-lang="text_tanah">Tanah</button>
+                                                    aria-controls="tab3tanahBenih" aria-selected="false"
+                                                    data-lang="text_tanah">Tanah</button>
                                             </li>
                                         </ul>
 
@@ -1341,54 +1346,68 @@ include 'partials/header.php';
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4 mt-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_nomor_aksesi">Nomor
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_nomor_aksesi">Nomor
                                                             Aksesi</strong>
                                                         <p class="mb-0" id="nomorAksesi"></p>
-                                                        <strong class="site-footer-title d-block mb-3 mt-4" data-lang="text_nama_negara">Nama
+                                                        <strong class="site-footer-title d-block mb-3 mt-4"
+                                                            data-lang="text_nama_negara">Nama
                                                             Negara</strong>
                                                         <p class="mb-0" id="namaNegara"></p>
-                                                        <strong class="site-footer-title d-block mb-3 mt-4" data-lang="text_famili_tanaman">Famili
+                                                        <strong class="site-footer-title d-block mb-3 mt-4"
+                                                            data-lang="text_famili_tanaman">Famili
                                                             Tanaman</strong>
                                                         <p class="mb-0" id="familiTanaman"></p>
-                                                        <strong
-                                                            class="site-footer-title d-block mb-3 mt-4" data-lang="text_provenance">Provenance</strong>
+                                                        <strong class="site-footer-title d-block mb-3 mt-4"
+                                                            data-lang="text_provenance">Provenance</strong>
                                                         <p class="mb-0" id="provenance"></p>
-                                                        <strong class="site-footer-title d-block mb-3 mt-4" data-lang="text_tipe_penyimpanan_benih">Tipe
+                                                        <strong class="site-footer-title d-block mb-3 mt-4"
+                                                            data-lang="text_tipe_penyimpanan_benih">Tipe
                                                             Penyimpanan Benih</strong>
                                                         <p class="mb-0" id="tipePenyimpananBenih"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4 mt-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_tanggal_masuk">Tanggal
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_tanggal_masuk">Tanggal
                                                             Masuk</strong>
                                                         <p class="mb-0" id="tanggalMasuk"></p>
-                                                        <strong class="site-footer-title d-block mb-3 mt-4" data-lang="text_jumlah_stok">Jumlah
+                                                        <strong class="site-footer-title d-block mb-3 mt-4"
+                                                            data-lang="text_jumlah_stok">Jumlah
                                                             Stok</strong>
                                                         <p class="mb-0" id="jumlahStok"></p>
-                                                        <strong class="site-footer-title d-block mb-3 mt-4" data-lang="text_satuan_stok">Satuan
+                                                        <strong class="site-footer-title d-block mb-3 mt-4"
+                                                            data-lang="text_satuan_stok">Satuan
                                                             Stok</strong>
                                                         <p class="mb-0" id="satuanStok"></p>
-                                                        <strong class="site-footer-title d-block mb-3 mt-4" data-lang="text_kadar_air_persen">Kadar Air
+                                                        <strong class="site-footer-title d-block mb-3 mt-4"
+                                                            data-lang="text_kadar_air_persen">Kadar Air
                                                             Persen</strong>
                                                         <p class="mb-0" id="kadarAirPersen"></p>
-                                                        <strong class="site-footer-title d-block mb-3 mt-4" data-lang="text_viabilitas_persen">Viabilitas
+                                                        <strong class="site-footer-title d-block mb-3 mt-4"
+                                                            data-lang="text_viabilitas_persen">Viabilitas
                                                             Persen</strong>
                                                         <p class="mb-0" id="viabilitasPersen"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4 mt-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_ketinggian_mdpl">Ketinggian
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_ketinggian_mdpl">Ketinggian
                                                             mdpl</strong>
                                                         <p class="mb-0" id="ketinggianMdpl"></p>
-                                                        <strong class="site-footer-title d-block mb-3 mt-4" data-lang="text_masa_berlaku_sampai">Masa Berlaku
+                                                        <strong class="site-footer-title d-block mb-3 mt-4"
+                                                            data-lang="text_masa_berlaku_sampai">Masa Berlaku
                                                             Sampai</strong>
                                                         <p class="mb-0" id="masaBerlakuSampai"></p>
-                                                        <strong class="site-footer-title d-block mb-3 mt-4" data-lang="text_lokasi_penyimpanan">Lokasi
+                                                        <strong class="site-footer-title d-block mb-3 mt-4"
+                                                            data-lang="text_lokasi_penyimpanan">Lokasi
                                                             Penyimpanan</strong>
                                                         <p class="mb-0" id="lokasiPenyimpanan"></p>
-                                                        <strong class="site-footer-title d-block mb-3 mt-4" data-lang="text_titik_koleksi_lat">Titik
+                                                        <strong class="site-footer-title d-block mb-3 mt-4"
+                                                            data-lang="text_titik_koleksi_lat">Titik
                                                             Koleksi
                                                             Lat</strong>
                                                         <p class="mb-0" id="titikKoleksiLat"></p>
-                                                        <strong class="site-footer-title d-block mb-3 mt-4" data-lang="text_titik_koleksi_lng">Titik
+                                                        <strong class="site-footer-title d-block mb-3 mt-4"
+                                                            data-lang="text_titik_koleksi_lng">Titik
                                                             Koleksi
                                                             Lng</strong>
                                                         <p class="mb-0" id="titikKoleksiLng"></p>
@@ -1423,7 +1442,8 @@ include 'partials/header.php';
                                                         <p class="mb-0" id="diameterRata2Cm"></p>
                                                     </div> -->
                                                     <div class="col-lg-9 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_catatan">Catatan</strong>
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_catatan">Catatan</strong>
                                                         <p class="mb-0" id="catatanBenih"></p>
                                                     </div>
                                                 </div>
@@ -1438,18 +1458,24 @@ include 'partials/header.php';
                                                         <table class="profile-thumb">
                                                             <tr>
                                                                 <th data-lang="text_tipe_penanaman">Tipe Penanaman</th>
-                                                                <th data-lang="text_progress_status_monitoring">Progress Status Monitoring</th>
-                                                                <th data-lang="text_periode_pengecekan">Periode Pengecekan</th>
+                                                                <th data-lang="text_progress_status_monitoring">Progress
+                                                                    Status Monitoring</th>
+                                                                <th data-lang="text_periode_pengecekan">Periode
+                                                                    Pengecekan</th>
                                                                 <th data-lang="text_tanggal_tanam">Tanggal Tanam</th>
-                                                                <th data-lang="text_tanggal_monitoring">Tanggal Monitoring</th>
+                                                                <th data-lang="text_tanggal_monitoring">Tanggal
+                                                                    Monitoring</th>
                                                                 <th data-lang="text_luas_tanam">Luas Tanam (ha)</th>
-                                                                <th data-lang="text_survival_rate_persen">Survival Rate (%)</th>
+                                                                <th data-lang="text_survival_rate_persen">Survival Rate
+                                                                    (%)</th>
                                                                 <th data-lang="text_jumlah_ditanam">Jumlah Ditanam</th>
                                                                 <th data-lang="text_satuan">Satuan</th>
                                                                 <th data-lang="text_jumlah_hidup">Jumlah Hidup</th>
                                                                 <th data-lang="text_jumlah_mati">Jumlah Mati</th>
-                                                                <th data-lang="text_tinggi_rata2_cm">Tinggi Rata-Rata (cm)</th>
-                                                                <th data-lang="text_diameter_rata2_cm">Diameter Rata-Rata (cm)</th>
+                                                                <th data-lang="text_tinggi_rata2_cm">Tinggi Rata-Rata
+                                                                    (cm)</th>
+                                                                <th data-lang="text_diameter_rata2_cm">Diameter
+                                                                    Rata-Rata (cm)</th>
                                                                 <th data-lang="text_catatan">Catatan</th>
                                                             </tr>
                                                             <tbody id="benihMonitoringTableBody">
@@ -1462,47 +1488,56 @@ include 'partials/header.php';
                                                 aria-labelledby="tab3tanahBenih-tab">
                                                 <div class="row">
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_nama_lahan">Nama
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_nama_lahan">Nama
                                                             Lahan</strong>
                                                         <p class="mb-0" id="namaLahanBenih"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_legalitas">Legalitas
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_legalitas">Legalitas
                                                         </strong>
                                                         <p class="mb-0" id="legalitasLahanBenih"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_status_kawasan">Status Kawasan
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_status_kawasan">Status Kawasan
                                                         </strong>
                                                         <p class="mb-0" id="statusKawasanBenih"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_luas_lahan">Luas
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_luas_lahan">Luas
                                                         </strong>
                                                         <p class="mb-0" id="luasHaBenih"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_sejarah_lahan">Sejarah
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_sejarah_lahan">Sejarah
                                                         </strong>
                                                         <p class="mb-0" id="sejarahBenih"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_sudah_validasi">Sudah
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_sudah_validasi">Sudah
                                                             Validasi</strong>
                                                         <p class="mb-0" id="sudahValidasiTanahBenih"></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_tanggal_validasi">Tanggal
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_tanggal_validasi">Tanggal
                                                             Validasi</strong>
                                                         <p class="mb-0" id="tanggalValidasiTanahBenih"></p>
                                                     </div>
                                                     <div class="col-lg-6 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_alamat_lokasi_lahan">Alamat Lokasi
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_alamat_lokasi_lahan">Alamat Lokasi
                                                         </strong>
                                                         <p class="mb-0" id="alamatLokasiBenih"></p>
                                                     </div>
                                                     <div class="col-lg-6 col-md-6 col-12 mb-4">
-                                                        <strong class="site-footer-title d-block mb-3" data-lang="text_keterangan_lahan">Keterangan
+                                                        <strong class="site-footer-title d-block mb-3"
+                                                            data-lang="text_keterangan_lahan">Keterangan
                                                         </strong>
                                                         <p class="mb-0" id="keteranganBenih"></p>
                                                     </div>
@@ -1637,6 +1672,207 @@ include 'partials/header.php';
                 </div>
             </div>
         </section>
+
+        <!-- =========================================
+        HERO GLOSARIUM
+        ========================================== -->
+        <section class="glossary-hero" id="section_3">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-7 col-12">
+                        <div class="glossary-hero-content">
+                            <!-- <div class="glossary-breadcrumb">
+                                <a href="index.php">Borneologi</a>
+                                <span>/</span>
+                                <span>Glosarium</span>
+                            </div> -->
+                            <h1 class="glossary-hero-title">
+                                Glosarium Borneologi
+                            </h1>
+                            <p class="glossary-hero-subtitle">
+                                Ensiklopedia istilah, pengetahuan, budaya, adat,
+                                bahasa, dan kehidupan masyarakat Dayak.
+                            </p>
+                            <p class="glossary-hero-description">
+                                Temukan berbagai istilah dan pengetahuan yang
+                                berkaitan dengan masyarakat Dayak di Kalimantan.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-12">
+                        <div class="glossary-hero-card">
+                            <div class="glossary-hero-icon">
+                                <i class="bi bi-book"></i>
+                            </div>
+                            <h3>Pengetahuan Dayak</h3>
+                            <p>
+                                Kumpulan istilah dan pengetahuan yang
+                                terdokumentasi untuk mendukung pelestarian
+                                pengetahuan lokal.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================
+         SEARCH & FILTER
+        ========================================== -->
+        <section class="glossary-search-section">
+            <div class="container">
+                <div class="glossary-search-wrapper">
+                    <div class="glossary-search-box">
+                        <i class="bi bi-search"></i>
+                        <input type="text" id="glossarySearch" class="glossary-search-input"
+                            placeholder="Cari istilah, budaya, adat, bahasa..." autocomplete="off">
+                        <button type="button" class="glossary-search-button" id="glossarySearchButton">
+                            Cari
+                        </button>
+                    </div>
+
+                    <!-- CATEGORY -->
+                    <div class="glossary-filter-row">
+                        <span class="glossary-filter-label">
+                            Kategori:
+                        </span>
+
+                        <button type="button" class="glossary-filter active" data-category="all">
+
+                            Semua
+
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================
+         MAIN GLOSARIUM
+        ========================================== -->
+        <section class="glossary-section">
+            <div class="container">
+                <div class="row">
+                    <!-- ==============================
+                     CONTENT
+                    =============================== -->
+                    <div class="col-lg-8 col-12">
+                        <div class="glossary-section-heading">
+                            <div>
+                                <span class="glossary-section-label">
+                                    ENSIKLOPEDIA
+                                </span>
+                                <h2>
+                                    Istilah Dayak
+                                </h2>
+                            </div>
+                            <span class="glossary-total">
+                                Memuat total...
+                            </span>
+                        </div>
+
+                        <!-- ALPHABET -->
+                        <div class="glossary-alphabet">
+                            <div class="glossary-alphabet mb-4" id="glossaryAlphabet">
+                                <button type="button" class="glossary-letter active" data-letter="all">
+                                    Semua
+                                </button>
+                                <?php foreach (range('A', 'Z') as $letter): ?>
+                                    <button type="button" class="glossary-letter" data-letter="<?= $letter ?>">
+                                        <?= $letter ?>
+                                    </button>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+
+                        <!-- ==============================
+                         TERM LIST
+                        =============================== -->
+                        <div class="glossary-list" id="glossaryList">
+                            <div class="glossary-loading">
+                                <div class="spinner-border" role="status"></div>
+                                <p class="mt-3 mb-0">Memuat glosarium...</p>
+                            </div>
+                        </div>
+
+                        <!-- NO RESULT -->
+                        <div id="glossaryNoResult" class="glossary-no-result" style="display:none;">
+                            <i class="bi bi-search"></i>
+                            <h3>
+                                Istilah tidak ditemukan
+                            </h3>
+                            <p>
+                                Coba gunakan kata pencarian atau kategori
+                                lainnya.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- ==============================
+                     SIDEBAR
+                    =============================== -->
+                    <div class="col-lg-4 col-12">
+                        <aside class="glossary-sidebar">
+                            <!-- ABOUT -->
+                            <div class="glossary-sidebar-card">
+                                <div class="glossary-sidebar-icon">
+                                    <i class="bi bi-info-circle"></i>
+                                </div>
+                                <h3>
+                                    Tentang Glosarium
+                                </h3>
+                                <p>
+                                    Glosarium Borneologi merupakan ruang
+                                    dokumentasi istilah dan pengetahuan
+                                    masyarakat Dayak yang berkaitan dengan
+                                    budaya, bahasa, adat, lingkungan,
+                                    dan kehidupan masyarakat.
+                                </p>
+                            </div>
+
+                            <!-- CATEGORY -->
+                            <div class="glossary-sidebar-card">
+                                <h3>Kategori</h3>
+                                <ul class="glossary-category-list">
+                                    <li>
+                                        <span style="
+                                            display:block;
+                                            padding:10px 0;
+                                            color:#999;
+                                        ">
+                                            Memuat kategori...
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- FEATURED -->
+                            <div class="glossary-sidebar-card glossary-featured">
+                                <span class="glossary-featured-label">
+                                    ISTILAH PILIHAN
+                                </span>
+                                <h3>
+                                    Kaleka
+                                </h3>
+                                <p>
+                                    Pengetahuan lokal masyarakat yang
+                                    berkaitan dengan kawasan dan pengelolaan
+                                    lingkungan secara turun-temurun.
+                                </p>
+                                <!-- <a href="#">
+                                    Baca istilah
+                                    <i class="bi bi-arrow-right"></i>
+                                </a> -->
+                                <button type="button" class="glossary-read-more2" onclick="openGlossary(1)">
+                                    Baca istilah
+                                    <i class="bi bi-arrow-right"></i>
+                                </button>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <div id="sentinelModal" class="modal-sentinel">
@@ -1652,6 +1888,29 @@ include 'partials/header.php';
             <div style="margin-top:15px">
                 <button id="btnGenerateSentinel">Generate</button>
                 <button id="btnCloseSentinel">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="glossaryDetailModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content glossary-modal">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="glossaryModalTitle">
+                        Detail Glosarium
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body" id="glossaryModalBody">
+                    <div class="text-center py-5">
+                        <div class="spinner-border" role="status">
+                        </div>
+                        <p class="mt-3 mb-0">
+                            Memuat informasi...
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
