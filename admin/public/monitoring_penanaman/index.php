@@ -8,14 +8,17 @@ require_once "../../app/core/auth.php";
 require_once '../../app/helpers/escape.php';
 require_once "../../app/core/permission.php";
 
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+
 secureSessionStart();
 checkAuth("non_dashboard");
 
 $controller = new MonitoringPenanamanController($pdo);
 $monitoringPenanamans = $controller->index();
 $tanahs = $controller->getTanah();
-$tipePenanamans = $controller->getTipePenanaman();
-$progressStatusMonitorings = $controller->getProgressStatusMonitoring();
+$progressStatusMonitorings = $controller->getStatusMonitoring();
 Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
 
 ?>
@@ -95,13 +98,12 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                                                 <th class="text-center">No</th>
                                                 <th>Kode Monitoring</th>
                                                 <th>Nama Lahan</th>
-                                                <th>Tipe Penanaman</th>
                                                 <th>Progress Status Monitoring</th>
                                                 <th>Periode Pengecekan</th>
                                                 <th>Tanggal Tanam</th>
                                                 <th>Tanggal Monitoring</th>
-                                                <th>Luas Tanam (ha)</th>
-                                                <th>Survival Rate (%)</th>
+                                                <th>Jumlah Detail</th>
+                                                <th>Total Luas (Ha)</th>
                                                 <th>Catatan</th>
                                                 <th>Status Aktif</th>
                                                 <th>Aksi</th>
@@ -112,31 +114,49 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                                             <?php foreach ($monitoringPenanamans as $monitoringPenanaman): ?>
                                                 <tr>
                                                     <td class="text-center"><?= $no++ ?></td>
-                                                    <td><?= htmlspecialchars($monitoringPenanaman['kode_monitoring']) ?></td>
-                                                    <td><?= htmlspecialchars($monitoringPenanaman['nama_lahan']) ?></td>
-                                                    <td><?= htmlspecialchars($monitoringPenanaman['nama_tipe_penanaman']) ?></td>
-                                                    <td><?= htmlspecialchars($monitoringPenanaman['nama_progress_status_monitoring']) ?></td>
-                                                    <td><?= htmlspecialchars($monitoringPenanaman['periode_pengecekan']) ?></td>
-                                                    <td><?= htmlspecialchars($monitoringPenanaman['tanggal_tanam']) ?></td>
-                                                    <td><?= htmlspecialchars($monitoringPenanaman['tanggal_monitoring']) ?></td>
-                                                    <td><?= htmlspecialchars($monitoringPenanaman['luas_tanam_ha']) ?></td>
-                                                    <td><?= htmlspecialchars($monitoringPenanaman['survival_rate_persen']) ?></td>
-                                                    <td><?= htmlspecialchars($monitoringPenanaman['catatan']) ?></td>
+                                                    <td><span
+                                                            class="badge badge-primary"><?= htmlspecialchars($monitoringPenanaman['kode_monitoring'] ?? '-', ENT_QUOTES, 'UTF-8') ?></span>
+                                                    </td>
+                                                    <td><?= htmlspecialchars($monitoringPenanaman['nama_lahan'] ?? '-', ENT_QUOTES, 'UTF-8') ?>
+                                                    </td>
+                                                    <td><span
+                                                            class="badge badge-info"><?= htmlspecialchars($monitoringPenanaman['nama_status_monitoring'] ?? '-', ENT_QUOTES, 'UTF-8') ?></span>
+                                                    </td>
+                                                    <td>
+                                                        <?= htmlspecialchars($monitoringPenanaman['periode_pengecekan'] ? date('d/m/Y', strtotime($monitoringPenanaman['periode_pengecekan'])) : '-') ?>
+                                                    </td>
+                                                    <td>
+                                                        <?= htmlspecialchars($monitoringPenanaman['tanggal_tanam'] ? date('d/m/Y', strtotime($monitoringPenanaman['tanggal_tanam'])) : '-') ?>
+                                                    </td>
+                                                    <td>
+                                                        <?= htmlspecialchars($monitoringPenanaman['tanggal_monitoring'] ? date('d/m/Y', strtotime($monitoringPenanaman['tanggal_monitoring'])) : '-') ?>
+                                                    </td>
+                                                    <td class="text-center"><span
+                                                            class="badge badge-secondary"><?= (int) ($monitoringPenanaman['jumlah_detail'] ?? 0) ?></span>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <?= number_format((float) ($monitoringPenanaman['total_luas_tanam_ha'] ?? 0), 2, ',', '.') ?>
+                                                    </td>
+                                                    <td><?= htmlspecialchars($monitoringPenanaman['catatan'] ?? '-') ?></td>
                                                     <td><?= $monitoringPenanaman['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
                                                     <td class="row">
+                                                        <div class="col">
+                                                            <a href="../detail_monitoring_penanaman/index.php?id_monitoring=<?= (int) $monitoringPenanaman['id'] ?>"
+                                                                class="btn btn-block btn-primary btn-detail"
+                                                                title="Detail Monitoring">
+                                                                <i class="fas fa-list"></i> Detail
+                                                            </a>
+                                                        </div>
                                                         <?php if (Permission::can($pdo, 'Monitoring Penanaman', 'update')): ?>
                                                             <div class="col">
                                                                 <button class="btn btn-block btn-info btn-edit"
                                                                     data-id="<?= $monitoringPenanaman['id'] ?>"
                                                                     data-kode_monitoring="<?= htmlspecialchars($monitoringPenanaman['kode_monitoring']) ?>"
                                                                     data-id_tanah="<?= htmlspecialchars($monitoringPenanaman['id_tanah']) ?>"
-                                                                    data-id_tipe_penanaman="<?= htmlspecialchars($monitoringPenanaman['id_tipe_penanaman']) ?>"
                                                                     data-id_progress_status_monitoring="<?= htmlspecialchars($monitoringPenanaman['id_progress_status_monitoring']) ?>"
                                                                     data-periode_pengecekan="<?= htmlspecialchars($monitoringPenanaman['periode_pengecekan']) ?>"
                                                                     data-tanggal_tanam="<?= htmlspecialchars($monitoringPenanaman['tanggal_tanam']) ?>"
                                                                     data-tanggal_monitoring="<?= htmlspecialchars($monitoringPenanaman['tanggal_monitoring']) ?>"
-                                                                    data-luas_tanam_ha="<?= htmlspecialchars($monitoringPenanaman['luas_tanam_ha']) ?>"
-                                                                    data-survival_rate_persen="<?= htmlspecialchars($monitoringPenanaman['survival_rate_persen']) ?>"
                                                                     data-catatan="<?= htmlspecialchars($monitoringPenanaman['catatan']) ?>"
                                                                     data-status="<?= $monitoringPenanaman['is_active'] ?>"
                                                                     data-toggle="modal" data-target="#modalEdit">
@@ -148,7 +168,8 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                                                         <?php if (Permission::can($pdo, 'Monitoring Penanaman', 'delete')): ?>
                                                             <form method="POST" action="delete.php" class="form-delete col">
                                                                 <?= csrfField() ?>
-                                                                <input type="hidden" name="id" value="<?= $monitoringPenanaman['id'] ?>">
+                                                                <input type="hidden" name="id"
+                                                                    value="<?= $monitoringPenanaman['id'] ?>">
                                                                 <button type="submit" class="btn btn-block btn-danger">
                                                                     <i class="fas fa-trash"></i> Hapus
                                                                 </button>
@@ -163,13 +184,12 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                                                 <th class="text-center">No</th>
                                                 <th>Kode Monitoring</th>
                                                 <th>Nama Lahan</th>
-                                                <th>Tipe Penanaman</th>
                                                 <th>Progress Status Monitoring</th>
                                                 <th>Periode Pengecekan</th>
                                                 <th>Tanggal Tanam</th>
                                                 <th>Tanggal Monitoring</th>
-                                                <th>Luas Tanam (ha)</th>
-                                                <th>Survival Rate (%)</th>
+                                                <th>Jumlah Detail</th>
+                                                <th>Total Luas (Ha)</th>
                                                 <th>Catatan</th>
                                                 <th>Status Aktif</th>
                                                 <th>Aksi</th>
@@ -198,10 +218,14 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                         <form id="formTambah" method="POST" action="store.php">
                             <?= csrfField() ?>
                             <div class="modal-body">
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle mr-1"></i>
+                                    Kode Monitoring akan dibuat otomatis oleh sistem.
+                                </div>
                                 <div class="form-group">
                                     <label for="kode_monitoring">Kode Monitoring<code>*</code></label>
                                     <input type="text" name="kode_monitoring" class="form-control" id="kode_monitoring"
-                                        value="<?= (new MonitoringPenanaman($pdo))->generateKode() ?>"
+                                        value="<?= (new MonitoringPenanaman($pdo))->generateKodeMonitoring() ?>"
                                         placeholder="Masukkan kode monitoring" readonly>
                                 </div>
                                 <div class="form-group">
@@ -216,19 +240,10 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="id_tipe_penanaman">Tipe Penanaman<code>*</code></label>
-                                    <select name="id_tipe_penanaman" class="form-control" id="id_tipe_penanaman">
-                                        <option value="">-- Pilih Tipe Penanaman --</option>
-                                        <?php foreach ($tipePenanamans as $tp): ?>
-                                            <option value="<?= $tp['id'] ?>">
-                                                <?= htmlspecialchars($tp['nama']) ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="id_progress_status_monitoring">Progress Status Monitoring<code>*</code></label>
-                                    <select name="id_progress_status_monitoring" class="form-control" id="id_progress_status_monitoring">
+                                    <label for="id_progress_status_monitoring">Progress Status
+                                        Monitoring<code>*</code></label>
+                                    <select name="id_progress_status_monitoring" class="form-control"
+                                        id="id_progress_status_monitoring">
                                         <option value="">-- Pilih Progress Status Monitoring --</option>
                                         <?php foreach ($progressStatusMonitorings as $tipe): ?>
                                             <option value="<?= $tipe['id'] ?>">
@@ -239,7 +254,8 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                                 </div>
                                 <div class="form-group">
                                     <label for="periode_pengecekan">Periode Pengecekan<code>*</code></label>
-                                    <input type="date" name="periode_pengecekan" class="form-control" id="periode_pengecekan">
+                                    <input type="date" name="periode_pengecekan" class="form-control"
+                                        id="periode_pengecekan">
                                 </div>
                                 <div class="form-group">
                                     <label for="tanggal_tanam">Tanggal Tanam<code>*</code></label>
@@ -247,17 +263,8 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                                 </div>
                                 <div class="form-group">
                                     <label for="tanggal_monitoring">Tanggal Monitoring<code>*</code></label>
-                                    <input type="date" name="tanggal_monitoring" class="form-control" id="tanggal_monitoring">
-                                </div>
-                                <div class="form-group">
-                                    <label for="luas_tanam_ha">Luas Tanam (ha)</label>
-                                    <input type="number" name="luas_tanam_ha" class="form-control" id="luas_tanam_ha"
-                                        placeholder="Masukkan Luas Tanam (ha)" min="0">
-                                </div>
-                                <div class="form-group">
-                                    <label for="survival_rate_persen">Survival Rate (%)</label>
-                                    <input type="number" name="survival_rate_persen" class="form-control" id="survival_rate_persen"
-                                        placeholder="Masukkan Survival Rate (%)" min="0">
+                                    <input type="date" name="tanggal_monitoring" class="form-control"
+                                        id="tanggal_monitoring">
                                 </div>
                                 <div class="form-group">
                                     <label for="catatan">Catatan</label>
@@ -308,8 +315,8 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="kode_monitoring">Kode Monitoring<code>*</code></label>
-                                    <input type="text" name="kode_monitoring" class="form-control" id="edit_kode_monitoring"
-                                        placeholder="Masukkan kode monitoring" readonly>
+                                    <input type="text" name="kode_monitoring" class="form-control"
+                                        id="edit_kode_monitoring" placeholder="Masukkan kode monitoring" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="id_tanah">Lahan<code>*</code></label>
@@ -323,19 +330,10 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="id_tipe_penanaman">Tipe Penanaman<code>*</code></label>
-                                    <select name="id_tipe_penanaman" class="form-control" id="edit_id_tipe_penanaman">
-                                        <option value="">-- Pilih Tipe Penanaman --</option>
-                                        <?php foreach ($tipePenanamans as $tp): ?>
-                                            <option value="<?= $tp['id'] ?>">
-                                                <?= htmlspecialchars($tp['nama']) ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="id_progress_status_monitoring">Progress Status Monitoring<code>*</code></label>
-                                    <select name="id_progress_status_monitoring" class="form-control" id="edit_id_progress_status_monitoring">
+                                    <label for="id_progress_status_monitoring">Progress Status
+                                        Monitoring<code>*</code></label>
+                                    <select name="id_progress_status_monitoring" class="form-control"
+                                        id="edit_id_progress_status_monitoring">
                                         <option value="">-- Pilih Progress Status Monitoring --</option>
                                         <?php foreach ($progressStatusMonitorings as $tipe): ?>
                                             <option value="<?= $tipe['id'] ?>">
@@ -346,25 +344,18 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                                 </div>
                                 <div class="form-group">
                                     <label for="periode_pengecekan">Periode Pengecekan<code>*</code></label>
-                                    <input type="date" name="periode_pengecekan" class="form-control" id="edit_periode_pengecekan">
+                                    <input type="date" name="periode_pengecekan" class="form-control"
+                                        id="edit_periode_pengecekan">
                                 </div>
                                 <div class="form-group">
                                     <label for="tanggal_tanam">Tanggal Tanam<code>*</code></label>
-                                    <input type="date" name="tanggal_tanam" class="form-control" id="edit_tanggal_tanam">
+                                    <input type="date" name="tanggal_tanam" class="form-control"
+                                        id="edit_tanggal_tanam">
                                 </div>
                                 <div class="form-group">
                                     <label for="tanggal_monitoring">Tanggal Monitoring<code>*</code></label>
-                                    <input type="date" name="tanggal_monitoring" class="form-control" id="edit_tanggal_monitoring">
-                                </div>
-                                <div class="form-group">
-                                    <label for="luas_tanam_ha">Luas Tanam (ha)</label>
-                                    <input type="number" name="luas_tanam_ha" class="form-control" id="edit_luas_tanam_ha"
-                                        placeholder="Masukkan Luas Tanam (ha)" min="0">
-                                </div>
-                                <div class="form-group">
-                                    <label for="survival_rate_persen">Survival Rate (%)</label>
-                                    <input type="number" name="survival_rate_persen" class="form-control" id="edit_survival_rate_persen"
-                                        placeholder="Masukkan Survival Rate (%)" min="0">
+                                    <input type="date" name="tanggal_monitoring" class="form-control"
+                                        id="edit_tanggal_monitoring">
                                 </div>
                                 <div class="form-group">
                                     <label for="catatan">Catatan</label>
@@ -378,7 +369,8 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                                             <div class="custom-control custom-radio">
                                                 <input class="custom-control-input" type="radio" id="edit_status_aktif"
                                                     name="is_active" value="1" checked>
-                                                <label for="edit_status_aktif" class="custom-control-label">Aktif</label>
+                                                <label for="edit_status_aktif"
+                                                    class="custom-control-label">Aktif</label>
                                             </div>
                                         </div>
                                         <div class="col-sm-2">
@@ -436,27 +428,19 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
     <script src="../assets/adminlte/plugins/jquery-validation/additional-methods.min.js"></script>
     <!-- Page specific script -->
     <script>
-        $(function() {
+        $(function () {
             $("#example1").DataTable({
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
+                "ordering": true,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "responsive": true,
-            });
         });
     </script>
 
     <script>
-        $(function() {
+        $(function () {
             function initValidation(formId) {
                 $(formId).validate({
                     rules: {
@@ -464,9 +448,6 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                             required: true
                         },
                         id_tanah: {
-                            required: true
-                        },
-                        id_tipe_penanaman: {
                             required: true
                         },
                         id_progress_status_monitoring: {
@@ -480,12 +461,6 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                         },
                         tanggal_monitoring: {
                             required: true
-                        },
-                        luas_tanam_ha: {
-                            required: false
-                        },
-                        survival_rate_persen: {
-                            required: false
                         },
                         catatan: {
                             required: false
@@ -501,9 +476,6 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                         id_tanah: {
                             required: "Silahkan pilih Tanah"
                         },
-                        id_tipe_penanaman: {
-                            required: "Silahkan pilih Tipe Penanaman"
-                        },
                         id_progress_status_monitoring: {
                             required: "Silahkan pilih Progress Status Monitoring"
                         },
@@ -516,12 +488,6 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                         tanggal_monitoring: {
                             required: "Silahkan masukkan Tanggal Monitoring"
                         },
-                        // luas_tanam_ha: {
-                        //     required: "Silahkan masukkan Luas Tanam (ha)"
-                        // },
-                        // survival_rate_persen: {
-                        //     required: "Silahkan masukkan Survival Rate (%)"
-                        // },
                         // catatan: {
                         //     required: "Silahkan masukkan Catatan"
                         // },
@@ -530,14 +496,14 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                         }
                     },
                     errorElement: 'span',
-                    errorPlacement: function(error, element) {
+                    errorPlacement: function (error, element) {
                         error.addClass('invalid-feedback');
                         element.closest('.form-group').append(error);
                     },
-                    highlight: function(element) {
+                    highlight: function (element) {
                         $(element).addClass('is-invalid');
                     },
-                    unhighlight: function(element) {
+                    unhighlight: function (element) {
                         $(element).removeClass('is-invalid');
                     }
                 });
@@ -548,30 +514,24 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
     </script>
 
     <script>
-        $(document).on("click", ".btn-edit", function() {
+        $(document).on("click", ".btn-edit", function () {
             let id = $(this).data("id");
             let kode_monitoring = $(this).data("kode_monitoring");
             let id_tanah = $(this).data("id_tanah");
-            let id_tipe_penanaman = $(this).data("id_tipe_penanaman");
             let id_progress_status_monitoring = $(this).data("id_progress_status_monitoring");
             let periode_pengecekan = $(this).data("periode_pengecekan");
             let tanggal_tanam = $(this).data("tanggal_tanam");
             let tanggal_monitoring = $(this).data("tanggal_monitoring");
-            let luas_tanam_ha = $(this).data("luas_tanam_ha");
-            let survival_rate_persen = $(this).data("survival_rate_persen");
             let catatan = $(this).data("catatan");
             let status = $(this).data("status");
 
             $("#edit_id").val(id);
             $("#edit_kode_monitoring").val(kode_monitoring);
             $("#edit_id_tanah").val(id_tanah);
-            $("#edit_id_tipe_penanaman").val(id_tipe_penanaman);
             $("#edit_id_progress_status_monitoring").val(id_progress_status_monitoring);
             $("#edit_periode_pengecekan").val(periode_pengecekan);
             $("#edit_tanggal_tanam").val(tanggal_tanam);
             $("#edit_tanggal_monitoring").val(tanggal_monitoring);
-            $("#edit_luas_tanam_ha").val(luas_tanam_ha);
-            $("#edit_survival_rate_persen").val(survival_rate_persen);
             $("#edit_catatan").val(catatan);
             $("input[name='is_active'][value='" + status + "']").prop("checked", true);
         });
@@ -580,7 +540,7 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        $(document).on("submit", ".form-delete", function(e) {
+        $(document).on("submit", ".form-delete", function (e) {
             e.preventDefault();
             let form = this;
             Swal.fire({
@@ -626,25 +586,28 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
         if (success === "deleted") {
             showToast("Data Monitoring Penanaman berhasil dihapus", "deleted");
         }
+        if (success === "deleted") {
+            showToast("Data Monitoring Penanaman berhasil dihapus", "deleted");
+        }
     </script>
 
     <script>
-        document.getElementById('periode_pengecekan').addEventListener('focus', function() {
+        document.getElementById('periode_pengecekan').addEventListener('focus', function () {
             this.showPicker();
         });
-        document.getElementById('tanggal_tanam').addEventListener('focus', function() {
+        document.getElementById('tanggal_tanam').addEventListener('focus', function () {
             this.showPicker();
         });
-        document.getElementById('tanggal_monitoring').addEventListener('focus', function() {
+        document.getElementById('tanggal_monitoring').addEventListener('focus', function () {
             this.showPicker();
         });
-        document.getElementById('edit_periode_pengecekan').addEventListener('focus', function() {
+        document.getElementById('edit_periode_pengecekan').addEventListener('focus', function () {
             this.showPicker();
         });
-        document.getElementById('edit_tanggal_tanam').addEventListener('focus', function() {
+        document.getElementById('edit_tanggal_tanam').addEventListener('focus', function () {
             this.showPicker();
         });
-        document.getElementById('edit_tanggal_monitoring').addEventListener('focus', function() {
+        document.getElementById('edit_tanggal_monitoring').addEventListener('focus', function () {
             this.showPicker();
         });
     </script>

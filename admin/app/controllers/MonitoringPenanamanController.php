@@ -9,119 +9,268 @@ class MonitoringPenanamanController
 
     public function __construct($pdo)
     {
-        $this->model = new MonitoringPenanaman($pdo);
+        $this->model =
+            new MonitoringPenanaman($pdo);
     }
 
-    /*
-    =========================
-    LIST MONITORING PENANAMAN
-    =========================
-    */
-    public function index()
+    public function index($id_bank_benih = null)
     {
-        return $this->model->getAll();
+        return $this->model->getAll($id_bank_benih);
     }
 
-    /*
-    =========================
-    GET MONITORING PENANAMAN BY ID
-    =========================
-    */
     public function find($id)
     {
         return $this->model->findById($id);
     }
 
-    /*
-    =========================
-    CREATE MONITORING PENANAMAN
-    =========================
-    */
+    /**
+     * CREATE Monitoring Penanaman.
+     *
+     * Monitoring hanya sebagai HEADER.
+     */
     public function store($data, $user_id)
     {
         if (!verifyCsrfToken()) {
-            die("Invalid CSRF Token");
+            throw new Exception(
+                'Invalid CSRF Token'
+            );
         }
 
-        $kode_monitoring = trim($data['kode_monitoring']);
-        $id_tanah = trim($data['id_tanah']);
-        $id_tipe_penanaman = trim($data['id_tipe_penanaman']);
-        $id_progress_status_monitoring = trim($data['id_progress_status_monitoring']);
-        $periode_pengecekan = trim($data['periode_pengecekan']);
-        $tanggal_tanam = trim($data['tanggal_tanam']);
-        $tanggal_monitoring = trim($data['tanggal_monitoring']);
-        $luas_tanam_ha = trim($data['luas_tanam_ha']);
-        $survival_rate_persen = trim($data['survival_rate_persen']);
-        $catatan = trim($data['catatan']);
-        $is_active = isset($data['is_active']) ? 1 : 0;
+        $id_tanah =
+            (int) ($data['id_tanah'] ?? 0);
+
+        $periode_pengecekan =
+            trim(
+                $data['periode_pengecekan'] ?? ''
+            );
+
+        $tanggal_tanam =
+            trim(
+                $data['tanggal_tanam'] ?? ''
+            );
+
+        $tanggal_monitoring =
+            trim(
+                $data['tanggal_monitoring'] ?? ''
+            );
+
+        $id_progress_status_monitoring =
+            (int) (
+                $data[
+                    'id_progress_status_monitoring'
+                ] ?? 0
+            );
+
+        $catatan =
+            trim(
+                $data['catatan'] ?? ''
+            );
+
+        if ($id_tanah <= 0) {
+            throw new Exception(
+                'Tanah wajib dipilih.'
+            );
+        }
+
+        if ($periode_pengecekan === '') {
+            throw new Exception(
+                'Periode wajib diisi.'
+            );
+        }
+
+        if ($tanggal_tanam === '') {
+            throw new Exception(
+                'Tanggal tanam wajib diisi.'
+            );
+        }
+
+        if ($id_progress_status_monitoring <= 0) {
+            throw new Exception(
+                'Status monitoring wajib dipilih.'
+            );
+        }
+
+        if (
+            $tanggal_monitoring !== ''
+            && $tanggal_monitoring < $tanggal_tanam
+        ) {
+            throw new Exception(
+                'Tanggal monitoring tidak boleh sebelum tanggal tanam.'
+            );
+        }
+
+        $kode_monitoring =
+            $this->model
+                ->generateKodeMonitoring();
 
         return $this->model->create([
-            'kode_monitoring' => $kode_monitoring,
-            'id_tanah' => $id_tanah,
-            'id_tipe_penanaman' => $id_tipe_penanaman,
-            'id_progress_status_monitoring' => $id_progress_status_monitoring,
-            'periode_pengecekan' => $periode_pengecekan,
-            'tanggal_tanam' => $tanggal_tanam,
-            'tanggal_monitoring' => $tanggal_monitoring,
-            'luas_tanam_ha' => $luas_tanam_ha,
-            'survival_rate_persen' => $survival_rate_persen,
-            'catatan' => $catatan,
-            'is_active' => $is_active,
-            'created_by' => $user_id
+            'kode_monitoring' =>
+                $kode_monitoring,
+
+            'id_tanah' =>
+                $id_tanah,
+
+            'id_progress_status_monitoring' =>
+                $id_progress_status_monitoring,
+
+            'periode_pengecekan' =>
+                $periode_pengecekan,
+
+            'tanggal_tanam' =>
+                $tanggal_tanam,
+
+            'tanggal_monitoring' =>
+                $tanggal_monitoring !== ''
+                ? $tanggal_monitoring
+                : null,
+
+            'catatan' =>
+                $catatan !== ''
+                ? $catatan
+                : null,
+
+            'created_by' =>
+                $user_id
         ]);
     }
 
-    /*
-    =========================
-    UPDATE MONITORING PENANAMAN
-    =========================
-    */
-    public function update($id, $data, $user_id)
-    {
+    /**
+     * UPDATE Monitoring Penanaman.
+     */
+    public function update(
+        $id,
+        $data,
+        $user_id
+    ) {
         if (!verifyCsrfToken()) {
-            die("Invalid CSRF Token");
+            throw new Exception(
+                'Invalid CSRF Token'
+            );
         }
 
-        $kode_monitoring = trim($data['kode_monitoring']);
-        $id_tanah = trim($data['id_tanah']);
-        $id_tipe_penanaman = trim($data['id_tipe_penanaman']);
-        $id_progress_status_monitoring = trim($data['id_progress_status_monitoring']);
-        $periode_pengecekan = trim($data['periode_pengecekan']);
-        $tanggal_tanam = trim($data['tanggal_tanam']);
-        $tanggal_monitoring = trim($data['tanggal_monitoring']);
-        $luas_tanam_ha = trim($data['luas_tanam_ha']);
-        $survival_rate_persen = trim($data['survival_rate_persen']);
-        $catatan = trim($data['catatan']);
-        $is_active = isset($data['is_active']) ? 1 : 0;
+        $id_tanah =
+            (int) ($data['id_tanah'] ?? 0);
 
-        return $this->model->update($id, [
-            'kode_monitoring' => $kode_monitoring,
-            'id_progress_status_monitoring' => $id_progress_status_monitoring,
-            'id_tanah' => $id_tanah,
-            'id_tipe_penanaman' => $id_tipe_penanaman,
-            'periode_pengecekan' => $periode_pengecekan,
-            'tanggal_tanam' => $tanggal_tanam,
-            'tanggal_monitoring' => $tanggal_monitoring,
-            'luas_tanam_ha' => $luas_tanam_ha,
-            'survival_rate_persen' => $survival_rate_persen,
-            'catatan' => $catatan,
-            'is_active' => $is_active,
-            'updated_by' => $user_id
-        ]);
+        $periode_pengecekan =
+            trim(
+                $data['periode_pengecekan'] ?? ''
+            );
+
+        $tanggal_tanam =
+            trim(
+                $data['tanggal_tanam'] ?? ''
+            );
+
+        $tanggal_monitoring =
+            trim(
+                $data['tanggal_monitoring'] ?? ''
+            );
+
+        $id_progress_status_monitoring =
+            (int) (
+                $data[
+                    'id_progress_status_monitoring'
+                ] ?? 0
+            );
+
+        $catatan =
+            trim(
+                $data['catatan'] ?? ''
+            );
+
+        if ($id <= 0) {
+            throw new Exception(
+                'ID monitoring tidak valid.'
+            );
+        }
+
+        if ($id_tanah <= 0) {
+            throw new Exception(
+                'Tanah wajib dipilih.'
+            );
+        }
+
+        if ($periode_pengecekan === '') {
+            throw new Exception(
+                'Periode wajib diisi.'
+            );
+        }
+
+        if ($tanggal_tanam === '') {
+            throw new Exception(
+                'Tanggal tanam wajib diisi.'
+            );
+        }
+
+        if ($id_progress_status_monitoring <= 0) {
+            throw new Exception(
+                'Status monitoring wajib dipilih.'
+            );
+        }
+
+        if (
+            $tanggal_monitoring !== ''
+            && $tanggal_monitoring < $tanggal_tanam
+        ) {
+            throw new Exception(
+                'Tanggal monitoring tidak boleh sebelum tanggal tanam.'
+            );
+        }
+
+        return $this->model->update(
+            $id,
+            [
+                'id_tanah' =>
+                    $id_tanah,
+
+                'periode_pengecekan' =>
+                    $periode_pengecekan,
+
+                'tanggal_tanam' =>
+                    $tanggal_tanam,
+
+                'tanggal_monitoring' =>
+                    $tanggal_monitoring !== ''
+                    ? $tanggal_monitoring
+                    : null,
+
+                'id_progress_status_monitoring' =>
+                    $id_progress_status_monitoring,
+
+                'catatan' =>
+                    $catatan !== ''
+                    ? $catatan
+                    : null,
+
+                'updated_by' =>
+                    $user_id
+            ]
+        );
     }
 
-    /*
-    =========================
-    DELETE MONITORING PENANAMAN (SOFT DELETE)
-    =========================
-    */
-    public function delete($id, $user_id)
-    {
+    /**
+     * DELETE Monitoring.
+     */
+    public function delete(
+        $id,
+        $user_id
+    ) {
         if (!verifyCsrfToken()) {
-            die("Invalid CSRF Token");
+            throw new Exception(
+                'Invalid CSRF Token'
+            );
         }
 
-        return $this->model->softDelete($id, $user_id);
+        if ($id <= 0) {
+            throw new Exception(
+                'ID monitoring tidak valid.'
+            );
+        }
+
+        return $this->model->softDelete(
+            $id,
+            $user_id
+        );
     }
 
     public function getTanah()
@@ -129,13 +278,14 @@ class MonitoringPenanamanController
         return $this->model->getTanah();
     }
 
-    public function getProgressStatusMonitoring()
+    public function getStatusMonitoring()
     {
-        return $this->model->getProgressStatusMonitoring();
+        return $this->model->getStatusMonitoring();
     }
 
-    public function getTipePenanaman()
-    {
-        return $this->model->getTipePenanaman();
-    }
+    // public function getBankBenih($id)
+    // {
+    //     return $this->model->getBankBenih($id);
+    // }
 }
+?>

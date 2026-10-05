@@ -73,7 +73,7 @@ $canPolygon = canView($pdo, 'Polygon');
 $canDataBenih = canView($pdo, 'Data Benih');
 $canBankBenih = canView($pdo, 'Bank Benih');
 $canMonitoringPenanaman = canView($pdo, 'Monitoring Penanaman');
-$canDetailMonitoring = canView($pdo, 'Detail Monitoring');
+// $canDetailMonitoring = canView($pdo, 'Detail Monitoring');
 $canDataObservasi = canView($pdo, 'Data Observasi');
 $canInfrastrukturObservasi = canView($pdo, 'Infrastruktur Observasi');
 $canLandCoverObservasi = canView($pdo, 'Land Cover Observasi');
@@ -625,7 +625,7 @@ $canGlosarium = canView($pdo, 'Glosarium');
                                     </a>
                                 </li>
                             <?php endif; ?>
-                            <?php if ($canDetailMonitoring): ?>
+                            <!-- <?php if ($canDetailMonitoring): ?>
                                 <li class="nav-item">
                                     <a href="<?= ($menu == 'dashboard') ? 'detail_monitoring_penanaman/' : '../detail_monitoring_penanaman/' ?>index.php"
                                         class="nav-link <?= ($menu == 'detail_monitoring_penanaman') ? 'active' : '' ?>">
@@ -633,7 +633,7 @@ $canGlosarium = canView($pdo, 'Glosarium');
                                         <p>Detail Monitoring</p>
                                     </a>
                                 </li>
-                            <?php endif; ?>
+                            <?php endif; ?> -->
                         </ul>
                     </li>
                 <?php endif; ?>

@@ -351,4 +351,33 @@ class BankBenihController
     {
         return $this->model->getTipePenyimpananBenih();
     }
+
+    /**
+     * ==========================================================
+     * HISTORY PENANAMAN SEMUA BANK BENIH
+     * ==========================================================
+     */
+    public function historyPenanaman()
+    {
+        return $this->model->getAllHistoryPenanaman();
+    }
+
+
+    /**
+     * ==========================================================
+     * HISTORY PENANAMAN BERDASARKAN BANK BENIH
+     * ==========================================================
+     */
+    public function historyPenanamanByBankBenih($id_bank_benih)
+    {
+        $id_bank_benih = (int) $id_bank_benih;
+
+        if ($id_bank_benih <= 0) {
+            return [];
+        }
+
+        return $this->model->getHistoryPenanamanByBankBenih(
+            $id_bank_benih
+        );
+    }
 }

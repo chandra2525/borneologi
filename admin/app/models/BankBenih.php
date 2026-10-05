@@ -321,4 +321,138 @@ class BankBenih
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+
+    /**
+     * ==========================================================
+     * HISTORY PENANAMAN SEMUA BANK BENIH
+     * ==========================================================
+     *
+     * Digunakan oleh halaman index Bank Benih
+     * agar history dapat ditampilkan melalui modal
+     * tanpa perlu membuka halaman baru.
+     */
+    public function getAllHistoryPenanaman()
+    {
+        $sql = "SELECT
+                d.id AS id_detail_monitoring,
+                d.id_bank_benih,
+                d.id_monitoring,
+
+                d.jumlah_ditanam,
+                d.satuan,
+                d.jumlah_hidup,
+                d.jumlah_mati,
+                d.tinggi_rata2_cm,
+                d.diameter_rata2_cm,
+                d.catatan AS catatan_detail,
+
+                m.kode_monitoring,
+                m.periode_pengecekan,
+                m.tanggal_tanam,
+                m.tanggal_monitoring,
+                m.luas_tanam_ha,
+                m.survival_rate_persen,
+                m.catatan AS catatan_monitoring,
+
+                ta.nama_lahan,
+
+                mt.nama AS nama_tipe_penanaman,
+
+                ps.nama AS nama_status_monitoring
+
+            FROM t_detail_monitoring_penanaman d
+
+            INNER JOIN t_monitoring_penanaman m
+                ON m.id = d.id_monitoring
+
+            LEFT JOIN t_tanah ta
+                ON ta.id = m.id_tanah
+
+            LEFT JOIN m_tipe_penanaman mt
+                ON mt.id = m.id_tipe_penanaman
+
+            LEFT JOIN m_progress_status_monitoring ps
+                ON ps.id = m.id_progress_status_monitoring
+
+            WHERE m.deleted_at IS NULL
+
+            ORDER BY
+                d.id_bank_benih ASC,
+                m.tanggal_monitoring DESC,
+                m.id DESC";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    /**
+     * ==========================================================
+     * HISTORY PENANAMAN BERDASARKAN BANK BENIH
+     * ==========================================================
+     *
+     * Method ini disediakan jika nantinya diperlukan
+     * untuk halaman detail / AJAX.
+     */
+    public function getHistoryPenanamanByBankBenih($id_bank_benih)
+    {
+        $sql = "SELECT
+                d.id AS id_detail_monitoring,
+                d.id_bank_benih,
+                d.id_monitoring,
+
+                d.jumlah_ditanam,
+                d.satuan,
+                d.jumlah_hidup,
+                d.jumlah_mati,
+                d.tinggi_rata2_cm,
+                d.diameter_rata2_cm,
+                d.catatan AS catatan_detail,
+
+                m.kode_monitoring,
+                m.periode_pengecekan,
+                m.tanggal_tanam,
+                m.tanggal_monitoring,
+                m.luas_tanam_ha,
+                m.survival_rate_persen,
+                m.catatan AS catatan_monitoring,
+
+                ta.nama_lahan,
+
+                mt.nama AS nama_tipe_penanaman,
+
+                ps.nama AS nama_status_monitoring
+
+            FROM t_detail_monitoring_penanaman d
+
+            INNER JOIN t_monitoring_penanaman m
+                ON m.id = d.id_monitoring
+
+            LEFT JOIN t_tanah ta
+                ON ta.id = m.id_tanah
+
+            LEFT JOIN m_tipe_penanaman mt
+                ON mt.id = m.id_tipe_penanaman
+
+            LEFT JOIN m_progress_status_monitoring ps
+                ON ps.id = m.id_progress_status_monitoring
+
+            WHERE d.id_bank_benih = :id_bank_benih
+              AND m.deleted_at IS NULL
+
+            ORDER BY
+                m.tanggal_monitoring DESC,
+                m.id DESC";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->execute([
+            'id_bank_benih' => $id_bank_benih
+        ]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }

@@ -10,14 +10,11 @@ class MonitoringPenanaman
     }
 
     /**
-     * Ambil semua Monitoring Penanaman.
+     * Ambil semua monitoring.
      *
-     * Monitoring sekarang hanya merupakan HEADER.
-     * Data Bank Benih, Tipe Penanaman, Luas dan Survival Rate
-     * berada di t_detail_monitoring_penanaman.
-     *
-     * Jika $id_bank_benih diberikan, hanya monitoring
-     * yang pernah menggunakan Bank Benih tersebut yang ditampilkan.
+     * Jika id_bank_benih diberikan, hanya monitoring
+     * yang pernah menggunakan bank benih tersebut
+     * melalui t_detail_monitoring_penanaman yang ditampilkan.
      */
     public function getAll($id_bank_benih = null)
     {
@@ -28,28 +25,29 @@ class MonitoringPenanaman
                 mp.id,
                 mp.kode_monitoring,
                 mp.id_tanah,
-                mp.id_progress_status_monitoring,
+                mp.id_tipe_penanaman,
                 mp.periode_pengecekan,
                 mp.tanggal_tanam,
                 mp.tanggal_monitoring,
+                mp.luas_tanam_ha,
+                mp.id_progress_status_monitoring,
                 mp.catatan,
-                mp.is_active,
 
                 tt.nama_lahan,
 
+                mtp.nama,
+
                 mps.nama AS nama_status_monitoring,
 
-                COUNT(DISTINCT dm.id) AS jumlah_detail,
-
-                COALESCE(
-                    SUM(dm.luas_tanam_ha),
-                    0
-                ) AS total_luas_tanam_ha
+                COUNT(DISTINCT dm.id) AS jumlah_detail
 
             FROM t_monitoring_penanaman mp
 
             LEFT JOIN t_tanah tt
                 ON tt.id = mp.id_tanah
+
+            LEFT JOIN m_tipe_penanaman mtp
+                ON mtp.id = mp.id_tipe_penanaman
 
             LEFT JOIN m_progress_status_monitoring mps
                 ON mps.id = mp.id_progress_status_monitoring
@@ -62,6 +60,7 @@ class MonitoringPenanaman
         ";
 
         if ($id_bank_benih !== null) {
+
             $sql .= "
                 AND EXISTS (
                     SELECT 1
@@ -80,12 +79,15 @@ class MonitoringPenanaman
                 mp.id,
                 mp.kode_monitoring,
                 mp.id_tanah,
-                mp.id_progress_status_monitoring,
+                mp.id_tipe_penanaman,
                 mp.periode_pengecekan,
                 mp.tanggal_tanam,
                 mp.tanggal_monitoring,
+                mp.luas_tanam_ha,
+                mp.id_progress_status_monitoring,
                 mp.catatan,
                 tt.nama_lahan,
+                mtp.nama,
                 mps.nama
 
             ORDER BY mp.id DESC
@@ -98,35 +100,38 @@ class MonitoringPenanaman
     }
 
     /**
-     * Ambil satu Monitoring Penanaman.
+     * Ambil satu monitoring.
      */
     public function findById($id)
     {
         $sql = "
             SELECT
-                mp.id,
-                mp.kode_monitoring,
-                mp.id_tanah,
-                mp.id_progress_status_monitoring,
-                mp.periode_pengecekan,
-                mp.tanggal_tanam,
-                mp.tanggal_monitoring,
-                mp.catatan,
-                mp.is_active,
+                mp.*,
+
                 tt.nama_lahan,
+
+                mtp.nama,
+
                 mps.nama AS nama_status_monitoring
+
             FROM t_monitoring_penanaman mp
+
             LEFT JOIN t_tanah tt
                 ON tt.id = mp.id_tanah
+
+            LEFT JOIN m_tipe_penanaman mtp
+                ON mtp.id = mp.id_tipe_penanaman
+
             LEFT JOIN m_progress_status_monitoring mps
                 ON mps.id = mp.id_progress_status_monitoring
+
             WHERE mp.id = :id
             AND mp.deleted_at IS NULL
+
             LIMIT 1
         ";
 
         $stmt = $this->pdo->prepare($sql);
-
         $stmt->execute([
             'id' => $id
         ]);
@@ -135,10 +140,7 @@ class MonitoringPenanaman
     }
 
     /**
-     * Generate kode:
-     * KOM001
-     * KOM002
-     * KOM003
+     * Generate kode KOM001, KOM002, dst.
      */
     public function generateKodeMonitoring()
     {
@@ -170,9 +172,7 @@ class MonitoringPenanaman
     }
 
     /**
-     * Tambah Monitoring Penanaman.
-     *
-     * Hanya menyimpan data HEADER.
+     * Tambah monitoring.
      */
     public function create($data)
     {
@@ -181,24 +181,26 @@ class MonitoringPenanaman
             (
                 kode_monitoring,
                 id_tanah,
-                id_progress_status_monitoring,
+                id_tipe_penanaman,
                 periode_pengecekan,
                 tanggal_tanam,
                 tanggal_monitoring,
+                luas_tanam_ha,
+                id_progress_status_monitoring,
                 catatan,
-                is_active,
                 created_by
             )
             VALUES
             (
                 :kode_monitoring,
                 :id_tanah,
-                :id_progress_status_monitoring,
+                :id_tipe_penanaman,
                 :periode_pengecekan,
                 :tanggal_tanam,
                 :tanggal_monitoring,
+                :luas_tanam_ha,
+                :id_progress_status_monitoring,
                 :catatan,
-                :is_active,
                 :created_by
             )
         ";
@@ -213,24 +215,22 @@ class MonitoringPenanaman
     }
 
     /**
-     * Update Monitoring Penanaman.
-     *
-     * Hanya field HEADER yang diubah.
+     * Update monitoring.
      */
     public function update($id, $data)
     {
         $sql = "
             UPDATE t_monitoring_penanaman
+
             SET
-                
-                kode_monitoring = :kode_monitoring,
                 id_tanah = :id_tanah,
+                id_tipe_penanaman = :id_tipe_penanaman,
                 periode_pengecekan = :periode_pengecekan,
                 tanggal_tanam = :tanggal_tanam,
                 tanggal_monitoring = :tanggal_monitoring,
+                luas_tanam_ha = :luas_tanam_ha,
                 id_progress_status_monitoring = :id_progress_status_monitoring,
                 catatan = :catatan,
-                is_active = :is_active,
                 updated_by = :updated_by
 
             WHERE id = :id
@@ -245,43 +245,13 @@ class MonitoringPenanaman
     }
 
     /**
-     * Cek apakah Monitoring masih mempunyai Detail aktif.
-     */
-    public function hasActiveDetail($id)
-    {
-        $sql = "
-            SELECT id
-            FROM t_detail_monitoring_penanaman
-            WHERE id_monitoring = :id
-            AND deleted_at IS NULL
-            LIMIT 1
-        ";
-
-        $stmt = $this->pdo->prepare($sql);
-
-        $stmt->execute([
-            'id' => $id
-        ]);
-
-        return (bool) $stmt->fetchColumn();
-    }
-
-    /**
-     * Soft delete Monitoring.
-     *
-     * Monitoring tidak boleh dihapus jika masih
-     * mempunyai Detail Monitoring aktif.
+     * Soft delete.
      */
     public function softDelete($id, $user_id)
     {
-        if ($this->hasActiveDetail($id)) {
-            throw new Exception(
-                'Monitoring Penanaman tidak dapat dihapus karena masih memiliki Detail Monitoring Penanaman aktif.'
-            );
-        }
-
         $sql = "
             UPDATE t_monitoring_penanaman
+
             SET
                 deleted_at = NOW(),
                 deleted_by = :deleted_by
@@ -319,7 +289,27 @@ class MonitoringPenanaman
     }
 
     /**
-     * Status Monitoring.
+     * Tipe penanaman.
+     */
+    public function getTipePenanaman()
+    {
+        $sql = "
+            SELECT
+                id,
+                nama
+            FROM m_tipe_penanaman
+            WHERE is_active = 1
+            ORDER BY nama ASC
+        ";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Status monitoring.
      */
     public function getStatusMonitoring()
     {
@@ -339,38 +329,33 @@ class MonitoringPenanaman
     }
 
     /**
-     * Data Bank Benih sebagai konteks.
-     *
-     * Digunakan ketika Monitoring dibuka dari halaman
-     * Detail Bank Benih.
+     * Data Bank Benih sebagai konteks halaman.
      */
-    // public function getBankBenih($id)
-    // {
-    //     $sql = "
-    //         SELECT
-    //             id,
-    //             nomor_aksesi,
-    //             nama_lokal,
-    //             nama_ilmiah,
-    //             satuan_stok,
-    //             jumlah_stok,
-    //             stok_terpakai
+    public function getBankBenih($id)
+    {
+        $sql = "
+            SELECT
+                id,
+                nomor_aksesi,
+                nama_lokal,
+                nama_ilmiah,
+                satuan_stok,
+                jumlah_stok
 
-    //         FROM t_bank_benih
+            FROM t_bank_benih
 
-    //         WHERE id = :id
-    //         AND deleted_at IS NULL
+            WHERE id = :id
+            AND deleted_at IS NULL
 
-    //         LIMIT 1
-    //     ";
+            LIMIT 1
+        ";
 
-    //     $stmt = $this->pdo->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
 
-    //     $stmt->execute([
-    //         'id' => $id
-    //     ]);
+        $stmt->execute([
+            'id' => $id
+        ]);
 
-    //     return $stmt->fetch(PDO::FETCH_ASSOC);
-    // }
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
-?>
