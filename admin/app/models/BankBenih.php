@@ -455,4 +455,25 @@ class BankBenih
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Cek apakah Bank Benih mempunyai data aktif Di Detail Monitoring
+     */
+    public function hasActiveBankBenih($id)
+    {
+        $sql = "
+            SELECT id
+            FROM t_detail_monitoring_penanaman
+            WHERE id_bank_benih = :id
+            AND deleted_at IS NULL
+            LIMIT 1
+        ";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->execute([
+            'id' => $id
+        ]);
+
+        return (bool) $stmt->fetchColumn();
+    }
 }

@@ -20,11 +20,14 @@ $data = [
     "tanggal_tanam" => $_POST["tanggal_tanam"],
     "tanggal_monitoring" => $_POST["tanggal_monitoring"],
     "catatan" => $_POST["catatan"],
+    "id_turunan" => !empty($_POST["id_turunan"])
+        ? (int) $_POST["id_turunan"]
+        : null,
     "is_active" => $_POST["is_active"],
     "created_by" => $_SESSION["user_id"]
 ];
 
-$newId = $monitoringPenanaman->create($data);
+$newId = $monitoringPenanaman->createWithInheritedDetails($data, $_SESSION["user_id"]);
 
 if ($newId) {
     logActivity(

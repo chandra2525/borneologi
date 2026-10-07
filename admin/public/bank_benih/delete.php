@@ -38,6 +38,12 @@ $user_id =
 $model =
     new BankBenih($pdo);
 
+if ($model->hasActiveBankBenih($id)) {
+    header(
+        'Location: index.php?success=validation'
+    );
+    exit;
+}
 
 /*
 |--------------------------------------------------------------------------

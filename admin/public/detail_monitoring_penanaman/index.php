@@ -109,6 +109,11 @@ if ($totalDitanam > 0) {
 $survivalRate =
     min(100, max(0, $survivalRate));
 
+
+$isMonitoringTurunan =
+    !empty($monitoring['id_turunan'])
+    && (int) $monitoring['id_turunan'] > 0;
+
 ?>
 
 <!DOCTYPE html>
@@ -219,7 +224,11 @@ $survivalRate =
                                             Progress Status
                                         </label>
                                         <div>
-                                            <span class="badge badge-info">
+                                            <span class="badge <?= match ($monitoring['nama_status_monitoring'] ?? '') {
+                                                'Baru Ditanam' => 'badge-primary',
+                                                'Proses Panen' => 'badge-info',
+                                                default => 'badge-success',
+                                            } ?>">
                                                 <?= htmlspecialchars(
                                                     $monitoring['nama_status_monitoring'] ?? '-',
                                                     ENT_QUOTES,
@@ -470,6 +479,7 @@ $survivalRate =
                                 <div class="col-md-4 text-right">
                                     <?php
                                     if (
+                                        !$isMonitoringTurunan &&
                                         Permission::can(
                                             $pdo,
                                             'Monitoring Penanaman',
@@ -666,6 +676,7 @@ $survivalRate =
                                                                 data-id-bank-benih="<?= (int) $detail['id_bank_benih'] ?>"
                                                                 data-id-tipe="<?= (int) $detail['id_tipe_penanaman'] ?>"
                                                                 data-jumlah-ditanam="<?= htmlspecialchars($detail['jumlah_ditanam']) ?>"
+                                                                data-stok="<?= htmlspecialchars($detail['jumlah_stok'] ?? 0, ENT_QUOTES, 'UTF-8') ?>"
                                                                 data-satuan="<?= htmlspecialchars($detail['satuan']) ?>"
                                                                 data-jumlah-hidup="<?= htmlspecialchars($detail['jumlah_hidup'] ?? '') ?>"
                                                                 data-jumlah-mati="<?= htmlspecialchars($detail['jumlah_mati'] ?? '') ?>"
@@ -673,12 +684,17 @@ $survivalRate =
                                                                 data-diameter="<?= htmlspecialchars($detail['diameter_rata2_cm'] ?? '') ?>"
                                                                 data-luas="<?= htmlspecialchars($detail['luas_tanam_ha']) ?>"
                                                                 data-catatan="<?= htmlspecialchars($detail['catatan'] ?? '') ?>"
+                                                                data-nama-lokal="<?= htmlspecialchars($detail['nama_lokal'] ?? '') ?>"
+                                                                data-nomor-aksesi="<?= htmlspecialchars($detail['nomor_aksesi'] ?? '') ?>"
+                                                                data-jumlah-stok="<?= htmlspecialchars($detail['jumlah_stok'] ?? '') ?>"
+                                                                data-satuan-stok="<?= htmlspecialchars($detail['satuan_stok'] ?? '') ?>"
                                                                 data-toggle="modal" data-target="#modalEdit" title="Edit">
                                                                 <i class="fas fa-edit"></i>
                                                             </button>
                                                         <?php endif; ?>
                                                         <?php
                                                         if (
+                                                            !$isMonitoringTurunan &&
                                                             Permission::can(
                                                                 $pdo,
                                                                 'Monitoring Penanaman',
@@ -755,15 +771,16 @@ $survivalRate =
                                                    $bank['satuan_stok'],
                                                    ENT_QUOTES,
                                                    'UTF-8'
-                                               ) ?>">
-                                                <?= htmlspecialchars(
-                                                    $bank['nama_lokal']
-                                                ) ?>
+                                               ) ?>" data-stok="<?= htmlspecialchars(
+                                                    $bank['jumlah_stok'],
+                                                    ENT_QUOTES,
+                                                    'UTF-8'
+                                                ) ?>">
+                                                <?= htmlspecialchars($bank['nama_lokal']) ?>
 
                                                 -
-                                                <?= htmlspecialchars(
-                                                    $bank['nomor_aksesi']
-                                                ) ?>
+                                                <?= htmlspecialchars($bank['nomor_aksesi']) ?>
+
                                                 | Stok:
                                                 <?= number_format(
                                                     (float) $bank['jumlah_stok'],
@@ -771,9 +788,8 @@ $survivalRate =
                                                     ',',
                                                     '.'
                                                 ) ?>
-                                                <?= htmlspecialchars(
-                                                    $bank['satuan_stok']
-                                                ) ?>
+
+                                                <?= htmlspecialchars($bank['satuan_stok']) ?>
                                             </option>
                                         <?php endforeach; ?>
                                     </select>
@@ -782,7 +798,8 @@ $survivalRate =
                                     <label>
                                         Tipe Penanaman <code>*</code>
                                     </label>
-                                    <select name="id_tipe_penanaman" class="form-control" id="add_id_tipe_penanaman">
+                                    <select name="id_tipe_penanaman" class="form-control" id="add_id_tipe_penanaman"
+                                        <?= $isMonitoringTurunan ? 'readonly' : '' ?>>
                                         <option value="">
                                             -- Pilih Tipe Penanaman --
                                         </option>
@@ -805,7 +822,7 @@ $survivalRate =
                                                 Jumlah Ditanam <code>*</code>
                                             </label>
                                             <input type="number" step="0.01" min="0" name="jumlah_ditanam"
-                                                id="add_jumlah_ditanam" class="form-control">
+                                                id="add_jumlah_ditanam" class="form-control" <?= $isMonitoringTurunan ? 'readonly' : '' ?>>
 
                                         </div>
 
@@ -821,41 +838,31 @@ $survivalRate =
                                             <label>
                                                 Satuan <code>*</code>
                                             </label>
-
-                                            <select name="satuan" id="add_satuan" class="form-control" readonly>
-
+                                            <input type="text" name="satuan" id="add_satuan" class="form-control"
+                                                readonly>
+                                            <!-- <select name="satuan" id="add_satuan" class="form-control" readonly>
                                                 <option value="">
                                                     -- Pilih Satuan --
                                                 </option>
-
                                                 <option value="butir">
                                                     Butir
                                                 </option>
-
                                                 <option value="gram">
                                                     Gram
                                                 </option>
-
                                                 <option value="kg">
                                                     Kg
                                                 </option>
-
                                                 <option value="paket">
                                                     Paket
                                                 </option>
-
                                                 <option value="bibit">
                                                     Bibit
                                                 </option>
-
-                                            </select>
-
+                                            </select> -->
                                         </div>
-
                                     </div>
-
                                 </div>
-
 
                                 <div class="row">
 
@@ -871,7 +878,7 @@ $survivalRate =
                                             </label>
 
                                             <input type="number" step="0.01" min="0" name="jumlah_hidup"
-                                                class="form-control">
+                                                id="add_jumlah_hidup" class="form-control">
 
                                         </div>
 
@@ -889,7 +896,7 @@ $survivalRate =
                                             </label>
 
                                             <input type="number" step="0.01" min="0" name="jumlah_mati"
-                                                class="form-control">
+                                                id="add_jumlah_mati" class="form-control">
 
                                         </div>
 
@@ -947,7 +954,8 @@ $survivalRate =
                                         Luas Tanam (Ha) <code>*</code>
                                     </label>
 
-                                    <input type="number" step="0.01" min="0" name="luas_tanam_ha" class="form-control">
+                                    <input type="number" step="0.01" min="0" name="luas_tanam_ha" class="form-control"
+                                        <?= $isMonitoringTurunan ? 'readonly' : '' ?>>
 
                                 </div>
 
@@ -1084,7 +1092,8 @@ $survivalRate =
                                         Tipe Penanaman <code>*</code>
                                     </label>
 
-                                    <select name="id_tipe_penanaman" id="edit_id_tipe_penanaman" class="form-control">
+                                    <select name="id_tipe_penanaman" id="edit_id_tipe_penanaman" class="form-control"
+                                        <?= $isMonitoringTurunan ? 'readonly' : '' ?>>
 
                                         <option value="">
                                             -- Pilih Tipe Penanaman --
@@ -1124,7 +1133,7 @@ $survivalRate =
                                             </label>
 
                                             <input type="number" step="0.01" min="0" name="jumlah_ditanam"
-                                                id="edit_jumlah_ditanam" class="form-control">
+                                                id="edit_jumlah_ditanam" class="form-control" <?= $isMonitoringTurunan ? 'readonly' : '' ?>>
 
                                         </div>
 
@@ -1140,37 +1149,28 @@ $survivalRate =
                                             <label>
                                                 Satuan <code>*</code>
                                             </label>
-
-                                            <select name="satuan" id="edit_satuan" class="form-control">
-
+                                            <input type="text" name="satuan" id="edit_satuan" class="form-control"
+                                                readonly>
+                                            <!-- <select name="satuan" id="edit_satuan" class="form-control" readonly>
                                                 <option value="butir">
                                                     Butir
                                                 </option>
-
                                                 <option value="gram">
                                                     Gram
                                                 </option>
-
                                                 <option value="kg">
                                                     Kg
                                                 </option>
-
                                                 <option value="paket">
                                                     Paket
                                                 </option>
-
                                                 <option value="bibit">
                                                     Bibit
                                                 </option>
-
-                                            </select>
-
+                                            </select> -->
                                         </div>
-
                                     </div>
-
                                 </div>
-
 
                                 <div class="row">
 
@@ -1253,7 +1253,7 @@ $survivalRate =
                                     </label>
 
                                     <input type="number" step="0.01" min="0" name="luas_tanam_ha" id="edit_luas"
-                                        class="form-control">
+                                        class="form-control" <?= $isMonitoringTurunan ? 'readonly' : '' ?>>
 
                                 </div>
 
@@ -1385,7 +1385,14 @@ $survivalRate =
                         button.data("id-tipe");
 
                     let jumlahDitanam =
-                        button.data("jumlah-ditanam");
+                        parseFloat(
+                            button.attr("data-jumlah-ditanam")
+                        ) || 0;
+
+                    let stok =
+                        parseFloat(
+                            button.attr("data-stok")
+                        ) || 0;
 
                     let satuan =
                         button.data("satuan");
@@ -1407,7 +1414,14 @@ $survivalRate =
 
                     let catatan =
                         button.data("catatan");
-
+                    let nama_lokal =
+                        button.data("nama-lokal");
+                    let nomor_aksesi =
+                        button.data("nomor-aksesi");
+                    let jumlah_stok =
+                        button.data("jumlah-stok");
+                    let satuan_stok =
+                        button.data("satuan-stok");
 
                     $("#edit_id")
                         .val(id);
@@ -1420,6 +1434,41 @@ $survivalRate =
 
                     $("#edit_jumlah_ditanam")
                         .val(jumlahDitanam);
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | SIMPAN NILAI LAMA
+                    |
+                    | Digunakan untuk menghitung perubahan stok.
+                    |--------------------------------------------------------------------------
+                    */
+                    $("#edit_jumlah_ditanam")
+                        .attr(
+                            "data-jumlah-lama",
+                            jumlahDitanam
+                        );
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | STOK TERSEDIA SAAT INI
+                    |
+                    | Stok maksimum yang boleh digunakan:
+                    |
+                    | stok saat ini + jumlah ditanam lama
+                    |--------------------------------------------------------------------------
+                    */
+                    let stokMaksimal =
+                        stok + jumlahDitanam;
+
+                    $("#edit_jumlah_ditanam")
+                        .attr(
+                            "data-stok-tersedia",
+                            stokMaksimal
+                        )
+                        .attr(
+                            "max",
+                            stokMaksimal
+                        );
 
                     $("#edit_satuan")
                         .val(satuan);
@@ -1442,20 +1491,189 @@ $survivalRate =
                     $("#edit_catatan")
                         .val(catatan);
 
-
                     let bankText =
                         button
                             .closest("tr")
                             .find("td:eq(1)")
                             .text()
                             .trim();
-
                     $("#edit_bank_benih")
-                        .val(bankText);
-
+                        .val(nama_lokal + " - " + nomor_aksesi + " | " + "Stok: " + jumlah_stok + " " + satuan_stok);
                 }
             );
 
+            /*
+            |--------------------------------------------------------------------------
+            | JUMLAH DITANAM - EDIT
+            |--------------------------------------------------------------------------
+            */
+            $("#edit_jumlah_ditanam").on(
+                "input",
+                function () {
+                    let input =
+                        $(this);
+                    let jumlahBaru =
+                        parseFloat(
+                            input.val()
+                        ) || 0;
+                    let stokMaksimal =
+                        parseFloat(
+                            input.attr("data-stok-tersedia")
+                        ) || 0;
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Tidak boleh melebihi stok tersedia
+                    |--------------------------------------------------------------------------
+                    */
+                    if (
+                        stokMaksimal > 0 &&
+                        jumlahBaru > stokMaksimal
+                    ) {
+                        jumlahBaru =
+                            stokMaksimal;
+                        input.val(
+                            jumlahBaru
+                        );
+                    }
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Tidak boleh negatif
+                    |--------------------------------------------------------------------------
+                    */
+                    if (jumlahBaru < 0) {
+                        jumlahBaru = 0;
+                        input.val(0);
+                    }
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | HIDUP = DITANAM
+                    | MATI = 0
+                    |
+                    | Ketika jumlah ditanam diubah,
+                    | kita reset nilai default.
+                    |--------------------------------------------------------------------------
+                    */
+                    $("#edit_jumlah_hidup")
+                        .val(jumlahBaru);
+                    $("#edit_jumlah_mati")
+                        .val(0);
+                }
+            );
+
+            /*
+            |--------------------------------------------------------------------------
+            | JUMLAH MATI - EDIT
+            |--------------------------------------------------------------------------
+            */
+            $("#edit_jumlah_mati").on(
+                "input",
+                function () {
+                    let jumlahDitanam =
+                        parseFloat(
+                            $("#edit_jumlah_ditanam").val()
+                        ) || 0;
+                    let jumlahMati =
+                        parseFloat(
+                            $(this).val()
+                        ) || 0;
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Mati tidak boleh lebih dari Ditanam
+                    |--------------------------------------------------------------------------
+                    */
+                    if (
+                        jumlahMati > jumlahDitanam
+                    ) {
+                        jumlahMati =
+                            jumlahDitanam;
+                        $(this).val(
+                            jumlahMati
+                        );
+                    }
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Tidak boleh negatif
+                    |--------------------------------------------------------------------------
+                    */
+                    if (jumlahMati < 0) {
+                        jumlahMati = 0;
+                        $(this).val(0);
+                    }
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | HIDUP = DITANAM - MATI
+                    |--------------------------------------------------------------------------
+                    */
+                    let jumlahHidup =
+                        jumlahDitanam -
+                        jumlahMati;
+
+                    $("#edit_jumlah_hidup")
+                        .val(jumlahHidup);
+                }
+            );
+
+            /*
+            |--------------------------------------------------------------------------
+            | JUMLAH HIDUP - EDIT
+            |--------------------------------------------------------------------------
+            */
+            $("#edit_jumlah_hidup").on(
+                "input",
+                function () {
+                    let jumlahDitanam =
+                        parseFloat(
+                            $("#edit_jumlah_ditanam").val()
+                        ) || 0;
+                    let jumlahHidup =
+                        parseFloat(
+                            $(this).val()
+                        ) || 0;
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Hidup tidak boleh lebih dari Ditanam
+                    |--------------------------------------------------------------------------
+                    */
+                    if (
+                        jumlahHidup > jumlahDitanam
+                    ) {
+                        jumlahHidup =
+                            jumlahDitanam;
+                        $(this).val(
+                            jumlahHidup
+                        );
+                    }
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Tidak boleh negatif
+                    |--------------------------------------------------------------------------
+                    */
+                    if (jumlahHidup < 0) {
+                        jumlahHidup = 0;
+                        $(this).val(0);
+                    }
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | MATI = DITANAM - HIDUP
+                    |--------------------------------------------------------------------------
+                    */
+                    let jumlahMati =
+                        jumlahDitanam -
+                        jumlahHidup;
+
+                    $("#edit_jumlah_mati")
+                        .val(jumlahMati);
+                }
+            );
         </script>
 
 
@@ -1540,7 +1758,14 @@ $survivalRate =
                         jumlah_ditanam: {
                             required: true,
                             number: true,
-                            min: 0.01
+                            min: 0.01,
+                            max: function () {
+                                return parseFloat(
+                                    $("#add_id_bank_benih")
+                                        .find(":selected")
+                                        .data("stok")
+                                ) || 0;
+                            }
                         },
 
                         satuan: {
@@ -1573,7 +1798,9 @@ $survivalRate =
                             number:
                                 "Jumlah harus berupa angka",
                             min:
-                                "Jumlah harus lebih dari 0"
+                                "Jumlah harus lebih dari 0",
+                            max:
+                                "Jumlah ditanam tidak boleh melebihi stok Bank Benih"
                         },
 
                         satuan: {
@@ -1745,26 +1972,39 @@ $survivalRate =
     ============================================================= -->
 
         <script>
-
             $("#add_id_bank_benih").on(
                 "change",
                 function () {
-
+                    let selected =
+                        $(this).find(":selected");
                     let satuan =
-                        $(this)
-                            .find(":selected")
-                            .data("satuan");
+                        selected.data("satuan");
+                    let stok =
+                        parseFloat(selected.data("stok")) || 0;
 
+                    // Set satuan otomatis
                     if (satuan) {
-
                         $("#add_satuan")
                             .val(satuan);
-
                     }
 
+                    // Simpan stok ke input jumlah ditanam
+                    $("#add_jumlah_ditanam")
+                        .attr("max", stok);
+
+                    // Jika jumlah ditanam sebelumnya lebih besar dari stok
+                    let jumlahDitanam =
+                        parseFloat(
+                            $("#add_jumlah_ditanam").val()
+                        ) || 0;
+
+                    if (jumlahDitanam > stok) {
+                        $("#add_jumlah_ditanam")
+                            .val(stok)
+                            .trigger("input");
+                    }
                 }
             );
-
         </script>
 
         <script>
@@ -1806,8 +2046,198 @@ $survivalRate =
                 showToast("Terjadi Error", "deleted");
             }
         </script>
-    </div>
 
+        <!-- =============================================================
+        AUTO JUMLAH HIDUP & MATI
+        ============================================================= -->
+        <script>
+            $(function () {
+                /**
+                 * Format angka agar tidak menghasilkan NaN
+                 */
+                function getNumber(value) {
+                    let number = parseFloat(value);
+                    return isNaN(number) ? 0 : number;
+                }
+
+                /**
+                 * =========================================================
+                 * TAMBAH DATA
+                 * =========================================================
+                 */
+                // Saat Jumlah Ditanam berubah
+                $("#add_jumlah_ditanam").on("input", function () {
+                    let jumlahDitanam =
+                        getNumber($(this).val());
+                    let jumlahStok =
+                        getNumber(
+                            $("#add_id_bank_benih")
+                                .find(":selected")
+                                .data("stok")
+                        );
+
+                    // Jumlah ditanam tidak boleh lebih dari stok
+                    if (
+                        jumlahStok > 0 &&
+                        jumlahDitanam > jumlahStok
+                    ) {
+                        jumlahDitanam = jumlahStok;
+                        $(this).val(jumlahDitanam);
+                    }
+
+                    // Tidak boleh negatif
+                    if (jumlahDitanam < 0) {
+                        jumlahDitanam = 0;
+                        $(this).val(0);
+                    }
+
+                    // Hidup = Jumlah Ditanam
+                    $("#add_jumlah_hidup")
+                        .val(jumlahDitanam);
+
+                    // Mati = 0
+                    $("#add_jumlah_mati")
+                        .val(0);
+                });
+
+                // Saat Jumlah Mati diubah
+                $("#add_jumlah_mati").on("input", function () {
+                    let jumlahDitanam =
+                        getNumber(
+                            $("#add_jumlah_ditanam").val()
+                        );
+                    let jumlahMati =
+                        getNumber($(this).val());
+
+                    // Mati tidak boleh lebih dari Ditanam
+                    if (jumlahMati > jumlahDitanam) {
+                        jumlahMati = jumlahDitanam;
+                        $(this).val(jumlahMati);
+                    }
+
+                    // Mati tidak boleh negatif
+                    if (jumlahMati < 0) {
+                        jumlahMati = 0;
+                        $(this).val(0);
+                    }
+
+                    // Hidup = Ditanam - Mati
+                    let jumlahHidup =
+                        jumlahDitanam - jumlahMati;
+
+                    $("#add_jumlah_hidup")
+                        .val(jumlahHidup);
+                });
+
+                // Saat Jumlah Hidup diubah
+                $("#add_jumlah_hidup").on("input", function () {
+                    let jumlahDitanam =
+                        getNumber(
+                            $("#add_jumlah_ditanam").val()
+                        );
+                    let jumlahHidup =
+                        getNumber($(this).val());
+
+                    // Hidup tidak boleh lebih dari Ditanam
+                    if (jumlahHidup > jumlahDitanam) {
+                        jumlahHidup = jumlahDitanam;
+                        $(this).val(jumlahHidup);
+                    }
+
+                    // Hidup tidak boleh negatif
+                    if (jumlahHidup < 0) {
+                        jumlahHidup = 0;
+                        $(this).val(0);
+                    }
+
+                    // Mati = Ditanam - Hidup
+                    let jumlahMati =
+                        jumlahDitanam - jumlahHidup;
+
+                    $("#add_jumlah_mati")
+                        .val(jumlahMati);
+                });
+
+                /**
+                 * =========================================================
+                 * EDIT DATA
+                 * =========================================================
+                 */
+                // Saat Jumlah Ditanam berubah
+                $("#edit_jumlah_ditanam").on("input", function () {
+                    let jumlahDitanam =
+                        getNumber($(this).val());
+
+                    // Ketika jumlah ditanam diubah,
+                    // default kembali:
+                    // Hidup = Ditanam
+                    // Mati = 0
+                    $("#edit_jumlah_hidup")
+                        .val(jumlahDitanam);
+                    $("#edit_jumlah_mati")
+                        .val(0);
+                });
+
+                // Saat Jumlah Mati diubah
+                $("#edit_jumlah_mati").on("input", function () {
+                    let jumlahDitanam =
+                        getNumber(
+                            $("#edit_jumlah_ditanam").val()
+                        );
+                    let jumlahMati =
+                        getNumber($(this).val());
+
+                    // Mati tidak boleh lebih dari Ditanam
+                    if (jumlahMati > jumlahDitanam) {
+                        jumlahMati = jumlahDitanam;
+                        $(this).val(jumlahMati);
+                    }
+
+                    // Mati tidak boleh negatif
+                    if (jumlahMati < 0) {
+                        jumlahMati = 0;
+                        $(this).val(0);
+                    }
+
+                    // Hidup = Ditanam - Mati
+                    let jumlahHidup =
+                        jumlahDitanam - jumlahMati;
+
+                    $("#edit_jumlah_hidup")
+                        .val(jumlahHidup);
+                });
+
+                // Saat Jumlah Hidup diubah
+                $("#edit_jumlah_hidup").on("input", function () {
+                    let jumlahDitanam =
+                        getNumber(
+                            $("#edit_jumlah_ditanam").val()
+                        );
+                    let jumlahHidup =
+                        getNumber($(this).val());
+
+                    // Hidup tidak boleh lebih dari Ditanam
+                    if (jumlahHidup > jumlahDitanam) {
+                        jumlahHidup = jumlahDitanam;
+                        $(this).val(jumlahHidup);
+                    }
+
+                    // Hidup tidak boleh negatif
+                    if (jumlahHidup < 0) {
+                        jumlahHidup = 0;
+                        $(this).val(0);
+                    }
+
+                    // Mati = Ditanam - Hidup
+                    let jumlahMati =
+                        jumlahDitanam - jumlahHidup;
+
+                    $("#edit_jumlah_mati")
+                        .val(jumlahMati);
+                });
+            });
+        </script>
+    </div>
 </body>
 
 </html>

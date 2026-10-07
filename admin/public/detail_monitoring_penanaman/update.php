@@ -21,7 +21,7 @@ Permission::authorize(
 verifyCsrfToken();
 $model = new DetailMonitoringPenanaman($pdo);
 $userId = $_SESSION["user_id"];
-$id = (int)($_POST["id"] ?? 0);
+$id = (int) ($_POST["id"] ?? 0);
 
 if ($id <= 0) {
     $_SESSION["error"] =
@@ -137,11 +137,32 @@ $data = [
  * UPDATE + STOCK
  * =========================================================
  */
-$result = $model->updateWithStock(
-    $id,
-    $data,
-    $userId
-);
+if (
+    $model->isMonitoringTurunan(
+        $oldData['id_monitoring']
+    )
+) {
+    $result = $model->updateTurunan(
+        $id,
+        [
+            'jumlah_hidup' =>
+                $jumlahHidup,
+            'jumlah_mati' =>
+                $jumlahMati,
+            'tinggi_rata2_cm' =>
+                $tinggiRata,
+            'diameter_rata2_cm' =>
+                $diameterRata
+        ],
+        $userId
+    );
+} else {
+    $result = $model->updateWithStock(
+        $id,
+        $data,
+        $userId
+    );
+}
 
 /*
  * =========================================================

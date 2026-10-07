@@ -19,6 +19,7 @@ $controller = new MonitoringPenanamanController($pdo);
 $monitoringPenanamans = $controller->index();
 $tanahs = $controller->getTanah();
 $progressStatusMonitorings = $controller->getStatusMonitoring();
+$monitoringAwals = $controller->getMonitoringAwal();
 Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
 
 ?>
@@ -96,6 +97,7 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                                         <thead>
                                             <tr>
                                                 <th class="text-center">No</th>
+                                                <th>Monitoring Awal</th>
                                                 <th>Kode Monitoring</th>
                                                 <th>Nama Lahan</th>
                                                 <th>Progress Status Monitoring</th>
@@ -114,13 +116,36 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                                             <?php foreach ($monitoringPenanamans as $monitoringPenanaman): ?>
                                                 <tr>
                                                     <td class="text-center"><?= $no++ ?></td>
+                                                    <td>
+                                                        <?php if (!empty($monitoringPenanaman['kode_monitoring_awal'])): ?>
+                                                            <span class="badge badge-secondary">
+                                                                <?= htmlspecialchars(
+                                                                    $monitoringPenanaman['kode_monitoring_awal'],
+                                                                    ENT_QUOTES,
+                                                                    'UTF-8'
+                                                                ) ?>
+                                                            </span>
+                                                        <?php else: ?>
+                                                            <span class="text-muted">-</span>
+                                                        <?php endif; ?>
+                                                    </td>
                                                     <td><span
                                                             class="badge badge-primary"><?= htmlspecialchars($monitoringPenanaman['kode_monitoring'] ?? '-', ENT_QUOTES, 'UTF-8') ?></span>
                                                     </td>
                                                     <td><?= htmlspecialchars($monitoringPenanaman['nama_lahan'] ?? '-', ENT_QUOTES, 'UTF-8') ?>
                                                     </td>
-                                                    <td><span
-                                                            class="badge badge-info"><?= htmlspecialchars($monitoringPenanaman['nama_status_monitoring'] ?? '-', ENT_QUOTES, 'UTF-8') ?></span>
+                                                    <td>
+                                                        <span class="badge <?= match ($monitoringPenanaman['nama_status_monitoring'] ?? '') {
+                                                            'Baru Ditanam' => 'badge-primary',
+                                                            'Proses Panen' => 'badge-info',
+                                                            default => 'badge-success',
+                                                        } ?>">
+                                                            <?= htmlspecialchars(
+                                                                $monitoringPenanaman['nama_status_monitoring'] ?? '-',
+                                                                ENT_QUOTES,
+                                                                'UTF-8'
+                                                            ) ?>
+                                                        </span>
                                                     </td>
                                                     <td>
                                                         <?= htmlspecialchars($monitoringPenanaman['periode_pengecekan'] ? date('d/m/Y', strtotime($monitoringPenanaman['periode_pengecekan'])) : '-') ?>
@@ -152,6 +177,9 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                                                                 <button class="btn btn-block btn-info btn-edit"
                                                                     data-id="<?= $monitoringPenanaman['id'] ?>"
                                                                     data-kode_monitoring="<?= htmlspecialchars($monitoringPenanaman['kode_monitoring']) ?>"
+                                                                    data-id_turunan="<?= htmlspecialchars(
+                                                                        $monitoringPenanaman['id_turunan'] ?? ''
+                                                                    ) ?>"
                                                                     data-id_tanah="<?= htmlspecialchars($monitoringPenanaman['id_tanah']) ?>"
                                                                     data-id_progress_status_monitoring="<?= htmlspecialchars($monitoringPenanaman['id_progress_status_monitoring']) ?>"
                                                                     data-periode_pengecekan="<?= htmlspecialchars($monitoringPenanaman['periode_pengecekan']) ?>"
@@ -182,6 +210,7 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                                         <tfoot>
                                             <tr>
                                                 <th class="text-center">No</th>
+                                                <th>Monitoring Awal</th>
                                                 <th>Kode Monitoring</th>
                                                 <th>Nama Lahan</th>
                                                 <th>Progress Status Monitoring</th>
@@ -229,17 +258,6 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                                         placeholder="Masukkan kode monitoring" readonly>
                                 </div>
                                 <div class="form-group">
-                                    <label for="id_tanah">Lahan<code>*</code></label>
-                                    <select name="id_tanah" class="form-control" id="id_tanah">
-                                        <option value="">-- Pilih Lahan --</option>
-                                        <?php foreach ($tanahs as $la): ?>
-                                            <option value="<?= $la['id'] ?>">
-                                                <?= htmlspecialchars($la['nama_lahan']) ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                                <div class="form-group">
                                     <label for="id_progress_status_monitoring">Progress Status
                                         Monitoring<code>*</code></label>
                                     <select name="id_progress_status_monitoring" class="form-control"
@@ -252,6 +270,66 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
+                                <div class="form-group" id="group_monitoring_awal" style="display: none;">
+                                    <label for="id_turunan">
+                                        Turunan Monitoring Awal<code>*</code>
+                                    </label>
+
+                                    <select name="id_turunan" class="form-control" id="id_turunan">
+
+                                        <option value="">
+                                            -- Pilih Monitoring Awal --
+                                        </option>
+
+                                        <?php foreach ($monitoringAwals as $awal): ?>
+                                            <option value="<?= (int) $awal['id'] ?>"
+                                                data-id-tanah="<?= (int) $awal['id_tanah'] ?>" data-tanggal-tanam="<?= htmlspecialchars(
+                                                       $awal['tanggal_tanam'],
+                                                       ENT_QUOTES,
+                                                       'UTF-8'
+                                                   ) ?>">
+
+                                                <?= htmlspecialchars(
+                                                    $awal['kode_monitoring'],
+                                                    ENT_QUOTES,
+                                                    'UTF-8'
+                                                ) ?>
+
+                                                -
+                                                <?= htmlspecialchars(
+                                                    $awal['nama_lahan'] ?? '-',
+                                                    ENT_QUOTES,
+                                                    'UTF-8'
+                                                ) ?>
+
+                                                -
+                                                <?= date(
+                                                    'd/m/Y',
+                                                    strtotime($awal['tanggal_tanam'])
+                                                ) ?>
+
+                                            </option>
+                                        <?php endforeach; ?>
+
+                                    </select>
+
+                                    <small class="form-text text-muted">
+                                        Pilih monitoring awal untuk melanjutkan monitoring pada
+                                        lahan dan tanggal tanam yang sama.
+                                    </small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_tanah">Lahan<code>*</code></label>
+                                    <select class="form-control" id="id_tanah">
+                                        <option value="">-- Pilih Lahan --</option>
+                                        <?php foreach ($tanahs as $la): ?>
+                                            <option value="<?= $la['id'] ?>">
+                                                <?= htmlspecialchars($la['nama_lahan']) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                    <input type="hidden" name="id_tanah" id="id_tanah_hidden">
+                                </div>
                                 <div class="form-group">
                                     <label for="periode_pengecekan">Periode Pengecekan<code>*</code></label>
                                     <input type="date" name="periode_pengecekan" class="form-control"
@@ -259,7 +337,8 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                                 </div>
                                 <div class="form-group">
                                     <label for="tanggal_tanam">Tanggal Tanam<code>*</code></label>
-                                    <input type="date" name="tanggal_tanam" class="form-control" id="tanggal_tanam">
+                                    <input type="date" class="form-control" id="tanggal_tanam">
+                                    <input type="hidden" name="tanggal_tanam" id="tanggal_tanam_hidden">
                                 </div>
                                 <div class="form-group">
                                     <label for="tanggal_monitoring">Tanggal Monitoring<code>*</code></label>
@@ -319,17 +398,6 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                                         id="edit_kode_monitoring" placeholder="Masukkan kode monitoring" readonly>
                                 </div>
                                 <div class="form-group">
-                                    <label for="id_tanah">Lahan<code>*</code></label>
-                                    <select name="id_tanah" class="form-control" id="edit_id_tanah">
-                                        <option value="">-- Pilih Lahan --</option>
-                                        <?php foreach ($tanahs as $la): ?>
-                                            <option value="<?= $la['id'] ?>">
-                                                <?= htmlspecialchars($la['nama_lahan']) ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                                <div class="form-group">
                                     <label for="id_progress_status_monitoring">Progress Status
                                         Monitoring<code>*</code></label>
                                     <select name="id_progress_status_monitoring" class="form-control"
@@ -342,6 +410,61 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
+                                <div class="form-group" id="edit_group_monitoring_awal" style="display: none;">
+                                    <label for="edit_id_turunan">
+                                        Turunan Monitoring Awal<code>*</code>
+                                    </label>
+
+                                    <select class="form-control" id="edit_id_turunan" name="id_turunan">
+
+                                        <option value="">
+                                            -- Pilih Monitoring Awal --
+                                        </option>
+
+                                        <?php foreach ($monitoringAwals as $awal): ?>
+                                            <option value="<?= (int) $awal['id'] ?>"
+                                                data-id-tanah="<?= (int) $awal['id_tanah'] ?>" data-tanggal-tanam="<?= htmlspecialchars(
+                                                       $awal['tanggal_tanam'],
+                                                       ENT_QUOTES,
+                                                       'UTF-8'
+                                                   ) ?>">
+
+                                                <?= htmlspecialchars(
+                                                    $awal['kode_monitoring'],
+                                                    ENT_QUOTES,
+                                                    'UTF-8'
+                                                ) ?>
+
+                                                -
+                                                <?= htmlspecialchars(
+                                                    $awal['nama_lahan'] ?? '-',
+                                                    ENT_QUOTES,
+                                                    'UTF-8'
+                                                ) ?>
+
+                                                -
+                                                <?= date(
+                                                    'd/m/Y',
+                                                    strtotime($awal['tanggal_tanam'])
+                                                ) ?>
+
+                                            </option>
+                                        <?php endforeach; ?>
+
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_tanah">Lahan<code>*</code></label>
+                                    <select class="form-control" id="edit_id_tanah">
+                                        <option value="">-- Pilih Lahan --</option>
+                                        <?php foreach ($tanahs as $la): ?>
+                                            <option value="<?= $la['id'] ?>">
+                                                <?= htmlspecialchars($la['nama_lahan']) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                    <input type="hidden" name="id_tanah" id="edit_id_tanah_hidden">
+                                </div>
                                 <div class="form-group">
                                     <label for="periode_pengecekan">Periode Pengecekan<code>*</code></label>
                                     <input type="date" name="periode_pengecekan" class="form-control"
@@ -349,8 +472,8 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                                 </div>
                                 <div class="form-group">
                                     <label for="tanggal_tanam">Tanggal Tanam<code>*</code></label>
-                                    <input type="date" name="tanggal_tanam" class="form-control"
-                                        id="edit_tanggal_tanam">
+                                    <input type="date" class="form-control" id="edit_tanggal_tanam">
+                                    <input type="hidden" name="tanggal_tanam" id="edit_tanggal_tanam_hidden">
                                 </div>
                                 <div class="form-group">
                                     <label for="tanggal_monitoring">Tanggal Monitoring<code>*</code></label>
@@ -570,7 +693,7 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
             }
             $(document).Toasts('create', {
                 class: bgColor,
-                title: 'Berhasil',
+                title: 'Message',
                 body: message,
                 delay: 1000
             });
@@ -586,8 +709,8 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
         if (success === "deleted") {
             showToast("Data Monitoring Penanaman berhasil dihapus", "deleted");
         }
-        if (success === "deleted") {
-            showToast("Data Monitoring Penanaman berhasil dihapus", "deleted");
+        if (success === "validation1") {
+            showToast("Monitoring Penanaman tidak dapat dihapus karena masih memiliki Detail Monitoring Penanaman aktif.", "deleted");
         }
     </script>
 
@@ -610,6 +733,396 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
         document.getElementById('edit_tanggal_monitoring').addEventListener('focus', function () {
             this.showPicker();
         });
+    </script>
+
+    <script>
+        $(function () {
+
+            function handleMonitoringAwalAdd() {
+
+                const statusText = $(
+                    "#id_progress_status_monitoring option:selected"
+                ).text().trim();
+
+                const statusValue = $(
+                    "#id_progress_status_monitoring"
+                ).val();
+
+                const isBaruDitanam =
+                    statusValue !== "" &&
+                    statusText === "Baru Ditanam";
+
+                if (!isBaruDitanam) {
+
+                    $("#group_monitoring_awal").slideDown(200);
+
+                    $("#id_turunan").prop("required", true);
+
+                    $("#id_tanah")
+                        .prop("disabled", true);
+
+                    $("#tanggal_tanam")
+                        .prop("readonly", true);
+
+                } else {
+
+                    $("#group_monitoring_awal").slideUp(200);
+
+                    $("#id_turunan")
+                        .val("")
+                        .prop("required", false);
+
+                    $("#id_tanah")
+                        .prop("disabled", false);
+
+                    $("#tanggal_tanam")
+                        .prop("readonly", false);
+
+                    $("#id_tanah_hidden")
+                        .val("");
+
+                    $("#tanggal_tanam_hidden")
+                        .val("");
+                }
+            }
+
+
+            $("#id_progress_status_monitoring").on(
+                "change",
+                function () {
+
+                    handleMonitoringAwalAdd();
+
+                }
+            );
+
+
+            $("#id_turunan").on(
+                "change",
+                function () {
+
+                    const option = $(
+                        "#id_turunan option:selected"
+                    );
+
+                    const idTanah =
+                        option.data("id-tanah");
+
+                    const tanggalTanam =
+                        option.data("tanggal-tanam");
+
+                    if (!idTanah) {
+
+                        $("#id_tanah")
+                            .val("")
+                            .prop("disabled", true);
+
+                        $("#id_tanah_hidden")
+                            .val("");
+
+                        $("#tanggal_tanam")
+                            .val("");
+
+                        $("#tanggal_tanam_hidden")
+                            .val("");
+
+                        return;
+                    }
+
+                    $("#id_tanah")
+                        .val(idTanah)
+                        .prop("disabled", true);
+
+                    $("#id_tanah_hidden")
+                        .val(idTanah);
+
+                    $("#tanggal_tanam")
+                        .val(tanggalTanam)
+                        .prop("readonly", true);
+
+                    $("#tanggal_tanam_hidden")
+                        .val(tanggalTanam);
+                }
+            );
+
+
+            /*
+             * Saat modal tambah dibuka,
+             * pastikan kondisi awal benar.
+             */
+            $("#modalTambah").on(
+                "shown.bs.modal",
+                function () {
+
+                    handleMonitoringAwalAdd();
+
+                }
+            );
+
+
+            /*
+             * Sinkronisasi hidden field
+             * untuk status Baru Ditanam.
+             */
+            $("#id_tanah").on(
+                "change",
+                function () {
+
+                    $("#id_tanah_hidden")
+                        .val($(this).val());
+
+                }
+            );
+
+
+            $("#tanggal_tanam").on(
+                "change",
+                function () {
+
+                    $("#tanggal_tanam_hidden")
+                        .val($(this).val());
+
+                }
+            );
+
+        });
+    </script>
+
+    <script>
+        $(document).on("click", ".btn-edit", function () {
+
+            let id =
+                $(this).data("id");
+
+            let kode_monitoring =
+                $(this).data("kode_monitoring");
+
+            let id_turunan =
+                $(this).data("id_turunan");
+
+            let id_tanah =
+                $(this).data("id_tanah");
+
+            let id_progress_status_monitoring =
+                $(this).data(
+                    "id_progress_status_monitoring"
+                );
+
+            let periode_pengecekan =
+                $(this).data(
+                    "periode_pengecekan"
+                );
+
+            let tanggal_tanam =
+                $(this).data(
+                    "tanggal_tanam"
+                );
+
+            let tanggal_monitoring =
+                $(this).data(
+                    "tanggal_monitoring"
+                );
+
+            let catatan =
+                $(this).data("catatan");
+
+            let status =
+                $(this).data("status");
+
+
+            $("#edit_id")
+                .val(id);
+
+            $("#edit_kode_monitoring")
+                .val(kode_monitoring);
+
+            $("#edit_id_progress_status_monitoring")
+                .val(id_progress_status_monitoring);
+
+            $("#edit_periode_pengecekan")
+                .val(periode_pengecekan);
+
+            $("#edit_tanggal_monitoring")
+                .val(tanggal_monitoring);
+
+            $("#edit_catatan")
+                .val(catatan);
+
+            $("input[name='is_active'][value='" + status + "']")
+                .prop("checked", true);
+
+
+            /*
+             * Isi monitoring awal
+             */
+            $("#edit_id_turunan")
+                .val(id_turunan || "");
+
+
+            /*
+             * Isi tanah
+             */
+            $("#edit_id_tanah")
+                .val(id_tanah);
+
+            $("#edit_id_tanah_hidden")
+                .val(id_tanah);
+
+
+            /*
+             * Isi tanggal tanam
+             */
+            $("#edit_tanggal_tanam")
+                .val(tanggal_tanam);
+
+            $("#edit_tanggal_tanam_hidden")
+                .val(tanggal_tanam);
+
+
+            handleMonitoringAwalEdit();
+
+        });
+    </script>
+
+    <script>
+        function handleMonitoringAwalEdit() {
+
+            const statusValue =
+                $("#edit_id_progress_status_monitoring").val();
+
+            const statusText =
+                $("#edit_id_progress_status_monitoring option:selected")
+                    .text()
+                    .trim();
+
+            const isBaruDitanam =
+                statusValue !== "" &&
+                statusText === "Baru Ditanam";
+
+
+            if (!isBaruDitanam) {
+
+                $("#edit_group_monitoring_awal")
+                    .show();
+
+                $("#edit_id_turunan")
+                    .prop("required", true);
+
+                $("#edit_id_tanah")
+                    .prop("disabled", true);
+
+                $("#edit_tanggal_tanam")
+                    .prop("readonly", true);
+
+            } else {
+
+                $("#edit_group_monitoring_awal")
+                    .hide();
+
+                $("#edit_id_turunan")
+                    .val("")
+                    .prop("required", false);
+
+                $("#edit_id_tanah")
+                    .prop("disabled", false);
+
+                $("#edit_tanggal_tanam")
+                    .prop("readonly", false);
+
+                $("#edit_id_tanah_hidden")
+                    .val(
+                        $("#edit_id_tanah").val()
+                    );
+
+                $("#edit_tanggal_tanam_hidden")
+                    .val(
+                        $("#edit_tanggal_tanam").val()
+                    );
+            }
+        }
+
+
+        $("#edit_id_progress_status_monitoring").on(
+            "change",
+            function () {
+
+                handleMonitoringAwalEdit();
+
+            }
+        );
+
+
+        $("#edit_id_turunan").on(
+            "change",
+            function () {
+
+                const option =
+                    $("#edit_id_turunan option:selected");
+
+                const idTanah =
+                    option.data("id-tanah");
+
+                const tanggalTanam =
+                    option.data("tanggal-tanam");
+
+
+                if (!idTanah) {
+
+                    $("#edit_id_tanah")
+                        .val("")
+                        .prop("disabled", true);
+
+                    $("#edit_id_tanah_hidden")
+                        .val("");
+
+                    $("#edit_tanggal_tanam")
+                        .val("");
+
+                    $("#edit_tanggal_tanam_hidden")
+                        .val("");
+
+                    return;
+                }
+
+
+                $("#edit_id_tanah")
+                    .val(idTanah)
+                    .prop("disabled", true);
+
+                $("#edit_id_tanah_hidden")
+                    .val(idTanah);
+
+
+                $("#edit_tanggal_tanam")
+                    .val(tanggalTanam)
+                    .prop("readonly", true);
+
+                $("#edit_tanggal_tanam_hidden")
+                    .val(tanggalTanam);
+            }
+        );
+
+
+        $("#edit_id_tanah").on(
+            "change",
+            function () {
+
+                $("#edit_id_tanah_hidden")
+                    .val($(this).val());
+
+            }
+        );
+
+
+        $("#edit_tanggal_tanam").on(
+            "change",
+            function () {
+
+                $("#edit_tanggal_tanam_hidden")
+                    .val($(this).val());
+
+            }
+        );
     </script>
 </body>
 

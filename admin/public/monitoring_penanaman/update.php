@@ -7,6 +7,10 @@ require "../../app/models/MonitoringPenanaman.php";
 require "../../app/core/permission.php";
 require '../../app/core/activity_log.php';
 
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+
 Permission::authorize($pdo, 'Monitoring Penanaman', 'update');
 verifyCsrfToken();
 
@@ -20,6 +24,9 @@ $data = [
     "tanggal_tanam" => $_POST["tanggal_tanam"],
     "tanggal_monitoring" => $_POST["tanggal_monitoring"],
     "catatan" => $_POST["catatan"],
+    "id_turunan" => !empty($_POST["id_turunan"])
+        ? (int) $_POST["id_turunan"]
+        : null,
     "is_active" => $_POST["is_active"],
     "updated_by" => $_SESSION["user_id"]
 ];

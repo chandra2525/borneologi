@@ -41,52 +41,42 @@ class DetailMonitoringPenanamanController
             (int) (
                 $data['id_monitoring'] ?? 0
             );
-
         $id_bank_benih =
             (int) (
                 $data['id_bank_benih'] ?? 0
             );
-
         $id_tipe_penanaman =
             (int) (
                 $data['id_tipe_penanaman'] ?? 0
             );
-
         $jumlah_ditanam =
             trim(
                 $data['jumlah_ditanam'] ?? ''
             );
-
         $satuan =
             trim(
                 $data['satuan'] ?? ''
             );
-
         $jumlah_hidup =
             trim(
                 $data['jumlah_hidup'] ?? ''
             );
-
         $jumlah_mati =
             trim(
                 $data['jumlah_mati'] ?? ''
             );
-
         $tinggi_rata2_cm =
             trim(
                 $data['tinggi_rata2_cm'] ?? ''
             );
-
         $diameter_rata2_cm =
             trim(
                 $data['diameter_rata2_cm'] ?? ''
             );
-
         $luas_tanam_ha =
             trim(
                 $data['luas_tanam_ha'] ?? ''
             );
-
         $catatan =
             trim(
                 $data['catatan'] ?? ''
@@ -100,13 +90,11 @@ class DetailMonitoringPenanamanController
                 'Monitoring Penanaman wajib dipilih.'
             );
         }
-
         if ($id_bank_benih <= 0) {
             throw new Exception(
                 'Bank Benih wajib dipilih.'
             );
         }
-
         if ($id_tipe_penanaman <= 0) {
             throw new Exception(
                 'Tipe Penanaman wajib dipilih.'
@@ -132,13 +120,7 @@ class DetailMonitoringPenanamanController
         if (
             !in_array(
                 $satuan,
-                [
-                    'butir',
-                    'gram',
-                    'kg',
-                    'paket',
-                    'bibit'
-                ],
+                ['butir', 'gram', 'kg', 'paket', 'bibit'],
                 true
             )
         ) {
@@ -167,17 +149,14 @@ class DetailMonitoringPenanamanController
             $jumlah_hidup,
             'Jumlah hidup'
         );
-
         $this->validateOptionalNumber(
             $jumlah_mati,
             'Jumlah mati'
         );
-
         $this->validateOptionalDecimal(
             $tinggi_rata2_cm,
             'Tinggi rata-rata'
         );
-
         $this->validateOptionalDecimal(
             $diameter_rata2_cm,
             'Diameter rata-rata'
@@ -220,34 +199,24 @@ class DetailMonitoringPenanamanController
             [
                 'id_monitoring' =>
                     $id_monitoring,
-
                 'id_bank_benih' =>
                     $id_bank_benih,
-
                 'id_tipe_penanaman' =>
                     $id_tipe_penanaman,
-
                 'jumlah_ditanam' =>
                     $jumlah_ditanam,
-
                 'satuan' =>
                     $satuan,
-
                 'jumlah_hidup' =>
                     $jumlah_hidup,
-
                 'jumlah_mati' =>
                     $jumlah_mati,
-
                 'tinggi_rata2_cm' =>
                     $tinggi_rata2_cm,
-
                 'diameter_rata2_cm' =>
                     $diameter_rata2_cm,
-
                 'luas_tanam_ha' =>
                     $luas_tanam_ha,
-
                 'catatan' =>
                     $catatan
             ],
@@ -273,52 +242,42 @@ class DetailMonitoringPenanamanController
             (int) (
                 $data['id_monitoring'] ?? 0
             );
-
         $id_bank_benih =
             (int) (
                 $data['id_bank_benih'] ?? 0
             );
-
         $id_tipe_penanaman =
             (int) (
                 $data['id_tipe_penanaman'] ?? 0
             );
-
         $jumlah_ditanam =
             trim(
                 $data['jumlah_ditanam'] ?? ''
             );
-
         $satuan =
             trim(
                 $data['satuan'] ?? ''
             );
-
         $jumlah_hidup =
             trim(
                 $data['jumlah_hidup'] ?? ''
             );
-
         $jumlah_mati =
             trim(
                 $data['jumlah_mati'] ?? ''
             );
-
         $tinggi_rata2_cm =
             trim(
                 $data['tinggi_rata2_cm'] ?? ''
             );
-
         $diameter_rata2_cm =
             trim(
                 $data['diameter_rata2_cm'] ?? ''
             );
-
         $luas_tanam_ha =
             trim(
                 $data['luas_tanam_ha'] ?? ''
             );
-
         $catatan =
             trim(
                 $data['catatan'] ?? ''
@@ -329,25 +288,21 @@ class DetailMonitoringPenanamanController
                 'ID Detail Monitoring tidak valid.'
             );
         }
-
         if ($id_monitoring <= 0) {
             throw new Exception(
                 'Monitoring Penanaman wajib dipilih.'
             );
         }
-
         if ($id_bank_benih <= 0) {
             throw new Exception(
                 'Bank Benih wajib dipilih.'
             );
         }
-
         if ($id_tipe_penanaman <= 0) {
             throw new Exception(
                 'Tipe Penanaman wajib dipilih.'
             );
         }
-
         if (
             $jumlah_ditanam === ''
             || !is_numeric($jumlah_ditanam)
@@ -357,17 +312,10 @@ class DetailMonitoringPenanamanController
                 'Jumlah ditanam harus lebih dari 0.'
             );
         }
-
         if (
             !in_array(
                 $satuan,
-                [
-                    'butir',
-                    'gram',
-                    'kg',
-                    'paket',
-                    'bibit'
-                ],
+                ['butir', 'gram', 'kg', 'paket', 'bibit'],
                 true
             )
         ) {
@@ -375,7 +323,6 @@ class DetailMonitoringPenanamanController
                 'Satuan tidak valid.'
             );
         }
-
         if (
             $luas_tanam_ha === ''
             || !is_numeric($luas_tanam_ha)
@@ -393,17 +340,14 @@ class DetailMonitoringPenanamanController
             $jumlah_hidup,
             'Jumlah hidup'
         );
-
         $this->validateOptionalNumber(
             $jumlah_mati,
             'Jumlah mati'
         );
-
         $this->validateOptionalDecimal(
             $tinggi_rata2_cm,
             'Tinggi rata-rata'
         );
-
         $this->validateOptionalDecimal(
             $diameter_rata2_cm,
             'Diameter rata-rata'
@@ -438,44 +382,70 @@ class DetailMonitoringPenanamanController
             );
         }
 
-        return $this->model->updateWithStock(
-            $id,
-            [
-                'id_monitoring' =>
-                    $id_monitoring,
+        /**
+         * Ambil data lama.
+         */
+        $oldData = $this->model->findById($id);
+        if (!$oldData) {
+            throw new Exception(
+                'Detail Monitoring tidak ditemukan.'
+            );
+        }
 
-                'id_bank_benih' =>
-                    $id_bank_benih,
+        /**
+         * Cek apakah Monitoring merupakan Turunan.
+         */
+        $isTurunan =
+            $this->model->isMonitoringTurunan(
+                $oldData['id_monitoring']
+            );
 
-                'id_tipe_penanaman' =>
-                    $id_tipe_penanaman,
+        if ($isTurunan) {
 
-                'jumlah_ditanam' =>
-                    $jumlah_ditanam,
-
-                'satuan' =>
-                    $satuan,
-
-                'jumlah_hidup' =>
-                    $jumlah_hidup,
-
-                'jumlah_mati' =>
-                    $jumlah_mati,
-
-                'tinggi_rata2_cm' =>
-                    $tinggi_rata2_cm,
-
-                'diameter_rata2_cm' =>
-                    $diameter_rata2_cm,
-
-                'luas_tanam_ha' =>
-                    $luas_tanam_ha,
-
-                'catatan' =>
-                    $catatan
-            ],
-            $user_id
-        );
+            return $this->model->updateTurunan(
+                $id,
+                [
+                    'jumlah_hidup' =>
+                        $jumlah_hidup,
+                    'jumlah_mati' =>
+                        $jumlah_mati,
+                    'tinggi_rata2_cm' =>
+                        $tinggi_rata2_cm,
+                    'diameter_rata2_cm' =>
+                        $diameter_rata2_cm
+                ],
+                $user_id
+            );
+        } else {
+            return $this->model->updateWithStock(
+                $id,
+                [
+                    'id_monitoring' =>
+                        $id_monitoring,
+                    'id_bank_benih' =>
+                        $id_bank_benih,
+                    'id_tipe_penanaman' =>
+                        $id_tipe_penanaman,
+                    'jumlah_ditanam' =>
+                        $jumlah_ditanam,
+                    'satuan' =>
+                        $satuan,
+                    'jumlah_hidup' =>
+                        $jumlah_hidup,
+                    'jumlah_mati' =>
+                        $jumlah_mati,
+                    'tinggi_rata2_cm' =>
+                        $tinggi_rata2_cm,
+                    'diameter_rata2_cm' =>
+                        $diameter_rata2_cm,
+                    'luas_tanam_ha' =>
+                        $luas_tanam_ha,
+                    'catatan' =>
+                        $catatan
+                ],
+                $user_id
+            );
+        }
     }
 
     /**
@@ -490,13 +460,11 @@ class DetailMonitoringPenanamanController
                 'Invalid CSRF Token'
             );
         }
-
         if ($id <= 0) {
             throw new Exception(
                 'ID Detail Monitoring tidak valid.'
             );
         }
-
         return $this->model->deleteWithStock(
             $id,
             $user_id

@@ -36,6 +36,8 @@ class MonitoringPenanamanController
             );
         }
 
+        $id_turunan = (int) ($data['id_turunan'] ?? 0);
+
         $id_tanah =
             (int) ($data['id_tanah'] ?? 0);
 
@@ -90,6 +92,77 @@ class MonitoringPenanamanController
             );
         }
 
+        /*
+         * Ambil nama status
+         */
+        $statusMonitoring = null;
+
+        $statusList = $this->model->getStatusMonitoring();
+
+        foreach ($statusList as $status) {
+            if ((int) $status['id'] === $id_progress_status_monitoring) {
+                $statusMonitoring = $status['nama'];
+                break;
+            }
+        }
+
+        if (!$statusMonitoring) {
+            throw new Exception(
+                'Progress Status Monitoring tidak valid.'
+            );
+        }
+
+        /*
+         * Jika status BUKAN Baru Ditanam,
+         * maka wajib memilih monitoring awal.
+         */
+        if ($statusMonitoring !== 'Baru Ditanam') {
+
+            if ($id_turunan <= 0) {
+                throw new Exception(
+                    'Monitoring awal wajib dipilih.'
+                );
+            }
+
+            $monitoringAwal =
+                $this->model->findMonitoringAwal($id_turunan);
+
+            if (!$monitoringAwal) {
+                throw new Exception(
+                    'Monitoring awal tidak valid.'
+                );
+            }
+
+            /*
+             * Tanah dan tanggal tanam
+             * selalu mengikuti monitoring awal.
+             */
+            $id_tanah =
+                (int) $monitoringAwal['id_tanah'];
+
+            $tanggal_tanam =
+                $monitoringAwal['tanggal_tanam'];
+        } else {
+
+            /*
+             * Status Baru Ditanam tidak mempunyai
+             * monitoring awal.
+             */
+            $id_turunan = null;
+
+            if ($id_tanah <= 0) {
+                throw new Exception(
+                    'Tanah wajib dipilih.'
+                );
+            }
+
+            if ($tanggal_tanam === '') {
+                throw new Exception(
+                    'Tanggal tanam wajib diisi.'
+                );
+            }
+        }
+
         if (
             $tanggal_monitoring !== ''
             && $tanggal_monitoring < $tanggal_tanam
@@ -103,9 +176,12 @@ class MonitoringPenanamanController
             $this->model
                 ->generateKodeMonitoring();
 
-        return $this->model->create([
+        return $this->model->createWithInheritedDetails([
             'kode_monitoring' =>
                 $kode_monitoring,
+
+            'id_turunan' =>
+                $id_turunan,
 
             'id_tanah' =>
                 $id_tanah,
@@ -129,9 +205,9 @@ class MonitoringPenanamanController
                 ? $catatan
                 : null,
 
-            'created_by' =>
-                $user_id
-        ]);
+            'is_active' =>
+                (int) ($data['is_active'] ?? 1)
+        ], $user_id);
     }
 
     /**
@@ -147,6 +223,14 @@ class MonitoringPenanamanController
                 'Invalid CSRF Token'
             );
         }
+
+        if ($id <= 0) {
+            throw new Exception(
+                'ID monitoring tidak valid.'
+            );
+        }
+
+        $id_turunan = (int) ($data['id_turunan'] ?? 0);
 
         $id_tanah =
             (int) ($data['id_tanah'] ?? 0);
@@ -208,6 +292,86 @@ class MonitoringPenanamanController
             );
         }
 
+        /*
+         * Ambil nama status
+         */
+        $statusMonitoring = null;
+
+        $statusList = $this->model->getStatusMonitoring();
+
+        foreach ($statusList as $status) {
+            if ((int) $status['id'] === $id_progress_status_monitoring) {
+                $statusMonitoring = $status['nama'];
+                break;
+            }
+        }
+
+        if (!$statusMonitoring) {
+            throw new Exception(
+                'Progress Status Monitoring tidak valid.'
+            );
+        }
+
+        /*
+         * Jika status bukan Baru Ditanam
+         */
+        if ($statusMonitoring !== 'Baru Ditanam') {
+
+            if ($id_turunan <= 0) {
+                throw new Exception(
+                    'Monitoring awal wajib dipilih.'
+                );
+            }
+
+            /*
+             * Jangan boleh memilih dirinya sendiri
+             */
+            if ($id_turunan === (int) $id) {
+                throw new Exception(
+                    'Monitoring tidak boleh menjadi monitoring awal untuk dirinya sendiri.'
+                );
+            }
+
+            $monitoringAwal =
+                $this->model->findMonitoringAwal($id_turunan);
+
+            if (!$monitoringAwal) {
+                throw new Exception(
+                    'Monitoring awal tidak valid.'
+                );
+            }
+
+            /*
+             * Tanah dan tanggal tanam
+             * wajib mengikuti monitoring awal.
+             */
+            $id_tanah =
+                (int) $monitoringAwal['id_tanah'];
+
+            $tanggal_tanam =
+                $monitoringAwal['tanggal_tanam'];
+
+        } else {
+
+            /*
+             * Status Baru Ditanam
+             * tidak mempunyai monitoring awal.
+             */
+            $id_turunan = null;
+
+            if ($id_tanah <= 0) {
+                throw new Exception(
+                    'Tanah wajib dipilih.'
+                );
+            }
+
+            if ($tanggal_tanam === '') {
+                throw new Exception(
+                    'Tanggal tanam wajib diisi.'
+                );
+            }
+        }
+
         if (
             $tanggal_monitoring !== ''
             && $tanggal_monitoring < $tanggal_tanam
@@ -220,6 +384,9 @@ class MonitoringPenanamanController
         return $this->model->update(
             $id,
             [
+                'id_turunan' =>
+                    $id_turunan,
+
                 'id_tanah' =>
                     $id_tanah,
 
@@ -241,6 +408,9 @@ class MonitoringPenanamanController
                     $catatan !== ''
                     ? $catatan
                     : null,
+
+                'is_active' =>
+                    (int) ($data['is_active'] ?? 1),
 
                 'updated_by' =>
                     $user_id
@@ -281,6 +451,16 @@ class MonitoringPenanamanController
     public function getStatusMonitoring()
     {
         return $this->model->getStatusMonitoring();
+    }
+
+    public function getMonitoringAwal()
+    {
+        return $this->model->getMonitoringAwal();
+    }
+
+    public function findMonitoringAwal($id)
+    {
+        return $this->model->findMonitoringAwal($id);
     }
 
     // public function getBankBenih($id)

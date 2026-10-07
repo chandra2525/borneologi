@@ -1002,6 +1002,32 @@ Permission::authorize(
             }
 
 
+            if (success === 'validation') {
+
+                Swal.fire({
+
+                    icon: 'error',
+
+                    title: 'Gagal!',
+
+                    text:
+                        'Data Bank Benih gagal dihapus, karena mempunyai data aktif Di Detail Monitoring Penanaman.',
+
+                    toast: true,
+
+                    position: 'top-end',
+
+                    showConfirmButton: false,
+
+                    timer: 3000,
+
+                    timerProgressBar: true
+
+                });
+
+            }
+
+
             /*
              * ======================================================
              * ERROR
