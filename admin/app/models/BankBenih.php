@@ -15,7 +15,7 @@ class BankBenih
                 bb.id,
                 bb.nomor_aksesi,
                 bb.id_tanah,
-                bb.id_negara,
+                bb.id_desa,
                 bb.nama_lokal,
                 bb.nama_ilmiah,
                 bb.famili_tanaman,
@@ -35,11 +35,11 @@ class BankBenih
                 bb.catatan,
                 bb.is_active,
                 ta.nama_lahan,
-                ne.nama as nama_negara,
+                de.nama_desa,
                 tp.nama as nama_tipe_penyimpanan_benih
             FROM t_bank_benih bb
             LEFT JOIN t_tanah ta ON ta.id=bb.id_tanah
-            LEFT JOIN m_negara ne ON ne.id=bb.id_negara
+            LEFT JOIN m_desa de ON de.id=bb.id_desa
             LEFT JOIN m_tipe_penyimpanan_benih tp ON tp.id=bb.id_tipe_penyimpanan_benih
             WHERE bb.deleted_at IS NULL
             ORDER BY bb.id DESC";
@@ -56,7 +56,7 @@ class BankBenih
                     bb.*,
 
                     ta.nama_lahan,
-                    ne.nama AS nama_negara,
+                    de.nama_desa,
                     tp.nama AS nama_tipe_penyimpanan_benih
 
                 FROM t_bank_benih bb
@@ -64,8 +64,8 @@ class BankBenih
                 LEFT JOIN t_tanah ta
                     ON ta.id = bb.id_tanah
 
-                LEFT JOIN m_negara ne
-                    ON ne.id = bb.id_negara
+                LEFT JOIN m_desa de
+                    ON de.id = bb.id_desa
 
                 LEFT JOIN m_tipe_penyimpanan_benih tp
                     ON tp.id = bb.id_tipe_penyimpanan_benih
@@ -107,7 +107,7 @@ class BankBenih
                 (
                     nomor_aksesi,
                     id_tanah,
-                    id_negara,
+                    id_desa,
                     nama_lokal,
                     nama_ilmiah,
                     famili_tanaman,
@@ -133,7 +133,7 @@ class BankBenih
                 (
                     :nomor_aksesi,
                     :id_tanah,
-                    :id_negara,
+                    :id_desa,
                     :nama_lokal,
                     :nama_ilmiah,
                     :famili_tanaman,
@@ -170,7 +170,7 @@ class BankBenih
                 SET
                     nomor_aksesi = :nomor_aksesi,
                     id_tanah = :id_tanah,
-                    id_negara = :id_negara,
+                    id_desa = :id_desa,
                     nama_lokal = :nama_lokal,
                     nama_ilmiah = :nama_ilmiah,
                     famili_tanaman = :famili_tanaman,
@@ -232,9 +232,9 @@ class BankBenih
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getNegara()
+    public function getDesa()
     {
-        $sql = "SELECT id,nama FROM m_negara
+        $sql = "SELECT id,nama_desa FROM m_desa
                 WHERE deleted_at IS NULL
                 ORDER BY id";
 

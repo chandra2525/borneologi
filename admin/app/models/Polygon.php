@@ -1744,7 +1744,7 @@ class Polygon
             bb.nama_lokal,
             bb.nama_ilmiah,
             bb.nomor_aksesi,
-            ne.nama as nama_negara,
+            de.nama_desa,
             bb.famili_tanaman,
             bb.provenance,
             tpb.nama as tipe_penyimpanan_benih,
@@ -1772,7 +1772,7 @@ class Polygon
             ta.tanggal_validasi as tanggal_validasi_tanah
 
         FROM t_bank_benih bb
-        LEFT JOIN m_negara ne ON ne.id=bb.id_negara
+        LEFT JOIN m_desa de ON de.id=bb.id_desa
         LEFT JOIN m_tipe_penyimpanan_benih tpb ON tpb.id=bb.id_tipe_penyimpanan_benih
         LEFT JOIN t_tanah ta ON ta.id=bb.id_tanah
         LEFT JOIN m_legalitas_lahan ll ON ll.id=ta.id_legalitas_lahan

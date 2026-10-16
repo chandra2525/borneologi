@@ -261,8 +261,8 @@ const layerKawasanKonservasi = L.layerGroup(); // default OFF
 const layerAreaPenggunaanLain = L.layerGroup(); // default OFF
 
 var ndviBounds = [
-  [-0.290817096078737, 113.157554268836980],
-  [-1.654993907696092, 114.008013010025040],
+  [-0.290817096078737, 113.15755426883698],
+  [-1.654993907696092, 114.00801301002504],
   // [
   // [
   //     -0.61570805757998,
@@ -314,6 +314,8 @@ let layerState = {
   area_penggunaan_lain: false,
 };
 
+const API_WILAYAH_KEY = "kvjfeSD23*9ASDiO9)#22";
+
 function loadHutanAdat() {
   if (isLoaded.hutan_adat) return;
 
@@ -321,7 +323,7 @@ function loadHutanAdat() {
 
   fetch("api/hutan_adat.php", {
     headers: {
-      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+      "X-API-KEY": API_WILAYAH_KEY,
     },
   })
     .then((res) => res.json())
@@ -369,7 +371,7 @@ function loadProvinsi() {
 
   fetch("api/provinsi.php", {
     headers: {
-      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+      "X-API-KEY": API_WILAYAH_KEY,
     },
   })
     .then((res) => res.json())
@@ -418,7 +420,7 @@ function loadKabupaten() {
 
   fetch("api/kabupaten.php", {
     headers: {
-      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+      "X-API-KEY": API_WILAYAH_KEY,
     },
   })
     .then((res) => res.json())
@@ -466,7 +468,7 @@ function loadKecamatan() {
 
   fetch("api/kecamatan.php", {
     headers: {
-      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+      "X-API-KEY": API_WILAYAH_KEY,
     },
   })
     .then((res) => res.json())
@@ -514,7 +516,7 @@ function loadDesa() {
 
   fetch("api/desa.php", {
     headers: {
-      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+      "X-API-KEY": API_WILAYAH_KEY,
     },
   })
     .then((res) => res.json())
@@ -562,7 +564,7 @@ function loadKaleka() {
 
   fetch("api/kaleka.php", {
     headers: {
-      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+      "X-API-KEY": API_WILAYAH_KEY,
     },
   })
     .then((res) => res.json())
@@ -627,7 +629,7 @@ function loadBankBenih() {
 
   fetch("api/bank_benih.php", {
     headers: {
-      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+      "X-API-KEY": API_WILAYAH_KEY,
     },
   })
     .then((res) => res.json())
@@ -695,7 +697,7 @@ function loadHutanLindung() {
 
   fetch("api/hutan_lindung.php", {
     headers: {
-      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+      "X-API-KEY": API_WILAYAH_KEY,
     },
   })
     .then((res) => res.json())
@@ -760,7 +762,7 @@ function loadHutanProduksiTetap() {
 
   fetch("api/hutan_produksi_tetap.php", {
     headers: {
-      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+      "X-API-KEY": API_WILAYAH_KEY,
     },
   })
     .then((res) => res.json())
@@ -825,7 +827,7 @@ function loadHutanProduksiTerbatas() {
 
   fetch("api/hutan_produksi_terbatas.php", {
     headers: {
-      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+      "X-API-KEY": API_WILAYAH_KEY,
     },
   })
     .then((res) => res.json())
@@ -890,7 +892,7 @@ function loadHutanProduksiKonversi() {
 
   fetch("api/hutan_produksi_konversi.php", {
     headers: {
-      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+      "X-API-KEY": API_WILAYAH_KEY,
     },
   })
     .then((res) => res.json())
@@ -955,7 +957,7 @@ function loadKawasanKonservasi() {
 
   fetch("api/kawasan_konservasi.php", {
     headers: {
-      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+      "X-API-KEY": API_WILAYAH_KEY,
     },
   })
     .then((res) => res.json())
@@ -1020,7 +1022,7 @@ function loadAreaPenggunaanLain() {
 
   fetch("api/area_penggunaan_lain.php", {
     headers: {
-      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+      "X-API-KEY": API_WILAYAH_KEY,
     },
   })
     .then((res) => res.json())
@@ -1081,7 +1083,7 @@ function loadAreaPenggunaanLain() {
 function loadTotalFarmer() {
   fetch("api/total_farmer.php", {
     headers: {
-      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+      "X-API-KEY": API_WILAYAH_KEY,
     },
   })
     .then((res) => res.json())
@@ -1109,6 +1111,291 @@ function loadTotalFarmer() {
       console.error(err);
       alert("Gagal memuat data total penerima manfaat");
     });
+}
+
+async function fetchWilayahApi(url) {
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "X-API-KEY": API_WILAYAH_KEY,
+    },
+  });
+
+  const result = await response.json();
+
+  if (!response.ok || result.status === false) {
+    throw new Error(result.message || "Gagal mengambil data wilayah");
+  }
+
+  return result;
+}
+
+function escapeWilayahHtml(value) {
+  const div = document.createElement("div");
+  div.textContent = value ?? "-";
+  return div.innerHTML;
+}
+
+function formatTotal(value) {
+  return Number(value ?? 0).toLocaleString("id-ID");
+}
+
+function tombolTotal(total, callback) {
+  const nilai = Number(total ?? 0);
+  const warna = nilai === 0 ? "#6c757d" : "#06b887";
+
+  return `
+    <button type="button"
+            class="btn btn-link p-0"
+            style="color: ${warna}; text-decoration: underline;"
+            ${nilai === 0 ? "disabled" : ""}
+            onclick="${callback}">
+      ${formatTotal(total)}
+    </button>
+  `;
+}
+
+// Menampilkan modal daftar seluruh kecamatan
+async function showTabelKecamatan() {
+  const modalElement = document.getElementById("tabelKecamatanModal");
+  const tbody = document.getElementById("tabelKecamatanBody");
+
+  tbody.innerHTML = `
+    <tr><td colspan="8" class="text-center">Memuat data...</td></tr>
+  `;
+
+  bootstrap.Modal.getOrCreateInstance(modalElement).show();
+
+  try {
+    const result = await fetchWilayahApi("api/list_kecamatan.php");
+    const rows = Array.isArray(result.data)
+      ? result.data
+      : (result.data?.kecamatan ?? []);
+
+    if (!rows.length) {
+      tbody.innerHTML = `
+        <tr><td colspan="8" class="text-center">Data tidak ditemukan</td></tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = rows
+      .map((item, index) => {
+        const id = Number(item.id);
+
+        return `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${escapeWilayahHtml(item.nama_kecamatan)}</td>
+          <td>${escapeWilayahHtml(item.kode_kecamatan)}</td>
+          <td>${tombolTotal(
+            item.total_desa,
+            `bukaDetailWilayah(${id},'kecamatan','desa')`,
+          )}</td>
+          <td>${tombolTotal(
+            item.total_hutan_adat,
+            `bukaDetailWilayah(${id},'kecamatan','hutan_adat')`,
+          )}</td>
+          <td>${tombolTotal(
+            item.total_kaleka,
+            `bukaDetailWilayah(${id},'kecamatan','kaleka')`,
+          )}</td>
+          <td>${tombolTotal(
+            item.total_bank_benih,
+            `bukaDetailWilayah(${id},'kecamatan','bank_benih')`,
+          )}</td>
+          <td>${tombolTotal(
+            item.total_cbo_penerima_manfaat,
+            `bukaDetailWilayah(${id},'kecamatan','cbo')`,
+          )}</td>
+        </tr>
+      `;
+      })
+      .join("");
+  } catch (error) {
+    console.error(error);
+    tbody.innerHTML = `
+      <tr><td colspan="8" class="text-center text-danger">
+        Gagal memuat data kecamatan
+      </td></tr>
+    `;
+  }
+}
+
+// Menampilkan modal daftar seluruh desa
+async function showTabelDesa() {
+  const modalElement = document.getElementById("tabelDesaModal");
+  const tbody = document.getElementById("tabelDesaBody");
+
+  tbody.innerHTML = `
+    <tr><td colspan="7" class="text-center">Memuat data...</td></tr>
+  `;
+
+  bootstrap.Modal.getOrCreateInstance(modalElement).show();
+
+  try {
+    // Endpoint perlu mendukung daftar seluruh desa tanpa id_kecamatan.
+    const result = await fetchWilayahApi("api/list_desa.php");
+    const rows = Array.isArray(result.data)
+      ? result.data
+      : (result.data?.desa ?? []);
+
+    if (!rows.length) {
+      tbody.innerHTML = `
+        <tr><td colspan="7" class="text-center">Data tidak ditemukan</td></tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = rows
+      .map((item, index) => {
+        const id = Number(item.id);
+
+        return `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${escapeWilayahHtml(item.nama_desa)}</td>
+          <td>${escapeWilayahHtml(item.kode_desa)}</td>
+          <td>${tombolTotal(
+            item.total_hutan_adat,
+            `bukaDetailWilayah(${id},'desa','hutan_adat')`,
+          )}</td>
+          <td>${tombolTotal(
+            item.total_kaleka,
+            `bukaDetailWilayah(${id},'desa','kaleka')`,
+          )}</td>
+          <td>${tombolTotal(
+            item.total_bank_benih,
+            `bukaDetailWilayah(${id},'desa','bank_benih')`,
+          )}</td>
+          <td>${tombolTotal(
+            item.total_cbo_penerima_manfaat,
+            `bukaDetailWilayah(${id},'desa','cbo')`,
+          )}</td>
+        </tr>
+      `;
+      })
+      .join("");
+  } catch (error) {
+    console.error(error);
+    tbody.innerHTML = `
+      <tr><td colspan="7" class="text-center text-danger">
+        Gagal memuat data desa
+      </td></tr>
+    `;
+  }
+}
+
+// Menampilkan daftar lanjutan berdasarkan angka total yang diklik
+async function bukaDetailWilayah(id, tipe, data) {
+  const modalElement = document.getElementById("detailWilayahModal");
+  const title = document.getElementById("detailWilayahTitle");
+  const thead = document.getElementById("detailWilayahHead");
+  const tbody = document.getElementById("detailWilayahBody");
+
+  const namaData = {
+    desa: "Desa",
+    hutan_adat: "Hutan Adat",
+    kaleka: "Kaleka",
+    bank_benih: "Bank Benih",
+    cbo: "CBO Penerima Manfaat",
+  };
+
+  title.textContent = "Daftar " + (namaData[data] || data);
+  thead.innerHTML = "";
+  tbody.innerHTML = `
+    <tr><td class="text-center">Memuat data...</td></tr>
+  `;
+
+  bootstrap.Modal.getOrCreateInstance(modalElement).show();
+
+  try {
+    const params = new URLSearchParams({
+      id: String(id),
+      tipe: tipe,
+      data: data,
+    });
+
+    const result = await fetchWilayahApi(
+      "api/list_detail_wilayah.php?" + params.toString(),
+    );
+
+    const rows = Array.isArray(result.data)
+      ? result.data
+      : (result.data?.items ?? []);
+
+    if (!rows.length) {
+      tbody.innerHTML = `
+        <tr><td class="text-center">Data tidak ditemukan</td></tr>
+      `;
+      return;
+    }
+
+    // Gunakan kolom yang dikembalikan API, tanpa kolom audit atau geometri.
+    const hiddenFields = new Set([
+      "created_at",
+      "updated_at",
+      "deleted_at",
+      "created_by",
+      "updated_by",
+      "deleted_by",
+      "geom_area",
+      "centroid_lat",
+      "centroid_lng",
+    ]);
+
+    const columns = Object.keys(rows[0]).filter(
+      (key) => !hiddenFields.has(key),
+    );
+
+    const labels = {
+      id: "ID",
+      nama_desa: "Nama Desa",
+      kode_desa: "Kode Desa",
+      nama_hutan_adat: "Nama Hutan Adat",
+      kode_hutan_adat: "Kode Hutan Adat",
+      nama_kaleka: "Nama Kaleka",
+      kode_kaleka: "Kode Kaleka",
+      nomor_aksesi: "Nomor Aksesi",
+      nama_lokal: "Nama Lokal",
+      nama_ilmiah: "Nama Ilmiah",
+      nama_lengkap: "Nama Penerima Manfaat",
+      nama_kelompok: "Nama Kelompok",
+      luas_ha: "Luas (ha)",
+    };
+
+    thead.innerHTML = `
+      <tr>
+        <th>No.</th>
+        ${columns
+          .map(
+            (key) =>
+              `<th>${escapeWilayahHtml(labels[key] || key.replace(/_/g, " "))}</th>`,
+          )
+          .join("")}
+      </tr>
+    `;
+
+    tbody.innerHTML = rows
+      .map(
+        (row, index) => `
+      <tr>
+        <td>${index + 1}</td>
+        ${columns
+          .map((key) => `<td>${escapeWilayahHtml(row[key])}</td>`)
+          .join("")}
+      </tr>
+    `,
+      )
+      .join("");
+  } catch (error) {
+    console.error(error);
+    tbody.innerHTML = `
+      <tr><td class="text-center text-danger">
+        Gagal memuat detail data
+      </td></tr>
+    `;
+  }
 }
 
 function updateLegend() {
@@ -1165,7 +1452,11 @@ function updateLegend() {
                 border:2px solid #ffea00;
                 background:rgba(255, 234, 0, 0.1);
             "></span>
-            <span data-lang="text_kecamatan">Kecamatan</span> (${totalKecamatan})
+            <span id="btnTabelKecamatan" data-lang="text_kecamatan"
+                  style="cursor:pointer; text-decoration:underline;"
+                  title="Klik untuk melihat data kecamatan">
+                Kecamatan
+            </span> (${totalKecamatan})
         </div>
 
         <div>
@@ -1177,7 +1468,11 @@ function updateLegend() {
                 border:2px solid #9D6638;
                 background:rgba(255, 234, 0, 0.1);
             "></span>
-            <span data-lang="text_desa">Desa</span> (${totalDesa})
+            <span id="btnTabelDesa" data-lang="text_desa"
+                  style="cursor:pointer; text-decoration:underline;"
+                  title="Klik untuk melihat data desa">
+                Desa
+            </span> (${totalDesa})
         </div>
 
         <div>
@@ -1446,6 +1741,20 @@ function updateLegend() {
         }
       }),
     );
+
+    document
+      .getElementById("btnTabelKecamatan")
+      ?.addEventListener("click", function (e) {
+        e.stopPropagation();
+        showTabelKecamatan();
+      });
+
+    document
+      .getElementById("btnTabelDesa")
+      ?.addEventListener("click", function (e) {
+        e.stopPropagation();
+        showTabelDesa();
+      });
   }, 100);
 
   setLanguage(localStorage.getItem("language"));
@@ -1623,7 +1932,7 @@ function showHutanAdatModal(id, latlng) {
 
   fetch(`api/detail_polygon.php?id=${id}&&tipe=hutan_adat`, {
     headers: {
-      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+      "X-API-KEY": API_WILAYAH_KEY,
     },
   })
     .then((res) => res.json())
@@ -1764,13 +2073,15 @@ function showHutanAdatModal(id, latlng) {
       // ambil data petani
       fetch(`api/list_petani.php?id=${data.id_kelompok_tani}`, {
         headers: {
-          "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+          "X-API-KEY": API_WILAYAH_KEY,
         },
       })
         .then((res) => res.json())
         .then((resPetani) => {
           console.log(resPetani);
-          const tbody = document.getElementById("penerimaManfaatKelompokTableBody");
+          const tbody = document.getElementById(
+            "penerimaManfaatKelompokTableBody",
+          );
           tbody.innerHTML = "";
 
           // ambil data dengan aman
@@ -1818,7 +2129,9 @@ function showHutanAdatModal(id, latlng) {
         .catch((err) => {
           console.error(err);
 
-          const tbody = document.getElementById("penerimaManfaatKelompokTableBody");
+          const tbody = document.getElementById(
+            "penerimaManfaatKelompokTableBody",
+          );
           tbody.innerHTML = `
             <tr>
               <td colspan="7" style="text-align:center; color:red;">
@@ -1853,7 +2166,7 @@ function showProvinsiModal(id, latlng) {
 
   fetch(`api/detail_polygon.php?id=${id}&&tipe=provinsi`, {
     headers: {
-      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+      "X-API-KEY": API_WILAYAH_KEY,
     },
   })
     .then((res) => res.json())
@@ -1903,7 +2216,7 @@ function showKabupatenModal(id, latlng) {
 
   fetch(`api/detail_polygon.php?id=${id}&&tipe=kabupaten`, {
     headers: {
-      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+      "X-API-KEY": API_WILAYAH_KEY,
     },
   })
     .then((res) => res.json())
@@ -1954,7 +2267,7 @@ function showKecamatanModal(id, latlng) {
 
   fetch(`api/detail_polygon.php?id=${id}&&tipe=kecamatan`, {
     headers: {
-      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+      "X-API-KEY": API_WILAYAH_KEY,
     },
   })
     .then((res) => res.json())
@@ -2006,7 +2319,7 @@ function showDesaModal(id, latlng) {
 
   fetch(`api/detail_polygon.php?id=${id}&&tipe=desa`, {
     headers: {
-      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+      "X-API-KEY": API_WILAYAH_KEY,
     },
   })
     .then((res) => res.json())
@@ -2058,7 +2371,7 @@ function showKalekaModal(id, latlng) {
 
   fetch(`api/detail_polygon.php?id=${id}&&tipe=kaleka`, {
     headers: {
-      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+      "X-API-KEY": API_WILAYAH_KEY,
     },
   })
     .then((res) => res.json())
@@ -2143,8 +2456,14 @@ function showKalekaModal(id, latlng) {
       );
       setTranslatedText("alamatPenerimaManfaat", data.alamat_petani ?? "");
       setTranslatedText("desaPenerimaManfaat", data.desa_petani ?? "");
-      setTranslatedText("kecamatanPenerimaManfaat", data.kecamatan_petani ?? "");
-      setTranslatedText("kabupatenPenerimaManfaat", data.kabupaten_petani ?? "");
+      setTranslatedText(
+        "kecamatanPenerimaManfaat",
+        data.kecamatan_petani ?? "",
+      );
+      setTranslatedText(
+        "kabupatenPenerimaManfaat",
+        data.kabupaten_petani ?? "",
+      );
 
       document.getElementById("kelompokPenerimaManfaatTableBody").innerHTML = `
         <tr>
@@ -2155,13 +2474,15 @@ function showKalekaModal(id, latlng) {
       // ambil data petani
       fetch(`api/list_kelompok_petani.php?id=${data.id}`, {
         headers: {
-          "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+          "X-API-KEY": API_WILAYAH_KEY,
         },
       })
         .then((res) => res.json())
         .then((resPetani) => {
           console.log(resPetani);
-          const tbody = document.getElementById("kelompokPenerimaManfaatTableBody");
+          const tbody = document.getElementById(
+            "kelompokPenerimaManfaatTableBody",
+          );
           tbody.innerHTML = "";
 
           // ambil data dengan aman
@@ -2211,7 +2532,9 @@ function showKalekaModal(id, latlng) {
         .catch((err) => {
           console.error(err);
 
-          const tbody = document.getElementById("kelompokPenerimaManfaatTableBody");
+          const tbody = document.getElementById(
+            "kelompokPenerimaManfaatTableBody",
+          );
           tbody.innerHTML = `
             <tr>
               <td colspan="7" style="text-align:center; color:red;">
@@ -2719,7 +3042,7 @@ function showBankBenihModal(id, latlng) {
 
   fetch(`api/detail_polygon.php?id=${id}&&tipe=bank_benih`, {
     headers: {
-      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+      "X-API-KEY": API_WILAYAH_KEY,
     },
   })
     .then((res) => res.json())
@@ -2773,7 +3096,7 @@ function showBankBenihModal(id, latlng) {
       // ambil data monitoring
       fetch(`api/list_monitoring.php?id=${id}`, {
         headers: {
-          "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+          "X-API-KEY": API_WILAYAH_KEY,
         },
       })
         .then((res) => res.json())
@@ -2877,7 +3200,7 @@ function showBankBenihModal(id, latlng) {
       // ambil data monitoring
       fetch(`api/get_lahan_benih.php?id=${id}`, {
         headers: {
-          "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+          "X-API-KEY": API_WILAYAH_KEY,
         },
       })
         .then((res) => res.json())
@@ -2960,7 +3283,7 @@ function showHutanLindungModal(id, latlng) {
 
   fetch(`api/detail_polygon.php?id=${id}&&tipe=hutan_lindung`, {
     headers: {
-      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+      "X-API-KEY": API_WILAYAH_KEY,
     },
   })
     .then((res) => res.json())
@@ -3012,7 +3335,7 @@ function showHutanProduksiTetapModal(id, latlng) {
 
   fetch(`api/detail_polygon.php?id=${id}&&tipe=hutan_produksi_tetap`, {
     headers: {
-      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+      "X-API-KEY": API_WILAYAH_KEY,
     },
   })
     .then((res) => res.json())
@@ -3066,7 +3389,7 @@ function showHutanProduksiTerbatasModal(id, latlng) {
 
   fetch(`api/detail_polygon.php?id=${id}&&tipe=hutan_produksi_terbatas`, {
     headers: {
-      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+      "X-API-KEY": API_WILAYAH_KEY,
     },
   })
     .then((res) => res.json())
@@ -3120,7 +3443,7 @@ function showHutanProduksiKonversiModal(id, latlng) {
 
   fetch(`api/detail_polygon.php?id=${id}&&tipe=hutan_produksi_konversi`, {
     headers: {
-      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+      "X-API-KEY": API_WILAYAH_KEY,
     },
   })
     .then((res) => res.json())
@@ -3172,7 +3495,7 @@ function showKawasanKonservasiModal(id, latlng) {
 
   fetch(`api/detail_polygon.php?id=${id}&&tipe=kawasan_konservasi`, {
     headers: {
-      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+      "X-API-KEY": API_WILAYAH_KEY,
     },
   })
     .then((res) => res.json())
@@ -3224,7 +3547,7 @@ function showAreaPenggunaanLainModal(id, latlng) {
 
   fetch(`api/detail_polygon.php?id=${id}&&tipe=area_penggunaan_lain`, {
     headers: {
-      "X-API-KEY": "kvjfeSD23*9ASDiO9)#22",
+      "X-API-KEY": API_WILAYAH_KEY,
     },
   })
     .then((res) => res.json())

@@ -51,7 +51,7 @@ class BankBenihController
 
         $nomor_aksesi = trim($data['nomor_aksesi'] ?? '');
         $id_tanah = trim($data['id_tanah'] ?? '');
-        $id_negara = trim($data['id_negara'] ?? '');
+        $id_desa = trim($data['id_desa'] ?? '');
         $nama_lokal = trim($data['nama_lokal'] ?? '');
         $nama_ilmiah = trim($data['nama_ilmiah'] ?? '');
         $famili_tanaman = trim($data['famili_tanaman'] ?? '');
@@ -89,8 +89,8 @@ class BankBenihController
             die("Tanah wajib dipilih.");
         }
 
-        if ($id_negara === '') {
-            die("Negara wajib dipilih.");
+        if ($id_desa === '') {
+            die("Desa wajib dipilih.");
         }
 
         if ($id_tipe_penyimpanan_benih === '') {
@@ -165,7 +165,7 @@ class BankBenihController
 
             'nomor_aksesi' => $nomor_aksesi,
             'id_tanah' => $id_tanah,
-            'id_negara' => $id_negara,
+            'id_desa' => $id_desa,
             'nama_lokal' => $nama_lokal,
             'nama_ilmiah' => $nama_ilmiah,
             'famili_tanaman' => $famili_tanaman,
@@ -212,7 +212,7 @@ class BankBenihController
 
         $nomor_aksesi = trim($data['nomor_aksesi'] ?? '');
         $id_tanah = trim($data['id_tanah'] ?? '');
-        $id_negara = trim($data['id_negara'] ?? '');
+        $id_desa = trim($data['id_desa'] ?? '');
         $nama_lokal = trim($data['nama_lokal'] ?? '');
         $nama_ilmiah = trim($data['nama_ilmiah'] ?? '');
         $famili_tanaman = trim($data['famili_tanaman'] ?? '');
@@ -246,8 +246,8 @@ class BankBenihController
             die("Tanah wajib dipilih.");
         }
 
-        if ($id_negara === '') {
-            die("Negara wajib dipilih.");
+        if ($id_desa === '') {
+            die("Desa wajib dipilih.");
         }
 
         if ($id_tipe_penyimpanan_benih === '') {
@@ -283,7 +283,7 @@ class BankBenihController
 
             'nomor_aksesi' => $nomor_aksesi,
             'id_tanah' => $id_tanah,
-            'id_negara' => $id_negara,
+            'id_desa' => $id_desa,
             'nama_lokal' => $nama_lokal,
             'nama_ilmiah' => $nama_ilmiah,
             'famili_tanaman' => $famili_tanaman,
@@ -341,9 +341,9 @@ class BankBenihController
     }
 
 
-    public function getNegara()
+    public function getDesa()
     {
-        return $this->model->getNegara();
+        return $this->model->getDesa();
     }
 
 

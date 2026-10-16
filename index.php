@@ -1668,6 +1668,117 @@ include 'partials/header.php';
                             </div>
                         </div>
 
+                        <!-- Modal Tabel Kecamatan -->
+                        <div class="modal fade" id="tabelKecamatanModal" tabindex="-1"
+                            aria-labelledby="tabelKecamatanTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-xxl-custom modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="tabelKecamatanTitle">
+                                            Data Kecamatan
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="table-responsive">
+                                            <table class="profile-thumb col-lg-12 col-md-12 col-12"
+                                                id="tabelKecamatan">
+                                                <!-- <thead class="table-light"> -->
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>Nama Kecamatan</th>
+                                                        <th>Kode Kecamatan</th>
+                                                        <th>Total Desa</th>
+                                                        <th>Total Hutan Adat</th>
+                                                        <th>Total Kaleka</th>
+                                                        <th>Total Bank Benih</th>
+                                                        <th>Total CBO Penerima Manfaat</th>
+                                                    </tr>
+                                                <!-- </thead> -->
+                                                <tbody id="tabelKecamatanBody">
+                                                    <tr>
+                                                        <td colspan="8" class="text-center">
+                                                            Memuat data...
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal Tabel Desa -->
+                        <div class="modal fade" id="tabelDesaModal" tabindex="-1" aria-labelledby="tabelDesaTitle"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-xxl-custom modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="tabelDesaTitle">
+                                            Data Desa
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="table-responsive">
+                                            <table class="profile-thumb col-lg-12 col-md-12 col-12"
+                                                id="tabelDesa">
+                                                <!-- <thead class="table-light"> -->
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>Nama Desa</th>
+                                                        <th>Kode Desa</th>
+                                                        <th>Total Hutan Adat</th>
+                                                        <th>Total Kaleka</th>
+                                                        <th>Total Bank Benih</th>
+                                                        <th>Total CBO Penerima Manfaat</th>
+                                                    </tr>
+                                                <!-- </thead> -->
+                                                <tbody id="tabelDesaBody">
+                                                    <tr>
+                                                        <td colspan="7" class="text-center">
+                                                            Memuat data...
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal Detail Daftar Wilayah -->
+                        <div class="modal fade" id="detailWilayahModal" tabindex="-1"
+                            aria-labelledby="detailWilayahTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="detailWilayahTitle">
+                                            Detail Data Wilayah
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="table-responsive">
+                                            <table class="profile-thumb col-lg-12 col-md-12 col-12">
+                                                <thead class="table-light" id="detailWilayahHead"></thead>
+                                                <tbody id="detailWilayahBody">
+                                                    <tr>
+                                                        <td class="text-center">Memuat data...</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

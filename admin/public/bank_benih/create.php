@@ -8,6 +8,10 @@ require_once "../../app/core/auth.php";
 require_once '../../app/helpers/escape.php';
 require_once '../../app/core/permission.php';
 
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+
 secureSessionStart();
 checkAuth("non_dashboard");
 
@@ -20,7 +24,7 @@ Permission::authorize(
 $controller = new BankBenihController($pdo);
 
 $tanahs = $controller->getTanah();
-$negaras = $controller->getNegara();
+$desas = $controller->getDesa();
 $tipePenyimpananBenihs =
     $controller->getTipePenyimpananBenih();
 
@@ -249,25 +253,25 @@ Provenance
 
 <label>
 
-Negara <code>*</code>
+Desa <code>*</code>
 
 </label>
 
 <select
-    name="id_negara"
+    name="id_desa"
     class="form-control"
     required>
 
 <option value="">
--- Pilih Negara --
+-- Pilih Desa --
 </option>
 
-<?php foreach ($negaras as $negara): ?>
+<?php foreach ($desas as $desa): ?>
 
-<option value="<?= $negara['id'] ?>">
+<option value="<?= $desa['id'] ?>">
 
 <?= htmlspecialchars(
-    $negara['nama']
+    $desa['nama_desa']
 ) ?>
 
 </option>

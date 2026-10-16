@@ -8,6 +8,10 @@ require_once '../../app/core/auth.php';
 require_once '../../app/helpers/escape.php';
 require_once '../../app/core/permission.php';
 
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+
 secureSessionStart();
 checkAuth("non_dashboard");
 
@@ -34,7 +38,7 @@ if (!$bankBenih) {
 }
 
 $tanahs = $controller->getTanah();
-$negaras = $controller->getNegara();
+$desas = $controller->getDesa();
 $tipePenyimpananBenihs =
     $controller->getTipePenyimpananBenih();
 
@@ -365,43 +369,43 @@ include "../feature/sidebar.php";
             </div>
 
 
-            <!-- NEGARA -->
+            <!-- DESA -->
 
             <div class="col-md-6">
 
                 <div class="form-group">
 
                     <label>
-                        Negara
+                        Desa
                         <span class="required">*</span>
                     </label>
 
                     <select
-                        name="id_negara"
+                        name="id_desa"
                         class="form-control"
                         required>
 
                         <option value="">
-                            -- Pilih Negara --
+                            -- Pilih Desa --
                         </option>
 
                         <?php foreach (
-                            $negaras as $negara
+                            $desas as $desa
                         ): ?>
 
                             <option
-                                value="<?= (int)$negara['id'] ?>"
+                                value="<?= (int)$desa['id'] ?>"
                                 <?= (
-                                    (string)$bankBenih['id_negara']
+                                    (string)$bankBenih['id_desa']
                                     ===
-                                    (string)$negara['id']
+                                    (string)$desa['id']
                                 )
                                     ? 'selected'
                                     : ''
                                 ?>>
 
                                 <?= oldValue(
-                                    $negara['nama']
+                                    $desa['nama_desa']
                                 ) ?>
 
                             </option>
@@ -413,7 +417,7 @@ include "../feature/sidebar.php";
                     <div
                         class="invalid-feedback">
 
-                        Negara wajib dipilih.
+                        Desa wajib dipilih.
 
                     </div>
 

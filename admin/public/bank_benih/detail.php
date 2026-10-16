@@ -840,12 +840,12 @@ Provenance
 
 
 <div class="info-label">
-Negara
+Desa
 </div>
 
 <div class="info-value">
 <?= htmlspecialchars(
-    $bankBenih['nama_negara']
+    $bankBenih['nama_desa']
 ) ?>
 </div>
 
