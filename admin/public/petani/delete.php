@@ -6,7 +6,7 @@ require "../../app/models/Petani.php";
 require "../../app/core/permission.php";
 require '../../app/core/activity_log.php';
 
-Permission::authorize($pdo, 'Penerima Manfaat', 'delete');
+Permission::authorize($pdo, 'CBO', 'delete');
 
 $petaniModel = new Petani($pdo);
 
@@ -17,12 +17,12 @@ if ($result) {
     logActivity(
         $pdo,
         'DELETE',
-        'Penerima Manfaat',
+        'CBO',
         $_POST["id"],
         't_petani',
         $oldData,
         null,
-        'Menghapus data Penerima Manfaat',
+        'Menghapus data CBO',
         'SUCCESS'
     );
 }

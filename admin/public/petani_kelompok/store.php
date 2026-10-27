@@ -7,7 +7,7 @@ require "../../app/models/PetaniKelompok.php";
 require "../../app/core/permission.php";
 require '../../app/core/activity_log.php';
 
-Permission::authorize($pdo, 'Kelompok Penerima', 'create');
+Permission::authorize($pdo, 'Kelompok CBO', 'create');
 verifyCsrfToken();
 
 $petaniKelompok = new PetaniKelompok($pdo);
@@ -31,12 +31,12 @@ if ($newId) {
     logActivity(
         $pdo,
         'CREATE',
-        'Kelompok Penerima',
+        'Kelompok CBO',
         $newId,
         't_petani_kelompok',
         null,
         $data,
-        'Menambahkan data Kelompok Penerima',
+        'Menambahkan data Kelompok CBO',
         'SUCCESS'
     );
 }

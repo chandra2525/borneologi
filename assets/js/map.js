@@ -1104,12 +1104,12 @@ function loadTotalFarmer() {
       document.getElementById("totalPerempuan").innerText = totalPerempuan;
 
       // Total semua petani
-      document.getElementById("totalPenerimaManfaat").innerText =
+      document.getElementById("totalCBO").innerText =
         totalLaki + totalPerempuan;
     })
     .catch((err) => {
       console.error(err);
-      alert("Gagal memuat data total penerima manfaat");
+      alert("Gagal memuat data total cbo");
     });
 }
 
@@ -1205,7 +1205,7 @@ async function showTabelKecamatan() {
             `bukaDetailWilayah(${id},'kecamatan','bank_benih')`,
           )}</td>
           <td>${tombolTotal(
-            item.total_cbo_penerima_manfaat,
+            item.total_cbo,
             `bukaDetailWilayah(${id},'kecamatan','cbo')`,
           )}</td>
         </tr>
@@ -1269,7 +1269,7 @@ async function showTabelDesa() {
             `bukaDetailWilayah(${id},'desa','bank_benih')`,
           )}</td>
           <td>${tombolTotal(
-            item.total_cbo_penerima_manfaat,
+            item.total_cbo,
             `bukaDetailWilayah(${id},'desa','cbo')`,
           )}</td>
         </tr>
@@ -1298,7 +1298,7 @@ async function bukaDetailWilayah(id, tipe, data) {
     hutan_adat: "Hutan Adat",
     kaleka: "Kaleka",
     bank_benih: "Bank Benih",
-    cbo: "CBO Penerima Manfaat",
+    cbo: "CBO",
   };
 
   title.textContent = "Daftar " + (namaData[data] || data);
@@ -1359,7 +1359,7 @@ async function bukaDetailWilayah(id, tipe, data) {
       nomor_aksesi: "Nomor Aksesi",
       nama_lokal: "Nama Lokal",
       nama_ilmiah: "Nama Ilmiah",
-      nama_lengkap: "Nama Penerima Manfaat",
+      nama_lengkap: "Nama CBO",
       nama_kelompok: "Nama Kelompok",
       luas_ha: "Luas (ha)",
     };
@@ -1860,7 +1860,7 @@ function toggleLayers() {
 //     item.tanah.centroid_lng;
 
 //   let tableBodyPetaniKelompok = document.getElementById(
-//     "penerimaManfaatKelompokTableBody",
+//     "cboKelompokTableBody",
 //   );
 //   tableBodyPetaniKelompok.innerHTML = ""; // reset dulu
 
@@ -1877,7 +1877,7 @@ function toggleLayers() {
 //                     <td>${data.petani.umur}</td>
 //                     <td>${data.petani.status_petani}</td>
 //                     <td>${data.petani.alamat}</td>
-//                     <td><img src="${data.petani.foto}" alt="Foto Penerima Manfaat" width="50" height="50" class="img-fluid rounded-circle"></td>
+//                     <td><img src="${data.petani.foto}" alt="Foto CBO" width="50" height="50" class="img-fluid rounded-circle"></td>
 //                 </tr>
 //             `;
 //       tableBodyPetaniKelompok.innerHTML += row;
@@ -2064,7 +2064,7 @@ function showHutanAdatModal(id, latlng) {
           : "",
       );
 
-      document.getElementById("penerimaManfaatKelompokTableBody").innerHTML = `
+      document.getElementById("cboKelompokTableBody").innerHTML = `
         <tr>
           <td colspan="7" style="text-align:center;">Loading...</td>
         </tr>
@@ -2080,7 +2080,7 @@ function showHutanAdatModal(id, latlng) {
         .then((resPetani) => {
           console.log(resPetani);
           const tbody = document.getElementById(
-            "penerimaManfaatKelompokTableBody",
+            "cboKelompokTableBody",
           );
           tbody.innerHTML = "";
 
@@ -2098,7 +2098,7 @@ function showHutanAdatModal(id, latlng) {
           if (petaniList.length === 0) {
             tbody.innerHTML = `
               <tr>
-                <td colspan="7" style="text-align:center;">Tidak ada data penerima manfaat</td>
+                <td colspan="7" style="text-align:center;">Tidak ada data cbo</td>
               </tr>
             `;
             return;
@@ -2130,12 +2130,12 @@ function showHutanAdatModal(id, latlng) {
           console.error(err);
 
           const tbody = document.getElementById(
-            "penerimaManfaatKelompokTableBody",
+            "cboKelompokTableBody",
           );
           tbody.innerHTML = `
             <tr>
               <td colspan="7" style="text-align:center; color:red;">
-                Gagal memuat data penerima manfaat
+                Gagal memuat data cbo
               </td>
             </tr>
           `;
@@ -2397,7 +2397,7 @@ function showKalekaModal(id, latlng) {
       //   data.nama_panggilan ?? "";
       // document.getElementById("namaLengkap").innerText =
       //   data.nama_lengkap ?? "";
-      // document.getElementById("penerimaManfaatFoto").src =
+      // document.getElementById("cboFoto").src =
       //   "admin/uploads/petani/" +
       //   (data.foto_profil_petani || "assets/image/petani_placeholder.jpg");
       // document.getElementById("jenisKelamin").innerText =
@@ -2411,23 +2411,23 @@ function showKalekaModal(id, latlng) {
       //     new Date(data.tanggal_lahir).getFullYear() +
       //     " tahun"
       //   : "";
-      // document.getElementById("statusPenerimaManfaat").innerText =
+      // document.getElementById("statusCBO").innerText =
       //   data.status_petani == "aktif"
       //     ? "Aktif"
       //     : data.status_petani == "nonaktif"
       //       ? "Non-Aktif"
       //       : "";
-      // document.getElementById("alamatPenerimaManfaat").innerText =
+      // document.getElementById("alamatCBO").innerText =
       //   data.alamat_petani ?? "";
-      // document.getElementById("desaPenerimaManfaat").innerText = data.desa_petani ?? "";
-      // document.getElementById("kecamatanPenerimaManfaat").innerText =
+      // document.getElementById("desaCBO").innerText = data.desa_petani ?? "";
+      // document.getElementById("kecamatanCBO").innerText =
       //   data.kecamatan_petani ?? "";
-      // document.getElementById("kabupatenPenerimaManfaat").innerText =
+      // document.getElementById("kabupatenCBO").innerText =
       //   data.kabupaten_petani ?? "";
 
       setTranslatedText("namaPanggilan", data.nama_panggilan ?? "");
       setTranslatedText("namaLengkap", data.nama_lengkap ?? "");
-      document.getElementById("penerimaManfaatFoto").src =
+      document.getElementById("cboFoto").src =
         "admin/uploads/petani/" + data.foto_profil_petani ||
         "assets/image/petani_placeholder.jpg";
       setTranslatedText(
@@ -2447,25 +2447,25 @@ function showKalekaModal(id, latlng) {
           : "",
       );
       setTranslatedText(
-        "statusPenerimaManfaat",
+        "statusCBO",
         data.status_petani == "aktif"
           ? "Aktif"
           : data.status_petani == "nonaktif"
             ? "Non-Aktif"
             : "",
       );
-      setTranslatedText("alamatPenerimaManfaat", data.alamat_petani ?? "");
-      setTranslatedText("desaPenerimaManfaat", data.desa_petani ?? "");
+      setTranslatedText("alamatCBO", data.alamat_petani ?? "");
+      setTranslatedText("desaCBO", data.desa_petani ?? "");
       setTranslatedText(
-        "kecamatanPenerimaManfaat",
+        "kecamatanCBO",
         data.kecamatan_petani ?? "",
       );
       setTranslatedText(
-        "kabupatenPenerimaManfaat",
+        "kabupatenCBO",
         data.kabupaten_petani ?? "",
       );
 
-      document.getElementById("kelompokPenerimaManfaatTableBody").innerHTML = `
+      document.getElementById("kelompokCBTableBody").innerHTML = `
         <tr>
           <td colspan="7" style="text-align:center;">Loading...</td>
         </tr>
@@ -2481,7 +2481,7 @@ function showKalekaModal(id, latlng) {
         .then((resPetani) => {
           console.log(resPetani);
           const tbody = document.getElementById(
-            "kelompokPenerimaManfaatTableBody",
+            "kelompokCBTableBody",
           );
           tbody.innerHTML = "";
 
@@ -2533,7 +2533,7 @@ function showKalekaModal(id, latlng) {
           console.error(err);
 
           const tbody = document.getElementById(
-            "kelompokPenerimaManfaatTableBody",
+            "kelompokCBTableBody",
           );
           tbody.innerHTML = `
             <tr>
@@ -2956,7 +2956,7 @@ function showKalekaModal(id, latlng) {
       );
       setTranslatedText("catatanPohon", data.catatan_pohon ?? "");
 
-      // document.getElementById("penerimaManfaatKelompokTableBody").innerHTML = `
+      // document.getElementById("cboKelompokTableBody").innerHTML = `
       //   <tr>
       //     <td colspan="7" style="text-align:center;">Loading...</td>
       //   </tr>
@@ -2967,7 +2967,7 @@ function showKalekaModal(id, latlng) {
       //   .then((res) => res.json())
       //   .then((resPetani) => {
       //     console.log(resPetani);
-      //     const tbody = document.getElementById("penerimaManfaatKelompokTableBody");
+      //     const tbody = document.getElementById("cboKelompokTableBody");
       //     tbody.innerHTML = "";
 
       //     // ambil data dengan aman
@@ -3015,7 +3015,7 @@ function showKalekaModal(id, latlng) {
       //   .catch((err) => {
       //     console.error(err);
 
-      //     const tbody = document.getElementById("penerimaManfaatKelompokTableBody");
+      //     const tbody = document.getElementById("cboKelompokTableBody");
       //     tbody.innerHTML = `
       //       <tr>
       //         <td colspan="7" style="text-align:center; color:red;">
@@ -3646,7 +3646,7 @@ const translations = {
     text_peta_sebaran: "Peta Sebaran",
 
     text_total: "Total",
-    text_penerima_manfaat: "Penerima Manfaat",
+    text_cbo: "CBO",
     text_laki_laki: "Laki-Laki",
     text_perempuan: "Perempuan",
 
@@ -3729,7 +3729,7 @@ const translations = {
     text_nama_panggilan: "Nama Panggilan",
     text_jenis_kelamin: "Jenis Kelamin",
     text_umur: "Umur",
-    text_status_penerima_manfaat: "Status Penerima Manfaat",
+    text_status_cbo: "Status CBO",
     text_alamat: "Alamat",
     text_foto: "Foto",
     text_tanah: "Tanah",
@@ -3743,11 +3743,11 @@ const translations = {
     text_tanggal_validasi: "Tanggal Validasi",
     text_alamat_lokasi_lahan: "Alamat Lokasi Lahan",
 
-    text_penerima_manfaat: "Penerima Manfaat",
+    text_cbo: "CBO",
     text_data_pribadi: "Data Pribadi",
     text_aktif: "Aktif",
     text_tidak_aktif: "Tidak Aktif",
-    text_kelompok_penerima_manfaat: "Kelompok Penerima Manfaat",
+    text_kelompok_cbo: "Kelompok CBO",
     text_kelompok_tani: "Kelompok Tani",
     text_kategori_kelompok: "Kategori Kelompok",
     text_tahun_gabung: "Tahun Gabung",
@@ -3799,7 +3799,7 @@ const translations = {
     text_peta_sebaran: "Distribution Map",
 
     text_total: "Total",
-    text_penerima_manfaat: "Beneficiary",
+    text_cbo: "CBO",
     text_laki_laki: "Male",
     text_perempuan: "Female",
 
@@ -3882,7 +3882,7 @@ const translations = {
     text_nama_panggilan: "Nickname",
     text_jenis_kelamin: "Gender",
     text_umur: "Age",
-    text_status_penerima_manfaat: "Beneficiary Status",
+    text_status_cbo: "CBO Status",
     text_alamat: "Address",
     text_foto: "Photo",
     text_tanah: "Land",
@@ -3896,12 +3896,12 @@ const translations = {
     text_tanggal_validasi: "Validation Date",
     text_alamat_lokasi_lahan: "Land Location Address",
 
-    text_penerima_manfaat: "Beneficiary",
+    text_cbo: "CBO",
     text_data_pribadi: "Personal Data",
     text_aktif: "Active",
     text_tidak_aktif: "Inactive",
-    text_kelompok_penerima_manfaat: "Beneficiary Group",
-    text_kelompok_tani: "Beneficiary Group",
+    text_kelompok_cbo: "CBO Group",
+    text_kelompok_tani: "CBO Group",
     text_kategori_kelompok: "Group Category",
     text_tahun_gabung: "Joining Year",
     text_nama_kaleka: "Kaleka Name",

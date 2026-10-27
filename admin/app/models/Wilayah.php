@@ -71,7 +71,7 @@ class Wilayah
                       AND d.is_active = 1
                       AND p.deleted_at IS NULL
                       AND p.is_active = 1
-                ) AS total_cbo_penerima_manfaat
+                ) AS total_cbo
 
             FROM m_kecamatan k
             WHERE k.deleted_at IS NULL
@@ -149,7 +149,7 @@ class Wilayah
                           AND d.is_active = 1
                           AND p.deleted_at IS NULL
                           AND p.is_active = 1
-                    ) AS total_cbo_penerima_manfaat
+                    ) AS total_cbo
 
                 FROM m_kecamatan k
                 WHERE k.id = :id
@@ -209,7 +209,7 @@ class Wilayah
                     WHERE p.id_desa = d.id
                     AND p.deleted_at IS NULL
                     AND p.is_active = 1
-                ) AS total_cbo_penerima_manfaat
+                ) AS total_cbo
 
             FROM m_desa d
             WHERE d.deleted_at IS NULL
@@ -277,7 +277,7 @@ class Wilayah
                     WHERE p.id_desa = d.id
                       AND p.deleted_at IS NULL
                       AND p.is_active = 1
-                ) AS total_cbo_penerima_manfaat
+                ) AS total_cbo
 
             FROM m_desa d
             INNER JOIN m_kecamatan k

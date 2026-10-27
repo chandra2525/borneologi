@@ -7,7 +7,7 @@ require "../../app/models/KelompokTani.php";
 require "../../app/core/permission.php";
 require '../../app/core/activity_log.php';
 
-Permission::authorize($pdo, 'Kelompok', 'update');
+Permission::authorize($pdo, 'Kelompok CBO', 'update');
 verifyCsrfToken();
 
 $kelompokTaniModel = new KelompokTani($pdo);
@@ -20,9 +20,9 @@ $data = [
     "alamat" => $_POST["alamat"],
     "id_akses_perjalanan" => $_POST["id_akses_perjalanan"],
     "id_kondisi_jalan" => $_POST["id_kondisi_jalan"],
-    "tahun_bentuk" => $_POST["tahun_bentuk"],
+    "tahun_bentuk" => $_POST["tahun_bentuk"] == '' ? null : $_POST["tahun_bentuk"],
     "nomor_sk" => $_POST["nomor_sk"],
-    "tanggal_sk" => $_POST["tanggal_sk"],
+    "tanggal_sk" => $_POST["tanggal_sk"] == '' ? null : $_POST["tanggal_sk"],
     "status_kelompok" => $_POST["status_kelompok"],
     "is_active" => $_POST["is_active"],
     "updated_by" => $_SESSION["user_id"]
@@ -36,12 +36,12 @@ if ($result) {
     logActivity(
         $pdo,
         'UPDATE',
-        'Kelompok',
+        'Kelompok CBO',
         $_POST["id"],
         't_kelompok_tani',
         $oldData,
         $newData,
-        'Mengubah data Kelompok',
+        'Mengubah data Kelompok CBO',
         'SUCCESS'
     );
 }

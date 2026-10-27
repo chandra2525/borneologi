@@ -60,16 +60,16 @@ include 'partials/header.php';
                             <div class="map-stats">
                                 <div class="stat-box">
                                     <span data-lang="text_total">Total</span>
-                                    <span data-lang="text_penerima_manfaat">Beneficiary</span>
-                                    <h5 id="totalPenerimaManfaat"></h5>
+                                    <span data-lang="text_cbo">CBO</span>
+                                    <h5 id="totalCBO"></h5>
                                 </div>
                                 <div class="stat-box">
-                                    <span data-lang="text_penerima_manfaat">Beneficiary</span>
+                                    <span data-lang="text_cbo">CBO</span>
                                     <span data-lang="text_laki_laki">Male</span>
                                     <h5 id="totalLaki"></h5>
                                 </div>
                                 <div class="stat-box">
-                                    <span data-lang="text_penerima_manfaat">Beneficiary</span>
+                                    <span data-lang="text_cbo">CBO</span>
                                     <span data-lang="text_perempuan">Female</span>
                                     <h5 id="totalPerempuan"></h5>
                                 </div>
@@ -256,12 +256,12 @@ include 'partials/header.php';
                                                                 <th data-lang="text_nama_panggilan">Nama Panggilan</th>
                                                                 <th data-lang="text_jenis_kelamin">Jenis Kelamin</th>
                                                                 <th data-lang="text_umur">Umur</th>
-                                                                <th data-lang="text_status_penerima_manfaat">Status
-                                                                    Penerima Manfaat</th>
+                                                                <th data-lang="text_status_cbo">Status
+                                                                    CBO</th>
                                                                 <th data-lang="text_alamat">Alamat</th>
                                                                 <th data-lang="text_foto">Foto</th>
                                                             </tr>
-                                                            <tbody id="penerimaManfaatKelompokTableBody">
+                                                            <tbody id="cboKelompokTableBody">
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -411,7 +411,7 @@ include 'partials/header.php';
                                                                 <th data-lang="text_kode_kabupaten">Kode Kabupaten</th>
                                                                 <th data-lang="text_luas_kabupaten">Luas Kabupaten</th>
                                                             </tr>
-                                                            <tbody id="penerimaManfaatKelompokTableBody">
+                                                            <tbody id="cboKelompokTableBody">
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -430,7 +430,7 @@ include 'partials/header.php';
                                                                 <th data-lang="text_kode_kecamatan">Kode Kecamatan</th>
                                                                 <th data-lang="text_luas_kecamatan">Luas Kecamatan</th>
                                                             </tr>
-                                                            <tbody id="penerimaManfaatKelompokTableBody">
+                                                            <tbody id="cboKelompokTableBody">
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -508,7 +508,7 @@ include 'partials/header.php';
                                                                 <th data-lang="text_kode_kecamatan">Kode Kecamatan</th>
                                                                 <th data-lang="text_luas_kecamatan">Luas Kecamatan</th>
                                                             </tr>
-                                                            <tbody id="penerimaManfaatKelompokTableBody">
+                                                            <tbody id="cboKelompokTableBody">
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -659,8 +659,7 @@ include 'partials/header.php';
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab"
                                                     data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1"
-                                                    aria-selected="true" data-lang="text_penerima_manfaat">Penerima
-                                                    Manfaat</button>
+                                                    aria-selected="true" data-lang="text_cbo">CBO</button>
                                             </li>
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link" id="tab2-tab" data-bs-toggle="tab"
@@ -692,8 +691,8 @@ include 'partials/header.php';
                                                                 <h4 class="projects-title" id="namaLengkap"></h4>
                                                             </div>
 
-                                                            <a href="" id="penerimaManfaatFotoLink" class="popup-image">
-                                                                <img id="penerimaManfaatFoto"
+                                                            <a href="" id="cboFotoLink" class="popup-image">
+                                                                <img id="cboFoto"
                                                                     class="projects-image img-fluid" alt="">
                                                             </a>
                                                         </div>
@@ -711,31 +710,30 @@ include 'partials/header.php';
                                                                     id="umur"></a>
                                                             </li>
                                                             <li class="footer-menu-item"><a class="footer-menu-link"
-                                                                    id="statusPenerimaManfaat"></a>
+                                                                    id="statusCBO"></a>
                                                             </li>
                                                         </ul>
 
                                                         <strong class="site-footer-title d-block mt-4 mb-3"
                                                             data-lang="text_alamat">Alamat
                                                         </strong>
-                                                        <p class="mb-0" id="alamatPenerimaManfaat"></p>
+                                                        <p class="mb-0" id="alamatCBO"></p>
                                                         <ul class="footer-menu mt-2 mb-3">
                                                             <li class="footer-menu-item"><a class="footer-menu-link"
-                                                                    id="desaPenerimaManfaat"></a>
+                                                                    id="desaCBO"></a>
                                                             </li>
                                                             <li class="footer-menu-item"><a class="footer-menu-link"
-                                                                    id="kecamatanPenerimaManfaat"></a>
+                                                                    id="kecamatanCBO"></a>
                                                             </li>
                                                             <li class="footer-menu-item"><a class="footer-menu-link"
-                                                                    id="kabupatenPenerimaManfaat"></a>
+                                                                    id="kabupatenCBO"></a>
                                                             </li>
                                                         </ul>
                                                     </div>
 
                                                     <div class="col-lg-5 col-md-12 col-12">
                                                         <strong class="site-footer-title d-block mb-3"
-                                                            data-lang="text_kelompok_penerima_manfaat">Kelompok Penerima
-                                                            Manfaat
+                                                            data-lang="text_kelompok_cbo">Kelompok CBO
                                                         </strong>
                                                         <table class="profile-thumb">
                                                             <tr>
@@ -744,7 +742,7 @@ include 'partials/header.php';
                                                                 </th>
                                                                 <th data-lang="text_tahun_gabung">Tahun Gabung</th>
                                                             </tr>
-                                                            <tbody id="kelompokPenerimaManfaatTableBody">
+                                                            <tbody id="kelompokCBOTableBody">
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -1693,7 +1691,7 @@ include 'partials/header.php';
                                                         <th>Total Hutan Adat</th>
                                                         <th>Total Kaleka</th>
                                                         <th>Total Bank Benih</th>
-                                                        <th>Total CBO Penerima Manfaat</th>
+                                                        <th>Total CBO CBO</th>
                                                     </tr>
                                                 <!-- </thead> -->
                                                 <tbody id="tabelKecamatanBody">
@@ -1734,7 +1732,7 @@ include 'partials/header.php';
                                                         <th>Total Hutan Adat</th>
                                                         <th>Total Kaleka</th>
                                                         <th>Total Bank Benih</th>
-                                                        <th>Total CBO Penerima Manfaat</th>
+                                                        <th>Total CBO CBO</th>
                                                     </tr>
                                                 <!-- </thead> -->
                                                 <tbody id="tabelDesaBody">

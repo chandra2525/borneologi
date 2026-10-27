@@ -7,7 +7,7 @@ require "../../app/models/Petani.php";
 require "../../app/core/permission.php";
 require '../../app/core/activity_log.php';
 
-Permission::authorize($pdo, 'Penerima Manfaat', 'create');
+Permission::authorize($pdo, 'CBO', 'create');
 verifyCsrfToken();
 
 $foto_profil_petani = null;
@@ -66,12 +66,12 @@ if ($newId) {
     logActivity(
         $pdo,
         'CREATE',
-        'Penerima Manfaat',
+        'CBO',
         $newId,
         't_petani',
         null,
         $data,
-        'Menambahkan data Penerima Manfaat',
+        'Menambahkan data CBO',
         'SUCCESS'
     );
 }

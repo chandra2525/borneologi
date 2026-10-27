@@ -1,5 +1,9 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+
 class KelompokTani
 {
     private $pdo;
@@ -28,10 +32,13 @@ class KelompokTani
 
     public function findById($id)
     {
-        $sql = "SELECT *
-            FROM t_kelompok_tani
-            WHERE id = :id
-            AND deleted_at IS NULL
+        $sql = "SELECT kt.*, kk.nama as nama_kategori_kelompok, d.nama_desa as nama_desa, ap.nama as nama_akses_perjalanan, kj.nama as nama_kondisi_jalan
+            FROM t_kelompok_tani kt
+            LEFT JOIN m_kategori_kelompok kk ON kk.id=kt.id_kategori_kelompok
+            LEFT JOIN m_desa d ON d.id=kt.id_desa
+            LEFT JOIN m_akses_perjalanan ap ON ap.id=kt.id_akses_perjalanan
+            LEFT JOIN m_kondisi_jalan kj ON kj.id=kt.id_kondisi_jalan
+            WHERE kt.id = :id AND kt.deleted_at IS NULL
             LIMIT 1";
 
         $stmt = $this->pdo->prepare($sql);

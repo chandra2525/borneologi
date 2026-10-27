@@ -224,11 +224,18 @@ $isMonitoringTurunan =
                                             Progress Status
                                         </label>
                                         <div>
-                                            <span class="badge <?= match ($monitoring['nama_status_monitoring'] ?? '') {
-                                                'Baru Ditanam' => 'badge-primary',
-                                                'Proses Panen' => 'badge-info',
-                                                default => 'badge-success',
-                                            } ?>">
+                                            <?php
+                                            $statusMonitoring = $monitoring['nama_status_monitoring'] ?? '';
+                                            if ($statusMonitoring === 'Baru Ditanam') {
+                                                $badgeMonitoring = 'badge-primary';
+                                            } elseif ($statusMonitoring === 'Proses Panen') {
+                                                $badgeMonitoring = 'badge-info';
+                                            } else {
+                                                $badgeMonitoring = 'badge-success';
+                                            }
+                                            ?>
+                                            <span
+                                                class="badge <?= htmlspecialchars($badgeMonitoring, ENT_QUOTES, 'UTF-8') ?>">
                                                 <?= htmlspecialchars(
                                                     $monitoring['nama_status_monitoring'] ?? '-',
                                                     ENT_QUOTES,

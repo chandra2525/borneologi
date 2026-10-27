@@ -17,7 +17,7 @@ $kategoriKelompoks = $controller->getKategoriKelompok();
 $desas = $controller->getDesa();
 $aksesPerjalanans = $controller->getAksesPerjalanan();
 $kondisiJalans = $controller->getKondisiJalan();
-Permission::authorize($pdo, 'Kelompok', 'view');
+Permission::authorize($pdo, 'Kelompok CBO', 'view');
 
 ?>
 
@@ -64,12 +64,12 @@ Permission::authorize($pdo, 'Kelompok', 'view');
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Data Kelompok</h1>
+                            <h1>Data Kelompok CBO</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Master Data</a></li>
-                                <li class="breadcrumb-item active">Data Kelompok</li>
+                                <li class="breadcrumb-item active">Data Kelompok CBO</li>
                             </ol>
                         </div>
                     </div>
@@ -83,11 +83,11 @@ Permission::authorize($pdo, 'Kelompok', 'view');
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header row">
-                                    <h3 class="card-title col-9">Berikut adalah list dari Data Kelompok</h3>
-                                    <?php if (Permission::can($pdo, 'Kelompok', 'create')): ?>
+                                    <h3 class="card-title col-9">Berikut adalah list dari Data Kelompok CBO</h3>
+                                    <?php if (Permission::can($pdo, 'Kelompok CBO', 'create')): ?>
                                         <button class="col-3 btn btn-block btn-success" data-toggle="modal"
                                             data-target="#modalTambah">
-                                            Tambah Kelompok
+                                            Tambah Kelompok CBO
                                         </button>
                                     <?php endif; ?>
                                 </div>
@@ -97,9 +97,9 @@ Permission::authorize($pdo, 'Kelompok', 'view');
                                         <thead>
                                             <tr>
                                                 <th class="text-center">No</th>
-                                                <th>Kode Kelompok</th>
-                                                <th>Nama Kelompok</th>
-                                                <th>Kategori Kelompok</th>
+                                                <th>Kode Kelompok CBO</th>
+                                                <th>Nama Kelompok CBO</th>
+                                                <th>Kategori Kelompok CBO</th>
                                                 <th>Desa</th>
                                                 <th>Alamat</th>
                                                 <th>Akses Perjalanan</th>
@@ -107,7 +107,7 @@ Permission::authorize($pdo, 'Kelompok', 'view');
                                                 <th>Tahun Bentuk</th>
                                                 <th>Nomor SK</th>
                                                 <th>Tanggal SK</th>
-                                                <th>Status Kelompok</th>
+                                                <th>Status Kelompok CBO</th>
                                                 <th>Status Aktif</th>
                                                 <th>Aksi</th>
                                             </tr>
@@ -131,7 +131,14 @@ Permission::authorize($pdo, 'Kelompok', 'view');
                                                     </td>
                                                     <td><?= $kelompokTani['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
                                                     <td class="row">
-                                                        <?php if (Permission::can($pdo, 'Kelompok', 'update')): ?>
+                                                        <div class="col">
+                                                            <a href="detail_list.php?id_kelompok_tani=<?= (int) $kelompokTani['id'] ?>"
+                                                                class="btn btn-block btn-primary btn-detail"
+                                                                title="Detail Kelompok CBO">
+                                                                <i class="fas fa-list"></i> Detail
+                                                            </a>
+                                                        </div>
+                                                        <?php if (Permission::can($pdo, 'Kelompok CBO', 'update')): ?>
                                                             <div class="col">
                                                                 <button class="btn btn-block btn-info btn-edit"
                                                                     data-id="<?= $kelompokTani['id'] ?>"
@@ -153,7 +160,7 @@ Permission::authorize($pdo, 'Kelompok', 'view');
                                                             </div>
                                                         <?php endif; ?>
 
-                                                        <?php if (Permission::can($pdo, 'Kelompok', 'delete')): ?>
+                                                        <?php if (Permission::can($pdo, 'Kelompok CBO', 'delete')): ?>
                                                             <form method="POST" action="delete.php" class="form-delete col">
                                                                 <?= csrfField() ?>
                                                                 <input type="hidden" name="id" value="<?= $kelompokTani['id'] ?>">
@@ -169,9 +176,9 @@ Permission::authorize($pdo, 'Kelompok', 'view');
                                         <tfoot>
                                             <tr>
                                                 <th class="text-center">No</th>
-                                                <th>Kode Kelompok</th>
-                                                <th>Nama Kelompok</th>
-                                                <th>Kategori Kelompok</th>
+                                                <th>Kode Kelompok CBO</th>
+                                                <th>Nama Kelompok CBO</th>
+                                                <th>Kategori Kelompok CBO</th>
                                                 <th>Desa</th>
                                                 <th>Alamat</th>
                                                 <th>Akses Perjalanan</th>
@@ -179,7 +186,7 @@ Permission::authorize($pdo, 'Kelompok', 'view');
                                                 <th>Tahun Bentuk</th>
                                                 <th>Nomor SK</th>
                                                 <th>Tanggal SK</th>
-                                                <th>Status Kelompok</th>
+                                                <th>Status Kelompok CBO</th>
                                                 <th>Status Aktif</th>
                                                 <th>Aksi</th>
                                             </tr>
@@ -201,7 +208,7 @@ Permission::authorize($pdo, 'Kelompok', 'view');
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title">Tambah Kelompok</h4>
+                            <h4 class="modal-title">Tambah Kelompok CBO</h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                         <form id="formTambah" method="POST" action="store.php">
@@ -210,26 +217,26 @@ Permission::authorize($pdo, 'Kelompok', 'view');
                                 <div class="row">
                                     <div class="col-lg-6 col-6">
                                         <div class="form-group">
-                                            <label for="kode_kelompok">Kode Kelompok<code>*</code></label>
+                                            <label for="kode_kelompok">Kode Kelompok CBO<code>*</code></label>
                                             <input type="text" name="kode_kelompok" class="form-control" id="kode_kelompok"
                                                 value="<?= (new KelompokTani($pdo))->generateKode() ?>"
-                                                placeholder="Masukkan Kode Kelompok" readonly>
+                                                placeholder="Masukkan Kode Kelompok CBO" readonly>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-6">
                                         <div class="form-group">
-                                            <label for="nama_kelompok">Nama Kelompok<code>*</code></label>
+                                            <label for="nama_kelompok">Nama Kelompok CBO<code>*</code></label>
                                             <input type="text" name="nama_kelompok" class="form-control" id="nama_kelompok"
-                                                placeholder="Masukkan Nama Kelompok" minlength="2" maxlength="100">
+                                                placeholder="Masukkan Nama Kelompok CBO" minlength="2" maxlength="100">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6 col-6">
                                         <div class="form-group">
-                                            <label for="id_kategori_kelompok">Kategori Kelompok<code>*</code></label>
+                                            <label for="id_kategori_kelompok">Kategori Kelompok CBO<code>*</code></label>
                                             <select name="id_kategori_kelompok" class="form-control" id="id_kategori_kelompok">
-                                                <option value="">-- Pilih Kategori Kelompok --</option>
+                                                <option value="">-- Pilih Kategori Kelompok CBO --</option>
                                                 <?php foreach ($kategoriKelompoks as $kk): ?>
                                                     <option value="<?= $kk['id'] ?>">
                                                         <?= htmlspecialchars($kk['nama']) ?>
@@ -309,7 +316,7 @@ Permission::authorize($pdo, 'Kelompok', 'view');
                                 <div class="row">
                                     <div class="col-lg-6 col-6">
                                         <div class="form-group">
-                                            <label>Status Kelompok<code>*</code></label>
+                                            <label>Status Kelompok CBO<code>*</code></label>
                                             <div class="form-group row">
                                                 <div class="col-sm-2">
                                                     <div class="custom-control custom-radio">
@@ -369,7 +376,7 @@ Permission::authorize($pdo, 'Kelompok', 'view');
                     <div class="modal-content">
 
                         <div class="modal-header">
-                            <h4 class="modal-title">Edit Kelompok</h4>
+                            <h4 class="modal-title">Edit Kelompok CBO</h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
 
@@ -380,14 +387,14 @@ Permission::authorize($pdo, 'Kelompok', 'view');
                                 <div class="row">
                                     <div class="col-lg-6 col-6">
                                         <div class="form-group">
-                                            <label for="kode_kelompok">Kode Kelompok<code>*</code></label>
+                                            <label for="kode_kelompok">Kode Kelompok CBO<code>*</code></label>
                                             <input type="text" name="kode_kelompok" id="edit_kode_kelompok" class="form-control" minlength="2"
                                                 maxlength="50" readonly>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-6">
                                         <div class="form-group">
-                                            <label for="nama_kelompok">Nama Kelompok<code>*</code></label>
+                                            <label for="nama_kelompok">Nama Kelompok CBO<code>*</code></label>
                                             <input type="text" name="nama_kelompok" id="edit_nama_kelompok" class="form-control" minlength="2"
                                                 maxlength="100">
                                         </div>
@@ -396,9 +403,9 @@ Permission::authorize($pdo, 'Kelompok', 'view');
                                 <div class="row">
                                     <div class="col-lg-6 col-6">
                                         <div class="form-group">
-                                            <label for="edit_id_kategori_kelompok">Kategori Kelompok<code>*</code></label>
+                                            <label for="edit_id_kategori_kelompok">Kategori Kelompok CBO<code>*</code></label>
                                             <select name="id_kategori_kelompok" class="form-control" id="edit_id_kategori_kelompok">
-                                                <option value="">-- Pilih Kategori Kelompok --</option>
+                                                <option value="">-- Pilih Kategori Kelompok CBO --</option>
                                                 <?php foreach ($kategoriKelompoks as $kk): ?>
                                                     <option value="<?= $kk['id'] ?>">
                                                         <?= htmlspecialchars($kk['nama']) ?>
@@ -478,7 +485,7 @@ Permission::authorize($pdo, 'Kelompok', 'view');
                                 <div class="row">
                                     <div class="col-lg-6 col-6">
                                         <div class="form-group">
-                                            <label>Status Kelompok<code>*</code></label>
+                                            <label>Status Kelompok CBO<code>*</code></label>
                                             <div class="form-group row">
                                                 <div class="col-sm-2">
                                                     <div class="custom-control custom-radio">
@@ -637,13 +644,13 @@ Permission::authorize($pdo, 'Kelompok', 'view');
                     },
                     messages: {
                         kode_kelompok: {
-                            required: "Silahkan masukkan Kode Kelompok"
+                            required: "Silahkan masukkan Kode Kelompok CBO"
                         },
                         nama_kelompok: {
-                            required: "Silahkan masukkan Nama Kelompok"
+                            required: "Silahkan masukkan Nama Kelompok CBO"
                         },
                         id_kategori_kelompok: {
-                            required: "Silahkan pilih Kategori Kelompok"
+                            required: "Silahkan pilih Kategori Kelompok CBO"
                         },
                         id_desa: {
                             required: "Silahkan pilih Desa"
@@ -667,7 +674,7 @@ Permission::authorize($pdo, 'Kelompok', 'view');
                         //     required: "Silahkan pilih Tanggal SK"
                         // },
                         status_kelompok: {
-                            required: "Silahkan pilih Status Kelompok"
+                            required: "Silahkan pilih Status Kelompok CBO"
                         },
                         is_active: {
                             required: "Silahkan pilih Status Aktif"
@@ -790,13 +797,13 @@ Permission::authorize($pdo, 'Kelompok', 'view');
         const urlParams = new URLSearchParams(window.location.search);
         const success = urlParams.get('success');
         if (success === "created") {
-            showToast("Data Kelompok berhasil ditambahkan", "created");
+            showToast("Data Kelompok CBO berhasil ditambahkan", "created");
         }
         if (success === "updated") {
-            showToast("Data Kelompok berhasil diperbarui", "updated");
+            showToast("Data Kelompok CBO berhasil diperbarui", "updated");
         }
         if (success === "deleted") {
-            showToast("Data Kelompok berhasil dihapus", "deleted");
+            showToast("Data Kelompok CBO berhasil dihapus", "deleted");
         }
     </script>
 

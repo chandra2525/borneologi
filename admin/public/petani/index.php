@@ -14,7 +14,7 @@ checkAuth("non_dashboard");
 $controller = new PetaniController($pdo);
 $petanis = $controller->index();
 $desas = $controller->getDesa();
-Permission::authorize($pdo, 'Penerima Manfaat', 'view');
+Permission::authorize($pdo, 'CBO', 'view');
 
 ?>
 
@@ -61,12 +61,12 @@ Permission::authorize($pdo, 'Penerima Manfaat', 'view');
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Data Penerima Manfaat</h1>
+                            <h1>Data CBO</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Master Data</a></li>
-                                <li class="breadcrumb-item active">Data Penerima Manfaat</li>
+                                <li class="breadcrumb-item active">Data CBO</li>
                             </ol>
                         </div>
                     </div>
@@ -80,8 +80,8 @@ Permission::authorize($pdo, 'Penerima Manfaat', 'view');
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header row">
-                                    <h3 class="card-title col-9">Berikut adalah list dari Data Penerima Manfaat</h3>
-                                    <?php if (Permission::can($pdo, 'Penerima Manfaat', 'create')): ?>
+                                    <h3 class="card-title col-9">Berikut adalah list dari Data CBO</h3>
+                                    <?php if (Permission::can($pdo, 'CBO', 'create')): ?>
                                         <div class="col-md-12 text-right">
                                             <a href="download_template.php"
                                                 class="btn btn-info">
@@ -122,8 +122,8 @@ Permission::authorize($pdo, 'Penerima Manfaat', 'view');
                                                 <th>Nomor HP</th>
                                                 <th>Desa</th>
                                                 <th>Alamat</th>
-                                                <th>Foto Penerima Manfaat</th>
-                                                <th>Status Penerima Manfaat</th>
+                                                <th>Foto CBO</th>
+                                                <th>Status CBO</th>
                                                 <th>Status Aktif</th>
                                                 <th>Aksi</th>
                                             </tr>
@@ -153,7 +153,7 @@ Permission::authorize($pdo, 'Penerima Manfaat', 'view');
                                                     </td>
                                                     <td><?= $petani['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
                                                     <td class="row">
-                                                        <?php if (Permission::can($pdo, 'Penerima Manfaat', 'update')): ?>
+                                                        <?php if (Permission::can($pdo, 'CBO', 'update')): ?>
                                                             <div class="col">
                                                                 <button class="btn btn-block btn-info btn-edit"
                                                                     data-id="<?= $petani['id'] ?>"
@@ -175,7 +175,7 @@ Permission::authorize($pdo, 'Penerima Manfaat', 'view');
                                                             </div>
                                                         <?php endif; ?>
 
-                                                        <?php if (Permission::can($pdo, 'Penerima Manfaat', 'delete')): ?>
+                                                        <?php if (Permission::can($pdo, 'CBO', 'delete')): ?>
                                                             <form method="POST" action="delete.php" class="form-delete col">
                                                                 <?= csrfField() ?>
                                                                 <input type="hidden" name="id" value="<?= $petani['id'] ?>">
@@ -200,8 +200,8 @@ Permission::authorize($pdo, 'Penerima Manfaat', 'view');
                                                 <th>Nomor HP</th>
                                                 <th>Desa</th>
                                                 <th>Alamat</th>
-                                                <th>Foto Penerima Manfaat</th>
-                                                <th>Status Penerima Manfaat</th>
+                                                <th>Foto CBO</th>
+                                                <th>Status CBO</th>
                                                 <th>Status Aktif</th>
                                                 <th>Aksi</th>
                                             </tr>
@@ -223,7 +223,7 @@ Permission::authorize($pdo, 'Penerima Manfaat', 'view');
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title">Tambah Penerima Manfaat</h4>
+                            <h4 class="modal-title">Tambah CBO</h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                         <form id="formTambah" method="POST" action="store.php" enctype="multipart/form-data">
@@ -313,7 +313,7 @@ Permission::authorize($pdo, 'Penerima Manfaat', 'view');
                                 <div class="row">
                                     <div class="col-lg-6 col-6">
                                         <div class="form-group">
-                                            <label>Status Penerima Manfaat<code>*</code></label>
+                                            <label>Status CBO<code>*</code></label>
                                             <div class="form-group row">
                                                 <div class="col-sm-2">
                                                     <div class="custom-control custom-radio">
@@ -373,7 +373,7 @@ Permission::authorize($pdo, 'Penerima Manfaat', 'view');
                     <div class="modal-content">
 
                         <div class="modal-header">
-                            <h4 class="modal-title">Edit Penerima Manfaat</h4>
+                            <h4 class="modal-title">Edit CBO</h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
 
@@ -471,7 +471,7 @@ Permission::authorize($pdo, 'Penerima Manfaat', 'view');
                                 <div class="row">
                                     <div class="col-lg-6 col-6">
                                         <div class="form-group">
-                                            <label>Status Penerima Manfaat<code>*</code></label>
+                                            <label>Status CBO<code>*</code></label>
                                             <div class="form-group row">
                                                 <div class="col-sm-2">
                                                     <div class="custom-control custom-radio">
@@ -535,7 +535,7 @@ Permission::authorize($pdo, 'Penerima Manfaat', 'view');
 
                         <div class="modal-header">
                             <h4 class="modal-title">
-                                Import Data Penerima Manfaat
+                                Import Data CBO
                             </h4>
 
                             <button type="button"
@@ -626,7 +626,7 @@ Permission::authorize($pdo, 'Penerima Manfaat', 'view');
                 <p class="mb-0">
                     Berhasil mengimport
                     <strong><?= $importResult['success'] ?></strong>
-                    data penerima manfaat.
+                    data CBO.
                 </p>
 
                 <?php if (!empty($importResult['failed'])): ?>
@@ -808,7 +808,7 @@ Permission::authorize($pdo, 'Penerima Manfaat', 'view');
                         //     required: "Silahkan masukkan Alamat"
                         // },
                         status_petani: {
-                            required: "Silahkan pilih Status Penerima Manfaat"
+                            required: "Silahkan pilih Status CBO"
                         },
                         is_active: {
                             required: "Silahkan pilih Status Aktif"
@@ -931,13 +931,13 @@ Permission::authorize($pdo, 'Penerima Manfaat', 'view');
         const urlParams = new URLSearchParams(window.location.search);
         const success = urlParams.get('success');
         if (success === "created") {
-            showToast("Data Penerima Manfaat berhasil ditambahkan", "created");
+            showToast("Data CBO berhasil ditambahkan", "created");
         }
         if (success === "updated") {
-            showToast("Data Penerima Manfaat berhasil diperbarui", "updated");
+            showToast("Data CBO berhasil diperbarui", "updated");
         }
         if (success === "deleted") {
-            showToast("Data Penerima Manfaat berhasil dihapus", "deleted");
+            showToast("Data CBO berhasil dihapus", "deleted");
         }
     </script>
 

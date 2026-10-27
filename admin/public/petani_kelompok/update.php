@@ -7,7 +7,7 @@ require "../../app/models/PetaniKelompok.php";
 require "../../app/core/permission.php";
 require '../../app/core/activity_log.php';
 
-Permission::authorize($pdo, 'Kelompok Penerima', 'update');
+Permission::authorize($pdo, 'Kelompok CBO', 'update');
 verifyCsrfToken();
 
 $petaniKelompokModel = new PetaniKelompok($pdo);
@@ -32,12 +32,12 @@ if ($result) {
     logActivity(
         $pdo,
         'UPDATE',
-        'Kelompok Penerima',
+        'Kelompok CBO',
         $_POST["id"],
         't_petani_kelompok',
         $oldData,
         $newData,
-        'Mengubah data Kelompok Penerima',
+        'Mengubah data Kelompok CBO',
         'SUCCESS'
     );
 }

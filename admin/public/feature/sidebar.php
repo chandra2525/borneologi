@@ -61,10 +61,10 @@ $canFungsiPohon = canView($pdo, 'Fungsi Pohon');
 $canWarnaAir = canView($pdo, 'Warna Air');
 $canJenisPalung = canView($pdo, 'Jenis Palung');
 $canKecepatanAliran = canView($pdo, 'Kecepatan Aliran');
-$canDataPenerimaManfaat = canView($pdo, 'Data Penerima Manfaat');
-$canPenerimaManfaat = canView($pdo, 'Penerima Manfaat');
-$canKelompok = canView($pdo, 'Kelompok');
-$canKelompokPenerima = canView($pdo, 'Kelompok Penerima');
+$canDataCbo = canView($pdo, 'Data CBO');
+$canCbo = canView($pdo, 'CBO');
+$canKelompok = canView($pdo, 'Kelompok CBO');
+// $canKelompokCbo = canView($pdo, 'Kelompok CBO');
 $canDataTanah = canView($pdo, 'Data Tanah');
 $canKaleka = canView($pdo, 'Kaleka');
 $canHutanAdat = canView($pdo, 'Hutan Adat');
@@ -501,24 +501,24 @@ $canGlosarium = canView($pdo, 'Glosarium');
                         <?php endif; ?>
                     </ul>
                 </li>
-                <?php if ($canDataPenerimaManfaat): ?>
+                <?php if ($canDataCbo): ?>
                     <li
                         class="nav-item <?= ($menu == 'petani' || $menu == 'kelompok_tani' || $menu == 'petani_kelompok') ? 'menu-open' : '' ?>">
                         <a href="#"
                             class="nav-link <?= ($menu == 'petani' || $menu == 'kelompok_tani' || $menu == 'petani_kelompok') ? 'active' : '' ?>">
                             <i class="nav-icon fas fa-users"></i>
                             <p>
-                                Data Penerima Manfaat
+                                Data CBO
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-                            <?php if ($canPenerimaManfaat): ?>
+                            <?php if ($canCbo): ?>
                                 <li class="nav-item">
                                     <a href="<?= ($menu == 'dashboard') ? 'petani/' : '../petani/' ?>index.php"
                                         class="nav-link <?= ($menu == 'petani') ? 'active' : '' ?>">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Penerima Manfaat</p>
+                                        <p>CBO</p>
                                     </a>
                                 </li>
                             <?php endif; ?>
@@ -527,19 +527,19 @@ $canGlosarium = canView($pdo, 'Glosarium');
                                     <a href="<?= ($menu == 'dashboard') ? 'kelompok_tani/' : '../kelompok_tani/' ?>index.php"
                                         class="nav-link <?= ($menu == 'kelompok_tani') ? 'active' : '' ?>">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Kelompok</p>
+                                        <p>Kelompok CBO</p>
                                     </a>
                                 </li>
                             <?php endif; ?>
-                            <?php if ($canKelompokPenerima): ?>
+                            <!-- <?php if ($canKelompokCbo): ?>
                                 <li class="nav-item">
                                     <a href="<?= ($menu == 'dashboard') ? 'petani_kelompok/' : '../petani_kelompok/' ?>index.php"
                                         class="nav-link <?= ($menu == 'petani_kelompok') ? 'active' : '' ?>">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Kelompok Penerima</p>
+                                        <p>Kelompok CBO</p>
                                     </a>
                                 </li>
-                            <?php endif; ?>
+                            <?php endif; ?> -->
                         </ul>
                     </li>
                 <?php endif; ?>

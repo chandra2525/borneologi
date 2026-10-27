@@ -7,7 +7,11 @@ require "../../app/models/KelompokTani.php";
 require "../../app/core/permission.php";
 require '../../app/core/activity_log.php';
 
-Permission::authorize($pdo, 'Kelompok', 'create');
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+
+Permission::authorize($pdo, 'Kelompok CBO', 'create');
 verifyCsrfToken();
 
 $kelompokTani = new KelompokTani($pdo);
@@ -20,9 +24,9 @@ $data = [
     "alamat" => $_POST["alamat"],
     "id_akses_perjalanan" => $_POST["id_akses_perjalanan"],
     "id_kondisi_jalan" => $_POST["id_kondisi_jalan"],
-    "tahun_bentuk" => $_POST["tahun_bentuk"],
+    "tahun_bentuk" => $_POST["tahun_bentuk"] == '' ? null : $_POST["tahun_bentuk"],
     "nomor_sk" => $_POST["nomor_sk"],
-    "tanggal_sk" => $_POST["tanggal_sk"],
+    "tanggal_sk" => $_POST["tanggal_sk"] == '' ? null : $_POST["tanggal_sk"],
     "status_kelompok" => $_POST["status_kelompok"],
     "is_active" => $_POST["is_active"],
     "created_by" => $_SESSION["user_id"]
@@ -34,12 +38,12 @@ if ($newId) {
     logActivity(
         $pdo,
         'CREATE',
-        'Kelompok',
+        'Kelompok CBO',
         $newId,
         't_kelompok_tani',
         null,
         $data,
-        'Menambahkan data Kelompok',
+        'Menambahkan data Kelompok CBO',
         'SUCCESS'
     );
 }

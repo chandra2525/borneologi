@@ -16,7 +16,7 @@ $petaniKelompoks = $controller->index();
 $petanis = $controller->getPetani();
 $kelompokTanis = $controller->getKelompokTani();
 $jabatanKelompoks = $controller->getJabatanKelompok();
-Permission::authorize($pdo, 'Kelompok Penerima', 'view');
+Permission::authorize($pdo, 'Kelompok CBO', 'view');
 
 ?>
 
@@ -78,12 +78,12 @@ Permission::authorize($pdo, 'Kelompok Penerima', 'view');
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Data Kelompok Penerima Manfaat</h1>
+                            <h1>Data Kelompok CBO</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Master Data</a></li>
-                                <li class="breadcrumb-item active">Data Kelompok Penerima Manfaat</li>
+                                <li class="breadcrumb-item active">Data Kelompok CBO</li>
                             </ol>
                         </div>
                     </div>
@@ -97,11 +97,11 @@ Permission::authorize($pdo, 'Kelompok Penerima', 'view');
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header row">
-                                    <h3 class="card-title col-9">Berikut adalah list dari Data Kelompok Penerima Manfaat</h3>
-                                    <?php if (Permission::can($pdo, 'Kelompok Penerima', 'create')): ?>
+                                    <h3 class="card-title col-9">Berikut adalah list dari Data Kelompok CBO</h3>
+                                    <?php if (Permission::can($pdo, 'Kelompok CBO', 'create')): ?>
                                         <button class="col-3 btn btn-block btn-success" data-toggle="modal"
                                             data-target="#modalTambah">
-                                            Tambah Kelompok Penerima Manfaat
+                                            Tambah Kelompok CBO
                                         </button>
                                     <?php endif; ?>
                                 </div>
@@ -111,7 +111,7 @@ Permission::authorize($pdo, 'Kelompok Penerima', 'view');
                                         <thead>
                                             <tr>
                                                 <th class="text-center">No</th>
-                                                <th>Penerima Manfaat</th>
+                                                <th>CBO</th>
                                                 <th>Kelompok</th>
                                                 <th>Jabatan Kelompok</th>
                                                 <th>Tanggal Gabung</th>
@@ -135,7 +135,7 @@ Permission::authorize($pdo, 'Kelompok Penerima', 'view');
                                                     <td><?= htmlspecialchars($petaniKelompok['keterangan']) ?></td>
                                                     <td><?= $petaniKelompok['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
                                                     <td class="row">
-                                                        <?php if (Permission::can($pdo, 'Kelompok Penerima', 'update')): ?>
+                                                        <?php if (Permission::can($pdo, 'Kelompok CBO', 'update')): ?>
                                                             <div class="col">
                                                                 <button class="btn btn-block btn-info btn-edit"
                                                                     data-id="<?= $petaniKelompok['id'] ?>"
@@ -152,7 +152,7 @@ Permission::authorize($pdo, 'Kelompok Penerima', 'view');
                                                             </div>
                                                         <?php endif; ?>
 
-                                                        <?php if (Permission::can($pdo, 'Kelompok Penerima', 'delete')): ?>
+                                                        <?php if (Permission::can($pdo, 'Kelompok CBO', 'delete')): ?>
                                                             <form method="POST" action="delete.php" class="form-delete col">
                                                                 <?= csrfField() ?>
                                                                 <input type="hidden" name="id" value="<?= $petaniKelompok['id'] ?>">
@@ -168,7 +168,7 @@ Permission::authorize($pdo, 'Kelompok Penerima', 'view');
                                         <tfoot>
                                             <tr>
                                                 <th class="text-center">No</th>
-                                                <th>Penerima Manfaat</th>
+                                                <th>CBO</th>
                                                 <th>Kelompok</th>
                                                 <th>Jabatan Kelompok</th>
                                                 <th>Tanggal Gabung</th>
@@ -195,16 +195,16 @@ Permission::authorize($pdo, 'Kelompok Penerima', 'view');
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title">Tambah Kelompok Penerima Manfaat</h4>
+                            <h4 class="modal-title">Tambah Kelompok CBO</h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                         <form id="formTambah" method="POST" action="store.php">
                             <?= csrfField() ?>
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label for="id_petani">Penerima Manfaat<code>*</code></label>
+                                    <label for="id_petani">CBO<code>*</code></label>
                                     <select name="id_petani" class="form-control" id="id_petani">
-                                        <option value="">-- Pilih Penerima Manfaat --</option>
+                                        <option value="">-- Pilih CBO --</option>
                                         <?php foreach ($petanis as $p): ?>
                                             <option value="<?= $p['id'] ?>">
                                                 <?= htmlspecialchars($p['nama_lengkap']) ?>
@@ -289,7 +289,7 @@ Permission::authorize($pdo, 'Kelompok Penerima', 'view');
                     <div class="modal-content">
 
                         <div class="modal-header">
-                            <h4 class="modal-title">Edit Kelompok Penerima Manfaat</h4>
+                            <h4 class="modal-title">Edit Kelompok CBO</h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
 
@@ -298,9 +298,9 @@ Permission::authorize($pdo, 'Kelompok Penerima', 'view');
                             <input type="hidden" name="id" id="edit_id">
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label for="edit_id_petani">Penerima Manfaat<code>*</code></label>
+                                    <label for="edit_id_petani">CBO<code>*</code></label>
                                     <select name="id_petani" class="form-control" id="edit_id_petani">
-                                        <option value="">-- Pilih Penerima Manfaat --</option>
+                                        <option value="">-- Pilih CBO --</option>
                                         <?php foreach ($petanis as $p): ?>
                                             <option value="<?= $p['id'] ?>">
                                                 <?= htmlspecialchars($p['nama_lengkap']) ?>
@@ -464,7 +464,7 @@ Permission::authorize($pdo, 'Kelompok Penerima', 'view');
                     },
                     messages: {
                         id_petani: {
-                            required: "Silahkan pilih Penerima Manfaat"
+                            required: "Silahkan pilih CBO"
                         },
                         id_kelompok_tani: {
                             required: "Silahkan pilih Kelompok"
@@ -537,7 +537,7 @@ Permission::authorize($pdo, 'Kelompok Penerima', 'view');
             $('#id_petani').select2({
                 theme: 'bootstrap-5',
                 width: '100%',
-                placeholder: '-- Pilih Penerima Manfaat --',
+                placeholder: '-- Pilih CBO --',
                 allowClear: true,
                 dropdownParent: $('#modalTambah')
             });
@@ -545,7 +545,7 @@ Permission::authorize($pdo, 'Kelompok Penerima', 'view');
             $('#edit_id_petani').select2({
                 theme: 'bootstrap-5',
                 width: '100%',
-                placeholder: '-- Pilih Penerima Manfaat --',
+                placeholder: '-- Pilih CBO --',
                 allowClear: true,
                 dropdownParent: $('#modalEdit') // jika dalam modal
             });
@@ -631,13 +631,13 @@ Permission::authorize($pdo, 'Kelompok Penerima', 'view');
         const urlParams = new URLSearchParams(window.location.search);
         const success = urlParams.get('success');
         if (success === "created") {
-            showToast("Data Kelompok Penerima Manfaat berhasil ditambahkan", "created");
+            showToast("Data Kelompok CBO berhasil ditambahkan", "created");
         }
         if (success === "updated") {
-            showToast("Data Kelompok Penerima Manfaat berhasil diperbarui", "updated");
+            showToast("Data Kelompok CBO berhasil diperbarui", "updated");
         }
         if (success === "deleted") {
-            showToast("Data Kelompok Penerima Manfaat berhasil dihapus", "deleted");
+            showToast("Data Kelompok CBO berhasil dihapus", "deleted");
         }
     </script>
 

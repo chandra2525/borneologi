@@ -7,7 +7,11 @@ require "../../app/models/Petani.php";
 require "../../app/core/permission.php";
 require '../../app/core/activity_log.php';
 
-Permission::authorize($pdo, 'Penerima Manfaat', 'update');
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+
+Permission::authorize($pdo, 'CBO', 'update');
 verifyCsrfToken();
 
 $petaniModel = new Petani($pdo);
@@ -84,12 +88,12 @@ if ($result) {
     logActivity(
         $pdo,
         'UPDATE',
-        'Penerima Manfaat',
+        'CBO',
         $_POST["id"],
         't_petani',
         $oldData,
         $newData,
-        'Mengubah data Penerima Manfaat',
+        'Mengubah data CBO',
         'SUCCESS'
     );
 }

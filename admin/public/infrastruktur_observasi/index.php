@@ -79,7 +79,8 @@ Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header row">
-                                    <h3 class="card-title col-9">Berikut adalah list dari Data Infrastruktur Observasi</h3>
+                                    <h3 class="card-title col-9">Berikut adalah list dari Data Infrastruktur Observasi
+                                    </h3>
                                     <?php if (Permission::can($pdo, 'Infrastruktur Observasi', 'create')): ?>
                                         <button class="col-3 btn btn-block btn-success" data-toggle="modal"
                                             data-target="#modalTambah">
@@ -112,20 +113,35 @@ Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
                                                 <tr>
                                                     <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= htmlspecialchars($infrastrukturObservasi['nama_lahan']) ?></td>
-                                                    <td><?= htmlspecialchars($infrastrukturObservasi['periode_pengecekan']) ?></td>
-                                                    <td><?= htmlspecialchars($infrastrukturObservasi['nama_akses_perjalanan']) ?></td>
-                                                    <td><?= htmlspecialchars($infrastrukturObservasi['nama_kondisi_jalan']) ?></td>
-                                                    <td><?= htmlspecialchars($infrastrukturObservasi['jarak_ke_jalan_km']) ?></td>
-                                                    <td><?= $infrastrukturObservasi['ada_jembatan'] ? 'Iya' : 'Tidak' ?></td>
+                                                    <td><?= htmlspecialchars($infrastrukturObservasi['periode_pengecekan']) ?>
+                                                    </td>
+                                                    <td><?= htmlspecialchars($infrastrukturObservasi['nama_akses_perjalanan']) ?>
+                                                    </td>
+                                                    <td><?= htmlspecialchars($infrastrukturObservasi['nama_kondisi_jalan']) ?>
+                                                    </td>
+                                                    <td><?= htmlspecialchars($infrastrukturObservasi['jarak_ke_jalan_km']) ?>
+                                                    </td>
+                                                    <td><?= $infrastrukturObservasi['ada_jembatan'] ? 'Iya' : 'Tidak' ?>
+                                                    </td>
                                                     <td><?= $infrastrukturObservasi['ada_listrik'] ? 'Iya' : 'Tidak' ?></td>
-                                                    <td><?= $infrastrukturObservasi['ada_internet'] ? 'Iya' : 'Tidak' ?></td>
-                                                    <td><?= match ($infrastrukturObservasi['sinyal_seluler']) {
-                                                            'tidak_ada' => 'Tidak Ada',
-                                                            'lemah' => 'Lemah',
-                                                            'sedang' => 'Sedang',
-                                                            'kuat' => 'Kuat',
-                                                            default => 'Tidak Ada',
-                                                        } ?></td>
+                                                    <td><?= $infrastrukturObservasi['ada_internet'] ? 'Iya' : 'Tidak' ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php
+                                                        $sinyalSeluler = $infrastrukturObservasi['sinyal_seluler'] ?? '';
+                                                        if ($sinyalSeluler === 'tidak_ada') {
+                                                            echo 'Tidak Ada';
+                                                        } elseif ($sinyalSeluler === 'lemah') {
+                                                            echo 'Lemah';
+                                                        } elseif ($sinyalSeluler === 'sedang') {
+                                                            echo 'Sedang';
+                                                        } elseif ($sinyalSeluler === 'kuat') {
+                                                            echo 'Kuat';
+                                                        } else {
+                                                            echo 'Tidak Ada';
+                                                        }
+                                                        ?>
+                                                    </td>
                                                     <td><?= htmlspecialchars($infrastrukturObservasi['catatan']) ?></td>
                                                     <td class="row">
                                                         <?php if (Permission::can($pdo, 'Infrastruktur Observasi', 'update')): ?>
@@ -151,7 +167,8 @@ Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
                                                         <?php if (Permission::can($pdo, 'Infrastruktur Observasi', 'delete')): ?>
                                                             <form method="POST" action="delete.php" class="form-delete col">
                                                                 <?= csrfField() ?>
-                                                                <input type="hidden" name="id" value="<?= $infrastrukturObservasi['id'] ?>">
+                                                                <input type="hidden" name="id"
+                                                                    value="<?= $infrastrukturObservasi['id'] ?>">
                                                                 <button type="submit" class="btn btn-block btn-danger">
                                                                     <i class="fas fa-trash"></i> Hapus
                                                                 </button>
@@ -213,7 +230,8 @@ Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
                                 </div>
                                 <div class="form-group">
                                     <label for="periode_pengecekan">Periode Pengecekan<code>*</code></label>
-                                    <input type="date" name="periode_pengecekan" class="form-control" id="periode_pengecekan">
+                                    <input type="date" name="periode_pengecekan" class="form-control"
+                                        id="periode_pengecekan">
                                 </div>
                                 <div class="form-group">
                                     <label for="id_akses_perjalanan">Akses Perjalanan<code>*</code></label>
@@ -239,8 +257,9 @@ Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
                                 </div>
                                 <div class="form-group">
                                     <label for="jarak_ke_jalan_km">Jarak ke Jalan (km)</label>
-                                    <input type="number" name="jarak_ke_jalan_km" class="form-control" id="jarak_ke_jalan_km"
-                                        placeholder="Masukkan Jarak ke Jalan (km)" min="0" step="0.01">
+                                    <input type="number" name="jarak_ke_jalan_km" class="form-control"
+                                        id="jarak_ke_jalan_km" placeholder="Masukkan Jarak ke Jalan (km)" min="0"
+                                        step="0.01">
                                 </div>
                                 <div class="form-group">
                                     <label>Ada Jembatan<code>*</code></label>
@@ -256,8 +275,8 @@ Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
                                             <div class="custom-control custom-radio">
                                                 <input class="custom-control-input" type="radio"
                                                     id="add_tidak_ada_jembatan" name="ada_jembatan" value="0">
-                                                <label for="add_tidak_ada_jembatan"
-                                                    class="custom-control-label">Tidak Ada</label>
+                                                <label for="add_tidak_ada_jembatan" class="custom-control-label">Tidak
+                                                    Ada</label>
                                             </div>
                                         </div>
                                     </div>
@@ -276,8 +295,8 @@ Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
                                             <div class="custom-control custom-radio">
                                                 <input class="custom-control-input" type="radio"
                                                     id="add_tidak_ada_listrik" name="ada_listrik" value="0">
-                                                <label for="add_tidak_ada_listrik"
-                                                    class="custom-control-label">Tidak Ada</label>
+                                                <label for="add_tidak_ada_listrik" class="custom-control-label">Tidak
+                                                    Ada</label>
                                             </div>
                                         </div>
                                     </div>
@@ -296,8 +315,8 @@ Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
                                             <div class="custom-control custom-radio">
                                                 <input class="custom-control-input" type="radio"
                                                     id="add_tidak_ada_internet" name="ada_internet" value="0">
-                                                <label for="add_tidak_ada_internet"
-                                                    class="custom-control-label">Tidak Ada</label>
+                                                <label for="add_tidak_ada_internet" class="custom-control-label">Tidak
+                                                    Ada</label>
                                             </div>
                                         </div>
                                     </div>
@@ -352,11 +371,13 @@ Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
                                 </div>
                                 <div class="form-group">
                                     <label for="periode_pengecekan">Periode Pengecekan<code>*</code></label>
-                                    <input type="date" name="periode_pengecekan" class="form-control" id="edit_periode_pengecekan">
+                                    <input type="date" name="periode_pengecekan" class="form-control"
+                                        id="edit_periode_pengecekan">
                                 </div>
                                 <div class="form-group">
                                     <label for="id_akses_perjalanan">Akses Perjalanan<code>*</code></label>
-                                    <select name="id_akses_perjalanan" class="form-control" id="edit_id_akses_perjalanan">
+                                    <select name="id_akses_perjalanan" class="form-control"
+                                        id="edit_id_akses_perjalanan">
                                         <option value="">-- Pilih Akses Perjalanan --</option>
                                         <?php foreach ($aksesPerjalanans as $ne): ?>
                                             <option value="<?= $ne['id'] ?>">
@@ -378,8 +399,9 @@ Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
                                 </div>
                                 <div class="form-group">
                                     <label for="jarak_ke_jalan_km">Jarak ke Jalan (km)</label>
-                                    <input type="number" name="jarak_ke_jalan_km" class="form-control" id="edit_jarak_ke_jalan_km"
-                                        placeholder="Masukkan Jarak ke Jalan (km)" min="0" step="0.01">
+                                    <input type="number" name="jarak_ke_jalan_km" class="form-control"
+                                        id="edit_jarak_ke_jalan_km" placeholder="Masukkan Jarak ke Jalan (km)" min="0"
+                                        step="0.01">
                                 </div>
                                 <div class="form-group">
                                     <label>Ada Jembatan<code>*</code></label>
@@ -395,8 +417,8 @@ Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
                                             <div class="custom-control custom-radio">
                                                 <input class="custom-control-input" type="radio"
                                                     id="edit_tidak_ada_jembatan" name="ada_jembatan" value="0">
-                                                <label for="edit_tidak_ada_jembatan"
-                                                    class="custom-control-label">Tidak Ada</label>
+                                                <label for="edit_tidak_ada_jembatan" class="custom-control-label">Tidak
+                                                    Ada</label>
                                             </div>
                                         </div>
                                     </div>
@@ -415,8 +437,8 @@ Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
                                             <div class="custom-control custom-radio">
                                                 <input class="custom-control-input" type="radio"
                                                     id="edit_tidak_ada_listrik" name="ada_listrik" value="0">
-                                                <label for="edit_tidak_ada_listrik"
-                                                    class="custom-control-label">Tidak Ada</label>
+                                                <label for="edit_tidak_ada_listrik" class="custom-control-label">Tidak
+                                                    Ada</label>
                                             </div>
                                         </div>
                                     </div>
@@ -435,8 +457,8 @@ Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
                                             <div class="custom-control custom-radio">
                                                 <input class="custom-control-input" type="radio"
                                                     id="edit_tidak_ada_internet" name="ada_internet" value="0">
-                                                <label for="edit_tidak_ada_internet"
-                                                    class="custom-control-label">Tidak Ada</label>
+                                                <label for="edit_tidak_ada_internet" class="custom-control-label">Tidak
+                                                    Ada</label>
                                             </div>
                                         </div>
                                     </div>
@@ -501,7 +523,7 @@ Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
     <script src="../assets/adminlte/plugins/jquery-validation/additional-methods.min.js"></script>
     <!-- Page specific script -->
     <script>
-        $(function() {
+        $(function () {
             $("#example1").DataTable({
                 "responsive": true,
                 "lengthChange": false,
@@ -521,7 +543,7 @@ Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
     </script>
 
     <script>
-        $(function() {
+        $(function () {
             function initValidation(formId) {
                 $(formId).validate({
                     rules: {
@@ -589,14 +611,14 @@ Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
                         // }
                     },
                     errorElement: 'span',
-                    errorPlacement: function(error, element) {
+                    errorPlacement: function (error, element) {
                         error.addClass('invalid-feedback');
                         element.closest('.form-group').append(error);
                     },
-                    highlight: function(element) {
+                    highlight: function (element) {
                         $(element).addClass('is-invalid');
                     },
-                    unhighlight: function(element) {
+                    unhighlight: function (element) {
                         $(element).removeClass('is-invalid');
                     }
                 });
@@ -607,7 +629,7 @@ Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
     </script>
 
     <script>
-        $(document).on("click", ".btn-edit", function() {
+        $(document).on("click", ".btn-edit", function () {
             let id = $(this).data("id");
             let id_tanah = $(this).data("id_tanah");
             let periode_pengecekan = $(this).data("periode_pengecekan");
@@ -637,7 +659,7 @@ Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        $(document).on("submit", ".form-delete", function(e) {
+        $(document).on("submit", ".form-delete", function (e) {
             e.preventDefault();
             let form = this;
             Swal.fire({
@@ -686,10 +708,10 @@ Permission::authorize($pdo, 'Infrastruktur Observasi', 'view');
     </script>
 
     <script>
-        document.getElementById('periode_pengecekan').addEventListener('focus', function() {
+        document.getElementById('periode_pengecekan').addEventListener('focus', function () {
             this.showPicker();
         });
-        document.getElementById('edit_periode_pengecekan').addEventListener('focus', function() {
+        document.getElementById('edit_periode_pengecekan').addEventListener('focus', function () {
             this.showPicker();
         });
     </script>

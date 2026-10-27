@@ -15,7 +15,7 @@ $spreadsheet = new Spreadsheet();
 
 $sheet = $spreadsheet->getActiveSheet();
 
-$sheet->setTitle('Data Penerima Manfaat');
+$sheet->setTitle('Data CBO');
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +27,7 @@ $sheet->mergeCells('A1:I1');
 
 $sheet->setCellValue(
     'A1',
-    'Template Data Penerima Manfaat'
+    'Template Data CBO'
 );
 
 $sheet->getStyle('A1')->applyFromArray([
@@ -353,7 +353,7 @@ foreach (['A', 'B'] as $column) {
 |--------------------------------------------------------------------------
 */
 
-$filename = 'Template_Data_Penerima_Manfaat.xlsx';
+$filename = 'Template_Data_CBO.xlsx';
 
 header(
     'Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'

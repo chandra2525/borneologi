@@ -3,6 +3,10 @@
 require_once __DIR__ . '/../models/PetaniKelompok.php';
 require_once __DIR__ . '/../core/csrf.php';
 
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+
 class PetaniKelompokController
 {
     private $model;
@@ -20,6 +24,11 @@ class PetaniKelompokController
     public function index()
     {
         return $this->model->getAll();
+    }
+
+    public function getByKelompokTani($id_kelompok_tani)
+    {
+        return $this->model->getByKelompokTani($id_kelompok_tani);
     }
 
     /*

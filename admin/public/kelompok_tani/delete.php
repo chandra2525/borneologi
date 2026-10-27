@@ -6,7 +6,7 @@ require "../../app/models/KelompokTani.php";
 require "../../app/core/permission.php";
 require '../../app/core/activity_log.php';
 
-Permission::authorize($pdo, 'Kelompok', 'delete');
+Permission::authorize($pdo, 'Kelompok CBO', 'delete');
 
 $kelompokTaniModel = new KelompokTani($pdo);
 
@@ -17,12 +17,12 @@ if ($result) {
     logActivity(
         $pdo,
         'DELETE',
-        'Kelompok',
+        'Kelompok CBO',
         $_POST["id"],
         't_kelompok_tani',
         $oldData,
         null,
-        'Menghapus data Kelompok',
+        'Menghapus data Kelompok CBO',
         'SUCCESS'
     );
 }

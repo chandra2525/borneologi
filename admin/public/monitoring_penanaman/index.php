@@ -135,11 +135,20 @@ Permission::authorize($pdo, 'Monitoring Penanaman', 'view');
                                                     <td><?= htmlspecialchars($monitoringPenanaman['nama_lahan'] ?? '-', ENT_QUOTES, 'UTF-8') ?>
                                                     </td>
                                                     <td>
-                                                        <span class="badge <?= match ($monitoringPenanaman['nama_status_monitoring'] ?? '') {
-                                                            'Baru Ditanam' => 'badge-primary',
-                                                            'Proses Panen' => 'badge-info',
-                                                            default => 'badge-success',
-                                                        } ?>">
+                                                        <?php
+                                                        $statusMonitoring = $monitoringPenanaman['nama_status_monitoring'] ?? '';
+
+                                                        if ($statusMonitoring === 'Baru Ditanam') {
+                                                            $badgeMonitoring = 'badge-primary';
+                                                        } elseif ($statusMonitoring === 'Proses Panen') {
+                                                            $badgeMonitoring = 'badge-info';
+                                                        } else {
+                                                            $badgeMonitoring = 'badge-success';
+                                                        }
+                                                        ?>
+
+                                                        <span
+                                                            class="badge <?= htmlspecialchars($badgeMonitoring, ENT_QUOTES, 'UTF-8') ?>">
                                                             <?= htmlspecialchars(
                                                                 $monitoringPenanaman['nama_status_monitoring'] ?? '-',
                                                                 ENT_QUOTES,

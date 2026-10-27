@@ -6,7 +6,7 @@ require "../../app/models/PetaniKelompok.php";
 require "../../app/core/permission.php";
 require '../../app/core/activity_log.php';
 
-Permission::authorize($pdo, 'Kelompok Penerima', 'delete');
+Permission::authorize($pdo, 'Kelompok CBO', 'delete');
 
 $petaniKelompokModel = new PetaniKelompok($pdo);
 
@@ -17,12 +17,12 @@ if ($result) {
     logActivity(
         $pdo,
         'DELETE',
-        'Kelompok Penerima',
+        'Kelompok CBO',
         $_POST["id"],
         't_petani_kelompok',
         $oldData,
         null,
-        'Menghapus data Kelompok Penerima',
+        'Menghapus data Kelompok CBO',
         'SUCCESS'
     );
 }
